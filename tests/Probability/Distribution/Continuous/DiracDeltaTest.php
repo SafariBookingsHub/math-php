@@ -1,168 +1,180 @@
 <?php
 
-namespace MathPHP\Tests\Probability\Distribution\Continuous;
+    namespace MathPHP\Tests\Probability\Distribution\Continuous;
 
-use MathPHP\Probability\Distribution\Continuous\DiracDelta;
+    use MathPHP\Probability\Distribution\Continuous\DiracDelta;
+    use PHPUnit\Framework\TestCase;
 
-class DiracDeltaTest extends \PHPUnit\Framework\TestCase
-{
-    /**
-     * @test         pdf
-     * @dataProvider dataProviderForPdf
-     * @param        float $x
-     * @param        float $expectedPdf
-     */
-    public function testPdf(float $x, float $expectedPdf)
-    {
-        // Given
-        $dirac = new DiracDelta();
+    use function range;
 
-        // When
-        $pdf = $dirac->pdf($x);
+    use const INF;
 
-        // Then
-        $this->assertEquals($expectedPdf, $pdf);
-    }
+    class DiracDeltaTest extends TestCase {
+        /**
+         * @return array [x, pdf]
+         */
+        public static function dataProviderForPdf(): array
+        {
+            return [
+                [-100, 0],
+                [-12, 0],
+                [-2, 0],
+                [-1, 0],
+                [-0.5, 0],
+                [0, INF],
+                [0.5, 0],
+                [1, 0],
+                [2, 0],
+                [12, 0],
+                [100, 0],
+            ];
+        }
 
-    /**
-     * @return array [x, pdf]
-     */
-    public function dataProviderForPdf(): array
-    {
-        return [
-            [-100, 0],
-            [-12, 0],
-            [-2, 0],
-            [-1, 0],
-            [-0.5, 0],
-            [0, \INF],
-            [0.5, 0],
-            [1, 0],
-            [2, 0],
-            [12, 0],
-            [100, 0],
-        ];
-    }
-    /**
-     * @testCase     cdf
-     * @dataProvider dataProviderForCdf
-     * @param        float $x
-     * @param        int   $expectedCdf
-     */
-    public function testCdf(float $x, int $expectedCdf)
-    {
-        // Given
-        $dirac = new DiracDelta();
+        /**
+         * @return array [x, cdf]
+         */
+        public static function dataProviderForCdf(): array
+        {
+            return [
+                [-100, 0],
+                [-12, 0],
+                [-2, 0],
+                [-1, 0],
+                [-0.5, 0],
+                [0, 1],
+                [0.5, 1],
+                [1, 1],
+                [2, 1],
+                [12, 1],
+                [100, 1],
+            ];
+        }
 
-        // When
-        $cdf = $dirac->cdf($x);
+        /**
+         * @test         pdf
+         * @dataProvider dataProviderForPdf
+         *
+         * @param float $x
+         * @param float $expectedPdf
+         */
+        public function testPdf(float $x, float $expectedPdf)
+        {
+            // Given
+            $dirac = new DiracDelta();
 
-        // Then
-        $this->assertSame($expectedCdf, $cdf);
-    }
-
-    /**
-     * @return array [x, cdf]
-     */
-    public function dataProviderForCdf(): array
-    {
-        return [
-            [-100, 0],
-            [-12, 0],
-            [-2, 0],
-            [-1, 0],
-            [-0.5, 0],
-            [0, 1],
-            [0.5, 1],
-            [1, 1],
-            [2, 1],
-            [12, 1],
-            [100, 1],
-        ];
-    }
-
-    /**
-     * @testCase inverse is always 0
-     */
-    public function testInverse()
-    {
-        // Given
-        $diracDelta = new DiracDelta();
-
-        foreach (\range(-10, 10, 0.5) as $p) {
             // When
-            $inverse = $diracDelta->inverse($p);
+            $pdf = $dirac->pdf($x);
 
             // Then
-            $this->assertEquals(0, $inverse);
+            $this->assertEquals($expectedPdf, $pdf);
         }
-    }
 
-    /**
-     * @testCase rand is always 0
-     */
-    public function testRand()
-    {
-        // Given
-        $diracDelta = new DiracDelta();
+        /**
+         * @testCase     cdf
+         * @dataProvider dataProviderForCdf
+         *
+         * @param float $x
+         * @param int   $expectedCdf
+         */
+        public function testCdf(float $x, int $expectedCdf)
+        {
+            // Given
+            $dirac = new DiracDelta();
 
-        foreach (\range(-10, 10, 0.5) as $_) {
             // When
-            $rand = $diracDelta->rand();
+            $cdf = $dirac->cdf($x);
 
             // Then
-            $this->assertEquals(0, $rand);
+            $this->assertSame($expectedCdf, $cdf);
+        }
+
+        /**
+         * @testCase inverse is always 0
+         */
+        public function testInverse()
+        {
+            // Given
+            $diracDelta = new DiracDelta();
+
+            foreach (range(-10, 10, 0.5) as $p)
+            {
+                // When
+                $inverse = $diracDelta->inverse($p);
+
+                // Then
+                $this->assertEquals(0, $inverse);
+            }
+        }
+
+        /**
+         * @testCase rand is always 0
+         */
+        public function testRand()
+        {
+            // Given
+            $diracDelta = new DiracDelta();
+
+            foreach (range(-10, 10, 0.5) as $ignored)
+            {
+                // When
+                $rand = $diracDelta->rand();
+
+                // Then
+                $this->assertEquals(0, $rand);
+            }
+        }
+
+        /**
+         * @testCase mean is always 0
+         */
+        public function testMean()
+        {
+            // Given
+            $diracDelta = new DiracDelta();
+
+            foreach (range(-10, 10, 0.5) as $ignored)
+            {
+                // When
+                $mean = $diracDelta->mean();
+
+                // Then
+                $this->assertEquals(0, $mean);
+            }
+        }
+
+        /**
+         * @testCase median is always 0
+         */
+        public function testMedian()
+        {
+            // Given
+            $diracDelta = new DiracDelta();
+
+            foreach (range(-10, 10, 0.5) as $ignored)
+            {
+                // When
+                $median = $diracDelta->median();
+
+                // Then
+                $this->assertEquals(0, $median);
+            }
+        }
+
+        /**
+         * @testCase mode is always 0
+         */
+        public function testMode()
+        {
+            // Given
+            $diracDelta = new DiracDelta();
+
+            foreach (range(-10, 10, 0.5) as $ignored)
+            {
+                // When
+                $mode = DiracDelta::mode();
+
+                // Then
+                $this->assertEquals(0, $mode);
+            }
         }
     }
-
-    /**
-     * @testCase mean is always 0
-     */
-    public function testMean()
-    {
-        // Given
-        $diracDelta = new DiracDelta();
-
-        foreach (\range(-10, 10, 0.5) as $_) {
-            // When
-            $mean = $diracDelta->mean();
-
-            // Then
-            $this->assertEquals(0, $mean);
-        }
-    }
-
-    /**
-     * @testCase median is always 0
-     */
-    public function testMedian()
-    {
-        // Given
-        $diracDelta = new DiracDelta();
-
-        foreach (\range(-10, 10, 0.5) as $_) {
-            // When
-            $median = $diracDelta->median();
-
-            // Then
-            $this->assertEquals(0, $median);
-        }
-    }
-
-    /**
-     * @testCase mode is always 0
-     */
-    public function testMode()
-    {
-        // Given
-        $diracDelta = new DiracDelta();
-
-        foreach (\range(-10, 10, 0.5) as $_) {
-            // When
-            $mode = $diracDelta->mode();
-
-            // Then
-            $this->assertEquals(0, $mode);
-        }
-    }
-}

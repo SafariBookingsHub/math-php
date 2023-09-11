@@ -1,73 +1,91 @@
 <?php
 
-namespace MathPHP\Tests\Functions;
+    namespace MathPHP\Tests\Functions;
 
-use MathPHP\Functions\Bitwise;
+    use MathPHP\Functions\Bitwise;
+    use PHPUnit\Framework\TestCase;
 
-class BitwiseTest extends \PHPUnit\Framework\TestCase
-{
-    /**
-     * @test         add
-     * @dataProvider dataProviderForBitwiseAdd
-     * @param        int   $a
-     * @param        int   $b
-     * @param        array $expected
-     */
-    public function testBitwiseAdd(int $a, int $b, array $expected)
-    {
-        // When
-        $sum = Bitwise::add($a, $b);
+    use const PHP_INT_MAX;
+    use const PHP_INT_MIN;
 
-        // Then
-        $this->assertEquals($expected, $sum);
+    class BitwiseTest extends TestCase {
+        public static function dataProviderForBitwiseAdd(): array
+        {
+            return [
+                [
+                    1,
+                    1,
+                    [
+                        'overflow' => FALSE,
+                        'value'    => 2,
+                    ],
+                ],
+                [
+                    1,
+                    -1,
+                    [
+                        'overflow' => TRUE,
+                        'value'    => 0,
+                    ],
+                ],
+                [
+                    PHP_INT_MAX,
+                    1,
+                    [
+                        'overflow' => FALSE,
+                        'value'    => PHP_INT_MIN,
+                    ],
+                ],
+                [
+                    -1,
+                    -1,
+                    [
+                        'overflow' => TRUE,
+                        'value'    => -2,
+                    ],
+                ],
+                [
+                    PHP_INT_MIN,
+                    PHP_INT_MIN,
+                    [
+                        'overflow' => TRUE,
+                        'value'    => 0,
+                    ],
+                ],
+                [
+                    PHP_INT_MIN,
+                    PHP_INT_MAX,
+                    [
+                        'overflow' => FALSE,
+                        'value'    => -1,
+                    ],
+                ],
+                [
+                    0,
+                    0,
+                    [
+                        'overflow' => FALSE,
+                        'value'    => 0,
+                    ],
+                ],
+
+            ];
+        }
+
+        /**
+         * @test         add
+         * @dataProvider dataProviderForBitwiseAdd
+         *
+         * @param int   $a
+         * @param int   $b
+         * @param array $expected
+         */
+        public function testBitwiseAdd(int $a, int $b, array $expected)
+        {
+            // When
+            $sum = Bitwise::add($a, $b);
+
+            // Then
+            $this->assertEquals($expected, $sum);
+        }
     }
-
-    public function dataProviderForBitwiseAdd(): array
-    {
-        return [
-            [
-                1, 1, [
-                    'overflow' => false,
-                    'value'    => 2,
-                ],
-            ],
-            [
-                1, -1, [
-                    'overflow' => true,
-                    'value'    => 0,
-                ],
-            ],
-            [
-                \PHP_INT_MAX, 1, [
-                    'overflow' => false,
-                    'value'    => \PHP_INT_MIN,
-                ],
-            ],
-            [
-                -1, -1, [
-                    'overflow' => true,
-                    'value'    => -2,
-                ],
-            ],
-            [
-                \PHP_INT_MIN, \PHP_INT_MIN, [
-                    'overflow' => true,
-                    'value'    => 0,
-                ],
-            ],
-            [
-                \PHP_INT_MIN, \PHP_INT_MAX, [
-                    'overflow' => false,
-                    'value'    => -1,
-                ],
-            ],
-            [
-                0, 0, [
-                    'overflow' => false,
-                    'value'    => 0,
-                ],
-            ],
-
-        ];
-    }
-}

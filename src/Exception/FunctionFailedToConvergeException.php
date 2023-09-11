@@ -1,7 +1,6 @@
 <?php
 
-namespace MathPHP\Exception;
+    namespace MathPHP\Exception;
 
-class FunctionFailedToConvergeException extends MathException
-{
-}
+    class FunctionFailedToConvergeException extends MathException {
+    }

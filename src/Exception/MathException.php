@@ -1,7 +1,8 @@
 <?php
 
-namespace MathPHP\Exception;
+    namespace MathPHP\Exception;
 
-class MathException extends \Exception
-{
-}
+    use Exception;
+
+    class MathException extends Exception {
+    }

@@ -1,22 +1,24 @@
 <?php
 
-namespace MathPHP\Tests\Util;
+    namespace MathPHP\Tests\Util;
 
-class IteratorAggregateFixture implements \IteratorAggregate
-{
-    /** @var array */
-    private $values;
+    use ArrayIterator;
+    use IteratorAggregate;
 
-    /**
-     * @param array $values
-     */
-    public function __construct(array $values)
-    {
-        $this->values = $values;
+    class IteratorAggregateFixture implements IteratorAggregate {
+        /** @var array */
+        private $values;
+
+        /**
+         * @param array $values
+         */
+        public function __construct(array $values)
+        {
+            $this->values = $values;
+        }
+
+        public function getIterator(): ArrayIterator
+        {
+            return new ArrayIterator($this->values);
+        }
     }
-
-    public function getIterator(): \ArrayIterator
-    {
-        return new \ArrayIterator($this->values);
-    }
-}

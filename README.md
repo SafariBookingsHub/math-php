@@ -1440,6 +1440,7 @@ $random  = $distribution->rand();  // A random number with a given distribution
 ```
 
 ### Probability - Discrete Distributions
+
 ```php
 use MathPHP\Probability\Distribution\Discrete;
 
@@ -1479,7 +1480,7 @@ $pmf       = $geometric->pmf($k);
 $cdf       = $geometric->cdf($k);
 $μ         = $geometric->mean();
 $median    = $geometric->median();
-$mode      = $geometric->mode();
+$mode      = Geometric::mode();
 $σ²        = $geometric->variance();
 
 // Hypergeometric distribution
@@ -1535,7 +1536,7 @@ $pmf              = $shiftedGeometric->pmf($k);
 $cdf              = $shiftedGeometric->cdf($k);
 $μ                = $shiftedGeometric->mean();
 $median           = $shiftedGeometric->median();
-$mode             = $shiftedGeometric->mode();
+$mode             = ShiftedGeometric::mode();
 $σ²               = $shiftedGeometric->variance();
 
 // Uniform distribution
@@ -1557,7 +1558,7 @@ $zipf = new Discrete\Zipf($s, $N);
 $pmf  = $zipf->pmf($k);
 $cdf  = $zipf->cdf($k);
 $μ    = $zipf->mean();
-$mode = $zipf->mode();
+$mode = Zipf::mode();
 ```
 
 ### Probability - Multivariate Distributions
@@ -1627,6 +1628,7 @@ $χ²    = $table[$df][$p];
 ```
 
 ### Sample Data
+
 ```php
 use MathPHP\SampleData;
 
@@ -1634,54 +1636,54 @@ use MathPHP\SampleData;
 
 // Motor Trend Car Road Tests (mtcars)
 $mtCars      = new SampleData\MtCars();
-$rawData     = $mtCars->getData();                     // [[21, 6, 160, ... ], [30.4, 4, 71.1, ... ], ... ]
-$labeledData = $mtCars->getLabeledData();              // ['Mazda RX4' => ['mpg' => 21, 'cyl' => 6, 'disp' => 160, ... ], 'Honda Civic' => [ ... ], ...]
-$modelData   = $mtCars->getModelData('Ferrari Dino');  // ['mpg' => 19.7, 'cyl' => 6, 'disp' => 145, ... ]
+$rawData     = MtCars::getData();                     // [[21, 6, 160, ... ], [30.4, 4, 71.1, ... ], ... ]
+$labeledData = MtCars::getLabeledData();              // ['Mazda RX4' => ['mpg' => 21, 'cyl' => 6, 'disp' => 160, ... ], 'Honda Civic' => [ ... ], ...]
+$modelData   = MtCars::getModelData('Ferrari Dino');  // ['mpg' => 19.7, 'cyl' => 6, 'disp' => 145, ... ]
 $mpgs        = $mtCars->getMpg();                      // ['Mazda RX4' => 21, 'Honda civic' => 30.4, ... ]
 // Getters for Mpg, Cyl, Disp, Hp, Drat, Wt, Qsec, Vs, Am, Gear, Carb
 
 // Edgar Anderson's Iris Data (iris)
 $iris         = new SampleData\Iris();
-$rawData      = $iris->getData();         // [[5.1, 3.5, 1.4, 0.2, 'setosa'], [4.9, 3.0, 1.4, 0.2, 'setosa'], ... ]
-$labeledData  = $iris->getLabeledData();  // [['sepalLength' => 5.11, 'sepalWidth' => 3.5, 'petalLength' => 1.4, 'petalWidth' => 0.2, 'species' => 'setosa'], ... ]
-$petalLengths = $iris->getSepalLength();  // [5.1, 4.9, 4.7, ... ]
+$rawData      = Iris::getData();         // [[5.1, 3.5, 1.4, 0.2, 'setosa'], [4.9, 3.0, 1.4, 0.2, 'setosa'], ... ]
+$labeledData  = Iris::getLabeledData();  // [['sepalLength' => 5.11, 'sepalWidth' => 3.5, 'petalLength' => 1.4, 'petalWidth' => 0.2, 'species' => 'setosa'], ... ]
+$petalLengths = Iris::getSepalLength();  // [5.1, 4.9, 4.7, ... ]
 // Getters for SepalLength, SepalWidth, PetalLength, PetalWidth, Species
 
 // The Effect of Vitamin C on Tooth Growth in Guinea Pigs (ToothGrowth)
 $toothGrowth = new SampleData\ToothGrowth();
-$rawData     = $toothGrowth->getData();         // [[4.2, 'VC', 0.5], [11.5, 'VC', '0.5], ... ]
-$labeledData = $toothGrowth->getLabeledData();  // [['len' => 4.2, 'supp' => 'VC', 'dose' => 0.5], ... ]
-$lengths     = $toothGrowth->getLen();          // [4.2, 11.5, ... ]
+$rawData     = ToothGrowth::getData();         // [[4.2, 'VC', 0.5], [11.5, 'VC', '0.5], ... ]
+$labeledData = ToothGrowth::getLabeledData();  // [['len' => 4.2, 'supp' => 'VC', 'dose' => 0.5], ... ]
+$lengths     = ToothGrowth::getLen();          // [4.2, 11.5, ... ]
 // Getters for Len, Supp, Dose
 
 // Results from an Experiment on Plant Growth (PlantGrowth)
 $plantGrowth = new SampleData\PlantGrowth();
-$rawData     = $plantGrowth->getData();         // [[4.17, 'ctrl'], [5.58, 'ctrl'], ... ]
-$labeledData = $plantGrowth->getLabeledData();  // [['weight' => 4.17, 'group' => 'ctrl'], ['weight' => 5.58, 'group' => 'ctrl'], ... ]
-$weights     = $plantGrowth->getWeight();       // [4.17, 5.58, ... ]
+$rawData     = PlantGrowth::getData();         // [[4.17, 'ctrl'], [5.58, 'ctrl'], ... ]
+$labeledData = PlantGrowth::getLabeledData();  // [['weight' => 4.17, 'group' => 'ctrl'], ['weight' => 5.58, 'group' => 'ctrl'], ... ]
+$weights     = PlantGrowth::getWeight();       // [4.17, 5.58, ... ]
 // Getters for Weight, Group
 
 // Violent Crime Rates by US State (USArrests)
 $usArrests   = new SampleData\UsArrests();
 $rawData     = $usArrests->rawData();              // [[13.2, 236, 58, 21.2], [10.0, 263, 48, 44.5], ... ]
-$labeledData = $usArrests->getLabeledData();       // ['Alabama' => ['murder' => 13.2, 'assault' => 236, 'urbanPop' => 58, 'rape' => 21.2], ... ]
-$stateData   = $usArrests->getStateData('Texas');  // ['murder' => 12.7, 'assault' => 201, 'urbanPop' => 80, 'rape' => 25.5]
+$labeledData = UsArrests::getLabeledData();       // ['Alabama' => ['murder' => 13.2, 'assault' => 236, 'urbanPop' => 58, 'rape' => 21.2], ... ]
+$stateData   = UsArrests::getStateData('Texas');  // ['murder' => 12.7, 'assault' => 201, 'urbanPop' => 80, 'rape' => 25.5]
 $murders     = $usArrests->getMurders();           // ['Alabama' => 13.2, 'Alaska' => 10.1, ... ]
 // Getters for Murder, Assault, UrbanPop, Rape
 
 // Data from Cereals (cereal)
 $cereal  = new SampleData\Cereal();
-$cereals = $cereal->getCereals();    // ['B1', 'B2', 'B3', 'M1', 'M2', ... ]
-$X       = $cereal->getXData();      // [[0.002682755, 0.003370673, 0.004085942, ... ], [0.002781597, 0.003474863, 0.004191472, ... ], ... ]
-$Y       = $cereal->getYData();      // [[18373, 41.61500, 6.565000, ... ], [18536, 41.40500, 6.545000, ... ], ... ]
-$Ysc     = $cereal->getYscData();    // [[-0.1005049, 0.6265746, -1.1716630, ... ], [0.9233889, 0.1882929, -1.3185289, ... ], ... ]
+$cereals = Cereal::getCereals();    // ['B1', 'B2', 'B3', 'M1', 'M2', ... ]
+$X       = Cereal::getXData();      // [[0.002682755, 0.003370673, 0.004085942, ... ], [0.002781597, 0.003474863, 0.004191472, ... ], ... ]
+$Y       = Cereal::getYData();      // [[18373, 41.61500, 6.565000, ... ], [18536, 41.40500, 6.545000, ... ], ... ]
+$Ysc     = Cereal::getYscData();    // [[-0.1005049, 0.6265746, -1.1716630, ... ], [0.9233889, 0.1882929, -1.3185289, ... ], ... ]
 // Labeled data: getLabeledXData(), getLabeledYData(), getLabeledYscData()
 
 // Data from People (people)
 $people      = new SampleData\People();
-$rawData     = $people->getData();         // [198, 92, -1, ... ], [184, 84, -1, ... ], ... ]
-$labeledData = $people->getLabeledData();  // ['Lars' => ['height' => 198, 'weight' => 92, 'hairLength' => -1, ... ]]
-$names       = $people->getNames();
+$rawData     = People::getData();         // [198, 92, -1, ... ], [184, 84, -1, ... ], ... ]
+$labeledData = People::getLabeledData();  // ['Lars' => ['height' => 198, 'weight' => 92, 'hairLength' => -1, ... ]]
+$names       = People::getNames();
 // Getters for names, height, weight, hairLength, shoeSize, age, income, beer, wine, sex, swim, region, iq
 ```
 
@@ -2467,6 +2469,7 @@ $QCritical  = $model->getCriticalQ();    // array of critical limits of Q
 ```
 
 ### Statistics - Multivariate - Partial Least Squares Regression
+
 ```php
 use MathPHP\Statistics\Multivariate\PLS;
 use MathPHP\LinearAlgebra\MatrixFactory;
@@ -2474,8 +2477,8 @@ use MathPHP\SampleData;
 
 // Given
 $cereal = new SampleData\Cereal();
-$X      = MatrixFactory::createNumeric($cereal->getXData());
-$Y      = MatrixFactory::createNumeric($cereal->getYData());
+$X      = MatrixFactory::createNumeric(Cereal::getXData());
+$Y      = MatrixFactory::createNumeric(Cereal::getYData());
 
 // Build a partial least squares regression to explore
 $numberOfComponents = 5;

@@ -1,140 +1,148 @@
 <?php
 
-namespace MathPHP\Probability\Distribution\Discrete;
+    namespace MathPHP\Probability\Distribution\Discrete;
 
-use MathPHP\Exception;
-use MathPHP\Functions\Support;
-use MathPHP\Sequence\NonInteger;
-
-/**
- * Zipf's Law
- * https://en.wikipedia.org/wiki/Zipf's_law
- */
-class Zipf extends Discrete
-{
-    /**
-     * Distribution parameter bounds limits
-     * s ∈ [0,∞)
-     * N ∈ [1,∞)
-     * @var string[]
-     */
-    const PARAMETER_LIMITS = [
-        's' => '[0,∞)',
-        'N' => '[1,∞)',
-    ];
+    use MathPHP\Exception;
+    use MathPHP\Functions\Support;
+    use MathPHP\Sequence\NonInteger;
 
     /**
-     * Distribution support bounds limits
-     * Rank
-     * k ∈ [1,∞)
-     * @var string[]
+     * Zipf's Law
+     * https://en.wikipedia.org/wiki/Zipf's_law
      */
-    const SUPPORT_LIMITS = [
-        'k' => '[1,∞)',
-    ];
+    class Zipf extends Discrete {
+        /**
+         * Distribution parameter bounds limits
+         * s ∈ [0,∞)
+         * N ∈ [1,∞)
+         *
+         * @var string[]
+         */
+        const PARAMETER_LIMITS
+            = [
+                's' => '[0,∞)',
+                'N' => '[1,∞)',
+            ];
 
-    /** @var int|float Characterizing exponent */
-    protected $s;
+        /**
+         * Distribution support bounds limits
+         * Rank
+         * k ∈ [1,∞)
+         *
+         * @var string[]
+         */
+        const SUPPORT_LIMITS
+            = [
+                'k' => '[1,∞)',
+            ];
 
-    /** @var int Number of elements */
-    protected $N;
+        /** @var int|float Characterizing exponent */
+        protected $s;
 
-    /**
-     * Constructor
-     *
-     * @param int|float $s exponent
-     * @param int       $N elements
-     */
-    public function __construct($s, int $N)
-    {
-        parent::__construct($s, $N);
-    }
+        /** @var int Number of elements */
+        protected $N;
 
-    /**
-     * Probability mass function
-     *
-     *            1
-     * pmf = -----------
-     *         kˢ * Hₙ,ₛ
-     *
-     * @param int $k
-     *
-     * @return int|float
-     *
-     * @throws Exception\OutOfBoundsException if k is > N
-     */
-    public function pmf(int $k)
-    {
-        Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-        if ($k > $this->N) {
-            throw new Exception\OutOfBoundsException('Support parameter k cannot be greater than N');
+        /**
+         * Constructor
+         *
+         * @param int|float $s exponent
+         * @param int       $N elements
+         */
+        public function __construct($s, int $N)
+        {
+            parent::__construct($s, $N);
         }
-        $s = $this->s;
-        $N = $this->N;
-        $series = NonInteger::generalizedHarmonic($N, $s);
-        $denominator = array_pop($series);
-        return 1 / ($k ** $s) / $denominator;
-    }
 
-    /**
-     * Cumulative distribution function
-     *
-     *           Hₖ,ₛ
-     * pmf = ---------
-     *           Hₙ,ₛ
-     *
-     *
-     * @param int $k
-     *
-     * @return int|float
-     *
-     * @throws Exception\OutOfBoundsException if k is > N
-     */
-    public function cdf(int $k)
-    {
-        Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-        if ($k > $this->N) {
-            throw new Exception\OutOfBoundsException('Support parameter k cannot be greater than N');
+        /**
+         * Mode of the distribution
+         *
+         * μ = 1
+         *
+         * @return int|float
+         */
+        public static function mode()
+        {
+            return 1;
         }
-        $s = $this->s;
-        $N = $this->N;
-        $num_series = NonInteger::generalizedHarmonic($k, $s);
-        $numerator = array_pop($num_series);
-        $den_series = NonInteger::generalizedHarmonic($N, $s);
-        $denominator = array_pop($den_series);
-        return $numerator / $denominator;
-    }
 
-    /**
-     * Mean of the distribution
-     *
-     *       Hₖ,ₛ₋₁
-     * μ = ---------
-     *        Hₙ,ₛ
-     *
-     * @return int|float
-     */
-    public function mean()
-    {
-        $s = $this->s;
-        $N = $this->N;
+        /**
+         * Probability mass function
+         *
+         *            1
+         * pmf = -----------
+         *         kˢ * Hₙ,ₛ
+         *
+         * @param int $k
+         *
+         * @return int|float
+         *
+         * @throws Exception\OutOfBoundsException if k is > N
+         */
+        public function pmf(int $k)
+        {
+            Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            if ($k > $this->N)
+            {
+                throw new Exception\OutOfBoundsException('Support parameter k cannot be greater than N');
+            }
+            $s = $this->s;
+            $N = $this->N;
+            $series = NonInteger::generalizedHarmonic($N, $s);
+            $denominator = array_pop($series);
 
-        $num_series = NonInteger::generalizedHarmonic($N, $s - 1);
-        $numerator = array_pop($num_series);
-        $den_series = NonInteger::generalizedHarmonic($N, $s);
-        $denominator = array_pop($den_series);
-        return $numerator / $denominator;
-    }
+            return 1 / ($k ** $s) / $denominator;
+        }
 
-    /**
-     * Mode of the distribution
-     *
-     * μ = 1
-     *
-     * @return int|float
-     */
-    public function mode()
-    {
-        return 1;
+        /**
+         * Cumulative distribution function
+         *
+         *           Hₖ,ₛ
+         * pmf = ---------
+         *           Hₙ,ₛ
+         *
+         *
+         * @param int $k
+         *
+         * @return int|float
+         *
+         * @throws Exception\OutOfBoundsException if k is > N
+         */
+        public function cdf(int $k)
+        {
+            Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            if ($k > $this->N)
+            {
+                throw new Exception\OutOfBoundsException('Support parameter k cannot be greater than N');
+            }
+            $s = $this->s;
+            $N = $this->N;
+            $num_series = NonInteger::generalizedHarmonic($k, $s);
+            $numerator = array_pop($num_series);
+            $den_series = NonInteger::generalizedHarmonic($N, $s);
+            $denominator = array_pop($den_series);
+
+            return $numerator / $denominator;
+        }
+
+        /**
+         * Mean of the distribution
+         *
+         *       Hₖ,ₛ₋₁
+         * μ = ---------
+         *        Hₙ,ₛ
+         *
+         * @return int|float
+         */
+        public function mean()
+        {
+            $s = $this->s;
+            $N = $this->N;
+
+            $num_series = NonInteger::generalizedHarmonic($N, $s - 1);
+            $numerator = array_pop($num_series);
+            $den_series = NonInteger::generalizedHarmonic($N, $s);
+            $denominator = array_pop($den_series);
+
+            return $numerator / $denominator;
+        }
     }
-}

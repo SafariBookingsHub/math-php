@@ -1,7 +1,6 @@
 <?php
 
-namespace MathPHP\Exception;
+    namespace MathPHP\Exception;
 
-class DivisionByZeroException extends MathException
-{
-}
+    class DivisionByZeroException extends MathException {
+    }

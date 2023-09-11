@@ -1,7 +1,6 @@
 <?php
 
-namespace MathPHP\Exception;
+    namespace MathPHP\Exception;
 
-class OutOfBoundsException extends MathException
-{
-}
+    class OutOfBoundsException extends MathException {
+    }

@@ -1,14 +1,14 @@
 <?php
 
-namespace MathPHP\LinearAlgebra\Decomposition;
+    namespace MathPHP\LinearAlgebra\Decomposition;
 
-use MathPHP\LinearAlgebra\NumericMatrix;
+    use MathPHP\LinearAlgebra\NumericMatrix;
 
-abstract class Decomposition
-{
-    /**
-     * @param NumericMatrix $M
-     * @return static
-     */
-    abstract public static function decompose(NumericMatrix $M);
-}
+    abstract class Decomposition {
+        /**
+         * @param NumericMatrix $M
+         *
+         * @return static
+         */
+        abstract public static function decompose(NumericMatrix $M);
+    }

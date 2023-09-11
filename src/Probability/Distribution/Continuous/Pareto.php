@@ -1,202 +1,214 @@
 <?php
 
-namespace MathPHP\Probability\Distribution\Continuous;
+    namespace MathPHP\Probability\Distribution\Continuous;
 
-use MathPHP\Functions\Support;
-
-/**
- * Pareto distribution
- * https://en.wikipedia.org/wiki/Pareto_distribution
- */
-class Pareto extends Continuous
-{
-    /**
-     * Distribution parameter bounds limits
-     * a ∈ (0,∞)
-     * b ∈ (0,∞)
-     * @var array{"a": string, "b": string}
-     */
-    public const PARAMETER_LIMITS = [
-        'a' => '(0,∞)',
-        'b' => '(0,∞)',
-    ];
+    use MathPHP\Functions\Support;
 
     /**
-     * Distribution support bounds limits
-     * x ∈ (0,∞)
-     * @var array{"x": string, "a": string, "b": string}
+     * Pareto distribution
+     * https://en.wikipedia.org/wiki/Pareto_distribution
      */
-    public const SUPPORT_LIMITS = [
-        'x' => '(0,∞)',
-        'a' => '(0,∞)',
-        'b' => '(0,∞)',
-    ];
+    class Pareto extends Continuous {
+        /**
+         * Distribution parameter bounds limits
+         * a ∈ (0,∞)
+         * b ∈ (0,∞)
+         *
+         * @var array{"a": string, "b": string}
+         */
+        public const PARAMETER_LIMITS
+            = [
+                'a' => '(0,∞)',
+                'b' => '(0,∞)',
+            ];
 
-    /** @var float Shape Parameter */
-    protected $a;
+        /**
+         * Distribution support bounds limits
+         * x ∈ (0,∞)
+         *
+         * @var array{"x": string, "a": string, "b": string}
+         */
+        public const SUPPORT_LIMITS
+            = [
+                'x' => '(0,∞)',
+                'a' => '(0,∞)',
+                'b' => '(0,∞)',
+            ];
 
-    /** @var float Scale Parameter */
-    protected $b;
+        /** @var float Shape Parameter */
+        protected $a;
 
-    /**
-     * Constructor
-     *
-     * @param float $a shape parameter
-     * @param float $b scale parameter
-     */
-    public function __construct(float $a, float $b)
-    {
-        parent::__construct($a, $b);
-    }
+        /** @var float Scale Parameter */
+        protected $b;
 
-    /**
-     * Probability density function
-     *
-     *          abᵃ
-     * P(x) =  ----  for x ≥ b
-     *         xᵃ⁺¹
-     *
-     * P(x) = 0      for x < b
-     *
-     * @param  float $x
-     *
-     * @return float
-     */
-    public function pdf(float $x): float
-    {
-        Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-
-        $a = $this->a;
-        $b = $this->b;
-        if ($x < $b) {
-            return 0;
+        /**
+         * Constructor
+         *
+         * @param float $a shape parameter
+         * @param float $b scale parameter
+         */
+        public function __construct(float $a, float $b)
+        {
+            parent::__construct($a, $b);
         }
 
-        $abᵃ  = $a * $b ** $a;
-        $xᵃ⁺¹ = \pow($x, $a + 1);
-        return $abᵃ / $xᵃ⁺¹;
-    }
-    /**
-     * Cumulative distribution function
-     *
-     *             / b \ᵃ
-     * D(x) = 1 - |  -  | for x ≥ b
-     *             \ x /
-     *
-     * D(x) = 0           for x < b
-     *
-     * @param  float $x
-     *
-     * @return float
-     */
-    public function cdf(float $x): float
-    {
-        Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+        /**
+         * Probability density function
+         *
+         *          abᵃ
+         * P(x) =  ----  for x ≥ b
+         *         xᵃ⁺¹
+         *
+         * P(x) = 0      for x < b
+         *
+         * @param float $x
+         *
+         * @return float
+         */
+        public function pdf(float $x): float
+        {
+            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
 
-        $a = $this->a;
-        $b = $this->b;
-        if ($x < $b) {
-            return 0;
-        }
-        return 1 - \pow($b / $x, $a);
-    }
+            $a = $this->a;
+            $b = $this->b;
+            if ($x < $b)
+            {
+                return 0;
+            }
 
-    /**
-     * Inverse CDF (quantile)
-     *
-     *             b
-     * F⁻¹(P) = -------
-     *          (1 - P)¹/ᵃ
-     *
-     * @param float $p
-     *
-     * @return float
-     */
-    public function inverse(float $p): float
-    {
-        $a = $this->a;
-        $b = $this->b;
+            $abᵃ = $a * $b ** $a;
+            $xᵃ⁺¹ = $x ** ($a + 1);
 
-        if ($p == 0) {
-            return -\INF;
-        }
-        if ($p == 1) {
-            return \INF;
+            return $abᵃ / $xᵃ⁺¹;
         }
 
-        return $b / ((1 - $p) ** (1 / $a));
-    }
+        /**
+         * Cumulative distribution function
+         *
+         *             / b \ᵃ
+         * D(x) = 1 - |  -  | for x ≥ b
+         *             \ x /
+         *
+         * D(x) = 0           for x < b
+         *
+         * @param float $x
+         *
+         * @return float
+         */
+        public function cdf(float $x): float
+        {
+            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
 
-    /**
-     * Mean of the distribution
-     *
-     * μ = ∞ for a ≤ 1
-     *
-     *      ab
-     * μ = ----- for a > 1
-     *     a - 1
-     *
-     * @return float
-     */
-    public function mean(): float
-    {
-        $a = $this->a;
-        $b = $this->b;
+            $a = $this->a;
+            $b = $this->b;
+            if ($x < $b)
+            {
+                return 0;
+            }
 
-        if ($a <= 1) {
-            return \INF;
+            return 1 - (($b / $x) ** $a);
         }
 
-        return $a * $b / ($a - 1);
-    }
+        /**
+         * Inverse CDF (quantile)
+         *
+         *             b
+         * F⁻¹(P) = -------
+         *          (1 - P)¹/ᵃ
+         *
+         * @param float $p
+         *
+         * @return float
+         */
+        public function inverse(float $p): float
+        {
+            $a = $this->a;
+            $b = $this->b;
 
-    /**
-     * Median of the distribution
-     *
-     * median = a ᵇ√2
-     *
-     * @return float
-     */
-    public function median(): float
-    {
-        $a = $this->a;
-        $b = $this->b;
+            if ($p == 0)
+            {
+                return -\INF;
+            }
+            if ($p == 1)
+            {
+                return \INF;
+            }
 
-        return $a * (2 ** (1 / $b));
-    }
-
-    /**
-     * Mode of the distribution
-     *
-     * mode = a
-     *
-     * @return float
-     */
-    public function mode(): float
-    {
-        return $this->a;
-    }
-
-    /**
-     * Variance of the distribution
-     *
-     * σ² = ∞                 a ≤ 2
-     *
-     *            ab²
-     * σ² = ---------------   a > 2
-     *      (a - 1)²(a - 2)
-     *
-     * @return float
-     */
-    public function variance(): float
-    {
-        $a = $this->a;
-        $b = $this->b;
-
-        if ($a <= 2) {
-            return \INF;
+            return $b / ((1 - $p) ** (1 / $a));
         }
 
-        return ($a * $b ** 2) / (($a - 1) ** 2 * ($a - 2));
+        /**
+         * Mean of the distribution
+         *
+         * μ = ∞ for a ≤ 1
+         *
+         *      ab
+         * μ = ----- for a > 1
+         *     a - 1
+         *
+         * @return float
+         */
+        public function mean(): float
+        {
+            $a = $this->a;
+            $b = $this->b;
+
+            if ($a <= 1)
+            {
+                return \INF;
+            }
+
+            return ($a * $b) / ($a - 1);
+        }
+
+        /**
+         * Median of the distribution
+         *
+         * median = a ᵇ√2
+         *
+         * @return float
+         */
+        public function median(): float
+        {
+            $a = $this->a;
+            $b = $this->b;
+
+            return $a * (2 ** (1 / $b));
+        }
+
+        /**
+         * Mode of the distribution
+         *
+         * mode = a
+         *
+         * @return float
+         */
+        public function mode(): float
+        {
+            return $this->a;
+        }
+
+        /**
+         * Variance of the distribution
+         *
+         * σ² = ∞                 a ≤ 2
+         *
+         *            ab²
+         * σ² = ---------------   a > 2
+         *      (a - 1)²(a - 2)
+         *
+         * @return float
+         */
+        public function variance(): float
+        {
+            $a = $this->a;
+            $b = $this->b;
+
+            if ($a <= 2)
+            {
+                return \INF;
+            }
+
+            return ($a * $b ** 2) / ((($a - 1) ** 2) * ($a - 2));
+        }
     }
-}

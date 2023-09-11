@@ -1,7 +1,9 @@
 <?php
 
-namespace MathPHP\Probability\Distribution\Discrete;
+    namespace MathPHP\Probability\Distribution\Discrete;
 
-abstract class Discrete extends \MathPHP\Probability\Distribution\Distribution
-{
-}
+    use MathPHP\Probability\Distribution\Distribution;
+
+    abstract class Discrete
+        extends Distribution {
+    }

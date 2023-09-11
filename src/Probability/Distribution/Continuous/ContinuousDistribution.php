@@ -1,34 +1,33 @@
 <?php
 
-namespace MathPHP\Probability\Distribution\Continuous;
-
-/**
- * Interface ContinuousDistribution
- */
-interface ContinuousDistribution
-{
-    /**
-     * Probability density function
-     *
-     * @param float $x
-     *
-     * @return mixed
-     */
-    public function pdf(float $x);
+    namespace MathPHP\Probability\Distribution\Continuous;
 
     /**
-     * Cumulative distribution function
-     *
-     * @param float $x
-     *
-     * @return int|float
+     * Interface ContinuousDistribution
      */
-    public function cdf(float $x);
+    interface ContinuousDistribution {
+        /**
+         * Probability density function
+         *
+         * @param float $x
+         *
+         * @return mixed
+         */
+        public function pdf(float $x);
 
-    /**
-     * Mean average
-     *
-     * @return int|float
-     */
-    public function mean();
-}
+        /**
+         * Cumulative distribution function
+         *
+         * @param float $x
+         *
+         * @return int|float
+         */
+        public function cdf(float $x);
+
+        /**
+         * Mean average
+         *
+         * @return int|float
+         */
+        public function mean();
+    }

@@ -1,7 +1,6 @@
 <?php
 
-namespace MathPHP\Exception;
+    namespace MathPHP\Exception;
 
-class MatrixException extends MathException
-{
-}
+    class MatrixException extends MathException {
+    }
