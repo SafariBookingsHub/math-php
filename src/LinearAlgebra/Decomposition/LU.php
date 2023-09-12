@@ -272,66 +272,65 @@
          * @throws MathException
          * @throws MatrixException
          */
-        public function solve(array|Vector $b): Vector
+        public function solve($b): Vector
         {
-            // Input must be a Vector or array.
-            if ( ! (($b instanceof Vector) || is_array($b)))
+            if (!($b instanceof Vector) && !is_array($b)) 
             {
                 throw new Exception\IncorrectTypeException('b in Ax = b must be a Vector or array');
             }
-            if (is_array($b))
-            {
-                $b = new Vector($b);
-            }
 
+            $b = $b instanceof Vector ? $b : new Vector($b);
             $L = $this->L;
             $U = $this->U;
             $P = $this->P;
-            $m = $this->L->getM();
+            $m = $L->getM();
 
             // Pivot solution vector b with permutation matrix: Pb
             $Pb = $P->multiply($b);
 
-            /* Solve for Ly = Pb using forward substitution
-             *         1   /    ᵢ₋₁      \
-             *   yᵢ = --- | bᵢ - ∑ Lᵢⱼyⱼ |
-             *        Lᵢᵢ  \    ʲ⁼¹      /
-             */
+            // Solve for Ly = Pb using forward substitution
+            $y = $this->forwardSubstitution($L, $Pb, $m);
+
+            // Solve for Ux = y using back substitution
+            $x = $this->backSubstitution($U, $y, $m);
+
+            return new Vector($x);
+        }
+
+        private function forwardSubstitution($L, $Pb, $m): array
+        {
             $y = [];
             $y[0] = $Pb[0][0] / $L[0][0];
-            for ($i = 1; $i < $m; $i++)
+            
+            for ($i = 1; $i < $m; $i++) 
             {
-                $sum = 0;
-                for ($j = 0; $j <= $i - 1; $j++)
+                $y[$i] = ($Pb[$i][0] - array_sum(array_map(function ($j) use ($L, $y) 
                 {
-                    $sum += $L[$i][$j] * $y[$j];
-                }
-                $y[$i] = ($Pb[$i][0] - $sum) / $L[$i][$i];
+                    return $L[$i][$j] * $y[$j];
+                }, 
+                range(0, $i - 1)))) / $L[$i][$i];
             }
+            return $y;
+        }
 
-            /* Solve for Ux = y using back substitution
-             *         1   /     m       \
-             *   xᵢ = --- | yᵢ - ∑ Uᵢⱼxⱼ |
-             *        Uᵢᵢ  \   ʲ⁼ⁱ⁺¹     /
-             */
+        private function backSubstitution($U, $y, $m): array
+        {
             $x = [];
             $x[$m - 1] = $y[$m - 1] / $U[$m - 1][$m - 1];
-            for ($i = $m - 2; $i >= 0; $i--)
+            
+            for ($i = $m - 2; $i >= 0; $i--) 
             {
-                $sum = 0;
-                for ($j = $i + 1; $j < $m; $j++)
+                if ($U[$i][$i] == 0) 
                 {
-                    $sum += $U[$i][$j] * $x[$j];
+                    throw new Exception\DivisionByZeroException("Uᵢᵢ (U[$i][$i]) is 0 during back substitution");
                 }
-                if ($U[$i][$i] == 0)
+                $x[$i] = ($y[$i] - array_sum(array_map(function ($j) use ($U, $x) 
                 {
-                    throw new Exception\DivisionByZeroException("Uᵢᵢ (U[$i][$i]) is 0 during solve for Ux = y using back substitution in LU solve for Ax = b");
-                }
-                $x[$i] = ($y[$i] - $sum) / $U[$i][$i];
+                    return $U[$i][$j] * $x[$j];
+                }, 
+                range($i + 1, $m - 1)))) / $U[$i][$i];
             }
-
-            // Return unknown xs as Vector
-            return new Vector(array_reverse($x));
+            return $x;
         }
 
         /**
