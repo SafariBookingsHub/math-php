@@ -21,18 +21,26 @@
          */
         public function testConstructor(array $A)
         {
-            $S = new NumericSquareMatrix($A);
-            $M = new NumericMatrix($A);
+            $S = new NumericSquareMatrix(A: $A);
+            $M = new NumericMatrix(A: $A);
 
             $this->assertInstanceOf(NumericSquareMatrix::class, $S);
             $this->assertInstanceOf(NumericMatrix::class, $S);
 
             $m = $S->getM();
             for ($i = 0; $i < $m; $i++)
-                $this->assertEquals($M[$i], $S[$i]);
+            {
+                {
+                    $this->assertEquals($M[$i], $S[$i]);
+                }
+            }
             $m = $M->getM();
             for ($i = 0; $i < $m; $i++)
-                $this->assertEquals($M[$i], $S[$i]);
+            {
+                {
+                    $this->assertEquals($M[$i], $S[$i]);
+                }
+            }
         }
 
         /**
@@ -48,7 +56,7 @@
             $this->expectException(Exception\MatrixException::class);
             try
             {
-                $M = new NumericSquareMatrix($A);
+                $M = new NumericSquareMatrix(A: $A);
             } catch (Exception\MathException $e)
             {
             }
@@ -64,8 +72,8 @@
          */
         public function testGetMatrix(array $A)
         {
-            $S = new NumericSquareMatrix($A);
-            $M = new NumericMatrix($A);
+            $S = new NumericSquareMatrix(A: $A);
+            $M = new NumericMatrix(A: $A);
 
             $this->assertEquals($M->getMatrix(), $S->getMatrix());
         }
@@ -80,8 +88,8 @@
          */
         public function testIsSquare(array $A)
         {
-            $S = new NumericSquareMatrix($A);
-            $M = new NumericMatrix($A);
+            $S = new NumericSquareMatrix(A: $A);
+            $M = new NumericMatrix(A: $A);
 
             $this->assertTrue($S->isSquare());
         }

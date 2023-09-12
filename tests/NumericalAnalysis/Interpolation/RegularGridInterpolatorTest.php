@@ -248,14 +248,20 @@
             $zs = [110, 111, 112, 113, 114, 115, 116, 117, 118, 119];
 
             // And
-            $func = fn($x, $y, $z) => (2 * $x + 3 * $y) - $z;
+            $func = fn($x, $y, $z) => ((2 * $x) + (3 * $y)) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
+            {
                 foreach ($ys as $j => $y)
+                {
                     foreach ($zs as $k => $z)
+                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
+                    }
+                }
+            }
 
             // When
             try
@@ -301,14 +307,20 @@
             $zs = [110, 111, 112, 113, 114, 115, 116, 117, 118, 119];
 
             // And
-            $func = fn($x, $y, $z) => (2 * $x + 3 * $y) - $z;
+            $func = fn($x, $y, $z) => ((2 * $x) + (3 * $y)) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
+            {
                 foreach ($ys as $j => $y)
+                {
                     foreach ($zs as $k => $z)
+                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
+                    }
+                }
+            }
 
             // When
             try
@@ -410,14 +422,20 @@
             ];
 
             // And
-            $func = fn($x, $y, $z) => (2 * $x ** 3 + 3 * $y ** 2) - $z;
+            $func = fn($x, $y, $z) => ((2 * $x ** 3) + (3 * $y ** 2)) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
+            {
                 foreach ($ys as $j => $y)
+                {
                     foreach ($zs as $k => $z)
+                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
+                    }
+                }
+            }
 
             // When
             try
@@ -519,14 +537,20 @@
             ];
 
             // And
-            $func = fn($x, $y, $z) => (2 * $x ** 3 + 3 * $y ** 2) - $z;
+            $func = fn($x, $y, $z) => ((2 * $x ** 3) + (3 * $y ** 2)) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
+            {
                 foreach ($ys as $j => $y)
+                {
                     foreach ($zs as $k => $z)
+                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
+                    }
+                }
+            }
 
             // When
             try
@@ -632,14 +656,20 @@
             ];
 
             // And
-            $func = fn($x, $y, $z) => (2 * $x ** 3 + 3 * $y ** 2) - $z;
+            $func = fn($x, $y, $z) => ((2 * $x ** 3) + (3 * $y ** 2)) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
+            {
                 foreach ($ys as $j => $y)
+                {
                     foreach ($zs as $k => $z)
+                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
+                    }
+                }
+            }
 
             // When
             try
@@ -749,14 +779,20 @@
             ];
 
             // And
-            $func = fn($x, $y, $z) => (2 * $x ** 3 + 3 * $y ** 2) - $z;
+            $func = fn($x, $y, $z) => ((2 * $x ** 3) + (3 * $y ** 2)) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
+            {
                 foreach ($ys as $j => $y)
+                {
                     foreach ($zs as $k => $z)
+                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
+                    }
+                }
+            }
 
             // When
             try
@@ -809,14 +845,20 @@
             $zs = [1, 2, 3];
 
             // And
-            $func = fn($x, $y, $z) => (2 * $x + 3 * $y) - $z;
+            $func = fn($x, $y, $z) => ((2 * $x) + (3 * $y)) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
+            {
                 foreach ($ys as $j => $y)
+                {
                     foreach ($zs as $k => $z)
+                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
+                    }
+                }
+            }
 
             // When
             try
@@ -862,14 +904,20 @@
             $zs = [1, 2, 3];
 
             // And
-            $func = fn($x, $y, $z) => (2 * $x + 3 * $y) - $z;
+            $func = fn($x, $y, $z) => ((2 * $x) + (3 * $y)) - $z;
 
             // And
             $data = [];
             foreach ([3, 2, 1] as $i => $x)
+            {
                 foreach ([3, 2, 1] as $j => $y)
+                {
                     foreach ([3, 2, 1] as $k => $z)
+                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
+                    }
+                }
+            }
 
             // When
             try

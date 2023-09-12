@@ -40,7 +40,7 @@
          *
          * @var array{"k": string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'k' => '[0,∞)',
             ];
@@ -76,17 +76,16 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
-            $array_map = array_map(function ($k) {
-                return $this->pmf($k);
-            }, range(0, $k));
+            $array_map1 = [];
+            foreach (range(0, $k) as $key => $k)
+            {
+                $array_map1[$key] = $this->pmf($k);
+            }
+            $array_map = $array_map1;
 
             return array_sum($array_map);
         }
@@ -107,17 +106,13 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             $λ = $this->λ;
 
-            $λᵏℯ＾−λ = $λ ** $k * exp(-$λ);
+            $λᵏℯ＾−λ = ($λ ** $k) * exp(-$λ);
             try
             {
                 $k！ = Combinatorics::factorial($k);
@@ -149,7 +144,7 @@
          */
         public function median(): float
         {
-            return floor($this->λ + (1 / 3) - 0.02 / $this->λ);
+            return floor(($this->λ + (1 / 3)) - (0.02 / $this->λ));
         }
 
         /**

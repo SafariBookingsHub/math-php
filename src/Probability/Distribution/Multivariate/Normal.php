@@ -36,28 +36,22 @@
         public function __construct(array $μ, NumericMatrix $∑)
         {
             $k = count($μ);
-            if ($∑->getM() !== $k || $∑->getN() !== $k)
+            if (($∑->getM() !== $k) || ($∑->getN() !== $k))
+            {
                 throw new Exception\BadDataException(
                     'Covariance matrix ∑ must have the the same number of rows and columns as there are X elements. '
                     .
                     "X has $k elements. Covariance matrix ∑ has ".$∑->getM()
                     .' rows and '.$∑->getN().' columns.'
                 );
+            }
             try
             {
                 if ( ! $∑->isPositiveDefinite())
                 {
                     throw new Exception\BadDataException("Covariance matrix ∑ is not positive definite:\n$∑");
                 }
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\MatrixException|Exception\IncorrectTypeException|Exception\BadParameterException $e)
             {
             }
             $this->μ = $μ;
@@ -88,21 +82,14 @@
             $∑ = $this->∑;
 
             if (count($μ) !== $k)
+            {
                 throw new Exception\BadDataException("X and μ must have the same number of elements. X has $k and μ has "
                     .count($μ));
+            }
 
             $π = M_PI;
-            try
-            {
-                $│∑│ = $∑->det();
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            }
-            $√⟮2π⟯ᵏ│∑│ = sqrt((2 * $π) ** $k * $│∑│);
+            $│∑│ = $∑->det();
+            $√⟮2π⟯ᵏ│∑│ = sqrt(((2 * $π) ** $k) * $│∑│);
 
             $Δ = Map\Multi::subtract($X, $μ);
             $⟮x − μ⟯ = new Vector($Δ);
@@ -111,13 +98,7 @@
             try
             {
                 $∑⁻¹ = $∑->inverse();
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadParameterException|Exception\OutOfBoundsException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -129,13 +110,7 @@
                         ->multiply($⟮x − μ⟯)
                         ->get(0, 0)
                 );
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadParameterException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 

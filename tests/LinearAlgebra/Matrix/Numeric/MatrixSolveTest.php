@@ -20,7 +20,7 @@
         ): array
         {
             return [
-                [new NumericMatrix([[1], [2], [3]])],
+                [new NumericMatrix(A: [[1], [2], [3]])],
                 [25],
             ];
         }
@@ -38,11 +38,11 @@
         public function testSolveArray(array $A, array $b, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $expected = new Vector(A: $expected);
 
             // When
-            $x = $A->solve($b);
+            $x = $A->solve(b: $b);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.00001);
@@ -61,12 +61,12 @@
         public function testSolveVector(array $A, array $b, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $b = new Vector($b);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $b = new Vector(A: $b);
+            $expected = new Vector(A: $expected);
 
             // When
-            $x = $A->solve($b);
+            $x = $A->solve(b: $b);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.00001);
@@ -85,13 +85,13 @@
         public function testSolveInverse(array $A, array $b, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $b = new Vector($b);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $b = new Vector(A: $b);
+            $expected = new Vector(A: $expected);
 
             // When
             $A->inverse();
-            $x = $A->solve($b);
+            $x = $A->solve(b: $b);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.00001);
@@ -110,13 +110,13 @@
         public function testSolveRref(array $A, array $b, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $b = new Vector($b);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $b = new Vector(A: $b);
+            $expected = new Vector(A: $expected);
 
             // When
             $A->rref();
-            $x = $A->solve($b);
+            $x = $A->solve(b: $b);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.00001);
@@ -138,12 +138,12 @@
             array $expected
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $b = new Vector($b);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $b = new Vector(A: $b);
+            $expected = new Vector(A: $expected);
 
             // When
-            $x = $A->solve($b, NumericMatrix::LU);
+            $x = $A->solve(b: $b, method: NumericMatrix::LU);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.00001);
@@ -165,12 +165,12 @@
             array $expected
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $b = new Vector($b);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $b = new Vector(A: $b);
+            $expected = new Vector(A: $expected);
 
             // When
-            $x = $A->solve($b, NumericMatrix::QR);
+            $x = $A->solve(b: $b, method: NumericMatrix::QR);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.00001);
@@ -192,12 +192,12 @@
             array $expected
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $b = new Vector($b);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $b = new Vector(A: $b);
+            $expected = new Vector(A: $expected);
 
             // When
-            $x = $A->solve($b, NumericMatrix::INVERSE);
+            $x = $A->solve(b: $b, method: NumericMatrix::INVERSE);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.00001);
@@ -219,12 +219,12 @@
             array $expected
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $b = new Vector($b);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $b = new Vector(A: $b);
+            $expected = new Vector(A: $expected);
 
             // When
-            $x = $A->solve($b, NumericMatrix::RREF);
+            $x = $A->solve(b: $b, method: NumericMatrix::RREF);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.00001);
@@ -238,7 +238,7 @@
         public function testSolveExceptionNotVectorOrArray($b)
         {
             // Given
-            $A = new NumericMatrix([
+            $A = new NumericMatrix(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -248,7 +248,7 @@
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $A->solve($b);
+            $A->solve(b: $b);
         }
 
         /**
@@ -268,9 +268,10 @@
         public function testRefUsingSolve(array $A, array $b, array $expected_x)
         {
             // Given
-            $m = count($b);
-            $A = MatrixFactory::create($A);
-            $b_matrix = MatrixFactory::createFromVectors([new Vector($b)]);
+            $m = count(value: $b);
+            $A = MatrixFactory::create(A: $A);
+            $b_matrix
+                = MatrixFactory::createFromVectors(A: [new Vector(A: $b)]);
             $Ab = $A->augment($b_matrix);
             $ref = $Ab->ref();
 
@@ -280,7 +281,11 @@
             {
                 $x[$i] = $ref[$i][$m];
                 for ($j = $i + 1; $j < $m; $j++)
-                    $x[$i] -= $ref[$i][$j] * $x[$j];
+                {
+                    {
+                        $x[$i] -= $ref[$i][$j] * $x[$j];
+                    }
+                }
                 $x[$i] /= $ref[$i][$i];
             }
 
@@ -288,7 +293,7 @@
             $this->assertEqualsWithDelta($expected_x, $x, 0.00001);
 
             // And as an extra check, solve the original matrix and compare the result.
-            $solved_x = $A->solve($b);
+            $solved_x = $A->solve(b: $b);
             $this->assertEqualsWithDelta($x, $solved_x->getVector(), 0.00001);
         }
 
@@ -305,10 +310,10 @@
         public function testAxEqualsBAfterSolving(array $A, array $b)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // And
-            $x = $A->solve($b);
+            $x = $A->solve(b: $b);
 
             // When Ax
             $Ax = $A->multiply($x);
@@ -358,14 +363,8 @@
             // And
             try
             {
-                $A = MatrixFactory::create($data);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $data);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
             $b = [1.457, -1.457, -5.664, 0, 1620.7, -416.8];
@@ -373,16 +372,8 @@
             // When
             try
             {
-                $x = $A->solve($b, NumericMatrix::RREF);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            } catch (Exception\VectorException $e)
+                $x = $A->solve(b: $b, method: NumericMatrix::RREF);
+            } catch (Exception\BadParameterException|Exception\VectorException|Exception\OutOfBoundsException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -401,11 +392,7 @@
             try
             {
                 $Ax = $A->multiply($x);
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
             {
             }
 
@@ -460,14 +447,8 @@
             // And
             try
             {
-                $A = MatrixFactory::create($data);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $data);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
             $b = [1.457, -1.457, -5.664, 0, 1620.7, -416.8];
@@ -475,16 +456,8 @@
             // When
             try
             {
-                $x = $A->solve($b);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            } catch (Exception\VectorException $e)
+                $x = $A->solve(b: $b);
+            } catch (Exception\BadParameterException|Exception\VectorException|Exception\OutOfBoundsException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -503,11 +476,7 @@
             try
             {
                 $Ax = $A->multiply($x);
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
             {
             }
 

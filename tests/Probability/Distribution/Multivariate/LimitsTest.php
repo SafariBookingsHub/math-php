@@ -11,7 +11,7 @@
          */
         public function testDirichletParameterLimits()
         {
-            $this->limitTest(Multivariate\Dirichlet::PARAMETER_LIMITS);
+            $this->limitTest(limits: Multivariate\Dirichlet::PARAMETER_LIMITS);
         }
 
         /**
@@ -24,8 +24,12 @@
         private function limitTest(array $limits): void
         {
             foreach ($limits as $parameter => $limit)
-                $this->assertRegExp('/^ ([[(]) (.+) , (.+?) ([])]) $/x',
-                    $limit);
+            {
+                {
+                    $this->assertRegExp('/^ ([[(]) (.+) , (.+?) ([])]) $/x',
+                        $limit);
+                }
+            }
         }
 
         /**
@@ -33,7 +37,7 @@
          */
         public function testDirichletSupportLimits()
         {
-            $this->limitTest(Multivariate\Dirichlet::SUPPORT_LIMITS);
+            $this->limitTest(limits: Multivariate\Dirichlet::SUPPORT_LIMITS);
         }
 
         /**
@@ -41,6 +45,6 @@
          */
         public function testHypergeometricParameterLimits()
         {
-            $this->limitTest(Multivariate\Hypergeometric::PARAMETER_LIMITS);
+            $this->limitTest(limits: Multivariate\Hypergeometric::PARAMETER_LIMITS);
         }
     }

@@ -8,10 +8,8 @@
     use PHPUnit\Framework\TestCase;
 
     class VectorTest extends TestCase {
-        /** @var array */
         private array $A;
 
-        /** @var Vector */
         private Vector $V;
 
         public static function dataProviderForGetN(): array
@@ -96,7 +94,7 @@
             $this->A = [1, 2, 3, 4, 5];
             try
             {
-                $this->V = new Vector($this->A);
+                $this->V = new Vector(A: $this->A);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -126,7 +124,7 @@
             // Given
             try
             {
-                $V = new Vector($A);
+                $V = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -145,11 +143,11 @@
         public function testGet()
         {
             // Then
-            $this->assertEquals(1, $this->V->get(i: 0));
-            $this->assertEquals(2, $this->V->get(i: 1));
-            $this->assertEquals(3, $this->V->get(i: 2));
-            $this->assertEquals(4, $this->V->get(i: 3));
-            $this->assertEquals(5, $this->V->get(i: 4));
+            $this->assertEquals(1, $this->V->get(0));
+            $this->assertEquals(2, $this->V->get(1));
+            $this->assertEquals(3, $this->V->get(2));
+            $this->assertEquals(4, $this->V->get(3));
+            $this->assertEquals(5, $this->V->get(4));
         }
 
         /**
@@ -162,7 +160,7 @@
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $this->V->get(i: 100);
+            $this->V->get(100);
         }
 
         /**
@@ -173,7 +171,7 @@
             // Given
             try
             {
-                $A = new Vector([1, 2, 3]);
+                $A = new Vector(A: [1, 2, 3]);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -198,8 +196,8 @@
         public function testAsColumnMatrix(array $A, array $R)
         {
             // Given
-            $A = new Vector(A: $A);
-            $R = new NumericMatrix(A: $R);
+            $A = new Vector($A);
+            $R = new NumericMatrix($R);
 
             // When
             $M = $A->asColumnMatrix();
@@ -220,8 +218,8 @@
         public function testAsRowMatrix(array $A, array $R)
         {
             // Given
-            $A = new Vector(A: $A);
-            $R = new NumericMatrix(A: $R);
+            $A = new Vector($A);
+            $R = new NumericMatrix($R);
 
             // When
             $M = $A->asRowMatrix();
@@ -243,6 +241,6 @@
             $this->expectException(Exception\MathException::class);
 
             // When
-            $V = new Vector(A: $values);
+            $V = new Vector($values);
         }
     }

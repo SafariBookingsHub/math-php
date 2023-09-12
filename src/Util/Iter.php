@@ -30,7 +30,11 @@
         {
             $zippedIterator = new MultipleIterator();
             foreach ($iterables as $iterable)
-                $zippedIterator->attachIterator(self::makeIterator($iterable));
+            {
+                {
+                    $zippedIterator->attachIterator(self::makeIterator($iterable));
+                }
+            }
 
             return $zippedIterator;
         }

@@ -4,15 +4,15 @@
 
     class VectorAngle {
 
-        public function exceptionRadAngle()
+        public static function exceptionRadAngle()
         {
         }
 
-        public function angleBetweenRadians()
+        public static function angleBetweenRadians()
         {
         }
 
-        public function angleBetweenDegrees()
+        public static function angleBetweenDegrees()
         {
         }
     }

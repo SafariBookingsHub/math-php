@@ -71,13 +71,17 @@
         {
             // Arrays must have the same number of elements
             if (count($p) !== count($q))
+            {
                 throw new Exception\BadDataException('p and q must have the same number of elements');
+            }
 
             // Probability distributions must add up to 1.0
-            if (abs(array_sum($p) - 1) > self::ONE_TOLERANCE
-                || abs(array_sum($q) - 1) > self::ONE_TOLERANCE
+            if ((abs(array_sum($p) - 1) > self::ONE_TOLERANCE)
+                || (abs(array_sum($q) - 1) > self::ONE_TOLERANCE)
             )
+            {
                 throw new Exception\BadDataException('Distributions p and q must add up to 1');
+            }
 
             // ∑ √(p(x) q(x))
             $BC⟮p、q⟯ = array_sum(Map\Single::sqrt(Map\Multi::multiply($p,
@@ -107,22 +111,32 @@
         {
             // Arrays must have the same number of elements
             if (count($p) !== count($q))
+            {
                 throw new Exception\BadDataException('p and q must have the same number of elements');
+            }
 
             // Probability distributions must add up to 1.0
-            if (abs(array_sum($p) - 1) > self::ONE_TOLERANCE
-                || abs(array_sum($q) - 1) > self::ONE_TOLERANCE
+            if ((abs(array_sum($p) - 1) > self::ONE_TOLERANCE)
+                || (abs(array_sum($q) - 1) > self::ONE_TOLERANCE)
             )
+            {
                 throw new Exception\BadDataException('Distributions p and q must add up to 1');
+            }
 
             // Defensive measures against taking the log of 0 which would be -∞ or dividing by 0
-            $array_map1 = array_map(function ($pᵢ) {
-                return ($pᵢ == 0) ? 1e-15 : $pᵢ;
-            }, $p);
+            $array_map3 = [];
+            foreach ($p as $key => $pᵢ)
+            {
+                $array_map3[$key] = ($pᵢ == 0) ? 1e-15 : $pᵢ;
+            }
+            $array_map1 = $array_map3;
             $p = $array_map1;
-            $array_map = array_map(function ($qᵢ) {
-                return ($qᵢ == 0) ? 1e-15 : $qᵢ;
-            }, $q);
+            $array_map2 = [];
+            foreach ($q as $key => $qᵢ)
+            {
+                $array_map2[$key] = ($qᵢ == 0) ? 1e-15 : $qᵢ;
+            }
+            $array_map = $array_map2;
             $q = $array_map;
 
             // √ ∑ (√pᵢ - √qᵢ)²
@@ -132,7 +146,7 @@
                 $q
             )));
 
-            return 1 / sqrt(2) * $√∑⟮√pᵢ − √qᵢ⟯²;
+            return (1 / sqrt(2)) * $√∑⟮√pᵢ − √qᵢ⟯²;
         }
 
         /**
@@ -215,18 +229,16 @@
                 {
                     $diff = $x->rowMeans()->asColumnMatrix()
                         ->subtract($Centroid);
-                } catch (Exception\IncorrectTypeException $e)
-                {
-                } catch (Exception\MatrixException $e)
-                {
-                } catch (Exception\MathException $e)
+                } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
                 {
                 }
             } else
             {
                 $S = $data->covarianceMatrix();
                 if ($y === NULL)
+                {
                     $y = $Centroid;
+                }
                 $diff = $x->subtract($y);
             }
 
@@ -234,11 +246,7 @@
             try
             {
                 $D = $diff->transpose()->multiply($S⁻¹)->multiply($diff);
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
             {
             }
 
@@ -286,9 +294,13 @@
             // Arrays must have the same number of elements
             $n = count($xs);
             if ($n !== count($ys))
+            {
                 throw new Exception\BadDataException('x and y must have the same number of elements');
+            }
             if ($p < 1)
+            {
                 throw new Exception\BadDataException("p must be ≥ 1. Given $p");
+            }
 
             $∑｜xᵢ − yᵢ⟯ᵖ = array_sum(
                 array_map(
@@ -377,10 +389,14 @@
          */
         public static function cosine(array $A, array $B): float
         {
-            if (count(array_unique($A)) === 1 && end($A) == 0)
+            if ((count(array_unique($A)) === 1) && (end($A) == 0))
+            {
                 throw new Exception\BadDataException('A is the null vector');
-            if (count(array_unique($B)) === 1 && end($B) == 0)
+            }
+            if ((count(array_unique($B)) === 1) && (end($B) == 0))
+            {
                 throw new Exception\BadDataException('B is the null vector');
+            }
 
             $A = new Vector($A);
             $B = new Vector($B);
@@ -388,7 +404,7 @@
             $A⋅B = $A->dotProduct($B);
             $‖A‖₂⋅‖B‖₂ = $A->l2Norm() * $B->l2Norm();
 
-            return 1 - $A⋅B / $‖A‖₂⋅‖B‖₂;
+            return 1 - ($A⋅B / $‖A‖₂⋅‖B‖₂);
         }
 
         /**
@@ -409,11 +425,15 @@
         public static function brayCurtis(array $u, array $v): float
         {
             if (count($u) !== count($v))
+            {
                 throw new Exception\BadDataException('u and v must have the same number of elements');
-            $uZero = count(array_unique($u)) === 1 && end($u) == 0;
-            $vZero = count(array_unique($u)) === 1 && end($v) == 0;
+            }
+            $uZero = (count(array_unique($u)) === 1) && (end($u) == 0);
+            $vZero = (count(array_unique($u)) === 1) && (end($v) == 0);
             if ($uZero && $vZero)
+            {
                 return NAN;
+            }
 
             $∑｜uᵢ − vᵢ｜ = array_sum(array_map(
                 fn(float $uᵢ, float $vᵢ) => abs($uᵢ - $vᵢ),
@@ -427,7 +447,9 @@
             ));
 
             if ($∑｜uᵢ ＋ vᵢ｜ == 0)
+            {
                 return NAN;
+            }
 
             return $∑｜uᵢ − vᵢ｜ / $∑｜uᵢ ＋ vᵢ｜;
         }
@@ -453,11 +475,15 @@
         public static function canberra(array $p, array $q): float
         {
             if (count($p) !== count($q))
+            {
                 throw new Exception\BadDataException('p and q must have the same number of elements');
-            $pZero = count(array_unique($p)) === 1 && end($p) == 0;
-            $qZero = count(array_unique($p)) === 1 && end($q) == 0;
+            }
+            $pZero = (count(array_unique($p)) === 1) && (end($p) == 0);
+            $qZero = (count(array_unique($p)) === 1) && (end($q) == 0);
             if ($pZero && $qZero)
+            {
                 return NAN;
+            }
 
             // Numerators ｜pᵢ − qᵢ｜
             $｜p − q｜ = array_map(
@@ -485,94 +511,95 @@
             ));
         }
 
-        public function canberraExceptionDifferentNumberElements()
+        public static function canberraExceptionDifferentNumberElements()
         {
         }
 
-        public function canberraNan()
+        public static function canberraNan()
         {
         }
 
-        public function brayCurtisExceptionDifferentNumberElements()
+        public static function brayCurtisExceptionDifferentNumberElements()
         {
         }
 
-        public function brayCurtisNan()
+        public static function brayCurtisNan()
         {
         }
 
-        public function cosineSimilarityException()
+        public static function cosineSimilarityException()
         {
         }
 
-        public function cosineDistanceException()
+        public static function cosineDistanceException()
         {
         }
 
-        public function cosineDistance()
+        public static function cosineDistance()
         {
         }
 
-        public function manhattanErrorDifferentSizedVectors()
+        public static function manhattanErrorDifferentSizedVectors()
         {
         }
 
-        public function euclideanErrorDifferentSizedVectors()
+        public static function euclideanErrorDifferentSizedVectors()
         {
         }
 
-        public function minkowskiErrorPLessThanOne()
+        public static function minkowskiErrorPLessThanOne()
         {
         }
 
-        public function minkowskiErrorDifferentSizedVectors()
+        public static function minkowskiErrorDifferentSizedVectors()
         {
         }
 
-        public function mahalanobisTwoData()
+        public static function mahalanobisTwoData()
         {
         }
 
-        public function mahalanobisPoint()
+        public static function mahalanobisPoint()
         {
         }
 
-        public function mahalanobisCenter()
+        public static function mahalanobisCenter()
         {
         }
 
-        public function jensenShannonExceptionNotProbabilityDistributionThatAddsUpToOne(
+        public static function jensenShannonExceptionNotProbabilityDistributionThatAddsUpToOne(
         )
         {
         }
 
-        public function jensenShannonExceptionArraysDifferentLength()
+        public static function jensenShannonExceptionArraysDifferentLength()
         {
         }
 
-        public function hellingerDistanceExceptionNotProbabilityDistributionThatAddsUpToOne(
+        public static function hellingerDistanceExceptionNotProbabilityDistributionThatAddsUpToOne(
         )
         {
         }
 
-        public function hellingerDistanceExceptionArraysDifferentLength()
+        public static function hellingerDistanceExceptionArraysDifferentLength()
         {
         }
 
-        public function hellingerDistance()
+        public static function hellingerDistance()
         {
         }
 
-        public function bhattacharyyaDistanceExceptionNotProbabilityDistributionThatAddsUpToOne(
+        public static function bhattacharyyaDistanceExceptionNotProbabilityDistributionThatAddsUpToOne(
         )
         {
         }
 
-        public function bhattacharyyaDistanceExceptionArraysDifferentLength()
+        public static function bhattacharyyaDistanceExceptionArraysDifferentLength(
+        )
         {
         }
 
-        public function bhattacharyyaDistance()
+        public static function bhattacharyyaDistance()
         {
         }
     }

@@ -540,10 +540,11 @@
             ];
         }
 
-        #[Pure] #[ArrayShape(['float'  => "float[]",
-                              'array'  => "array[]",
-                              'bool'   => "true[]",
-                              'object' => "\stdClass[]"
+        #[Pure] #[ArrayShape([
+            'float'  => "float[]",
+            'array'  => "array[]",
+            'bool'   => "true[]",
+            'object' => "\stdClass[]",
         ])] public static function dataProviderForTestIncorrectTypeException(
         ): array
         {
@@ -903,9 +904,7 @@
             try
             {
                 $int = new ArbitraryInteger($int);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -913,9 +912,7 @@
             try
             {
                 $pow = $int->pow($exponent);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -930,6 +927,7 @@
          * @param int      $int
          * @param int      $exponent
          * @param Rational $expected
+         *
          * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testPowRational(
@@ -941,9 +939,7 @@
             try
             {
                 $int = new ArbitraryInteger($int);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -951,9 +947,7 @@
             try
             {
                 $pow = $int->pow($exponent);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
 

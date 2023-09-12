@@ -40,8 +40,12 @@
             // All parameters should have limit bounds defined
             $undefined_limits = array_diff_key($params, $limits);
             if ( ! empty($undefined_limits))
-                throw new Exception\BadParameterException('Parameter without bounds limit defined: '
-                    .print_r($undefined_limits, TRUE));
+            {
+                {
+                    throw new Exception\BadParameterException('Parameter without bounds limit defined: '
+                        .print_r($undefined_limits, TRUE));
+                }
+            }
 
             foreach ($params as $variable => $value)
             {
@@ -57,7 +61,6 @@
 
                 // If the lower limit is -∞, we are always in bounds.
                 if ($lower_limit != "-∞")
-                {
                     switch ($lower_endpoint)
                     {
                         case '(':
@@ -75,11 +78,9 @@
                         default:
                             throw new Exception\BadDataException("Unknown lower endpoint character: {$lower_limit}");
                     }
-                }
 
                 // If the upper limit is ∞, we are always in bounds.
                 if ($upper_limit != "∞")
-                {
                     switch ($upper_endpoint)
                     {
                         case ')':
@@ -97,7 +98,6 @@
                         default:
                             throw new Exception\BadDataException("Unknown upper endpoint character: {$upper_endpoint}");
                     }
-                }
             }
 
             return TRUE;
@@ -114,7 +114,7 @@
          */
         public static function isZero(float $x, float $ε = self::ε): bool
         {
-            return $x == 0 || abs($x) <= $ε;
+            return ($x == 0) || (abs($x) <= $ε);
         }
 
         /**
@@ -123,11 +123,12 @@
          *
          * @param float $x
          * @param float $ε
+         *
          * @return boolean true if equivalent to a non-zero value; false otherwise
          */
         public static function isNotZero(float $x, float $ε = self::ε): bool
         {
-            return $x != 0 && abs($x) > $ε;
+            return ($x != 0) && (abs($x) > $ε);
         }
 
         /**
@@ -136,6 +137,7 @@
          * @param float $x
          * @param float $y
          * @param float $ε
+         *
          * @return bool
          */
         public static function isEqual(
@@ -143,7 +145,7 @@
             float $y,
             float $ε = self::ε
         ): bool {
-            return $x == $y || abs($x - $y) < $ε;
+            return ($x == $y) || (abs($x - $y) < $ε);
         }
 
         /**
@@ -152,6 +154,7 @@
          * @param float $x
          * @param float $y
          * @param float $ε
+         *
          * @return bool
          */
         public static function isNotEqual(
@@ -159,90 +162,90 @@
             float $y,
             float $ε = self::ε
         ): bool {
-            return $x != $y && abs($x - $y) >= $ε;
+            return ($x != $y) && (abs($x - $y) >= $ε);
         }
 
-        public function isNotEqualOutsideOfTolerance()
+        public static function isNotEqualOutsideOfTolerance()
         {
         }
 
-        public function isNotEqualWithinTolerance()
+        public static function isNotEqualWithinTolerance()
         {
         }
 
-        public function isEqualOutsideOfTolerance()
+        public static function isEqualOutsideOfTolerance()
         {
         }
 
-        public function isEqualWithinTolerance()
+        public static function isEqualWithinTolerance()
         {
         }
 
-        public function isNotEqualWhenEqual()
+        public static function isNotEqualWhenEqual()
         {
         }
 
-        public function isEqualWhenNotEqual()
+        public static function isEqualWhenNotEqual()
         {
         }
 
-        public function isNotZeroOutsideOfTolerance()
+        public static function isNotZeroOutsideOfTolerance()
         {
         }
 
-        public function isNotZeroWithinTolerance()
+        public static function isNotZeroWithinTolerance()
         {
         }
 
-        public function isZeroOutsideOfTolerance()
+        public static function isZeroOutsideOfTolerance()
         {
         }
 
-        public function isZeroWithinTolerance()
+        public static function isZeroWithinTolerance()
         {
         }
 
-        public function isNotZeroFalse()
+        public static function isNotZeroFalse()
         {
         }
 
-        public function isNotZeroTrue()
+        public static function isNotZeroTrue()
         {
         }
 
-        public function isZeroFalse()
+        public static function isZeroFalse()
         {
         }
 
-        public function isZeroTrue()
+        public static function isZeroTrue()
         {
         }
 
-        public function checkLimitsUndefinedParameterException()
+        public static function checkLimitsUndefinedParameterException()
         {
         }
 
-        public function checkLimitsUpperLimitEndpointException()
+        public static function checkLimitsUpperLimitEndpointException()
         {
         }
 
-        public function checkLimitsLowerLimitEndpointException()
+        public static function checkLimitsLowerLimitEndpointException()
         {
         }
 
-        public function checkLimitsUpperLimitException()
+        public static function checkLimitsUpperLimitException()
         {
         }
 
-        public function checkLimitsUpperLimit()
+        public static function checkLimitsUpperLimit()
         {
         }
 
-        public function checkLimitsLowerLimitException()
+        public static function checkLimitsLowerLimitException()
         {
         }
 
-        public function checkLimitsLowerLimit()
+        public static function checkLimitsLowerLimit()
         {
         }
     }

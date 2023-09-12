@@ -35,7 +35,7 @@
          *
          * @var array{"x": string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '[0,∞)',
             ];
@@ -80,7 +80,7 @@
             $r = $this->r;
             $p = $this->p;
 
-            $ₓ₊ᵣ₋₁Cₓ = Combinatorics::combinations($x + $r - 1, $x);
+            $ₓ₊ᵣ₋₁Cₓ = Combinatorics::combinations(($x + $r) - 1, $x);
             $⟮1 − p⟯ˣ = (1 - $p) ** $x;
             $pʳ = $p ** $r;
 
@@ -123,7 +123,7 @@
          */
         public function mean(): float
         {
-            return $this->p * $this->r / (1 - $this->p);
+            return ($this->p * $this->r) / (1 - $this->p);
         }
 
         /**
@@ -140,12 +140,16 @@
         public function mode(): float
         {
             if ($this->r <= 1)
-                return 0;
+            {
+                {
+                    return 0;
+                }
+            }
 
             $r = $this->r;
             $p = $this->p;
 
-            return floor($p * ($r - 1) / (1 - $p));
+            return floor(($p * ($r - 1)) / (1 - $p));
         }
 
         /**
@@ -159,6 +163,6 @@
          */
         public function variance(): float
         {
-            return $this->p * $this->r / (1 - $this->p) ** 2;
+            return ($this->p * $this->r) / (1 - $this->p) ** 2;
         }
     }

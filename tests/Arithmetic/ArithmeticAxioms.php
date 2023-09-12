@@ -4,47 +4,47 @@
 
     class ArithmeticAxioms {
 
-        public function moduloDistributiveLaw()
+        public static function moduloDistributiveLaw()
         {
         }
 
-        public function moduloDistributiveMultiplicationProperty()
+        public static function moduloDistributiveMultiplicationProperty()
         {
         }
 
-        public function moduloDistributiveAdditionProperty()
+        public static function moduloDistributiveAdditionProperty()
         {
         }
 
-        public function moduloInverse()
+        public static function moduloInverse()
         {
         }
 
-        public function moduloIdentityOfPowers()
+        public static function moduloIdentityOfPowers()
         {
         }
 
-        public function moduloIdentity()
+        public static function moduloIdentity()
         {
         }
 
-        public function digitalRootMultipleOfNine()
+        public static function digitalRootMultipleOfNine()
         {
         }
 
-        public function digitalRootProduct()
+        public static function digitalRootProduct()
         {
         }
 
-        public function digitalRootAddition()
+        public static function digitalRootAddition()
         {
         }
 
-        public function digitalRootLessThanN()
+        public static function digitalRootLessThanN()
         {
         }
 
-        public function digitalRootEqualsN()
+        public static function digitalRootEqualsN()
         {
         }
     }

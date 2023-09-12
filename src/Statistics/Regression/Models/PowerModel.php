@@ -40,7 +40,10 @@
          *     b: float,
          * }
          */
-        #[ArrayShape(['a' => "float", 'b' => "float"])] public function getModelParameters(array $params): array
+        #[ArrayShape([
+            'a' => "float",
+            'b' => "float",
+        ])] public function getModelParameters(array $params): array
         {
             return [
                 'a' => $params[self::$A],

@@ -1,4 +1,5 @@
-<?php /** @noinspection NonAsciiCharacters */
+<?php
+    /** @noinspection NonAsciiCharacters */
 
     /** @noinspection NonAsciiCharacters */
 
@@ -770,9 +771,13 @@
         {
             // Base cases
             if ($a == 0)
+            {
                 return [$b, 0, 1];
+            }
             if ($b == 0)
+            {
                 return [$a, 1, 0];
+            }
 
             $x₂ = 1;
             $x₁ = 0;
@@ -816,7 +821,9 @@
         {
             // Special case
             if ($a === 0 || $b === 0)
+            {
                 return 0;
+            }
 
             return abs($a * $b) / Algebra::gcd($a, $b);
         }
@@ -839,9 +846,13 @@
         {
             // Base cases
             if ($a == 0)
+            {
                 return $b;
+            }
             if ($b == 0)
+            {
                 return $a;
+            }
 
             // Recursive case
             return Algebra::gcd($b, $a % $b);
@@ -870,7 +881,9 @@
         {
             // 0 has infinite factors
             if ($x === 0)
+            {
                 return [INF];
+            }
 
             $x = abs($x);
             $factors = [1];
@@ -900,8 +913,12 @@
 
                 $limit *= count($sets[$prime]);
                 if ($count === 0)
-                    $current[] = next($sets[$prime]); else
+                {
+                    $current[] = next($sets[$prime]);
+                } else
+                {
                     $current[] = 1;
+                }
                 ++$count;
             }
 
@@ -913,7 +930,9 @@
                 {
                     $current[$i2] = next($sets[$map[$i2]]);
                     if ($current[$i2] !== FALSE)
+                    {
                         break;
+                    }
                     $current[$i2] = reset($sets[$map[$i2]]);
                 }
             }
@@ -945,7 +964,9 @@
         public static function linear(float $a, float $b): ?float
         {
             if ($a == 0)
+            {
                 return NULL;
+            }
 
             return -$b / $a;
         }
@@ -978,7 +999,9 @@
         ): array {
             // Not actually quartic.
             if ($a₄ == 0)
+            {
                 return self::cubic($a₃, $a₂, $a₁, $a₀, $return_complex);
+            }
 
             // Take coefficient a₄ of z⁴ to be 1
             $a₃ /= $a₄;
@@ -989,8 +1012,10 @@
 
             // Has a zero root.
             if ($a₀ == 0)
+            {
                 return array_merge([0.0],
                     self::cubic($a₄, $a₃, $a₂, $a₁, $return_complex));
+            }
 
             // Is Biquadratic
             if ($a₃ == 0 && $a₁ == 0)
@@ -1004,12 +1029,14 @@
                 $z₊ = $quadratic_roots[0];
                 $z₋ = $quadratic_roots[1];
                 if ( ! $return_complex)
+                {
                     return [
                         sqrt($z₊),
                         -1 * sqrt($z₊),
                         sqrt($z₋),
                         -1 * sqrt($z₋),
                     ];
+                }
 
                 $Cz₊ = new Complex($z₊, 0);
                 $Cz₋ = new Complex($z₋, 0);
@@ -1060,7 +1087,7 @@
             $p = $a₂ - 3 * $a₃ ** 2 / 8;
             $q = $a₁ + (($a₃ ** 3) / 8) - $a₃ * $a₂ / 2;
             $r = ($a₀ - (3 * $a₃ ** 4) / 256) + ((($a₃ ** 2) * $a₂) / 16) - $a₃
-                        * $a₁ / 4;
+                * $a₁ / 4;
 
             $depressed_quartic_roots = self::quartic(1, 0, $p, $q, $r,
                 $return_complex);
@@ -1077,11 +1104,15 @@
 
             $quartic_roots = [];
             foreach ($depressed_quartic_roots as $key => $root)
+            {
                 if (is_float($root))
-                    $quartic_roots[$key] = $root - ($a₃ / 4); else
+                {
+                    $quartic_roots[$key] = $root - ($a₃ / 4);
+                } else
                 {
                     $quartic_roots[$key] = $root->subtract($a₃ / 4);
                 }
+            }
 
             return $quartic_roots;
         }
@@ -1180,7 +1211,9 @@
             bool $return_complex = FALSE
         ): array {
             if ($a₃ == 0)
+            {
                 return self::quadratic($a₂, $a₁, $a₀, $return_complex);
+            }
 
             // Take coefficient a₃ of z³ to be 1
             $a₂ /= $a₃;
@@ -1215,7 +1248,7 @@
             // All roots are real, and at least two are equal
             if ($D == 0
                 || $D > -self::ZERO_TOLERANCE
-                    && $D < self::ZERO_TOLERANCE
+                && $D < self::ZERO_TOLERANCE
             )
             {
                 $z₁ = -$a₂ / 3 - ($S + $T) / 2;
@@ -1229,7 +1262,9 @@
             $z₁ = $S + $T - $a₂ / 3;
 
             if ( ! $return_complex)
+            {
                 return [$z₁, NAN, NAN];
+            }
 
             $quad_a = 1;
             $quad_b = $a₂ + $z₁;
@@ -1283,14 +1318,18 @@
         ): array {
             // Formula not quadratic (a = 0)
             if ($a == 0)
+            {
                 return [-$c / $b];
+            }
 
             // Discriminant intermediate calculation and imaginary number check
             $⟮b² − 4ac⟯ = self::discriminant($a, $b, $c);
             if ($⟮b² − 4ac⟯ < 0)
             {
                 if ( ! $return_complex)
+                {
                     return [NAN, NAN];
+                }
                 $complex = new Number\Complex(0, sqrt(-1 * $⟮b² − 4ac⟯));
                 $x₁ = $complex->multiply(-1)->subtract($b)->divide(2 * $a);
                 $x₂ = $complex->subtract($b)->divide(2 * $a);

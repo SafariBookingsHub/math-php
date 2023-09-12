@@ -4,15 +4,15 @@
 
     class CerealScaleFalse {
 
-        public function w()
+        public static function w()
         {
         }
 
-        public function t()
+        public static function t()
         {
         }
 
-        public function construction()
+        public static function construction()
         {
         }
     }

@@ -3,7 +3,6 @@
     namespace MathPHP\Statistics;
 
     use JetBrains\PhpStorm\ArrayShape;
-
     use JetBrains\PhpStorm\Pure;
 
     use function array_sum;
@@ -35,12 +34,13 @@
          *     sd:                      float,
          * }
          */
-        #[ArrayShape(['n'                     => "int",
-                      'mean'                  => "float",
-                      'resultant_length'      => "float",
-                      'mean_resultant_length' => "float",
-                      'variance'              => "float",
-                      'sd'                    => "float"
+        #[ArrayShape([
+            'n'                     => "int",
+            'mean'                  => "float",
+            'resultant_length'      => "float",
+            'mean_resultant_length' => "float",
+            'variance'              => "float",
+            'sd'                    => "float",
         ])] public static function describe(array $angles): array
         {
             return [
@@ -67,13 +67,19 @@
          */
         public static function mean(array $angles): float
         {
-            $array_map1 = array_map(function ($αⱼ) {
-                return sin($αⱼ);
-            }, $angles);
+            $array_map3 = [];
+            foreach ($angles as $key => $αⱼ)
+            {
+                $array_map3[$key] = sin($αⱼ);
+            }
+            $array_map1 = $array_map3;
             $∑sinαⱼ = array_sum($array_map1);
-            $array_map = array_map(function ($αⱼ) {
-                return cos($αⱼ);
-            }, $angles);
+            $array_map2 = [];
+            foreach ($angles as $key => $αⱼ)
+            {
+                $array_map2[$key] = cos($αⱼ);
+            }
+            $array_map = $array_map2;
             $∑cosαⱼ = array_sum($array_map);
 
             return atan2($∑sinαⱼ, $∑cosαⱼ);
@@ -95,13 +101,19 @@
          */
         public static function resultantLength(array $angles): float
         {
-            $array_map1 = array_map(function ($θᵢ) {
-                return sin($θᵢ);
-            }, $angles);
+            $array_map3 = [];
+            foreach ($angles as $key => $θᵢ)
+            {
+                $array_map3[$key] = sin($θᵢ);
+            }
+            $array_map1 = $array_map3;
             $S = array_sum($array_map1);
-            $array_map = array_map(function ($θᵢ) {
-                return cos($θᵢ);
-            }, $angles);
+            $array_map2 = [];
+            foreach ($angles as $key => $θᵢ)
+            {
+                $array_map2[$key] = cos($θᵢ);
+            }
+            $array_map = $array_map2;
             $C = array_sum($array_map);
 
             $S² = $S ** 2;
@@ -132,7 +144,7 @@
          *
          * @return float
          */
-        #[Pure] public static function meanResultantLength(array $angles): float
+        public static function meanResultantLength(array $angles): float
         {
             $n = count($angles);
             $R = self::resultantLength($angles);
@@ -153,7 +165,7 @@
          *
          * @return float
          */
-        public static function variance(array $angles): float
+        #[Pure] public static function variance(array $angles): float
         {
             $ρ = self::meanResultantLength($angles);
 
@@ -176,7 +188,7 @@
          *
          * @return float
          */
-        public static function standardDeviation(array $angles): float
+        #[Pure] public static function standardDeviation(array $angles): float
         {
             $ρ = self::meanResultantLength($angles);
 

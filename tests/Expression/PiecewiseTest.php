@@ -6,11 +6,12 @@
     use MathPHP\Expression\Piecewise;
     use MathPHP\Expression\Polynomial;
     use PHPUnit\Framework\TestCase;
+    use ReflectionException;
     use ReflectionMethod;
 
     class PiecewiseTest extends TestCase {
         /** @var Piecewise|Mock */
-        private $piecewise;
+        private Mock|Piecewise|\PHPUnit\Framework\MockObject\MockObject $piecewise;
 
         public static function dataProviderForEval(): array
         {
@@ -314,12 +315,19 @@
         ) {
             // Precondition
             if (count($inputs) !== count($expected))
-                $this->fail('Number of inputs and expected outputs must match');
+            {
+                {
+                    $this->fail('Number of inputs and expected outputs must match');
+                }
+            }
 
             // Given
-            $array_map = array_map(function ($args) {
-                return new Polynomial($args);
-            }, $polynomial_args);
+            $array_map1 = [];
+            foreach ($polynomial_args as $key => $args)
+            {
+                $array_map1[$key] = new Polynomial($args);
+            }
+            $array_map = $array_map1;
             $functions = $array_map;
             try
             {
@@ -668,7 +676,7 @@
             {
                 $preconditions->invokeArgs($this->piecewise,
                     [$intervals, $functions]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
         }
@@ -701,7 +709,7 @@
             {
                 $preconditions->invokeArgs($this->piecewise,
                     [$intervals, $functions]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
         }
@@ -735,7 +743,7 @@
             {
                 $checkAsAndBs->invokeArgs($this->piecewise,
                     [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
         }
@@ -769,7 +777,7 @@
             {
                 $checkAsAndBs->invokeArgs($this->piecewise,
                     [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
         }
@@ -804,7 +812,7 @@
             {
                 $checkAsAndBs->invokeArgs($this->piecewise,
                     [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
         }
@@ -838,7 +846,7 @@
             {
                 $checkAsAndBs->invokeArgs($this->piecewise,
                     [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
         }
@@ -862,7 +870,7 @@
             {
                 $result = $openOpen->invokeArgs($this->piecewise,
                     [$aOpen, $bOpen]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
 
@@ -889,7 +897,7 @@
             {
                 $result = $openOpen->invokeArgs($this->piecewise,
                     [$aOpen, $bOpen]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
 
@@ -915,7 +923,7 @@
             {
                 $result = $openOpen->invokeArgs($this->piecewise,
                     [$aOpen, $bOpen]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
 
@@ -945,7 +953,7 @@
             {
                 $result = $openOpen->invokeArgs($this->piecewise,
                     [$aOpen, $bOpen]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
 

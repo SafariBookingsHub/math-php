@@ -865,7 +865,7 @@
         ) {
             // Given
             $n = count($values);
-            $expectedSumOfAssignedRanks = $n * ($n + 1) / 2;
+            $expectedSumOfAssignedRanks = ($n * ($n + 1)) / 2;
 
             // When
             $sampleRank = Distribution::fractionalRanking($values);

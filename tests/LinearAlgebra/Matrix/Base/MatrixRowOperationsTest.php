@@ -119,8 +119,8 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
             $R = $A->rowInterchange($mᵢ, $mⱼ);
@@ -136,7 +136,7 @@
         public function testRowInterchangeExceptionRowGreaterThanM()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -162,8 +162,8 @@
         public function testRowExclude(array $A, int $mᵢ, array $expectedMatrix)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
             $R = $A->rowExclude($mᵢ);
@@ -179,7 +179,7 @@
         public function testRowExcludeExceptionRowDoesNotExist()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [4, 5, 6],

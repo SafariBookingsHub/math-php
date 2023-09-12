@@ -2,11 +2,7 @@
 
     namespace MathPHP\LinearAlgebra;
 
-    use ArrayAccess;
-    use JetBrains\PhpStorm\Pure;
-    use JsonSerializable;
     use MathPHP\Exception;
-    use ReturnTypeWillChange;
 
     use function array_column;
     use function array_merge;
@@ -19,9 +15,60 @@
      * @template T
      * @implements \ArrayAccess<int, array<int, T>>
      */
-    abstract class Matrix implements ArrayAccess, JsonSerializable {
+    abstract class Matrix extends \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix,
+                                  \MathPHP\LinearAlgebra\NumericMatrix
+        implements ArrayAccess, JsonSerializable {
         /** @var int Number of rows */
-        protected int $m;
+        protected
+        int $m;
 
         /** @var int Number of columns */
         protected int $n;
@@ -52,7 +99,9 @@
         public function getRow(int $i): array
         {
             if ($i >= $this->m)
+            {
                 throw new Exception\MatrixException("Row $i does not exist");
+            }
 
             return $this->A[$i];
         }
@@ -84,9 +133,13 @@
         public function get(int $i, int $j)
         {
             if ($i >= $this->m)
+            {
                 throw new Exception\MatrixException("Row $i does not exist");
+            }
             if ($j >= $this->n)
+            {
                 throw new Exception\MatrixException("Column $j does not exist");
+            }
 
             return $this->A[$i][$j];
         }
@@ -105,7 +158,9 @@
         {
             $diagonal = [];
             for ($i = 0; $i < min($this->m, $this->n); $i++)
+            {
                 $diagonal[] = $this->A[$i][$i];
+            }
 
             return $diagonal;
         }
@@ -126,10 +181,12 @@
         {
             $superdiagonal = [];
             if ($this->isSquare())
+            {
                 for ($i = 0; $i < $this->m - 1; $i++)
                 {
                     $superdiagonal[] = $this->A[$i][$i + 1];
                 }
+            }
 
             return $superdiagonal;
         }
@@ -161,10 +218,12 @@
         {
             $subdiagonal = [];
             if ($this->isSquare())
+            {
                 for ($i = 1; $i < $this->m; $i++)
                 {
                     $subdiagonal[] = $this->A[$i][$i - 1];
                 }
+            }
 
             return $subdiagonal;
         }
@@ -190,7 +249,9 @@
             $vectors = [];
 
             for ($j = 0; $j < $n; $j++)
+            {
                 $vectors[] = new Vector(array_column($this->A, $j));
+            }
 
             return $vectors;
         }
@@ -213,8 +274,7 @@
         {
             // @phpstan-ignore-next-line (Vector expects numbers, Matrix may be generic T)
             $array_map = [];
-            foreach ($this->A as $ignored => {
-                array $row)}
+            foreach ($this->A as $ignored => array $row)
 
             return $array_map;
         }
@@ -244,9 +304,13 @@
         public function augment(Matrix $B): Matrix
         {
             if ($this->getObjectType() !== $B->getObjectType())
+            {
                 throw new Exception\MatrixException('Matrices must be the same type.');
+            }
             if ($B->getM() !== $this->m)
+            {
                 throw new Exception\MatrixException('Matrices to augment do not have the same number of rows');
+            }
 
             $m = $this->m;
             $A = $this->A;
@@ -254,20 +318,16 @@
             $⟮A∣B⟯ = [];
 
             for ($i = 0; $i < $m; $i++)
+            {
                 $⟮A∣B⟯[$i] = array_merge($A[$i], $B[$i]);
+            }
 
             /** @var array<array<float|int|object>> $⟮A∣B⟯ */
-            /** @var static */
+            /** @var static $this */
             try
             {
                 return MatrixFactory::create($⟮A∣B⟯, $this->ε);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -329,9 +389,13 @@
         public function augmentLeft(Matrix $B): Matrix
         {
             if ($this->getObjectType() !== $B->getObjectType())
+            {
                 throw new Exception\MatrixException('Matrices must be the same type.');
+            }
             if ($B->getM() !== $this->m)
+            {
                 throw new Exception\MatrixException('Matrices to augment do not have the same number of rows');
+            }
 
             $m = $this->m;
             $A = $this->A;
@@ -339,20 +403,16 @@
             $⟮B∣A⟯ = [];
 
             for ($i = 0; $i < $m; $i++)
+            {
                 $⟮B∣A⟯[$i] = array_merge($B[$i], $A[$i]);
+            }
 
             /** @var array<array<float|int|object>> $⟮B∣A⟯ */
-            /** @var static */
+            /** @var static $this */
             try
             {
                 return MatrixFactory::create($⟮B∣A⟯, $this->ε);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -386,24 +446,22 @@
         public function augmentBelow(Matrix $B): Matrix
         {
             if ($this->getObjectType() !== $B->getObjectType())
+            {
                 throw new Exception\MatrixException('Matrices must be the same type.');
+            }
             if ($B->getN() !== $this->n)
+            {
                 throw new Exception\MatrixException('Matrices to augment do not have the same number of columns');
+            }
 
             /** @var array<array<float|int|object>> $⟮A∣B⟯ */
             $⟮A∣B⟯ = array_merge($this->A, $B->getMatrix());
 
-            /** @var static */
+            /** @var static $this */
             try
             {
                 return MatrixFactory::create($⟮A∣B⟯, $this->ε);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -453,9 +511,13 @@
         public function augmentAbove(Matrix $B): Matrix
         {
             if ($this->getObjectType() !== $B->getObjectType())
+            {
                 throw new Exception\MatrixException('Matrices must be the same type.');
+            }
             if ($B->getN() !== $this->n)
+            {
                 throw new Exception\MatrixException('Matrices to augment do not have the same number of columns');
+            }
 
             /** @var array<array<float|int|object>> $⟮A∣B⟯ */
             $⟮A∣B⟯ = array_merge($B->getMatrix(), $this->A);
@@ -480,35 +542,41 @@
          */
         public function submatrix(int $m₁, int $n₁, int $m₂, int $n₂): Matrix
         {
-            if ($m₁ >= $this->m || $m₁ < 0 || $m₂ >= $this->m
-                || $m₂ < 0
+            if (($m₁ >= $this->m) || ($m₁ < 0) || ($m₂ >= $this->m)
+                || ($m₂ < 0)
             )
+            {
                 throw new Exception\MatrixException('Specified Matrix row does not exist');
-            if ($n₁ >= $this->n || $n₁ < 0 || $n₂ >= $this->n
-                || $n₂ < 0
+            }
+            if (($n₁ >= $this->n) || ($n₁ < 0) || ($n₂ >= $this->n)
+                || ($n₂ < 0)
             )
+            {
                 throw new Exception\MatrixException('Specified Matrix column does not exist');
+            }
             if ($m₂ < $m₁)
+            {
                 throw new Exception\MatrixException('Ending row must be greater than beginning row');
+            }
             if ($n₂ < $n₁)
+            {
                 throw new Exception\MatrixException('Ending column must be greater than the beginning column');
+            }
 
             $A = [];
             for ($i = 0; $i <= $m₂ - $m₁; $i++)
+            {
                 for ($j = 0; $j <= $n₂ - $n₁; $j++)
+                {
                     $A[$i][$j] = $this->A[$i + $m₁][$j + $n₁];
+                }
+            }
 
-            /** @var static */
+            /** @var static $this */
             try
             {
                 return MatrixFactory::create($A, $this->ε);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -528,28 +596,30 @@
         public function insert(Matrix $small, int $m, int $n): Matrix
         {
             if ($this->getObjectType() !== $small->getObjectType())
+            {
                 throw new Exception\MatrixException('Matrices must be the same type.');
-            if ($small->getM() + $m > $this->m
-                || $small->getN() + $n > $this->n
+            }
+            if (($small->getM() + $m > $this->m)
+                || ($small->getN() + $n > $this->n)
             )
+            {
                 throw new Exception\MatrixException('Inner matrix exceeds the bounds of the outer matrix');
+            }
 
             $new_array = $this->A;
             for ($i = 0; $i < $small->getM(); $i++)
+            {
                 for ($j = 0; $j < $small->getN(); $j++)
+                {
                     $new_array[$i + $m][$j + $n] = $small[$i][$j];
+                }
+            }
 
-            /** @var static */
+            /** @var static $this */
             try
             {
                 return MatrixFactory::create($new_array, $this->ε);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -576,20 +646,18 @@
             $R = [];
 
             for ($i = 0; $i < $m; $i++)
+            {
                 for ($j = 0; $j < $n; $j++)
+                {
                     $R[$i][$j] = $func($this->A[$i][$j]);
+                }
+            }
 
-            /** @var static */
+            /** @var static $this */
             try
             {
                 return MatrixFactory::create($R, $this->ε);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -605,7 +673,9 @@
         {
             $array_map = [];
             foreach ($this->A as $key => $value)
+            {
                 $array_map[$key] = $func($this->A[$key]);
+            }
 
             return $array_map;
         }
@@ -621,8 +691,12 @@
             $n = $this->n;
 
             for ($i = 0; $i < $m; $i++)
+            {
                 for ($j = 0; $j < $n; $j++)
+                {
                     $func($this->A[$i][$j]);
+                }
+            }
         }
 
         /**************************************************************************
@@ -646,14 +720,15 @@
          */
         public function rowInterchange(int $mᵢ, int $mⱼ): Matrix
         {
-            if ($mᵢ >= $this->m || $mⱼ >= $this->m)
+            if (($mᵢ >= $this->m) || ($mⱼ >= $this->m))
+            {
                 throw new Exception\MatrixException('Row to interchange does not exist');
+            }
 
             $m = $this->m;
             $R = [];
 
             for ($i = 0; $i < $m; $i++)
-            {
                 switch ($i)
                 {
                     case $mᵢ:
@@ -665,19 +740,12 @@
                     default:
                         $R[$i] = $this->A[$i];
                 }
-            }
 
-            /** @var static */
+            /** @var static $this */
             try
             {
                 return MatrixFactory::create($R, $this->ε);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -697,17 +765,17 @@
          */
         public function columnInterchange(int $nᵢ, int $nⱼ): Matrix
         {
-            if ($nᵢ >= $this->n || $nⱼ >= $this->n)
+            if (($nᵢ >= $this->n) || ($nⱼ >= $this->n))
+            {
                 throw new Exception\MatrixException('Column to interchange does not exist');
+            }
 
             $m = $this->m;
             $n = $this->n;
             $R = [];
 
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     switch ($j)
                     {
                         case $nᵢ:
@@ -719,20 +787,12 @@
                         default:
                             $R[$i][$j] = $this->A[$i][$j];
                     }
-                }
-            }
 
-            /** @var static */
+            /** @var static $this */
             try
             {
                 return MatrixFactory::create($R, $this->ε);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -748,14 +808,7 @@
          */
         public function conjugateTranspose(): Matrix
         {
-            try
-            {
-                return $this->transpose();
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            }
+            return $this->transpose();
         }
 
         /**************************************************************************
@@ -789,20 +842,16 @@
 
             $Aᵀ = [];
             for ($i = 0; $i < $this->n; $i++)
+            {
                 $Aᵀ[$i] = $this->getColumn($i);
+            }
 
             // @phpstan-ignore-next-line
             try
             {
                 $this->catalog->addTranspose(MatrixFactory::create($Aᵀ,
                     $this->ε));
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -822,7 +871,9 @@
         public function getColumn(int $j): array
         {
             if ($j >= $this->n)
+            {
                 throw new Exception\MatrixException("Column $j does not exist");
+            }
 
             return array_column($this->A, $j);
         }
@@ -863,29 +914,33 @@
         public function leadingPrincipalMinor(int $k): Matrix
         {
             if ($k <= 0)
+            {
                 throw new Exception\OutOfBoundsException("k is ≤ 0: $k");
+            }
             if ($k > $this->n)
+            {
                 throw new Exception\OutOfBoundsException("k ($k) leading principal minor is larger than size of Matrix: "
                     .$this->n);
+            }
             if ( ! $this->isSquare())
+            {
                 throw new Exception\MatrixException('Matrix is not square; cannot get leading principal minor Matrix of a non-square matrix');
+            }
 
             $R = [];
             for ($i = 0; $i < $k; $i++)
+            {
                 for ($j = 0; $j < $k; $j++)
+                {
                     $R[$i][$j] = $this->A[$i][$j];
+                }
+            }
 
-            /** @var static */
+            /** @var static $this */
             try
             {
                 return MatrixFactory::create($R, $this->ε);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -918,11 +973,17 @@
         public function minor(int $mᵢ, int $nⱼ)
         {
             if ( ! $this->isSquare())
+            {
                 throw new Exception\MatrixException('Matrix is not square; cannot get minor of a non-square matrix');
-            if ($mᵢ >= $this->m || $mᵢ < 0)
+            }
+            if (($mᵢ >= $this->m) || ($mᵢ < 0))
+            {
                 throw new Exception\MatrixException('Row to exclude for minor does not exist');
-            if ($nⱼ >= $this->n || $nⱼ < 0)
+            }
+            if (($nⱼ >= $this->n) || ($nⱼ < 0))
+            {
                 throw new Exception\MatrixException('Column to exclude for minor does not exist');
+            }
 
             /** @var ObjectMatrix|NumericMatrix $minorMatrix */
             $minorMatrix = $this->minorMatrix($mᵢ, $nⱼ);
@@ -951,16 +1012,21 @@
          * @throws Exception\MatrixException if matrix is not square
          * @throws Exception\MatrixException if row to exclude for minor matrix does not exist
          * @throws Exception\MatrixException if column to exclude for minor matrix does not exist
-         * @throws Exception\IncorrectTypeException
          */
         public function minorMatrix(int $mᵢ, int $nⱼ): Matrix
         {
             if ( ! $this->isSquare())
+            {
                 throw new Exception\MatrixException('Matrix is not square; cannot get minor Matrix of a non-square matrix');
-            if ($mᵢ >= $this->m || $mᵢ < 0)
+            }
+            if (($mᵢ >= $this->m) || ($mᵢ < 0))
+            {
                 throw new Exception\MatrixException('Row to exclude for minor Matrix does not exist');
-            if ($nⱼ >= $this->n || $nⱼ < 0)
+            }
+            if (($nⱼ >= $this->n) || ($nⱼ < 0))
+            {
                 throw new Exception\MatrixException('Column to exclude for minor Matrix does not exist');
+            }
 
             return $this->rowExclude($mᵢ)->columnExclude($nⱼ);
         }
@@ -976,36 +1042,38 @@
          */
         public function columnExclude(int $nᵢ): Matrix
         {
-            if ($nᵢ >= $this->n || $nᵢ < 0)
+            if (($nᵢ >= $this->n) || ($nᵢ < 0))
+            {
                 throw new Exception\MatrixException('Column to exclude does not exist');
+            }
 
             $m = $this->m;
             $n = $this->n;
             $R = [];
 
             for ($i = 0; $i < $m; $i++)
+            {
                 for ($j = 0; $j < $n; $j++)
                 {
                     if ($j === $nᵢ)
+                    {
                         continue;
+                    }
                     $R[$i][$j] = $this->A[$i][$j];
                 }
+            }
 
             // Reset column indexes
             for ($i = 0; $i < $m; $i++)
+            {
                 $R[$i] = array_values($R[$i]);
+            }
 
-            /** @var static */
+            /** @var static $this */
             try
             {
                 return MatrixFactory::create($R, $this->ε);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -1021,8 +1089,10 @@
          */
         public function rowExclude(int $mᵢ): Matrix
         {
-            if ($mᵢ >= $this->m || $mᵢ < 0)
+            if (($mᵢ >= $this->m) || ($mᵢ < 0))
+            {
                 throw new Exception\MatrixException('Row to exclude does not exist');
+            }
 
             $m = $this->m;
             $R = [];
@@ -1030,21 +1100,17 @@
             for ($i = 0; $i < $m; $i++)
             {
                 if ($i === $mᵢ)
+                {
                     continue;
+                }
                 $R[$i] = $this->A[$i];
             }
 
-            /** @var static */
+            /** @var static $this */
             try
             {
                 return MatrixFactory::create(array_values($R), $this->ε);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -1108,35 +1174,35 @@
             return $this->A;
         }
 
-        public function toString()
+        public static function toString()
         {
         }
 
-        public function arrayAccessOffsetUnsetException()
+        public static function arrayAccessOffsetUnsetException()
         {
         }
 
-        public function arrayAccessInterfaceOffExists()
+        public static function arrayAccessInterfaceOffExists()
         {
         }
 
-        public function arrayAccessInterfaceOffsetSet()
+        public static function arrayAccessInterfaceOffsetSet()
         {
         }
 
-        public function arrayAccessInterfaceOffsetGet()
+        public static function arrayAccessInterfaceOffsetGet()
         {
         }
 
-        public function rawConstructorExceptionNCountDiffers()
+        public static function rawConstructorExceptionNCountDiffers()
         {
         }
 
-        public function constructorExceptionNCountDiffers()
+        public static function constructorExceptionNCountDiffers()
         {
         }
 
-        public function interfaces()
+        public static function interfaces()
         {
         }
 
@@ -1154,14 +1220,18 @@
         protected function isEqualSizeAndType(Matrix $B): bool
         {
             if ($this->getObjectType() !== $B->getObjectType())
+            {
                 return FALSE;
+            }
 
             $m = $this->m;
             $n = $this->n;
 
             // Same dimensions
-            if ($m != $B->m || $n != $B->n)
+            if (($m != $B->m) || ($n != $B->n))
+            {
                 return FALSE;
+            }
 
             return TRUE;
         }

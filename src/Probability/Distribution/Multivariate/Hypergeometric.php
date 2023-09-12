@@ -24,7 +24,7 @@
          *
          * @var array{K: string}
          */
-        public const PARAMETER_LIMITS
+        public final const PARAMETER_LIMITS
             = [
                 'K' => '[1,∞)',
             ];
@@ -50,24 +50,40 @@
         public function __construct(array $quantities)
         {
             if (count($quantities) === 0)
+            {
                 throw new Exception\BadDataException("Array cannot be empty.");
+            }
             foreach ($quantities as $K)
             {
                 if ( ! is_int($K))
+                {
                     throw new Exception\BadDataException("Quantities must be positive integers.");
+                }
                 try
                 {
                     Support::checkLimits(self::PARAMETER_LIMITS, ['K' => $K]);
-                } catch (Exception\BadDataException $e)
-                {
-                } catch (Exception\BadParameterException $e)
-                {
-                } catch (Exception\OutOfBoundsException $e)
+                } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
                 {
                 }
                 $this->supportLimits['k'][] = "[0,$K]";
             }
             $this->quantities = $quantities;
+        }
+
+        public static function boundsExceptions()
+        {
+        }
+
+        public static function pmfException()
+        {
+        }
+
+        public static function constructorException()
+        {
+        }
+
+        public static function hypergeometric()
+        {
         }
 
         /**
@@ -84,20 +100,20 @@
         {
             // Must have a pick for each quantity
             if (count($picks) !== count($this->quantities))
+            {
                 throw new Exception\BadDataException('Number of quantities does not match number of picks.');
+            }
             foreach ($picks as $i => $k)
             {
                 if ( ! is_int($k))
+                {
                     throw new Exception\BadDataException("Picks must be whole numbers.");
+                }
                 try
                 {
                     Support::checkLimits(['k' => $this->supportLimits['k'][$i]],
                         ['k' => $k]);
-                } catch (Exception\BadDataException $e)
-                {
-                } catch (Exception\BadParameterException $e)
-                {
-                } catch (Exception\OutOfBoundsException $e)
+                } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
                 {
                 }
             }
@@ -107,7 +123,10 @@
 
             $product = array_product(array_map(
             // @phpstan-ignore-next-line (Parameter #1 $callback of function array_map expects (callable(float|int, float|int): mixed)|null, Closure(int, int): float given.)
-                fn(int $quantity, int $pick) => Combinatorics::combinations($quantity, $pick),
+                fn(
+                    int $quantity,
+                    int $pick
+                ) => Combinatorics::combinations($quantity, $pick),
                 $this->quantities,
                 $picks
             ));
@@ -119,21 +138,5 @@
             } catch (Exception\OutOfBoundsException $e)
             {
             }
-        }
-
-        public function boundsExceptions()
-        {
-        }
-
-        public function pmfException()
-        {
-        }
-
-        public function constructorException()
-        {
-        }
-
-        public function hypergeometric()
-        {
         }
     }

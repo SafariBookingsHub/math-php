@@ -67,9 +67,10 @@
                     55,
                     100,
                     12,
-                    ['z'  => -2.4720661623652,
-                     'p1' => 0.00676,
-                     'p2' => 0.013436,
+                    [
+                        'z'  => -2.4720661623652,
+                        'p1' => 0.00676,
+                        'p2' => 0.013436,
                     ],
                 ],
                 [
@@ -1709,9 +1710,7 @@
             try
             {
                 $tTest = Significance::tTest($a, $H₀);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadParameterException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -1739,12 +1738,7 @@
         public function testTTestOneSample(array $a, float $H₀, array $expected)
         {
             // When
-            try
-            {
-                $tTest = Significance::tTestOneSample($a, $H₀);
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            }
+            $tTest = Significance::tTestOneSample($a, $H₀);
 
             // Then
             $this->assertEqualsWithDelta($expected['t'], $tTest['t'], 0.00001);
@@ -1782,9 +1776,7 @@
             try
             {
                 $s = Descriptive::standardDeviation($a, Descriptive::SAMPLE);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
             $n = count($a);
@@ -1861,9 +1853,7 @@
             try
             {
                 $tTest = Significance::tTest($x₁, $x₂);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadParameterException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -1906,12 +1896,7 @@
             array $expected
         ) {
             // When
-            try
-            {
-                $tTest = Significance::tTestTwoSample($x₁, $x₂);
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            }
+            $tTest = Significance::tTestTwoSample($x₁, $x₂);
 
             // Then
             $this->assertEqualsWithDelta($expected['t'], $tTest['t'], 0.00001);
@@ -2021,9 +2006,7 @@
             try
             {
                 $tTest = Significance::tTest($a, $b);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadParameterException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -2083,19 +2066,29 @@
             // Given
             $values = [];
             for ($i = 0; $i < 95; $i++)
-                $values[] = 1;
+            {
+                {
+                    $values[] = 1;
+                }
+            }
             for ($i = 0; $i < 5; $i++)
-                $values[] = 0.5;
+            {
+                {
+                    $values[] = 0.5;
+                }
+            }
             for ($i = 0; $i < 12; $i++)
-                $values[] = 0;
+            {
+                {
+                    $values[] = 0;
+                }
+            }
 
             // When
             try
             {
                 $tTest = Significance::tTest($values, 0.569);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadParameterException|Exception\OutOfBoundsException $e)
             {
             }
 

@@ -4,27 +4,28 @@
 
     class ComplexMatrixAxioms {
 
-        public function conjugateTransposeTrace()
+        public static function conjugateTransposeTrace()
         {
         }
 
-        public function conjugateTransposeDeterminant()
+        public static function conjugateTransposeDeterminant()
         {
         }
 
-        public function conjugateTransposeHermitianTranspositionIsanInvolution()
+        public static function conjugateTransposeHermitianTranspositionIsanInvolution(
+        )
         {
         }
 
-        public function conjugateTransposeMultiplication()
+        public static function conjugateTransposeMultiplication()
         {
         }
 
-        public function conjugateTransposeScalarMultiplication()
+        public static function conjugateTransposeScalarMultiplication()
         {
         }
 
-        public function conjugateTransposeAddition()
+        public static function conjugateTransposeAddition()
         {
         }
     }

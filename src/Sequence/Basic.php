@@ -44,11 +44,15 @@
             int $a₁
         ): array {
             if ($n <= 0)
+            {
                 return [];
+            }
 
             $progression = [1 => $a₁];
             for ($i = 1; $i < $n; $i++)
+            {
                 $progression[$i + 1] = $progression[$i] + $d;
+            }
 
             return $progression;
         }
@@ -77,17 +81,26 @@
          *
          * @throws Exception\BadParameterException
          */
-        public static function geometricProgression(int $n, float|int $a, float|int $r): array
-        {
+        public static function geometricProgression(
+            int $n,
+            float|int $a,
+            float|int $r
+        ): array {
             if ($r === 0)
+            {
                 throw new Exception\BadParameterException('Common ratio r cannot be 0');
+            }
 
             $progression = [];
             if ($n < 0)
+            {
                 return $progression;
+            }
 
             for ($i = 0; $i < $n; $i++)
+            {
                 $progression[] = $a * $r ** $i;
+            }
 
             return $progression;
         }
@@ -112,10 +125,14 @@
         {
             $squares = [];
             if ($n <= 0)
+            {
                 return $squares;
+            }
 
             for ($i = 0; $i < $n; $i++)
+            {
                 $squares[] = $i ** 2;
+            }
 
             return $squares;
         }
@@ -140,10 +157,14 @@
         {
             $cubes = [];
             if ($n <= 0)
+            {
                 return $cubes;
+            }
 
             for ($i = 0; $i < $n; $i++)
+            {
                 $cubes[] = $i ** 3;
+            }
 
             return $cubes;
         }
@@ -168,10 +189,14 @@
         {
             $powers_of_2 = [];
             if ($n <= 0)
+            {
                 return $powers_of_2;
+            }
 
             for ($i = 0; $i < $n; $i++)
+            {
                 $powers_of_2[] = 2 ** $i;
+            }
 
             return $powers_of_2;
         }
@@ -194,10 +219,14 @@
         {
             $powers_of_10 = [];
             if ($n <= 0)
+            {
                 return $powers_of_10;
+            }
 
             for ($i = 0; $i < $n; $i++)
+            {
                 $powers_of_10[] = 10 ** $i;
+            }
 
             return $powers_of_10;
         }
@@ -219,14 +248,20 @@
         public static function factorial(int $n): array
         {
             if ($n <= 0)
+            {
                 return [];
+            }
 
             $factorial = [1];
             if ($n === 1)
+            {
                 return $factorial;
+            }
 
             for ($i = 1; $i < $n; $i++)
+            {
                 $factorial[] = $i * $factorial[$i - 1];
+            }
 
             return $factorial;
         }
@@ -248,11 +283,15 @@
         #[Pure] public static function digitSum(int $n): array
         {
             if ($n <= 0)
+            {
                 return [];
+            }
 
             $digit_sums = [];
             for ($i = 0; $i < $n; $i++)
+            {
                 $digit_sums[] = Arithmetic::digitSum($i);
+            }
 
             return $digit_sums;
         }
@@ -271,19 +310,23 @@
          *
          * @return array<int> Indexed from 0 (indexes are the n in the digitSum(n))
          */
-        public static function digitalRoot(int $n): array
+        #[Pure] public static function digitalRoot(int $n): array
         {
             if ($n <= 0)
+            {
                 return [];
+            }
 
             $digital_roots = [];
             for ($i = 0; $i < $n; $i++)
+            {
                 $digital_roots[] = Arithmetic::digitalRoot($i);
+            }
 
             return $digital_roots;
         }
 
-        public function geometricProgressionExceptionRIsZero()
+        public static function geometricProgressionExceptionRIsZero()
         {
         }
     }

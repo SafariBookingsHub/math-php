@@ -1013,8 +1013,8 @@
         public function testRref(array $A, array $R)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $R = MatrixFactory::create(A: $R);
+            $A = MatrixFactory::create($A);
+            $R = MatrixFactory::create($R);
 
             // When
             $rref = $A->rref();
@@ -1038,11 +1038,11 @@
         public function testRrefDirectly(array $A, array $R)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $R = MatrixFactory::create(A: $R);
+            $A = MatrixFactory::create($A);
+            $R = MatrixFactory::create($R);
 
             // When
-            $rref = Reduction\ReducedRowEchelonForm::reduce(A: $A);
+            $rref = Reduction\ReducedRowEchelonForm::reduce($A);
 
             // Then
             $this->assertEqualsWithDelta($R->getMatrix(), $rref->getMatrix(),
@@ -1062,7 +1062,7 @@
         public function testRrefIsRref(array $A)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
+            $A = MatrixFactory::create($A);
 
             // When
             $rref = $A->rref();
@@ -1079,7 +1079,7 @@
         public function testRrefAlreadyComputed()
         {
             // Given
-            $A = new NumericMatrix(A: [
+            $A = new NumericMatrix([
                 [4, 1, 2, -3],
                 [-3, 3, -1, 4],
                 [-1, 2, 5, 1],

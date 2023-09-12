@@ -23,11 +23,6 @@
      * @property-read NumericMatrix $R upper triangular matrix
      */
     class QR extends Decomposition {
-        /** @var NumericMatrix orthogonal matrix */
-        private NumericMatrix $Q;
-
-        /** @var NumericMatrix upper triangular matrix */
-        private NumericMatrix $R;
 
         /**
          * QR constructor
@@ -35,10 +30,10 @@
          * @param NumericMatrix $Q Orthogonal matrix
          * @param NumericMatrix $R Upper triangular matrix
          */
-        private function __construct(NumericMatrix $Q, NumericMatrix $R)
-        {
-            $this->Q = $Q;
-            $this->R = $R;
+        private function __construct(
+            private NumericMatrix $Q,
+            private NumericMatrix $R
+        ) {
         }
 
         /**
@@ -63,7 +58,7 @@
          *
          * @param NumericMatrix $A source Matrix
          *
-         * @return QR
+         * @return \MathPHP\LinearAlgebra\Decomposition\Decomposition
          *
          * @throws Exception\BadDataException
          * @throws Exception\IncorrectTypeException
@@ -72,7 +67,7 @@
          * @throws Exception\OutOfBoundsException
          * @throws Exception\VectorException
          */
-        public static function decompose(NumericMatrix $A): QR
+        public static function decompose(NumericMatrix $A): Decomposition
         {
             $n = $A->getN();  // columns
             $m = $A->getM();  // rows
@@ -102,6 +97,39 @@
                 $Q->submatrix(0, 0, $m - 1, min($m, $n) - 1),
                 $R->submatrix(0, 0, min($m, $n) - 1, $n - 1)
             );
+        }
+
+        public static function QRDecompositionSolveIncorrectTypeException()
+        {
+        }
+
+        public static function QRDecompositionInvalidProperty()
+        {
+        }
+
+        public static function qrDecompositionPropertyQTransposeEqualsQInverse()
+        {
+        }
+
+        public static function qrDecompositionPropertyREqualsQTransposeA()
+        {
+        }
+
+        public static function qrDecompositionOrthonormalMatrixQPropertyQTransposeQIsIdentity(
+        )
+        {
+        }
+
+        public static function qrDecompositionResultMatrices()
+        {
+        }
+
+        public static function qrDecompositionPropertiesOfQR()
+        {
+        }
+
+        public static function qrDecompositionPropertyAEqualsQR()
+        {
         }
 
         /**
@@ -134,59 +162,38 @@
         public function solve(array|Vector $b): Vector
         {
             // Input must be a Vector or array.
-            if ( ! ($b instanceof Vector || is_array($b)))
-                throw new Exception\IncorrectTypeException('b in Ax = b must be a Vector or array');
             if (is_array($b))
-                $b = new Vector($b);
-
-            try
             {
-                $Qᵀ = $this->Q->transpose();
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
+                {
+                    $b = new Vector($b);
+                }
             }
+
+            $Qᵀ = $this->Q->transpose();
             try
             {
                 $Qᵀb = $Qᵀ->multiply($b);
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
             {
             }
 
             try
             {
                 $R⁻¹ = $this->R->inverse();
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadParameterException|Exception\OutOfBoundsException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
             try
             {
                 $x = $R⁻¹->multiply($Qᵀb);
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
             {
             }
 
             try
             {
                 return new Vector($x->getColumn(0));
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\MatrixException $e)
+            } catch (Exception\BadDataException|Exception\MatrixException $e)
             {
             }
         }
@@ -202,43 +209,13 @@
          */
         public function __get(string $name): NumericMatrix
         {
-            return match ($name)
+            switch ($name)
             {
-                'Q', 'R' => $this->$name,
-                default => throw new Exception\MatrixException("QR class does not have a gettable property: $name"),
-            };
-        }
-
-        public function QRDecompositionSolveIncorrectTypeException()
-        {
-        }
-
-        public function QRDecompositionInvalidProperty()
-        {
-        }
-
-        public function qrDecompositionPropertyQTransposeEqualsQInverse()
-        {
-        }
-
-        public function qrDecompositionPropertyREqualsQTransposeA()
-        {
-        }
-
-        public function qrDecompositionOrthonormalMatrixQPropertyQTransposeQIsIdentity(
-        )
-        {
-        }
-
-        public function qrDecompositionResultMatrices()
-        {
-        }
-
-        public function qrDecompositionPropertiesOfQR()
-        {
-        }
-
-        public function qrDecompositionPropertyAEqualsQR()
-        {
+                case 'Q':
+                case 'R':
+                    return $this->$name;
+                default:
+                    return throw new Exception\MatrixException("QR class does not have a gettable property: $name");
+            }
         }
     }

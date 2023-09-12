@@ -3,17 +3,19 @@
     namespace MathPHP\Tests\LinearAlgebra\Matrix\Base;
 
     use MathPHP\Exception;
+    use MathPHP\LinearAlgebra\ComplexMatrix;
+    use MathPHP\LinearAlgebra\Matrix;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\LinearAlgebra\NumericMatrix;
+    use MathPHP\LinearAlgebra\ObjectMatrix;
+    use MathPHP\LinearAlgebra\ObjectSquareMatrix;
     use MathPHP\LinearAlgebra\Vector;
     use PHPUnit\Framework\TestCase;
 
     class MatrixGettersTest extends TestCase {
-        /** @var array */
         private array $A;
 
-        /** @var NumericMatrix */
-        private \MathPHP\LinearAlgebra\ComplexMatrix|NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|\MathPHP\LinearAlgebra\Matrix $matrix;
+        private ComplexMatrix|NumericMatrix|ObjectSquareMatrix|ObjectMatrix|Matrix $matrix;
 
         public static function dataProviderForGetM(): array
         {
@@ -269,7 +271,7 @@
                 [2, 3, 4],
                 [4, 5, 6],
             ];
-            $this->matrix = MatrixFactory::create($this->A);
+            $this->matrix = MatrixFactory::create(A: $this->A);
         }
 
         /**
@@ -293,7 +295,7 @@
         public function testGetM(array $A, int $m)
         {
             // Given
-            $matrix = MatrixFactory::create($A);
+            $matrix = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertEquals($m, $matrix->getM());
@@ -311,7 +313,7 @@
         public function testGetN(array $A, int $n)
         {
             // Given
-            $matrix = MatrixFactory::create($A);
+            $matrix = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertEquals($n, $matrix->getN());
@@ -329,7 +331,7 @@
                 [2, 3, 4],
                 [4, 5, 6],
             ];
-            $matrix = MatrixFactory::create($A);
+            $matrix = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertEquals([1, 2, 3], $matrix->getRow(0));
@@ -362,7 +364,7 @@
                 [2, 3, 4],
                 [4, 5, 6],
             ];
-            $matrix = MatrixFactory::create($A);
+            $matrix = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertEquals([1, 2, 4], $matrix->getColumn(0));
@@ -395,7 +397,7 @@
                 [2, 3, 4],
                 [4, 5, 6],
             ];
-            $matrix = MatrixFactory::create($A);
+            $matrix = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertEquals(1, $matrix->get(0, 0));
@@ -444,16 +446,16 @@
         public function testAsVectors()
         {
             // Given
-            $A = new NumericMatrix([
+            $A = new NumericMatrix(A: [
                 [1, 2, 3],
                 [4, 5, 6],
                 [7, 8, 9],
             ]);
 
             $expected = [
-                new Vector([1, 4, 7]),
-                new Vector([2, 5, 8]),
-                new Vector([3, 6, 9]),
+                new Vector(A: [1, 4, 7]),
+                new Vector(A: [2, 5, 8]),
+                new Vector(A: [3, 6, 9]),
             ];
 
             // Then
@@ -467,16 +469,16 @@
         public function testAsRowVectors()
         {
             // Given
-            $A = new NumericMatrix([
+            $A = new NumericMatrix(A: [
                 [1, 2, 3],
                 [4, 5, 6],
                 [7, 8, 9],
             ]);
 
             $expected = [
-                new Vector([1, 2, 3]),
-                new Vector([4, 5, 6]),
-                new Vector([7, 8, 9]),
+                new Vector(A: [1, 2, 3]),
+                new Vector(A: [4, 5, 6]),
+                new Vector(A: [7, 8, 9]),
             ];
 
             // Then
@@ -495,7 +497,7 @@
         public function testGetDiagonalElements(array $A, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertEquals($R, $A->getDiagonalElements());
@@ -513,7 +515,7 @@
         public function testGetSuperdiagonalElements(array $A, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertEquals($R, $A->getSuperdiagonalElements());
@@ -531,7 +533,7 @@
         public function testGetSubdiagonalElements(array $A, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertEquals($R, $A->getSubdiagonalElements());

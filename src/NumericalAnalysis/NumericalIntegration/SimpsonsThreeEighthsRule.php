@@ -81,14 +81,16 @@
          * @throws Exception\BadDataException
          * @throws Exception\IncorrectTypeException
          */
-        public static function approximate(callable|array $source, ...$args): float
-        {
+        public static function approximate(
+            callable|array $source,
+            ...$args
+        ): float {
             // Get an array of points from our $source argument
             $points = self::getPoints($source, $args);
 
             // Validate input and sort points
-            self::validate($points, degree: 4);
-            Validation::isSubintervalsMultiple($points, m: 3);
+            self::validate($points, 4);
+            Validation::isSubintervalsMultiple($points, 3);
             $sorted = self::sort($points);
             Validation::isSpacingConstant($sorted);
 
@@ -110,16 +112,16 @@
              *   ⁱ⁼¹   8
              *  where h = (xn - x₁) / (n - 1)
              */
-            for ($i = 1; $i < $subintervals / 3 + 1; $i++)
+            for ($i = 1; $i < ($subintervals / 3) + 1; $i++)
             {
-                $x₂ᵢ₋₁ = $sorted[2 * $i - 2][$x];
-                $x₂ᵢ = $sorted[2 * $i - 1][$x];
+                $x₂ᵢ₋₁ = $sorted[(2 * $i) - 2][$x];
+                $x₂ᵢ = $sorted[(2 * $i) - 1][$x];
                 $x₂ᵢ₊₁ = $sorted[(2 * $i)][$x];
-                $x₂ᵢ₊₂ = $sorted[2 * $i + 1][$x];
-                $f⟮x₂ᵢ₋₁⟯ = $sorted[2 * $i - 2][$y]; // y₂₋₁
-                $f⟮x₂ᵢ⟯ = $sorted[2 * $i - 1][$y]; // y₂ᵢ
+                $x₂ᵢ₊₂ = $sorted[(2 * $i) + 1][$x];
+                $f⟮x₂ᵢ₋₁⟯ = $sorted[(2 * $i) - 2][$y]; // y₂₋₁
+                $f⟮x₂ᵢ⟯ = $sorted[(2 * $i) - 1][$y]; // y₂ᵢ
                 $f⟮x₂ᵢ₊₁⟯ = $sorted[(2 * $i)][$y];   // y₂ᵢ₊₁
-                $f⟮x₂ᵢ₊₂⟯ = $sorted[2 * $i + 1][$y]; // y₂ᵢ₊₂
+                $f⟮x₂ᵢ₊₂⟯ = $sorted[(2 * $i) + 1][$y]; // y₂ᵢ₊₂
                 $lagrange = LagrangePolynomial::interpolate([
                     [
                         $x₂ᵢ₋₁,
@@ -140,27 +142,27 @@
             return $approximation;
         }
 
-        public function nonConstantSpacingException()
+        public static function nonConstantSpacingException()
         {
         }
 
-        public function approximateErrorSubintervalsNotEven()
+        public static function approximateErrorSubintervalsNotEven()
         {
         }
 
-        public function approximateUsingPolynomial()
+        public static function approximateUsingPolynomial()
         {
         }
 
-        public function approximateUsingCallback()
+        public static function approximateUsingCallback()
         {
         }
 
-        public function approximateWitPointsNotSorted()
+        public static function approximateWitPointsNotSorted()
         {
         }
 
-        public function approximateWithPoints()
+        public static function approximateWithPoints()
         {
         }
     }

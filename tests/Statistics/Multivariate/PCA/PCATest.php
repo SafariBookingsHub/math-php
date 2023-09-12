@@ -3,19 +3,21 @@
     namespace MathPHP\Tests\Statistics\Multivariate\PCA;
 
     use MathPHP\Exception;
+    use MathPHP\LinearAlgebra\ComplexMatrix;
+    use MathPHP\LinearAlgebra\Matrix;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\LinearAlgebra\NumericMatrix;
+    use MathPHP\LinearAlgebra\ObjectMatrix;
+    use MathPHP\LinearAlgebra\ObjectSquareMatrix;
     use MathPHP\SampleData;
     use MathPHP\SampleData\MtCars;
     use MathPHP\Statistics\Multivariate\PCA;
     use PHPUnit\Framework\TestCase;
 
     class PCATest extends TestCase {
-        /** @var PCA */
         private static PCA $pca;
 
-        /** @var NumericMatrix */
-        private static \MathPHP\LinearAlgebra\ComplexMatrix|NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|\MathPHP\LinearAlgebra\Matrix $matrix;
+        private static ComplexMatrix|NumericMatrix|ObjectSquareMatrix|ObjectMatrix|Matrix $matrix;
 
         /**
          * R code for expected values:

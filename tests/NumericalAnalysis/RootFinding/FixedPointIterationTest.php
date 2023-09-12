@@ -20,7 +20,8 @@
             // Note that f(x) has a root at 1
             // Rewrite f(x) = 0 as (x⁴ + 8x³ -13x² + 96)/92 = x
             // Thus, g(x) = (x⁴ + 8x³ -13x² + 96)/92
-            $func = fn($x) => (($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2) + 96) / 92;
+            $func = fn($x) => ((($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2)) + 96)
+                / 92;
             $tol = 0.00001;
 
             // g(0)  = 96/92, where 0 < 96/92 < 2
@@ -91,7 +92,8 @@
         public function testFixedPointIterationExceptionNegativeTolerance()
         {
             // Given
-            $func = fn($x) => (($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2) + 96) / 92;
+            $func = fn($x) => ((($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2)) + 96)
+                / 92;
             $tol = -0.00001;
             $a = 0;
             $b = 3;
@@ -111,7 +113,8 @@
         public function testFixedPointIterationExceptionZeroInterval()
         {
             // Given
-            $func = fn($x) => (($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2) + 96) / 92;
+            $func = fn($x) => ((($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2)) + 96)
+                / 92;
             $tol = 0.00001;
             $a = 3;
             $b = 3;
@@ -131,7 +134,8 @@
         public function testFixedPointIterationExceptionGuessNotInInterval()
         {
             // Given
-            $func = fn($x) => (($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2) + 96) / 92;
+            $func = fn($x) => ((($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2)) + 96)
+                / 92;
             $tol = 0.00001;
             $a = 0;
             $b = 3;

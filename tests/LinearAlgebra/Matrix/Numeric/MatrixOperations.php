@@ -4,179 +4,179 @@
 
     class MatrixOperations {
 
-        public function rank()
+        public static function rank()
         {
         }
 
-        public function adjugateSquareMatrixException()
+        public static function adjugateSquareMatrixException()
         {
         }
 
-        public function adjugate()
+        public static function adjugate()
         {
         }
 
-        public function covarianceMatrixDirectionException()
+        public static function covarianceMatrixDirectionException()
         {
         }
 
-        public function covarianceMatrixColumnsAsVariables()
+        public static function covarianceMatrixColumnsAsVariables()
         {
         }
 
-        public function covarianceMatrix()
+        public static function covarianceMatrix()
         {
         }
 
-        public function meanDeviationDirectionException()
+        public static function meanDeviationDirectionException()
         {
         }
 
-        public function meanDeviationColumnsAsVariables()
+        public static function meanDeviationColumnsAsVariables()
         {
         }
 
-        public function meanDeviation()
+        public static function meanDeviation()
         {
         }
 
-        public function cofactorMatrixExceptionTooSmall()
+        public static function cofactorMatrixExceptionTooSmall()
         {
         }
 
-        public function cofactorMatrixExceptionNotSquare()
+        public static function cofactorMatrixExceptionNotSquare()
         {
         }
 
-        public function cofactorMatrix()
+        public static function cofactorMatrix()
         {
         }
 
-        public function cofactorExceptionNotSquare()
+        public static function cofactorExceptionNotSquare()
         {
         }
 
-        public function cofactorExceptionBadColumn()
+        public static function cofactorExceptionBadColumn()
         {
         }
 
-        public function cofactorExceptionBadRow()
+        public static function cofactorExceptionBadRow()
         {
         }
 
-        public function cofactor()
+        public static function cofactor()
         {
         }
 
-        public function inverseExceptionDetIsZero()
+        public static function inverseExceptionDetIsZero()
         {
         }
 
-        public function inverseExceptionNotSquare()
+        public static function inverseExceptionNotSquare()
         {
         }
 
-        public function inverse()
+        public static function inverse()
         {
         }
 
-        public function diagonal()
+        public static function diagonal()
         {
         }
 
-        public function traceExceptionNotSquareMatrix()
+        public static function traceExceptionNotSquareMatrix()
         {
         }
 
-        public function trace()
+        public static function trace()
         {
         }
 
-        public function insertExceptionTypeMismatch()
+        public static function insertExceptionTypeMismatch()
         {
         }
 
-        public function insertMatrixExceedsBounds()
+        public static function insertMatrixExceedsBounds()
         {
         }
 
-        public function insert()
+        public static function insert()
         {
         }
 
-        public function subMatrixWrongColumnOrder()
+        public static function subMatrixWrongColumnOrder()
         {
         }
 
-        public function subMatrixWrongRowOrder()
+        public static function subMatrixWrongRowOrder()
         {
         }
 
-        public function subMatrixExceptionBadColumn()
+        public static function subMatrixExceptionBadColumn()
         {
         }
 
-        public function submatrixExceptionBadRow()
+        public static function submatrixExceptionBadRow()
         {
         }
 
-        public function submatrix()
+        public static function submatrix()
         {
         }
 
-        public function minorExceptionNotSquare()
+        public static function minorExceptionNotSquare()
         {
         }
 
-        public function minorExceptionBadColumn()
+        public static function minorExceptionBadColumn()
         {
         }
 
-        public function minorExceptionBadRow()
+        public static function minorExceptionBadRow()
         {
         }
 
-        public function minor()
+        public static function minor()
         {
         }
 
-        public function leadingPrincipalMinorExceptionMatrixNotSquare()
+        public static function leadingPrincipalMinorExceptionMatrixNotSquare()
         {
         }
 
-        public function leadingPrincipalMinorExceptionKGreaterThanN()
+        public static function leadingPrincipalMinorExceptionKGreaterThanN()
         {
         }
 
-        public function leadingPrincipalMinorExceptionKLessThanZero()
+        public static function leadingPrincipalMinorExceptionKLessThanZero()
         {
         }
 
-        public function leadingPrincipalMinor()
+        public static function leadingPrincipalMinor()
         {
         }
 
-        public function minorMatrixExceptionNotSquare()
+        public static function minorMatrixExceptionNotSquare()
         {
         }
 
-        public function minorMatrixExceptionBadColumn()
+        public static function minorMatrixExceptionBadColumn()
         {
         }
 
-        public function minorMatrixExceptionBadRow()
+        public static function minorMatrixExceptionBadRow()
         {
         }
 
-        public function minorMatrix()
+        public static function minorMatrix()
         {
         }
 
-        public function transposeOfTransposeIsOriginalMatrix()
+        public static function transposeOfTransposeIsOriginalMatrix()
         {
         }
 
-        public function transpose()
+        public static function transpose()
         {
         }
     }

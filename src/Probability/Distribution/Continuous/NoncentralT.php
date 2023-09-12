@@ -40,7 +40,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '(-∞,∞)',
             ];
@@ -60,6 +60,14 @@
         public function __construct(int $ν, float $μ)
         {
             parent::__construct($ν, $μ);
+        }
+
+        public static function medianTemporaryValue()
+        {
+        }
+
+        public static function meanNAN()
+        {
         }
 
         /**
@@ -83,11 +91,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -96,30 +100,25 @@
 
             try
             {
-                $part1 = ($ν ** ($ν / 2)) * Special::gamma($ν + 1) * exp(-1 * $μ
-                        ** 2
-                        / 2) / 2 ** $ν / ($ν + $x ** 2) ** ($ν / 2)
+                $part1 = ((($ν ** ($ν / 2)) * Special::gamma($ν + 1) * exp((-1
+                                    * $μ
+                                    ** 2)
+                                / 2) / 2 ** $ν) / ($ν + ($x ** 2)) ** ($ν / 2))
                     / Special::gamma($ν / 2);
-            } catch (NanException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (NanException|OutOfBoundsException $e)
             {
             }
 
-            $F1 = $ν / 2 + 1;
+            $F1 = ($ν / 2) + 1;
             $F2 = 3 / 2;
-            $F3 = ($μ ** 2) * $x ** 2 / 2 / ($ν + $x ** 2);
+            $F3 = (($μ ** 2) * $x ** 2) / 2 / ($ν + ($x ** 2));
             try
             {
-                $inner_part1 = sqrt(2) * $μ * $x
-                    * Special::confluentHypergeometric($F1, $F2, $F3)
-                    / ($ν + $x
-                        ** 2) / Special::gamma(($ν + 1) / 2);
-            } catch (BadParameterException $e)
-            {
-            } catch (NanException $e)
-            {
-            } catch (OutOfBoundsException $e)
+                $inner_part1 = (sqrt(2) * $μ * $x
+                        * Special::confluentHypergeometric($F1, $F2, $F3))
+                    / ($ν + ($x
+                            ** 2)) / Special::gamma(($ν + 1) / 2);
+            } catch (BadParameterException|OutOfBoundsException|NanException $e)
             {
             }
 
@@ -128,12 +127,8 @@
             try
             {
                 $inner_part2 = Special::confluentHypergeometric($F1, $F2, $F3)
-                    / sqrt($ν + $x ** 2) / Special::gamma($ν / 2 + 1);
-            } catch (BadParameterException $e)
-            {
-            } catch (NanException $e)
-            {
-            } catch (OutOfBoundsException $e)
+                    / sqrt($ν + ($x ** 2)) / Special::gamma(($ν / 2) + 1);
+            } catch (BadParameterException|OutOfBoundsException|NanException $e)
             {
             }
 
@@ -157,11 +152,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -175,7 +166,9 @@
                 return $studentT->cdf($x);
             }
             if ($x >= 0)
+            {
                 return $this->f($x, $ν, $μ);
+            }
 
             return 1 - $this->f($x, $ν, -$μ);
         }
@@ -215,7 +208,7 @@
         {
             $standardNormal = new StandardNormal();
             $Φ = $standardNormal->cdf(-$μ);
-            $y = $x ** 2 / ($x ** 2 + $ν);
+            $y = ($x ** 2) / (($x ** 2) + $ν);
 
             $sum = $Φ;
             $tol = .00000001;
@@ -223,44 +216,28 @@
 
             do
             {
-                $exp = exp(-1 * $μ ** 2 / 2) * ($μ ** 2 / 2) ** $j;
-                $pⱼ = 1 / Combinatorics::factorial($j) * $exp;
-                $qⱼ = $μ / sqrt(2) / Special::gamma($j + 3 / 2) * $exp;
+                $exp = exp((-1 * $μ ** 2) / 2) * (($μ ** 2) / 2) ** $j;
+                $pⱼ = (1 / Combinatorics::factorial($j)) * $exp;
+                $qⱼ = ($μ / sqrt(2) / Special::gamma($j + (3 / 2))) * $exp;
                 try
                 {
-                    $I1 = Special::regularizedIncompleteBeta($y, $j + 1 / 2,
+                    $I1 = Special::regularizedIncompleteBeta($y, $j + (1 / 2),
                         $ν / 2);
-                } catch (BadDataException $e)
-                {
-                } catch (BadParameterException $e)
-                {
-                } catch (FunctionFailedToConvergeException $e)
-                {
-                } catch (NanException $e)
-                {
-                } catch (OutOfBoundsException $e)
+                } catch (BadDataException|OutOfBoundsException|NanException|FunctionFailedToConvergeException|BadParameterException $e)
                 {
                 }
                 try
                 {
                     $I2 = Special::regularizedIncompleteBeta($y, $j + 1,
                         $ν / 2);
-                } catch (BadDataException $e)
-                {
-                } catch (BadParameterException $e)
-                {
-                } catch (FunctionFailedToConvergeException $e)
-                {
-                } catch (NanException $e)
-                {
-                } catch (OutOfBoundsException $e)
+                } catch (BadDataException|OutOfBoundsException|NanException|FunctionFailedToConvergeException|BadParameterException $e)
                 {
                 }
 
-                $delta = $pⱼ * $I1 + $qⱼ * $I2;
+                $delta = ($pⱼ * $I1) + ($qⱼ * $I2);
                 $sum += $delta / 2;
                 ++$j;
-            } while ($delta / $sum > $tol || $j < 10);
+            } while (($delta / $sum > $tol) || ($j < 10));
 
             return $sum;
         }
@@ -295,24 +272,16 @@
             $μ = $this->μ;
 
             if ($ν == 1)
+            {
                 return NAN;
+            }
 
             try
             {
-                return $μ * sqrt($ν / 2) * Special::gamma(($ν - 1) / 2)
+                return ($μ * sqrt($ν / 2) * Special::gamma(($ν - 1) / 2))
                     / Special::gamma($ν / 2);
-            } catch (NanException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (NanException|OutOfBoundsException $e)
             {
             }
-        }
-
-        public function medianTemporaryValue()
-        {
-        }
-
-        public function meanNAN()
-        {
         }
     }

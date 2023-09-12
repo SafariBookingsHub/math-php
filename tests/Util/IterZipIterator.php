@@ -4,11 +4,11 @@
 
     class IterZipIterator {
 
-        public function zipTwoIteatorsDifferentSize()
+        public static function zipTwoIteatorsDifferentSize()
         {
         }
 
-        public function zipTwoIteratorSameSize()
+        public static function zipTwoIteratorSameSize()
         {
         }
     }

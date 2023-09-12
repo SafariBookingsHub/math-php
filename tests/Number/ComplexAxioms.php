@@ -4,35 +4,35 @@
 
     class ComplexAxioms {
 
-        public function additiveInverse()
+        public static function additiveInverse()
         {
         }
 
-        public function multiplicativeIdentity()
+        public static function multiplicativeIdentity()
         {
         }
 
-        public function additiveIdentity()
+        public static function additiveIdentity()
         {
         }
 
-        public function distributedLaw()
+        public static function distributedLaw()
         {
         }
 
-        public function associativityOfMultiplication()
+        public static function associativityOfMultiplication()
         {
         }
 
-        public function associativityOfAddition()
+        public static function associativityOfAddition()
         {
         }
 
-        public function commutativityOfMultiplication()
+        public static function commutativityOfMultiplication()
         {
         }
 
-        public function commutativityOfAddition()
+        public static function commutativityOfAddition()
         {
         }
     }

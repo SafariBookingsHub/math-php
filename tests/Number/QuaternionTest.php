@@ -68,7 +68,8 @@
             ];
         }
 
-        #[Pure] public static function dataProviderForConstructorException(): array
+        #[Pure] public static function dataProviderForConstructorException(
+        ): array
         {
             return [
                 ['a', 1, 1, 1],
@@ -777,7 +778,14 @@
             // When
             try
             {
-                $q->multiply("string");
+                try
+                {
+                    $q->multiply("string");
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                }
             } catch (Exception\IncorrectTypeException $e)
             {
             }

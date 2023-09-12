@@ -42,11 +42,6 @@
      * @property-read NumericMatrix $Lᵀ Transpose of lower triangular matrix
      */
     class Cholesky extends Decomposition {
-        /** @var NumericMatrix Lower triangular matrix L of A = LLᵀ */
-        private NumericMatrix $L;
-
-        /** @var NumericMatrix Transpose of lower triangular matrix of A = LLᵀ */
-        private NumericMatrix $Lᵀ;
 
         /**
          * Cholesky constructor
@@ -54,10 +49,10 @@
          * @param NumericMatrix $L  Lower triangular matrix
          * @param NumericMatrix $Lᵀ Transpose of lower triangular matrix
          */
-        private function __construct(NumericMatrix $L, NumericMatrix $Lᵀ)
-        {
-            $this->L = $L;
-            $this->Lᵀ = $Lᵀ;
+        private function __construct(
+            private NumericMatrix $L,
+            private NumericMatrix $Lᵀ
+        ) {
         }
 
         /**
@@ -66,7 +61,7 @@
          *
          * @param NumericMatrix $A
          *
-         * @return Cholesky Lower triangular matrix L and transpose Lᵀ of A = LLᵀ
+         * @return \MathPHP\LinearAlgebra\Decomposition\Decomposition Lower triangular matrix L and transpose Lᵀ of A = LLᵀ
          *
          * @throws Exception\BadDataException
          * @throws Exception\BadParameterException
@@ -75,30 +70,52 @@
          * @throws Exception\MatrixException
          * @throws Exception\OutOfBoundsException
          */
-        public static function decompose(NumericMatrix $A): Cholesky
+        public static function decompose(NumericMatrix $A): Decomposition
         {
             if ( ! $A->isPositiveDefinite())
-                throw new Exception\MatrixException('Matrix must be positive definite for Cholesky decomposition');
+            {
+                {
+                    throw new Exception\MatrixException('Matrix must be positive definite for Cholesky decomposition');
+                }
+            }
 
             $m = $A->getM();
             $L = MatrixFactory::zero($m, $m)->getMatrix();
 
             for ($j = 0; $j < $m; $j++)
-                for ($i = 0; $i < ($j + 1); $i++)
+            {
                 {
-                    $∑lⱼₓlᵢₓ = 0;
-                    for ($x = 0; $x < $i; $x++)
-                        $∑lⱼₓlᵢₓ += $L[$j][$x] * $L[$i][$x];
-                    $L[$j][$i] = ($j === $i)
-                        ? sqrt($A[$j][$j] - $∑lⱼₓlᵢₓ)
-                        : ((1 / $L[$i][$i]) * ($A[$j][$i] - $∑lⱼₓlᵢₓ));
+                    for ($i = 0; $i < ($j + 1); $i++)
+                    {
+                        $∑lⱼₓlᵢₓ = 0;
+                        for ($x = 0; $x < $i; $x++)
+                        {
+                            $∑lⱼₓlᵢₓ += $L[$j][$x] * $L[$i][$x];
+                        }
+                        $L[$j][$i] = ($j === $i)
+                            ? sqrt($A[$j][$j] - $∑lⱼₓlᵢₓ)
+                            : ((1 / $L[$i][$i]) * ($A[$j][$i] - $∑lⱼₓlᵢₓ));
+                    }
                 }
+            }
 
             /** @var NumericMatrix $L */
             $L = MatrixFactory::create((array)$L);
             $Lᵀ = $L->transpose();
 
             return new Cholesky($L, $Lᵀ);
+        }
+
+        public static function choleskyDecompositionInvalidProperty()
+        {
+        }
+
+        public static function choleskyDecompositionException()
+        {
+        }
+
+        public static function choleskyDecomposition()
+        {
         }
 
         /**
@@ -112,23 +129,15 @@
          */
         public function __get(string $name): NumericMatrix
         {
-            return match ($name)
+            switch ($name)
             {
-                'L' => $this->L,
-                'LT', 'Lᵀ' => $this->Lᵀ,
-                default => throw new Exception\MatrixException("Cholesky class does not have a gettable property: $name"),
-            };
-        }
-
-        public function choleskyDecompositionInvalidProperty()
-        {
-        }
-
-        public function choleskyDecompositionException()
-        {
-        }
-
-        public function choleskyDecomposition()
-        {
+                case 'L':
+                    return $this->L;
+                case 'LT':
+                case 'Lᵀ':
+                    return $this->Lᵀ;
+                default:
+                    return throw new Exception\MatrixException("Cholesky class does not have a gettable property: $name");
+            }
         }
     }

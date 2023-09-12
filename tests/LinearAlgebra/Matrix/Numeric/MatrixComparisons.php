@@ -4,23 +4,23 @@
 
     class MatrixComparisons {
 
-        public function isEqualNotEqualBecauseDifferentDimmensions()
+        public static function isEqualNotEqualBecauseDifferentDimmensions()
         {
         }
 
-        public function isNotEqualBecauseOutsideOfErrorTolerance()
+        public static function isNotEqualBecauseOutsideOfErrorTolerance()
         {
         }
 
-        public function isEqualBecauseWithinErrorTolerance()
+        public static function isEqualBecauseWithinErrorTolerance()
         {
         }
 
-        public function isNotEqual()
+        public static function isNotEqual()
         {
         }
 
-        public function isEqual()
+        public static function isEqual()
         {
         }
     }

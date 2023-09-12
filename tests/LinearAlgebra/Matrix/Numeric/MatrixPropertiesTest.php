@@ -21,7 +21,7 @@
         public function testIsSymmetric(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isSymmetric());
@@ -39,7 +39,7 @@
         public function testIsNotSymmetric(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isSymmetric());
@@ -56,7 +56,7 @@
         public function testIsSkewSymmetric(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isSkewSymmetric());
@@ -75,7 +75,7 @@
         public function testIsNotSkewSymmetric(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isSkewSymmetric());
@@ -92,7 +92,7 @@
         public function testIsSingular(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isSingular());
@@ -109,7 +109,7 @@
         public function testIsSingularFalseForNonsingularMatrix(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isSingular());
@@ -126,7 +126,7 @@
         public function testIsNonsingular(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isNonsingular());
@@ -143,7 +143,7 @@
         public function testIsInvertible(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isInvertible());
@@ -160,7 +160,7 @@
         public function testIsNonsingularFalseForSingularMatrix(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             $this->assertFalse($A->isNonsingular());
         }
@@ -176,7 +176,7 @@
         public function testIsInvertibleFalseForNonInvertibleMatrix(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isInvertible());
@@ -193,7 +193,7 @@
         public function testIsPositiveDefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isPositiveDefinite());
@@ -210,7 +210,7 @@
         public function testIsNotPositiveDefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isPositiveDefinite());
@@ -227,7 +227,7 @@
         public function testIsPositiveSemidefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isPositiveSemidefinite());
@@ -244,7 +244,7 @@
         public function testIsNotPositiveSemiDefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isPositiveSemidefinite());
@@ -261,7 +261,7 @@
         public function testIsNegativeDefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isNegativeDefinite());
@@ -278,7 +278,7 @@
         public function testIsNotNegativeDefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isNegativeDefinite());
@@ -295,7 +295,7 @@
         public function testIsNegativeSemidefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isNegativeSemidefinite());
@@ -312,7 +312,7 @@
         public function testIsNotNegativeSemidefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isNegativeSemidefinite());
@@ -325,7 +325,7 @@
         public function testNonSquareMatrixIsNotAnyDefinite()
         {
             // Given
-            $A = new NumericMatrix([
+            $A = new NumericMatrix(A: [
                 [1, 2, 3],
                 [2, 3, 4],
             ]);
@@ -344,7 +344,7 @@
         public function testNonSymmetricSquareMatrixIsNotAnyDefinite()
         {
             // Given
-            $A = new NumericMatrix([
+            $A = new NumericMatrix(A: [
                 [1, 2, 3],
                 [9, 8, 4],
                 [6, 2, 5],
@@ -368,7 +368,7 @@
         public function testIsUpperTriangular(array $U)
         {
             // Given
-            $U = MatrixFactory::create($U);
+            $U = MatrixFactory::create(A: $U);
 
             // Then
             $this->assertTrue($U->isUpperTriangular());
@@ -385,7 +385,7 @@
         public function testIsNotUpperTriangular(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isUpperTriangular());
@@ -402,7 +402,7 @@
         public function testIsLowerTriangular(array $L)
         {
             // Given
-            $L = MatrixFactory::create($L);
+            $L = MatrixFactory::create(A: $L);
 
             // Then
             $this->assertTrue($L->isLowerTriangular());
@@ -419,7 +419,7 @@
         public function testIsNotLowerTriangular(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isLowerTriangular());
@@ -436,7 +436,7 @@
         public function testIsTriangularForLowerTriangular(array $L)
         {
             // Given
-            $L = MatrixFactory::create($L);
+            $L = MatrixFactory::create(A: $L);
 
             $this->assertTrue($L->isTriangular());
         }
@@ -452,7 +452,7 @@
         public function testIsTriangularForUpperTriangular(array $U)
         {
             // Given
-            $U = MatrixFactory::create($U);
+            $U = MatrixFactory::create(A: $U);
 
             // Then
             $this->assertTrue($U->isTriangular());
@@ -469,7 +469,7 @@
         public function testIsNotTriangular(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isTriangular());
@@ -486,7 +486,7 @@
         public function testIsDiagonal(array $D)
         {
             // Given
-            $D = MatrixFactory::create($D);
+            $D = MatrixFactory::create(A: $D);
 
             // Then
             $this->assertTrue($D->isDiagonal());
@@ -503,7 +503,7 @@
         public function testIsDiagonalForLowerTriangular(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isDiagonal());
@@ -520,7 +520,7 @@
         public function testIsRectangularDiagonal(array $D)
         {
             // Given
-            $D = MatrixFactory::create($D);
+            $D = MatrixFactory::create(A: $D);
 
             // Then
             $this->assertTrue($D->isRectangularDiagonal());
@@ -537,7 +537,7 @@
         public function testIsNotRectangularDiagonal(array $D)
         {
             // Given
-            $D = MatrixFactory::create($D);
+            $D = MatrixFactory::create(A: $D);
 
             // Then
             $this->assertFalse($D->isRectangularDiagonal());
@@ -554,7 +554,7 @@
         public function testIsRef(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isRef());
@@ -571,7 +571,7 @@
         public function testIsNotRef(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isRef());
@@ -588,7 +588,7 @@
         public function testIsRref(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             $this->assertTrue($A->isRref());
         }
@@ -604,7 +604,7 @@
         public function testIsNotRref(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isRref());
@@ -621,7 +621,7 @@
         public function testIsNotRrefForRefMatrix(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isRref());
@@ -638,7 +638,7 @@
         public function testIsIdempotent(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isIdempotent());
@@ -655,7 +655,7 @@
         public function testIsNotIdempotent(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isIdempotent());
@@ -672,7 +672,7 @@
         public function testIsNilpotent(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isNilpotent());
@@ -689,7 +689,7 @@
         public function testIsNotNilpotent(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isNilpotent());
@@ -706,7 +706,7 @@
         public function testIsInvolutory(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isInvolutory());
@@ -723,7 +723,7 @@
         public function testIsNotInvolutory(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isInvolutory());
@@ -740,7 +740,7 @@
         public function testIsSignature(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isSignature());
@@ -757,7 +757,7 @@
         public function testIsNotSignature(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             $this->assertFalse($A->isSignature());
         }
@@ -773,7 +773,7 @@
         public function testIsUpperBidiagonal(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isUpperBidiagonal());
@@ -790,7 +790,7 @@
         public function testIsNotUpperBidiagonal(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isUpperBidiagonal());
@@ -807,7 +807,7 @@
         public function testIsLowerBidiagonal(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             $this->assertTrue($A->isLowerBidiagonal());
         }
@@ -822,7 +822,7 @@
          */
         public function testIsNotLowerBidiagonal(array $A)
         {
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isLowerBidiagonal());
@@ -839,7 +839,7 @@
         public function testLowerBidiagonalIsBidiagonal(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isBidiagonal());
@@ -856,7 +856,7 @@
         public function testUpperBidiagonalIsBidiagonal(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isBidiagonal());
@@ -873,7 +873,7 @@
         public function testIsNotBidiagonal(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             $this->assertFalse($A->isBidiagonal());
         }
@@ -889,7 +889,7 @@
         public function testIsTridiagonal(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isTridiagonal());
@@ -906,7 +906,7 @@
         public function testIsNotTridiagonal(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isTridiagonal());
@@ -923,7 +923,7 @@
         public function testIsUpperHessenberg(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             $this->assertTrue($A->isUpperHessenberg());
         }
@@ -939,7 +939,7 @@
         public function testIsNotUpperHessenberg(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isUpperHessenberg());
@@ -956,7 +956,7 @@
         public function testIsLowerHessenberg(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isLowerHessenberg());
@@ -973,7 +973,7 @@
         public function testIsNotLowerHessenberg(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isLowerHessenberg());
@@ -990,7 +990,7 @@
         public function testIsOrthogonal2(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isOrthogonal());
@@ -1007,7 +1007,7 @@
         public function testIsOrthogonalWhenNotOrthogonal(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isOrthogonal());
@@ -1026,7 +1026,7 @@
         public function testisNormal(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isNormal());
@@ -1043,7 +1043,7 @@
         public function testIsNormalWhenNotNormal(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isNormal());
@@ -1060,7 +1060,7 @@
         public function testIsUnitary(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isUnitary());
@@ -1077,7 +1077,7 @@
         public function testIsUnitaryWhenNotUnitary(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isUnitary());
@@ -1094,7 +1094,7 @@
         public function testIsHermitian(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isHermitian());
@@ -1112,7 +1112,7 @@
         public function testIsHermitianWhenNotHermitian(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isHermitian());

@@ -6,7 +6,6 @@
     use PHPUnit\Framework\TestCase;
 
     class ToothGrowthTest extends TestCase {
-        /** @var SampleData\ToothGrowth */
         private SampleData\ToothGrowth $toothGrowth;
 
         /**
@@ -69,7 +68,11 @@
 
             // Then
             foreach ($data as $observation)
-                $this->assertCount(3, $observation);
+            {
+                {
+                    $this->assertCount(3, $observation);
+                }
+            }
         }
 
         /**

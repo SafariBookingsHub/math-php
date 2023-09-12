@@ -18,7 +18,7 @@
             'solving for f(x) = 0 where x is -4' => "array",
             'solving for f(x) = 0 where x is -8' => "array",
             'solving for f(x) = 0 where x is 3'  => "array",
-            'When solving f(x) = 0 where x is 1' => "array"
+            'When solving f(x) = 0 where x is 1' => "array",
         ])] public static function dataProviderForPolynomial(): array
         {
             return [
@@ -45,7 +45,9 @@
             int $expected
         ) {
             // Given
-            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
+            $func = fn($x) => (($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2) - (92
+                        * $x))
+                + 96;
 
             // And
             $target = 0;
@@ -98,7 +100,7 @@
         public function testXCubedSubtractXPlusOne()
         {
             // Given
-            $func = fn($x) => ($x ** 3 - $x) + 1;
+            $func = fn($x) => (($x ** 3) - $x) + 1;
 
             // And
             $expected = -1.324717;
@@ -197,7 +199,9 @@
         public function testNewtonsMethodExceptionNegativeTolerance()
         {
             // Given
-            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - 92 * $x) + 96;
+            $func = fn($x) => (($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2) - (92
+                        * $x))
+                + 96;
 
             // And
             $args = [-4.1];

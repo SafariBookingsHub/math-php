@@ -4,27 +4,27 @@
 
     class MatrixMap {
 
-        public function walk()
+        public static function walk()
         {
         }
 
-        public function applyRowsClosureShuffle()
+        public static function applyRowsClosureShuffle()
         {
         }
 
-        public function applyRowsWithClosure()
+        public static function applyRowsWithClosure()
         {
         }
 
-        public function applyRowsWithCallable()
+        public static function applyRowsWithCallable()
         {
         }
 
-        public function mapWithClosure()
+        public static function mapWithClosure()
         {
         }
 
-        public function mapWithCallable()
+        public static function mapWithCallable()
         {
         }
     }

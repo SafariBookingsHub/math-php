@@ -647,13 +647,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -661,7 +661,7 @@
             // When
             try
             {
-                $dotProduct = $A->dotProduct($B);
+                $dotProduct = $A->dotProduct(B: $B);
             } catch (Exception\VectorException $e)
             {
             }
@@ -679,19 +679,19 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
 
             // When
-            $innerProduct = $A->innerProduct(B: $B);
+            $innerProduct = $A->innerProduct($B);
 
             // Then
             $this->assertEquals($expected, $innerProduct);
@@ -704,14 +704,14 @@
         public function testDotProductExceptionSizeDifference()
         {
             // Given
-            $A = new Vector(A: [1, 2]);
-            $B = new Vector(A: [1, 2, 3]);
+            $A = new Vector([1, 2]);
+            $B = new Vector([1, 2, 3]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $A->dotProduct(B: $B);
+            $A->dotProduct($B);
         }
 
         /**
@@ -723,19 +723,19 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $R = new Vector($R);
+                $R = new Vector(A: $R);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -743,7 +743,7 @@
             // When
             try
             {
-                $crossProduct = $A->crossProduct($B);
+                $crossProduct = $A->crossProduct(B: $B);
             } catch (Exception\VectorException $e)
             {
             }
@@ -761,13 +761,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -778,7 +778,7 @@
             // When
             try
             {
-                $A->crossProduct($B);
+                $A->crossProduct(B: $B);
             } catch (Exception\VectorException $e)
             {
             }
@@ -793,25 +793,25 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $R = new NumericMatrix($R);
+                $R = new NumericMatrix(A: $R);
             } catch (Exception\BadDataException $e)
             {
             }
 
             // When
-            $outerProduct = $A->outerProduct(B: $B)->getMatrix();
+            $outerProduct = $A->outerProduct($B)->getMatrix();
 
             // Then
             $this->assertEquals($R->getMatrix(), $outerProduct);
@@ -826,7 +826,7 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -847,19 +847,19 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $R = new Vector($R);
+                $R = new Vector(A: $R);
             } catch (Exception\BadDataException $e)
             {
             }
 
             // When
-            $kA = $A->scalarMultiply(k: $k);
+            $kA = $A->scalarMultiply($k);
 
             // Then
             $this->assertEqualsWithDelta($R, $kA, 0.00001);
@@ -876,19 +876,19 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $R = new Vector($R);
+                $R = new Vector(A: $R);
             } catch (Exception\BadDataException $e)
             {
             }
 
             // When
-            $A／k = $A->scalarDivide(k: $k);
+            $A／k = $A->scalarDivide($k);
 
             // Then
             $this->assertEquals($R, $A／k);
@@ -904,19 +904,19 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $R = new Vector($R);
+                $R = new Vector(A: $R);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -924,10 +924,8 @@
             // When
             try
             {
-                $A＋B = $A->add($B);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\VectorException $e)
+                $A＋B = $A->add(B: $B);
+            } catch (Exception\BadDataException|Exception\VectorException $e)
             {
             }
 
@@ -943,14 +941,14 @@
         public function testAddExceptionSizeMismatch()
         {
             // Given
-            $A = new Vector(A: [1, 2, 3]);
-            $B = new Vector(A: [1, 2]);
+            $A = new Vector([1, 2, 3]);
+            $B = new Vector([1, 2]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $A->add(B: $B);
+            $A->add($B);
         }
 
         /**
@@ -962,19 +960,19 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $R = new Vector($R);
+                $R = new Vector(A: $R);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -982,7 +980,7 @@
             // When
             try
             {
-                $A−B = $A->subtract($B);
+                $A−B = $A->subtract(B: $B);
             } catch (Exception\VectorException $e)
             {
             }
@@ -999,14 +997,14 @@
         public function testSubtractExceptionSizeMismatch()
         {
             // Given
-            $A = new Vector(A: [1, 2, 3]);
-            $B = new Vector(A: [1, 2]);
+            $A = new Vector([1, 2, 3]);
+            $B = new Vector([1, 2]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $A->subtract(B: $B);
+            $A->subtract($B);
         }
 
         /**
@@ -1022,12 +1020,12 @@
         public function testMultiply(array $A, array $B, array $R)
         {
             // Given
-            $A = new Vector(A: $A);
-            $B = new Vector(A: $B);
-            $R = new Vector(A: $R);
+            $A = new Vector($A);
+            $B = new Vector($B);
+            $R = new Vector($R);
 
             // When
-            $A×B = $A->multiply(B: $B);
+            $A×B = $A->multiply($B);
 
             // Then
             $this->assertEquals($R, $A×B);
@@ -1041,14 +1039,14 @@
         public function testMultiplyExceptionSizeMismatch()
         {
             // Given
-            $A = new Vector(A: [1, 2, 3]);
-            $B = new Vector(A: [1, 2]);
+            $A = new Vector([1, 2, 3]);
+            $B = new Vector([1, 2]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // Then
-            $A->multiply(B: $B);
+            $A->multiply($B);
         }
 
         /**
@@ -1064,12 +1062,12 @@
         public function testDivide(array $A, array $B, array $R)
         {
             // Given
-            $A = new Vector(A: $A);
-            $B = new Vector(A: $B);
-            $R = new Vector(A: $R);
+            $A = new Vector($A);
+            $B = new Vector($B);
+            $R = new Vector($R);
 
             // When
-            $A／B = $A->divide(B: $B);
+            $A／B = $A->divide($B);
 
             // Then
             $this->assertEquals($R, $A／B);
@@ -1083,14 +1081,14 @@
         public function testDivideExceptionSizeMismatch()
         {
             // Given
-            $A = new Vector(A: [1, 2, 3]);
-            $B = new Vector(A: [1, 2]);
+            $A = new Vector([1, 2, 3]);
+            $B = new Vector([1, 2]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $A->divide(B: $B);
+            $A->divide($B);
         }
 
         /**
@@ -1102,7 +1100,7 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -1123,13 +1121,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $expected = new Vector($expected);
+                $expected = new Vector(A: $expected);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -1152,13 +1150,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $expected = new Vector($expected);
+                $expected = new Vector(A: $expected);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -1183,7 +1181,7 @@
         public function testPerpendicularExceptionNGreaterThanTwo()
         {
             // Given
-            $A = new Vector(A: [1, 2, 3]);
+            $A = new Vector([1, 2, 3]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
@@ -1201,13 +1199,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -1215,7 +1213,7 @@
             // When
             try
             {
-                $A⊥⋅B = $A->perpDotProduct($B);
+                $A⊥⋅B = $A->perpDotProduct(B: $B);
             } catch (Exception\VectorException $e)
             {
             }
@@ -1231,14 +1229,14 @@
         public function testPerpDotProductExceptionNNotBothTwo()
         {
             // Given
-            $A = new Vector(A: [1, 2, 3]);
-            $B = new Vector(A: [1, 2, 3]);
+            $A = new Vector([1, 2, 3]);
+            $B = new Vector([1, 2, 3]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $A->perpDotProduct(B: $B);
+            $A->perpDotProduct($B);
         }
 
         /**
@@ -1250,25 +1248,25 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $expected = new Vector($expected);
+                $expected = new Vector(A: $expected);
             } catch (Exception\BadDataException $e)
             {
             }
 
             // When
-            $projₐb = $A->projection(B: $B);
+            $projₐb = $A->projection($B);
 
             // Then
             $this->assertEqualsWithDelta($expected, $projₐb, 0.00001);
@@ -1285,25 +1283,25 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $expected = new Vector($expected);
+                $expected = new Vector(A: $expected);
             } catch (Exception\BadDataException $e)
             {
             }
 
             // When
-            $perpₐb = $A->perp(B: $B);
+            $perpₐb = $A->perp($B);
 
             // Then
             $this->assertEqualsWithDelta($expected, $perpₐb, 0.00001);
@@ -1320,25 +1318,32 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $expected = new NumericMatrix($expected);
+                $expected = new NumericMatrix(A: $expected);
             } catch (Exception\BadDataException $e)
             {
             }
 
             // When
-            $AB = $A->directProduct(B: $B);
+            try
+            {
+                $AB = $A->directProduct($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected->getMatrix(), $AB->getMatrix());
@@ -1351,6 +1356,9 @@
          * @param array $A
          * @param array $B
          * @param array $expected
+         *
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException
          */
         public function testKroneckerProduct(
             array $A,
@@ -1360,25 +1368,32 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $R = new Vector($expected);
+                $R = new Vector(A: $expected);
             } catch (Exception\BadDataException $e)
             {
             }
 
             // When
-            $A⨂B = $A->kroneckerProduct(B: $B);
+            try
+            {
+                $A⨂B = $A->kroneckerProduct($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $A⨂B);
@@ -1396,7 +1411,7 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -1420,7 +1435,7 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }

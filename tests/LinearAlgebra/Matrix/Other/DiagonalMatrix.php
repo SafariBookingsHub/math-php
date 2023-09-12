@@ -4,43 +4,43 @@
 
     class DiagonalMatrix {
 
-        public function constructionExceptionNotDiagonal()
+        public static function constructionExceptionNotDiagonal()
         {
         }
 
-        public function constructionExceptionNotSquare()
+        public static function constructionExceptionNotSquare()
         {
         }
 
-        public function isDiagonal()
+        public static function isDiagonal()
         {
         }
 
-        public function isTriangular()
+        public static function isTriangular()
         {
         }
 
-        public function isUpperTriangular()
+        public static function isUpperTriangular()
         {
         }
 
-        public function isLowerTriangular()
+        public static function isLowerTriangular()
         {
         }
 
-        public function isSymmetric()
+        public static function isSymmetric()
         {
         }
 
-        public function isSquare()
+        public static function isSquare()
         {
         }
 
-        public function getMatrix()
+        public static function getMatrix()
         {
         }
 
-        public function constructor()
+        public static function constructor()
         {
         }
     }

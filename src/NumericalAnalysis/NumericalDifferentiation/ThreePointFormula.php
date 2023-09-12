@@ -80,7 +80,7 @@
 
             // Validate input, sort points, make sure spacing is constant, and make
             // sure our target is contained in an interval supplied by our $source
-            self::validate($points, degree: 3);
+            self::validate($points, 3);
             $sorted = self::sort($points);
             self::assertSpacingConstant($sorted);
             self::assertTargetInPoints($target, $sorted);
@@ -132,18 +132,18 @@
                 $f⟮x₀⧾2h⟯ = $sorted[0][$y];
             }
 
-            return ((-3 * $f⟮x₀⟯ + 4 * $f⟮x₀⧾h⟯) - $f⟮x₀⧾2h⟯) / (2 * $h);
+            return (((-3 * $f⟮x₀⟯) + (4 * $f⟮x₀⧾h⟯)) - $f⟮x₀⧾2h⟯) / (2 * $h);
         }
 
-        public function differentiateZeroErrorUsingPoints()
+        public static function differentiateZeroErrorUsingPoints()
         {
         }
 
-        public function differentiateNonZeroError()
+        public static function differentiateNonZeroError()
         {
         }
 
-        public function differentiateZeroError()
+        public static function differentiateZeroError()
         {
         }
     }

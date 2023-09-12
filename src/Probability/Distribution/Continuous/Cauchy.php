@@ -37,7 +37,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '(-∞,∞)',
             ];
@@ -69,6 +69,10 @@
             return NAN;
         }
 
+        public static function inverseOfCdf()
+        {
+        }
+
         /**
          * Probability density function
          *
@@ -87,11 +91,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -99,7 +99,7 @@
             $γ = $this->γ;
             $π = M_PI;
 
-            return 1 / ($π * $γ * (1 + (($x - $x₀) / $γ) ** 2));
+            return 1 / ($π * $γ * (1 + ((($x - $x₀) / $γ) ** 2)));
         }
 
         /**
@@ -115,11 +115,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -127,7 +123,7 @@
             $γ = $this->γ;
             $π = M_PI;
 
-            return (1 / $π) * atan(($x - $x₀) / $γ) + .5;
+            return ((1 / $π) * atan(($x - $x₀) / $γ)) + .5;
         }
 
         /**
@@ -144,11 +140,7 @@
             try
             {
                 Support::checkLimits(['p' => '[0,1]'], ['p' => $p]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -157,7 +149,7 @@
 
             $π = M_PI;
 
-            return $x₀ + $γ * tan($π * ($p - .5));
+            return $x₀ + ($γ * tan($π * ($p - .5)));
         }
 
         /**
@@ -192,11 +184,7 @@
             return $this->x₀;
         }
 
-        public function rand()
-        {
-        }
-
-        public function inverseOfCdf()
+        public function rand(): float|int
         {
         }
     }

@@ -22,10 +22,10 @@
      */
     abstract class NumericalDifferentiation {
         /** @var int Index of x */
-        protected const X = 0;
+        protected final const X = 0;
 
         /** @var int Index of y */
-        protected const Y = 1;
+        protected final const Y = 1;
 
         /**
          * @param float                                       $target
@@ -62,15 +62,21 @@
          *        Verify $start and $end are numbers, $end > $start, and $points is an integer > 1
          *
          */
-        public static function getPoints(callable|array $source, array $args = []): array
-        {
+        public static function getPoints(
+            callable|array $source,
+            array $args = []
+        ): array {
             // Guard clause - source must be callable or array of points
             if ( ! (is_callable($source) || is_array($source)))
+            {
                 throw new Exception\BadDataException('Input source is incorrect. You need to input either a callback function or a set of arrays');
+            }
 
             // Source is already an array: nothing to do
             if (is_array($source))
+            {
                 return $source;
+            }
 
             // Construct points from callable function
             $function = $source;
@@ -103,7 +109,7 @@
 
             for ($i = 0; $i < $n; $i++)
             {
-                $xᵢ = $start + $i * $h;
+                $xᵢ = $start + ($i * $h);
                 $f⟮xᵢ⟯ = $function($xᵢ);
                 $points[$i] = [$xᵢ, $f⟮xᵢ⟯];
             }
@@ -126,17 +132,23 @@
         public static function validate(array $points, int $degree): void
         {
             if (count($points) != $degree)
+            {
                 throw new Exception\BadDataException("You need to have $degree sets of coordinates (arrays) for this technique");
+            }
 
             $x_coordinates = [];
             foreach ($points as $point)
             {
                 if (count($point) !== 2)
+                {
                     throw new Exception\BadDataException('Each array needs to have have precisely two numbers, an x- and y-component');
+                }
 
                 $x_component = $point[self::X];
                 if (in_array($x_component, $x_coordinates))
+                {
                     throw new Exception\BadDataException('Not a function. Your input array contains more than one coordinate with the same x-component.');
+                }
                 $x_coordinates[] = $x_component;
             }
         }
@@ -158,8 +170,12 @@
                     - 1);
 
             for ($i = 1; $i < $length - 1; $i++)
+            {
                 if ($sorted[$i + 1][$x] - $sorted[$i][$x] !== $spacing)
+                {
                     throw new Exception\BadDataException('The size of each subinterval must be the same. Provide points with constant spacing.');
+                }
+            }
         }
 
         /**
@@ -175,12 +191,37 @@
             array $sorted
         ): void {
             $array_map = [];
-            foreach ($sorted as $ignored => {
-                array $point)}
+            foreach ($sorted as $ignored => array $point)
             $xComponents = $array_map;
 
             if ( ! in_array($target, $xComponents))
+            {
                 throw new Exception\BadDataException('Your target point must be the x-component of one of the points you supplied.');
+            }
+        }
+
+        public static function targetNotInPoints()
+        {
+        }
+
+        public static function spacingNonConstant()
+        {
+        }
+
+        public static function notAFunctionException()
+        {
+        }
+
+        public static function notEnoughArraysException()
+        {
+        }
+
+        public static function notCoordinatesException()
+        {
+        }
+
+        public static function incorrectInput()
+        {
         }
 
         /**
@@ -196,29 +237,5 @@
             usort($points, fn($a, $b) => $a[self::X] <=> $b[self::X]);
 
             return $points;
-        }
-
-        public function targetNotInPoints()
-        {
-        }
-
-        public function spacingNonConstant()
-        {
-        }
-
-        public function notAFunctionException()
-        {
-        }
-
-        public function notEnoughArraysException()
-        {
-        }
-
-        public function notCoordinatesException()
-        {
-        }
-
-        public function incorrectInput()
-        {
         }
     }

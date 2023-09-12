@@ -296,11 +296,11 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
-            $R = $A->columnMultiply($nᵢ, $k);
+            $R = $A->columnMultiply(nᵢ: $nᵢ, k: $k);
 
             // Then
             $this->assertEqualsWithDelta($expectedMatrix, $R, 0.00001);
@@ -313,7 +313,7 @@
         public function testColumnMultiplyExceptionColumnGreaterThanN()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -323,7 +323,7 @@
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->columnMultiply(4, 5);
+            $A->columnMultiply(nᵢ: 4, k: 5);
         }
 
         /**
@@ -346,11 +346,11 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
-            $R = $A->columnAdd($nᵢ, $nⱼ, $k);
+            $R = $A->columnAdd(nᵢ: $nᵢ, nⱼ: $nⱼ, k: $k);
 
             // Then
             $this->assertEqualsWithDelta($expectedMatrix, $R, 0.00001);
@@ -363,7 +363,7 @@
         public function testColumnAddExceptionRowGreaterThanN()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -373,7 +373,7 @@
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->columnAdd(4, 5, 2);
+            $A->columnAdd(nᵢ: 4, nⱼ: 5, k: 2);
         }
 
         /**
@@ -383,7 +383,7 @@
         public function testColumnAddExceptionKIsZero()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -393,7 +393,7 @@
             $this->expectException(Exception\BadParameterException::class);
 
             // When
-            $A->columnAdd(1, 2, 0);
+            $A->columnAdd(nᵢ: 1, nⱼ: 2, k: 0);
         }
 
         /**
@@ -414,12 +414,12 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::createNumeric($A);
-            $V = new Vector($vector);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::createNumeric(A: $A);
+            $V = new Vector(A: $vector);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
-            $R = $A->columnAddVector($nᵢ, $V);
+            $R = $A->columnAddVector(nᵢ: $nᵢ, V: $V);
 
             // Then
             $this->assertEquals($expectedMatrix, $R);
@@ -432,19 +432,19 @@
         public function testColumnAddVectorExceptionColumnExists()
         {
             // Given
-            $A = MatrixFactory::createNumeric([
+            $A = MatrixFactory::createNumeric(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
             ]);
 
-            $b = new Vector([1, 2, 3]);
+            $b = new Vector(A: [1, 2, 3]);
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->columnAddVector(4, $b);
+            $A->columnAddVector(nᵢ: 4, V: $b);
         }
 
         /**
@@ -454,18 +454,18 @@
         public function testColumnAddVectorExceptionElementMismatch()
         {
             // Given
-            $A = MatrixFactory::createNumeric([
+            $A = MatrixFactory::createNumeric(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
             ]);
 
-            $b = new Vector([1, 2, 3, 4]);
+            $b = new Vector(A: [1, 2, 3, 4]);
 
             // Then
             $this->expectException(Exception\BadParameterException::class);
 
             // When
-            $A->columnAddVector(1, $b);
+            $A->columnAddVector(nᵢ: 1, V: $b);
         }
     }

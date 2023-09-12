@@ -2,6 +2,8 @@
 
     namespace MathPHP\Tests\Probability\Distribution\Continuous;
 
+    use MathPHP\Exception\NanException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Probability\Distribution\Continuous\NoncentralT;
     use PHPUnit\Framework\TestCase;
 
@@ -157,6 +159,9 @@
          * @param int   $ν degrees of freedom > 0
          * @param float $μ Noncentrality parameter
          * @param float $expected
+         *
+         * @throws \MathPHP\Exception\NanException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testCdf(float $t, int $ν, float $μ, float $expected)
         {
@@ -165,7 +170,14 @@
             $tol = abs(self::ε * $expected);
 
             // When
-            $cdf = $noncentral_t->cdf($t);
+            try
+            {
+                $cdf = $noncentral_t->cdf($t);
+            } catch (NanException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $cdf, $tol);

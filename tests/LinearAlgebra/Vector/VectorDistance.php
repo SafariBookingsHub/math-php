@@ -4,19 +4,19 @@
 
     class VectorDistance {
 
-        public function minkowskiDistance()
+        public static function minkowskiDistance()
         {
         }
 
-        public function l2Distance()
+        public static function l2Distance()
         {
         }
 
-        public function l1Distance()
+        public static function l1Distance()
         {
         }
 
-        public function minkowskiDistanceExceptionDifferentVectors()
+        public static function minkowskiDistanceExceptionDifferentVectors()
         {
         }
     }

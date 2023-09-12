@@ -1011,7 +1011,14 @@
             // When
             try
             {
-                $result = $c->divide($real);
+                try
+                {
+                    $result = $c->divide($real);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                }
             } catch (Exception\IncorrectTypeException $e)
             {
             }
@@ -1095,7 +1102,14 @@
             // When
             try
             {
-                $complex->divide("string");
+                try
+                {
+                    $complex->divide("string");
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                }
             } catch (Exception\IncorrectTypeException $e)
             {
             }

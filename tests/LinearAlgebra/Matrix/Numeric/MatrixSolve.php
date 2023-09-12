@@ -4,56 +4,56 @@
 
     class MatrixSolve {
 
-        public function singularMatrixIssue413WhenSpecifyingSolveWithoutSpecifyingMethod(
+        public static function singularMatrixIssue413WhenSpecifyingSolveWithoutSpecifyingMethod(
         )
         {
         }
 
-        public function singularMatrixIssue413WhenSpecifyingSolveByRref()
+        public static function singularMatrixIssue413WhenSpecifyingSolveByRref()
         {
         }
 
-        public function axEqualsBAfterSolving()
+        public static function axEqualsBAfterSolving()
         {
         }
 
-        public function refUsingSolve()
+        public static function refUsingSolve()
         {
         }
 
-        public function solveExceptionNotVectorOrArray()
+        public static function solveExceptionNotVectorOrArray()
         {
         }
 
-        public function solveForcingRrefMethod()
+        public static function solveForcingRrefMethod()
         {
         }
 
-        public function solveForcingInverseMethod()
+        public static function solveForcingInverseMethod()
         {
         }
 
-        public function solveForcingQrMethod()
+        public static function solveForcingQrMethod()
         {
         }
 
-        public function solveForcingLuMethod()
+        public static function solveForcingLuMethod()
         {
         }
 
-        public function solveRref()
+        public static function solveRref()
         {
         }
 
-        public function solveInverse()
+        public static function solveInverse()
         {
         }
 
-        public function solveVector()
+        public static function solveVector()
         {
         }
 
-        public function solveArray()
+        public static function solveArray()
         {
         }
     }

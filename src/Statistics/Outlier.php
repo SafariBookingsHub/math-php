@@ -16,10 +16,10 @@
      *  - Grubbs' Test
      */
     class Outlier {
-        public const ONE_SIDED = 'one';
-        public const TWO_SIDED = 'two';
-        public const ONE_SIDED_LOWER = 'lower';
-        public const ONE_SIDED_UPPER = 'upper';
+        public final const ONE_SIDED = 'one';
+        public final const TWO_SIDED = 'two';
+        public final const ONE_SIDED_LOWER = 'lower';
+        public final const ONE_SIDED_UPPER = 'upper';
 
         /**
          * The Grubbs' Statistic (G) of a series of data
@@ -122,12 +122,12 @@
 
             $studentT = new StudentT($n - 2);
 
-            $T = $typeOfTest === self::ONE_SIDED
+            $T = ($typeOfTest === self::ONE_SIDED)
                 ? $studentT->inverse($𝛼 / $n)
                 : $studentT->inverse($𝛼 / (2 * $n));
 
-            return ($n - 1) / sqrt($n) * sqrt($T ** 2 / ($n - 2 + $T
-                            ** 2));
+            return (($n - 1) / sqrt($n)) * sqrt(($T ** 2) / (($n - 2) + ($T
+                            ** 2)));
         }
 
         /* ********************** *
@@ -145,34 +145,38 @@
             string $typeOfTest
         ): void {
             if ( ! in_array($typeOfTest, [self::ONE_SIDED, self::TWO_SIDED]))
-                throw new Exception\BadParameterException("{$typeOfTest} is not a valid Grubbs' test");
+            {
+                {
+                    throw new Exception\BadParameterException("{$typeOfTest} is not a valid Grubbs' test");
+                }
+            }
         }
 
-        public function criticalValueException()
+        public static function criticalValueException()
         {
         }
 
-        public function grubbsStatisticTestTypeException()
+        public static function grubbsStatisticTestTypeException()
         {
         }
 
-        public function criticalGrubsTwoSided()
+        public static function criticalGrubsTwoSided()
         {
         }
 
-        public function criticalGrubsOneSided()
+        public static function criticalGrubsOneSided()
         {
         }
 
-        public function grubbsStatisticOneSidedUpper()
+        public static function grubbsStatisticOneSidedUpper()
         {
         }
 
-        public function grubbsStatisticOneSidedLower()
+        public static function grubbsStatisticOneSidedLower()
         {
         }
 
-        public function grubbsStatisticTwoSided()
+        public static function grubbsStatisticTwoSided()
         {
         }
     }

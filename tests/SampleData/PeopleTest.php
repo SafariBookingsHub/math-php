@@ -6,7 +6,6 @@
     use PHPUnit\Framework\TestCase;
 
     class PeopleTest extends TestCase {
-        /** @var SampleData\People */
         private SampleData\People $people;
 
         /**
@@ -96,7 +95,11 @@
 
             // Then
             foreach ($data as $observation)
-                $this->assertCount(12, $observation);
+            {
+                {
+                    $this->assertCount(12, $observation);
+                }
+            }
         }
 
         /**

@@ -37,8 +37,12 @@
          * @throws Exception\OutOfBoundsException
          * @throws Exception\BadDataException
          */
-        public static function solve(callable $function, float|int $a, float|int $b, float|int $tol): float|int
-        {
+        public static function solve(
+            callable $function,
+            float|int $a,
+            float|int $b,
+            float|int $tol
+        ): float|int {
             // Validate input arguments
             self::validate($function, $a, $b, $tol);
 
@@ -50,10 +54,14 @@
                 $dif
                     = abs($f⟮p⟯);       // the magnitude of our function at the midpoint
                 if (Special::sgn($f⟮p⟯) !== Special::sgn($f⟮a⟯))
+                {
                     $b
-                        = $p; else
+                        = $p;
+                } else
+                {
                     $a
                         = $p;
+                }
             } while ($dif > $tol);
 
             return $p;
@@ -77,48 +85,54 @@
          * @throws Exception\BadDataException if $a = $b
          * @throws Exception\BadDataException if f($a) and f($b) share the same sign
          */
-        private static function validate(callable $function, float|int $a, float|int $b, float|int $tol): void
-        {
+        private static function validate(
+            callable $function,
+            float|int $a,
+            float|int $b,
+            float|int $tol
+        ): void {
             Validation::tolerance($tol);
             Validation::interval($a, $b);
 
             $f⟮a⟯ = $function($a);
             $f⟮b⟯ = $function($b);
             if (Special::sgn($f⟮a⟯) === Special::sgn($f⟮b⟯))
+            {
                 throw new Exception\BadDataException(
                     'Input function has the same sign at the start and end of the interval. Choose start and end points such that the function evaluated at those points has a different sign (one positive, one negative).'
                 );
+            }
         }
 
-        public function bisectionMethodExceptionSameSigns()
+        public static function bisectionMethodExceptionSameSigns()
         {
         }
 
-        public function bisectionMethodExceptionZeroInterval()
+        public static function bisectionMethodExceptionZeroInterval()
         {
         }
 
-        public function bisectionMethodExceptionNegativeTolerance()
+        public static function bisectionMethodExceptionNegativeTolerance()
         {
         }
 
-        public function solveEToNegativeXTimesSomeStuff()
+        public static function solveEToNegativeXTimesSomeStuff()
         {
         }
 
-        public function solveXSquaredSubtractThree()
+        public static function solveXSquaredSubtractThree()
         {
         }
 
-        public function solveXCubedSubtractXSubtractTwo()
+        public static function solveXCubedSubtractXSubtractTwo()
         {
         }
 
-        public function solvePolynomialWithFourRootsUsingPolynomial()
+        public static function solvePolynomialWithFourRootsUsingPolynomial()
         {
         }
 
-        public function solvePolynomialWithFourRootsUsingClosure()
+        public static function solvePolynomialWithFourRootsUsingClosure()
         {
         }
     }

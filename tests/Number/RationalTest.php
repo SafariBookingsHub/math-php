@@ -244,8 +244,12 @@
          * @param int $d
          * @param int $expectedWholePart
          */
-        public function testGetWholePart(int $w, int $n, int $d, int $expectedWholePart)
-        {
+        public function testGetWholePart(
+            int $w,
+            int $n,
+            int $d,
+            int $expectedWholePart
+        ) {
             // Given
             $number = new Rational($w, $n, $d);
 
@@ -266,8 +270,13 @@
          * @param int $_
          * @param int $expectedNumerator
          */
-        public function testGetNumerator(int $w, int $n, int $d, int $_, int $expectedNumerator)
-        {
+        public function testGetNumerator(
+            int $w,
+            int $n,
+            int $d,
+            int $_,
+            int $expectedNumerator
+        ) {
             // Given
             $number = new Rational($w, $n, $d);
 

@@ -4,51 +4,51 @@
 
     class MatrixColumnOperations {
 
-        public function columnAddVectorExceptionElementMismatch()
+        public static function columnAddVectorExceptionElementMismatch()
         {
         }
 
-        public function columnAddVectorExceptionColumnExists()
+        public static function columnAddVectorExceptionColumnExists()
         {
         }
 
-        public function columnAddVector()
+        public static function columnAddVector()
         {
         }
 
-        public function columnAddExceptionKIsZero()
+        public static function columnAddExceptionKIsZero()
         {
         }
 
-        public function columnAddExceptionRowGreaterThanN()
+        public static function columnAddExceptionRowGreaterThanN()
         {
         }
 
-        public function columnAdd()
+        public static function columnAdd()
         {
         }
 
-        public function columnMultiplyExceptionColumnGreaterThanN()
+        public static function columnMultiplyExceptionColumnGreaterThanN()
         {
         }
 
-        public function columnMultiply()
+        public static function columnMultiply()
         {
         }
 
-        public function columnExcludeExceptionColumnDoesNotExist()
+        public static function columnExcludeExceptionColumnDoesNotExist()
         {
         }
 
-        public function columnExclude()
+        public static function columnExclude()
         {
         }
 
-        public function columnInterchangeExceptionColumnGreaterThanN()
+        public static function columnInterchangeExceptionColumnGreaterThanN()
         {
         }
 
-        public function columnInterchange()
+        public static function columnInterchange()
         {
         }
     }

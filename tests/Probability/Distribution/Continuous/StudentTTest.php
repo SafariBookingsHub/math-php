@@ -306,10 +306,10 @@
         public function testPdf(float $t, float $ν, float $expected)
         {
             // Given
-            $studentT = new StudentT($ν);
+            $studentT = new StudentT(ν: $ν);
 
             // When
-            $pdf = $studentT->pdf($t);
+            $pdf = $studentT->pdf(t: $t);
 
             // Then
             $this->assertEqualsWithDelta($expected, $pdf, 0.0000001);
@@ -329,11 +329,11 @@
         {
             // Given
             $v = 341;
-            $studentT = new StudentT($v);
+            $studentT = new StudentT(ν: $v);
 
             // When
             $t = 0;
-            $pdf = $studentT->pdf($t);
+            $pdf = $studentT->pdf(t: $t);
 
             // Then
             $expected = 0.3986499;
@@ -351,10 +351,10 @@
         public function testCdf(float $t, float $ν, float $expected)
         {
             // Given
-            $studentT = new StudentT($ν);
+            $studentT = new StudentT(ν: $ν);
 
             // When
-            $cdf = $studentT->cdf($t);
+            $cdf = $studentT->cdf(t: $t);
 
             // Then
             $this->assertEqualsWithDelta($expected, $cdf, 0.0000001);
@@ -370,7 +370,7 @@
         public function testMean(float $ν, float $μ)
         {
             // Given
-            $studentT = new StudentT($ν);
+            $studentT = new StudentT(ν: $ν);
 
             // When
             $mean = $studentT->mean();
@@ -386,7 +386,7 @@
         {
             // Given
             $ν = 1;
-            $studentT = new StudentT($ν);
+            $studentT = new StudentT(ν: $ν);
 
             // When
             $mean = $studentT->mean();
@@ -405,7 +405,7 @@
         public function testMedian(float $ν, float $expected)
         {
             // Given
-            $studentT = new StudentT($ν);
+            $studentT = new StudentT(ν: $ν);
 
             // When
             $median = $studentT->median();
@@ -424,7 +424,7 @@
         public function testMode(float $ν, float $expected)
         {
             // Given
-            $studentT = new StudentT($ν);
+            $studentT = new StudentT(ν: $ν);
 
             // When
             $mode = StudentT::mode();
@@ -443,7 +443,7 @@
         public function testVariance(float $ν, float $expected)
         {
             // Given
-            $studentT = new StudentT($ν);
+            $studentT = new StudentT(ν: $ν);
 
             // When
             $variance = $studentT->variance();
@@ -461,7 +461,7 @@
         public function testVarianceNan(float $ν)
         {
             // Given
-            $studentT = new StudentT($ν);
+            $studentT = new StudentT(ν: $ν);
 
             // When
             $variance = $studentT->variance();
@@ -481,7 +481,7 @@
         public function testInverse(float $p, float $ν, float $x)
         {
             // Given
-            $studentT = new StudentT($ν);
+            $studentT = new StudentT(ν: $ν);
 
             // When
             $inverse = $studentT->inverse($p);

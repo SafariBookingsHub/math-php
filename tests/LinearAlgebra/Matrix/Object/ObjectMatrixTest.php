@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+<?php
+    /** @noinspection PhpPossiblePolymorphicInvocationInspection */
 
     namespace MathPHP\Tests\LinearAlgebra\Matrix\Object;
 
@@ -15,53 +16,58 @@
     use stdClass;
 
     class ObjectMatrixTest extends TestCase {
-        #[ArrayShape(['object does not implement ObjectArithmetic'         => "array",
-                      'multiple objects do not implement ObjectArithmetic' => "array",
-                      'objects are not the same type'                      => "array",
-                      'different row counts'                               => "array"
+        #[ArrayShape(shape: [
+            'object does not implement ObjectArithmetic'         => "array",
+            'multiple objects do not implement ObjectArithmetic' => "array",
+            'objects are not the same type'                      => "array",
+            'different row counts'                               => "array",
         ])] public static function dataProviderConstructorException(): array
         {
             try
             {
                 return [
-                    'object does not implement ObjectArithmetic' => [
+                    'object does not implement ObjectArithmetic'         => [
                         [[new stdClass()]],
                         Exception\IncorrectTypeException::class,
                     ],
                     'multiple objects do not implement ObjectArithmetic' => [
                         [
-                            [new stdClass(), new Polynomial([1, 2, 3])],
-                            [new stdClass(), new Polynomial([1, 2, 3])],
-                        ],
-                        Exception\IncorrectTypeException::class,
-                    ],
-                    'objects are not the same type' => [
-                        [
                             [
-                                new ArbitraryInteger(5),
-                                new Polynomial([1, 2, 3]),
+                                new stdClass(),
+                                new Polynomial(coefficients: [1, 2, 3]),
                             ],
                             [
-                                new ArbitraryInteger(5),
-                                new Polynomial([1, 2, 3]),
+                                new stdClass(),
+                                new Polynomial(coefficients: [1, 2, 3]),
                             ],
                         ],
                         Exception\IncorrectTypeException::class,
                     ],
-                    'different row counts' => [
+                    'objects are not the same type'                      => [
                         [
                             [
-                                new Polynomial([1, 2, 3]),
-                                new Polynomial([1, 2, 3]),
+                                new ArbitraryInteger(number: 5),
+                                new Polynomial(coefficients: [1, 2, 3]),
                             ],
-                            [new Polynomial([1, 2, 3])],
+                            [
+                                new ArbitraryInteger(number: 5),
+                                new Polynomial(coefficients: [1, 2, 3]),
+                            ],
+                        ],
+                        Exception\IncorrectTypeException::class,
+                    ],
+                    'different row counts'                               => [
+                        [
+                            [
+                                new Polynomial(coefficients: [1, 2, 3]),
+                                new Polynomial(coefficients: [1, 2, 3]),
+                            ],
+                            [new Polynomial(coefficients: [1, 2, 3])],
                         ],
                         Exception\BadDataException::class,
                     ],
                 ];
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -74,35 +80,37 @@
                     [ // Different Sizes
                       [
                           [
-                              new Polynomial([1, 2, 3]),
-                              new Polynomial([1, 2, 3]),
+                              new Polynomial(coefficients: [1, 2, 3]),
+                              new Polynomial(coefficients: [1, 2, 3]),
                           ],
                           [
-                              new Polynomial([1, 2, 3]),
-                              new Polynomial([1, 2, 3]),
+                              new Polynomial(coefficients: [1, 2, 3]),
+                              new Polynomial(coefficients: [1, 2, 3]),
                           ],
                       ],
-                      MatrixFactory::create([[new Polynomial([1, 2, 3])]]),
+                      MatrixFactory::create(A: [
+                          [
+                              new Polynomial(coefficients: [
+                                  1,
+                                  2,
+                                  3,
+                              ]),
+                          ],
+                      ]),
                       Exception\MatrixException::class,
                     ],
                     [ // Different Types
-                      [[new Polynomial([1, 2, 3])]],
-                      new ObjectMatrix([[new Complex(1, 2)]]),
+                      [[new Polynomial(coefficients: [1, 2, 3])]],
+                      new ObjectMatrix(A: [[new Complex(r: 1, i: 2)]]),
                       Exception\IncorrectTypeException::class,
                     ],
                     [ // Not a Matrix
-                      [[new Polynomial([1, 2, 3])]],
-                      new Complex(1, 2),
+                      [[new Polynomial(coefficients: [1, 2, 3])]],
+                      new Complex(r: 1, i: 2),
                       Exception\IncorrectTypeException::class,
                     ],
                 ];
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -112,40 +120,49 @@
             return [
                 [
                     [
-                        [new Polynomial([1, 2]), new Polynomial([2, 1])],
+                        [
+                            new Polynomial(coefficients: [1, 2]),
+                            new Polynomial(coefficients: [2, 1]),
+                        ],
                     ],
                 ],
             ];
         }
 
-        /**
-         * @return array
-         */
-        #[ArrayShape(['same'               => "array",
-                      'different types'    => "\array[][]",
-                      'different contents' => "array",
-                      'different shapes'   => "array"
+        #[ArrayShape(shape: [
+            'same'               => "array",
+            'different types'    => "\array[][]",
+            'different contents' => "array",
+            'different shapes'   => "array",
         ])] public static function dataProviderisEqual(): array
         {
             return [
                 'same'               => [
-                    [[new Polynomial([1, 0])]],
-                    [[new Polynomial([1, 0])]],
+                    [[new Polynomial(coefficients: [1, 0])]],
+                    [[new Polynomial(coefficients: [1, 0])]],
                     TRUE,
                 ],
                 'different types'    => [
-                    [[new Polynomial([1, 0])]],
+                    [[new Polynomial(coefficients: [1, 0])]],
                     [[1]],
                     FALSE,
                 ],
                 'different contents' => [
-                    [[new Polynomial([1, 0])]],
-                    [[new Polynomial([1, 1])]],
+                    [[new Polynomial(coefficients: [1, 0])]],
+                    [[new Polynomial(coefficients: [1, 1])]],
                     FALSE,
                 ],
                 'different shapes'   => [
-                    [[new Polynomial([1, 0]), new Polynomial([1, 0])]],
-                    [[new Polynomial([1, 0])], [new Polynomial([1, 0])]],
+                    [
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
+                    ],
+                    [
+                        [new Polynomial(coefficients: [1, 0])],
+                        [new Polynomial(coefficients: [1, 0])],
+                    ],
                     FALSE,
                 ],
             ];
@@ -156,30 +173,66 @@
             return [
                 [
                     [
-                        [new Polynomial([1, 0]), new Polynomial([0, 0])],
-                        [new Polynomial([0, 0]), new Polynomial([1, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [0, 0]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [0, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
                     ],
                     [
-                        [new Polynomial([1, 0]), new Polynomial([1, 1])],
-                        [new Polynomial([1, 1]), new Polynomial([1, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 1]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [1, 1]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
                     ],
                     [
-                        [new Polynomial([2, 0]), new Polynomial([1, 1])],
-                        [new Polynomial([1, 1]), new Polynomial([2, 0])],
+                        [
+                            new Polynomial(coefficients: [2, 0]),
+                            new Polynomial(coefficients: [1, 1]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [1, 1]),
+                            new Polynomial(coefficients: [2, 0]),
+                        ],
                     ],
                 ],
                 [
                     [
-                        [new Polynomial([1, 0]), new Polynomial([1, 0])],
-                        [new Polynomial([1, 0]), new Polynomial([1, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
                     ],
                     [
-                        [new Polynomial([1, 0]), new Polynomial([1, 1])],
-                        [new Polynomial([1, 1]), new Polynomial([1, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 1]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [1, 1]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
                     ],
                     [
-                        [new Polynomial([2, 0]), new Polynomial([2, 1])],
-                        [new Polynomial([2, 1]), new Polynomial([2, 0])],
+                        [
+                            new Polynomial(coefficients: [2, 0]),
+                            new Polynomial(coefficients: [2, 1]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [2, 1]),
+                            new Polynomial(coefficients: [2, 0]),
+                        ],
                     ],
                 ],
             ];
@@ -190,30 +243,66 @@
             return [
                 [
                     [
-                        [new Polynomial([1, 0]), new Polynomial([0, 0])],
-                        [new Polynomial([0, 0]), new Polynomial([1, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [0, 0]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [0, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
                     ],
                     [
-                        [new Polynomial([2, 1]), new Polynomial([2, 1])],
-                        [new Polynomial([1, -1]), new Polynomial([-1, 0])],
+                        [
+                            new Polynomial(coefficients: [2, 1]),
+                            new Polynomial(coefficients: [2, 1]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [1, -1]),
+                            new Polynomial(coefficients: [-1, 0]),
+                        ],
                     ],
                     [
-                        [new Polynomial([-1, -1]), new Polynomial([-2, -1])],
-                        [new Polynomial([-1, 1]), new Polynomial([2, 0])],
+                        [
+                            new Polynomial(coefficients: [-1, -1]),
+                            new Polynomial(coefficients: [-2, -1]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [-1, 1]),
+                            new Polynomial(coefficients: [2, 0]),
+                        ],
                     ],
                 ],
                 [
                     [
-                        [new Polynomial([1, 0]), new Polynomial([1, 0])],
-                        [new Polynomial([1, 0]), new Polynomial([1, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
                     ],
                     [
-                        [new Polynomial([-2, 0]), new Polynomial([1, -1])],
-                        [new Polynomial([-2, 2]), new Polynomial([4, 4])],
+                        [
+                            new Polynomial(coefficients: [-2, 0]),
+                            new Polynomial(coefficients: [1, -1]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [-2, 2]),
+                            new Polynomial(coefficients: [4, 4]),
+                        ],
                     ],
                     [
-                        [new Polynomial([3, 0]), new Polynomial([0, 1])],
-                        [new Polynomial([3, -2]), new Polynomial([-3, -4])],
+                        [
+                            new Polynomial(coefficients: [3, 0]),
+                            new Polynomial(coefficients: [0, 1]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [3, -2]),
+                            new Polynomial(coefficients: [-3, -4]),
+                        ],
                     ],
                 ],
             ];
@@ -224,30 +313,66 @@
             return [
                 [
                     [
-                        [new Polynomial([1, 0]), new Polynomial([0, 0])],
-                        [new Polynomial([0, 0]), new Polynomial([1, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [0, 0]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [0, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
                     ],
                     [
-                        [new Polynomial([1, 0]), new Polynomial([1, 1])],
-                        [new Polynomial([1, 1]), new Polynomial([1, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 1]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [1, 1]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
                     ],
                     [
-                        [new Polynomial([1, 0, 0]), new Polynomial([1, 1, 0])],
-                        [new Polynomial([1, 1, 0]), new Polynomial([1, 0, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0, 0]),
+                            new Polynomial(coefficients: [1, 1, 0]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [1, 1, 0]),
+                            new Polynomial(coefficients: [1, 0, 0]),
+                        ],
                     ],
                 ],
                 [
                     [
-                        [new Polynomial([1, 0]), new Polynomial([1, 0])],
-                        [new Polynomial([1, 0]), new Polynomial([1, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
                     ],
                     [
-                        [new Polynomial([1, 0]), new Polynomial([1, 1])],
-                        [new Polynomial([1, 1]), new Polynomial([1, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 1]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [1, 1]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
                     ],
                     [
-                        [new Polynomial([2, 1, 0]), new Polynomial([2, 1, 0])],
-                        [new Polynomial([2, 1, 0]), new Polynomial([2, 1, 0])],
+                        [
+                            new Polynomial(coefficients: [2, 1, 0]),
+                            new Polynomial(coefficients: [2, 1, 0]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [2, 1, 0]),
+                            new Polynomial(coefficients: [2, 1, 0]),
+                        ],
                     ],
                 ],
             ];
@@ -258,13 +383,22 @@
             return [
                 [
                     [
-                        [new Polynomial([1, 0]), new Polynomial([0, 0])],
-                        [new Polynomial([0, 0]), new Polynomial([1, 0])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [0, 0]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [0, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
                     ],
-                    [new Polynomial([1, 0]), new Polynomial([1, 1])],
                     [
-                        [new Polynomial([1, 0, 0])],
-                        [new Polynomial([1, 1, 0])],
+                        new Polynomial(coefficients: [1, 0]),
+                        new Polynomial(coefficients: [1, 1]),
+                    ],
+                    [
+                        [new Polynomial(coefficients: [1, 0, 0])],
+                        [new Polynomial(coefficients: [1, 1, 0])],
                     ],
                 ],
             ];
@@ -275,16 +409,22 @@
             return [
                 [
                     [
-                        [new Polynomial([1, 0])],
+                        [new Polynomial(coefficients: [1, 0])],
                     ],
-                    new Polynomial([1, 0]),
+                    new Polynomial(coefficients: [1, 0]),
                 ],
                 [
                     [
-                        [new Polynomial([1, 0]), new Polynomial([1, 0])],
-                        [new Polynomial([1, 0]), new Polynomial([0, 4])],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                        ],
+                        [
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [0, 4]),
+                        ],
                     ],
-                    new Polynomial([-1, 4, 0]),
+                    new Polynomial(coefficients: [-1, 4, 0]),
                 ],
             ];
         }
@@ -297,29 +437,27 @@
                     [
                         [
                             [
-                                new ArbitraryInteger(1),
-                                new ArbitraryInteger(4),
-                                new ArbitraryInteger(7),
+                                new ArbitraryInteger(number: 1),
+                                new ArbitraryInteger(number: 4),
+                                new ArbitraryInteger(number: 7),
                             ],
                             [
-                                new ArbitraryInteger(3),
-                                new ArbitraryInteger(0),
-                                new ArbitraryInteger(5),
+                                new ArbitraryInteger(number: 3),
+                                new ArbitraryInteger(number: 0),
+                                new ArbitraryInteger(number: 5),
                             ],
                             [
-                                new ArbitraryInteger(-1),
-                                new ArbitraryInteger(9),
-                                new ArbitraryInteger(11),
+                                new ArbitraryInteger(number: -1),
+                                new ArbitraryInteger(number: 9),
+                                new ArbitraryInteger(number: 11),
                             ],
                         ],
                         0,
                         0,
-                        new ArbitraryInteger(-45),
+                        new ArbitraryInteger(number: -45),
                     ],
                 ];
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -331,41 +469,45 @@
                 return [
                     [
                         [
-                            [new ArbitraryInteger(1)],
+                            [new ArbitraryInteger(number: 1)],
                         ],
-                        new ArbitraryInteger(1),
-                    ],
-                    [
-                        [
-                            [new ArbitraryInteger(1), new ArbitraryInteger(2)],
-                            [new ArbitraryInteger(2), new ArbitraryInteger(3)],
-                        ],
-                        new ArbitraryInteger(4),
+                        new ArbitraryInteger(number: 1),
                     ],
                     [
                         [
                             [
-                                new ArbitraryInteger(1),
-                                new ArbitraryInteger(2),
-                                new ArbitraryInteger(3),
+                                new ArbitraryInteger(number: 1),
+                                new ArbitraryInteger(number: 2),
                             ],
                             [
-                                new ArbitraryInteger(4),
-                                new ArbitraryInteger(5),
-                                new ArbitraryInteger(6),
-                            ],
-                            [
-                                new ArbitraryInteger(7),
-                                new ArbitraryInteger(8),
-                                new ArbitraryInteger(9),
+                                new ArbitraryInteger(number: 2),
+                                new ArbitraryInteger(number: 3),
                             ],
                         ],
-                        new ArbitraryInteger(15),
+                        new ArbitraryInteger(number: 4),
+                    ],
+                    [
+                        [
+                            [
+                                new ArbitraryInteger(number: 1),
+                                new ArbitraryInteger(number: 2),
+                                new ArbitraryInteger(number: 3),
+                            ],
+                            [
+                                new ArbitraryInteger(number: 4),
+                                new ArbitraryInteger(number: 5),
+                                new ArbitraryInteger(number: 6),
+                            ],
+                            [
+                                new ArbitraryInteger(number: 7),
+                                new ArbitraryInteger(number: 8),
+                                new ArbitraryInteger(number: 9),
+                            ],
+                        ],
+                        new ArbitraryInteger(number: 15),
                     ],
                 ];
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -387,12 +529,8 @@
             // When
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -413,12 +551,8 @@
             // Given
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -428,7 +562,7 @@
             // When
             try
             {
-                $C = $A->add($B);
+                $C = $A->add(object_or_scalar: $B);
             } catch (Exception\IncorrectTypeException $e)
             {
             }
@@ -450,12 +584,8 @@
             // Given
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -465,7 +595,7 @@
             // When
             try
             {
-                $C = $A->subtract($B);
+                $C = $A->subtract(object_or_scalar: $B);
             } catch (Exception\IncorrectTypeException $e)
             {
             }
@@ -478,6 +608,8 @@
          * @param array            $A
          * @param ObjectArithmetic $B
          * @param string           $exception
+         *
+         * @throws \MathPHP\Exception\MathException
          */
         public function testMatrixMultiplyException(
             array $A,
@@ -487,12 +619,8 @@
             // Given
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -502,10 +630,17 @@
             // When
             try
             {
-                $C = $A->multiply($B);
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
+                try
+                {
+                    $C = $A->multiply(object_or_scalar: $B);
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
+            } catch (Exception\IncorrectTypeException|Exception\MatrixException $e)
             {
             }
         }
@@ -515,18 +650,17 @@
          * @dataProvider dataProviderDetException
          *
          * @param array $A
+         *
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException
          */
         public function testMatrixDetException(array $A)
         {
             // Given
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -536,7 +670,16 @@
             // When
             try
             {
-                $det = $A->det();
+                try
+                {
+                    $det = $A->det();
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                }
             } catch (Exception\MatrixException $e)
             {
             }
@@ -555,8 +698,8 @@
         public function testIsEqual(array $A, array $B, bool $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When
             $comparison = $A->isEqual($B);
@@ -578,14 +721,14 @@
         public function testAdd(array $A, array $B, array $expected)
         {
             // Given
-            $A = new ObjectMatrix($A);
-            $B = new ObjectMatrix($B);
+            $A = new ObjectMatrix(A: $A);
+            $B = new ObjectMatrix(A: $B);
 
             // And
-            $expected = matrixFactory::create($expected);
+            $expected = matrixFactory::create(A: $expected);
 
             // When
-            $sum = $A->add($B);
+            $sum = $A->add(object_or_scalar: $B);
 
             // Then
             $this->assertEquals($expected, $sum);
@@ -604,12 +747,12 @@
         public function testSubtract(array $A, array $B, array $expected)
         {
             // Given
-            $A = new ObjectMatrix($A);
-            $B = new ObjectMatrix($B);
-            $expected = new ObjectMatrix($expected);
+            $A = new ObjectMatrix(A: $A);
+            $B = new ObjectMatrix(A: $B);
+            $expected = new ObjectMatrix(A: $expected);
 
             // When
-            $difference = $A->subtract($B);
+            $difference = $A->subtract(object_or_scalar: $B);
 
             // Then
             $this->assertEquals($expected->getMatrix(),
@@ -623,52 +766,47 @@
          * @param array $A
          * @param array $B
          * @param array $expected
+         *
+         * @throws \MathPHP\Exception\MathException
          */
         public function testMul(array $A, array $B, array $expected)
         {
             // Given
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
             try
             {
-                $B = new ObjectMatrix($B);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $B = new ObjectMatrix(A: $B);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
             // And
             try
             {
-                $expected = matrixFactory::create($expected);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $expected = matrixFactory::create(A: $expected);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
             // When
             try
             {
-                $sum = $A->multiply($B);
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
+                try
+                {
+                    $sum = $A->multiply(object_or_scalar: $B);
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
+            } catch (Exception\IncorrectTypeException|Exception\MatrixException $e)
             {
             }
 
@@ -683,23 +821,21 @@
          * @param array $A
          * @param array $B
          * @param array $expected
+         *
+         * @throws \MathPHP\Exception\MathException
          */
         public function testMultiplyVector(array $A, array $B, array $expected)
         {
             // Given
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -707,24 +843,25 @@
             // When
             try
             {
-                $sum = $A->multiply($B);
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
+                try
+                {
+                    $sum = $A->multiply(object_or_scalar: $B);
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
+            } catch (Exception\IncorrectTypeException|Exception\MatrixException $e)
             {
             }
 
             // Then
             try
             {
-                $expected = MatrixFactory::create($expected);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $expected = MatrixFactory::create(A: $expected);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
             $this->assertEquals($expected, $sum);
@@ -736,25 +873,33 @@
          *
          * @param array      $A
          * @param Polynomial $expected
+         *
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException
          */
         public function testDet(array $A, Polynomial $expected)
         {
             // Given
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
             // When
             try
             {
-                $det = $A->det();
+                try
+                {
+                    $det = $A->det();
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                }
             } catch (Exception\MatrixException $e)
             {
             }
@@ -765,7 +910,16 @@
             // And when
             try
             {
-                $det = $A->det();
+                try
+                {
+                    $det = $A->det();
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                }
             } catch (Exception\MatrixException $e)
             {
             }
@@ -792,17 +946,13 @@
             // Given
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
             // When
-            $cofactor = $A->cofactor($mᵢ, $nⱼ);
+            $cofactor = $A->cofactor(mᵢ: $mᵢ, nⱼ: $nⱼ);
 
             // Then
             $this->assertEquals($Cᵢⱼ, $cofactor);
@@ -818,22 +968,22 @@
             try
             {
                 $A = [
-                    [new ArbitraryInteger(1), new ArbitraryInteger(4)],
-                    [new ArbitraryInteger(3), new ArbitraryInteger(0)],
+                    [
+                        new ArbitraryInteger(number: 1),
+                        new ArbitraryInteger(number: 4),
+                    ],
+                    [
+                        new ArbitraryInteger(number: 3),
+                        new ArbitraryInteger(number: 0),
+                    ],
                 ];
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -841,24 +991,21 @@
             try
             {
                 $expected = [
-                    [new ArbitraryInteger(1), new ArbitraryInteger(3)],
-                    [new ArbitraryInteger(4), new ArbitraryInteger(0)],
+                    [
+                        new ArbitraryInteger(number: 1),
+                        new ArbitraryInteger(number: 3),
+                    ],
+                    [
+                        new ArbitraryInteger(number: 4),
+                        new ArbitraryInteger(number: 0),
+                    ],
                 ];
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
 
             // When
-            try
-            {
-                $Aᵀ = $A->transpose();
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            }
+            $Aᵀ = $A->transpose();
 
             // Then
             $this->assertEquals($expected, $Aᵀ->getMatrix());
@@ -873,22 +1020,22 @@
             try
             {
                 $A = [
-                    [new ArbitraryInteger(1), new ArbitraryInteger(4)],
-                    [new ArbitraryInteger(-3), new ArbitraryInteger(0)],
+                    [
+                        new ArbitraryInteger(number: 1),
+                        new ArbitraryInteger(number: 4),
+                    ],
+                    [
+                        new ArbitraryInteger(number: -3),
+                        new ArbitraryInteger(number: 0),
+                    ],
                 ];
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -896,29 +1043,22 @@
             $λ = 2;
 
             // When
-            try
-            {
-                $λA = $A->scalarMultiply($λ);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            }
+            $λA = $A->scalarMultiply(λ: $λ);
 
             // Then
             try
             {
-                $expected = new ObjectMatrix([
-                    [new ArbitraryInteger(2), new ArbitraryInteger(8)],
-                    [new ArbitraryInteger(-6), new ArbitraryInteger(0)],
+                $expected = new ObjectMatrix(A: [
+                    [
+                        new ArbitraryInteger(number: 2),
+                        new ArbitraryInteger(number: 8),
+                    ],
+                    [
+                        new ArbitraryInteger(number: -6),
+                        new ArbitraryInteger(number: 0),
+                    ],
                 ]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException|Exception\BadParameterException $e)
             {
             }
             $this->assertEquals($expected->getMatrix(), $λA->getMatrix());
@@ -933,59 +1073,50 @@
             try
             {
                 $A = [
-                    [new ArbitraryInteger(1), new ArbitraryInteger(4)],
-                    [new ArbitraryInteger(-3), new ArbitraryInteger(0)],
+                    [
+                        new ArbitraryInteger(number: 1),
+                        new ArbitraryInteger(number: 4),
+                    ],
+                    [
+                        new ArbitraryInteger(number: -3),
+                        new ArbitraryInteger(number: 0),
+                    ],
                 ];
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
             // And
             try
             {
-                $λ = new ArbitraryInteger(2);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+                $λ = new ArbitraryInteger(number: 2);
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
 
             // When
-            try
-            {
-                $λA = $A->scalarMultiply($λ);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            }
+            $λA = $A->scalarMultiply(λ: $λ);
 
             // Then
             try
             {
-                $expected = new ObjectMatrix([
-                    [new ArbitraryInteger(2), new ArbitraryInteger(8)],
-                    [new ArbitraryInteger(-6), new ArbitraryInteger(0)],
+                $expected = new ObjectMatrix(A: [
+                    [
+                        new ArbitraryInteger(number: 2),
+                        new ArbitraryInteger(number: 8),
+                    ],
+                    [
+                        new ArbitraryInteger(number: -6),
+                        new ArbitraryInteger(number: 0),
+                    ],
                 ]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException|Exception\BadParameterException $e)
             {
             }
             $this->assertEquals($expected->getMatrix(), $λA->getMatrix());
@@ -1003,11 +1134,9 @@
             try
             {
                 $expected = [
-                    [new ArbitraryInteger(0)],
+                    [new ArbitraryInteger(number: 0)],
                 ];
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -1027,12 +1156,8 @@
             // Given
             try
             {
-                $A = new ObjectMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ObjectMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -1056,16 +1181,13 @@
             // Given
             try
             {
-                $A = new ObjectMatrix([
-                    [new ArbitraryInteger(1), new ArbitraryInteger(2)],
+                $A = new ObjectMatrix(A: [
+                    [
+                        new ArbitraryInteger(number: 1),
+                        new ArbitraryInteger(number: 2),
+                    ],
                 ]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException|Exception\BadParameterException $e)
             {
             }
 

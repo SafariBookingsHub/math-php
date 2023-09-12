@@ -27,7 +27,11 @@
             parent::__construct($A);
 
             if ($this->m !== $this->n)
-                throw new Exception\MatrixException("Not a square matrix; row count and column count differ: {$this->m}x{$this->n}");
+            {
+                {
+                    throw new Exception\MatrixException("Not a square matrix; row count and column count differ: {$this->m}x{$this->n}");
+                }
+            }
         }
 
         /**
@@ -40,7 +44,7 @@
             return TRUE;
         }
 
-        public function det()
+        public function det(): ObjectArithmetic
         {
         }
 
@@ -52,15 +56,15 @@
         {
         }
 
-        public function subtract()
+        public function subtract(mixed $object_or_scalar): Matrix
         {
         }
 
-        public function add()
+        public function add(mixed $object_or_scalar): Matrix
         {
         }
 
-        public function isEqual()
+        public function isEqual(Matrix $B): bool
         {
         }
 

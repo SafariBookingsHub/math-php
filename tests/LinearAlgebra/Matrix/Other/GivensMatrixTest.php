@@ -53,7 +53,8 @@
             $this->expectException(OutOfBoundsException::class);
 
             // When
-            $matrix = MatrixFactory::givens($m, $n, $angle, $size);
+            $matrix = MatrixFactory::givens(m: $m, n: $n, angle: $angle,
+                size: $size);
         }
 
         /**
@@ -76,7 +77,8 @@
             array $expected
         ) {
             // When
-            $G = MatrixFactory::givens($m, $n, $angle, $size);
+            $G = MatrixFactory::givens(m: $m, n: $n, angle: $angle,
+                size: $size);
 
             // Then
             $this->assertEqualsWithDelta($expected, $G->getMatrix(), 0.00001);

@@ -53,7 +53,9 @@
         public static function generalizedHarmonic(int $n, float $m): array
         {
             if ($n <= 0)
+            {
                 return [];
+            }
 
             $sequence = [];
             $∑ = 0;
@@ -90,18 +92,26 @@
             bool $rational = FALSE
         ): array {
             if ($r < 0)
+            {
                 throw new Exception\OutOfBoundsException('Recursion depth cannot be less than 0');
+            }
             if ($n <= 0)
+            {
                 return [];
+            }
             $sequence = [];
 
             try
             {
                 if ($r == 0)
-                    for ($k = 1; $k <= $n; $k++)
+                {
                     {
-                        $sequence[$k] = new Rational(0, 1, $k);
-                    } else
+                        for ($k = 1; $k <= $n; $k++)
+                        {
+                            $sequence[$k] = new Rational(0, 1, $k);
+                        }
+                    }
+                } else
                 {
                     /** @var Rational[] $array */
                     $array = self::hyperharmonic($n, $r - 1, TRUE);
@@ -124,30 +134,31 @@
             }
 
             if ($rational)
+            {
                 return $sequence;
+            }
 
             $array_map = [];
-            foreach ($sequence as $ignored => {
-                Rationalreturn}
+            foreach ($sequence as $ignored => Rationalreturn
         }
 
-        public function hyperharmonicSequenceTypeError()
+        public static function hyperharmonicSequenceTypeError()
         {
         }
 
-        public function hyperharmonicSeriesException()
+        public static function hyperharmonicSeriesException()
         {
         }
 
-        public function hyperharmonicNumbers()
+        public static function hyperharmonicNumbers()
         {
         }
 
-        public function generalizedHarmonicNumbers()
+        public static function generalizedHarmonicNumbers()
         {
         }
 
-        public function harmonicNumbers()
+        public static function harmonicNumbers()
         {
         }
     }

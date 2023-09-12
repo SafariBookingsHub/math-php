@@ -20,7 +20,7 @@
         public function testIsSquare(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isSquare());
@@ -37,7 +37,7 @@
         public function testIsSquareFalseNonSquareMatrix(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isSquare());
@@ -54,7 +54,7 @@
         public function testIsNotSquare(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertFalse($A->isSquare());
@@ -71,7 +71,7 @@
         public function testIsRectangularDiagonal(array $D)
         {
             // Given
-            $D = MatrixFactory::create($D);
+            $D = MatrixFactory::create(A: $D);
 
             // Then
             $this->assertTrue($D->isRectangularDiagonal());

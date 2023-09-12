@@ -101,10 +101,10 @@
         public function testPdf(array $xs, array $αs, float $expected)
         {
             // Given
-            $dirichlet = new Dirichlet($αs);
+            $dirichlet = new Dirichlet(αs: $αs);
 
             // When
-            $pdf = $dirichlet->pdf($xs);
+            $pdf = $dirichlet->pdf(xs: $xs);
 
             // Then
             $this->assertEqualsWithDelta($expected, $pdf, 0.00001);
@@ -119,12 +119,12 @@
             // Given
             $xs = [0.1, 0.2];
             $αs = [1, 2, 3];
-            $dirichlet = new Dirichlet($αs);
+            $dirichlet = new Dirichlet(αs: $αs);
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $pdf = $dirichlet->pdf($xs);
+            $pdf = $dirichlet->pdf(xs: $xs);
         }
     }

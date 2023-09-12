@@ -24,7 +24,7 @@
                 [
                     [1, 2, 3],
                     [3, 2, 1],
-                    rad2deg(num: acos(num: 5 / 7)),
+                    rad2deg(acos(5 / 7)),
                 ],
                 [
                     [1, 2, 3],
@@ -34,7 +34,7 @@
                 [
                     [1, 0, 0],
                     [0, 0, 1],
-                    rad2deg(num: acos(num: 0)),
+                    rad2deg(acos(0)),
                 ],
                 [
                     [1, 0, 0],
@@ -44,7 +44,7 @@
                 [
                     [1, 0, 0],
                     [1, 0, 0],
-                    rad2deg(num: acos(num: 1)),
+                    rad2deg(acos(1)),
                 ],
                 [
                     [1, 0, 0],
@@ -54,7 +54,7 @@
                 [
                     [1, 0, 0],
                     [0, 1, 0],
-                    rad2deg(num: acos(num: 0)),
+                    rad2deg(acos(0)),
                 ],
                 [
                     [1, 0, 0],
@@ -64,7 +64,7 @@
                 [
                     [-1, 1, 0],
                     [0, 1, -1],
-                    rad2deg(num: acos(num: 1 / 2)),
+                    rad2deg(acos(1 / 2)),
                 ],
                 [
                     [-1, 1, 0],
@@ -74,7 +74,7 @@
                 [
                     [1, 0, 0],
                     [-1, 0, 0],
-                    rad2deg(num: acos(num: -1)),
+                    rad2deg(acos(-1)),
                 ],
                 [
                     [1, 0, 0],
@@ -84,7 +84,7 @@
                 [
                     [23, 41, 33],
                     [31, 56, 21],
-                    rad2deg(num: acos(num: 1851 * sqrt(num: 2 / 7485431))),
+                    rad2deg(acos(1851 * sqrt(2 / 7485431))),
                 ],
                 [
                     [23, 41, 33],
@@ -105,7 +105,7 @@
                 [
                     [1, 2, 3],
                     [3, 2, 1],
-                    acos(num: 5 / 7),
+                    acos(5 / 7),
                 ],
                 [
                     [1, 2, 3],
@@ -115,7 +115,7 @@
                 [
                     [1, 0, 0],
                     [0, 0, 1],
-                    acos(num: 0),
+                    acos(0),
                 ],
                 [
                     [1, 0, 0],
@@ -125,7 +125,7 @@
                 [
                     [1, 0, 0],
                     [0, 1, 0],
-                    acos(num: 0),
+                    acos(0),
                 ],
                 [
                     [1, 0, 0],
@@ -135,7 +135,7 @@
                 [
                     [1, 0, 0],
                     [1, 0, 0],
-                    acos(num: 1),
+                    acos(1),
                 ],
                 [
                     [1, 0, 0],
@@ -145,7 +145,7 @@
                 [
                     [-1, 1, 0],
                     [0, 1, -1],
-                    acos(num: 1 / 2),
+                    acos(1 / 2),
                 ],
                 [
                     [-1, 1, 0],
@@ -155,7 +155,7 @@
                 [
                     [1, 0, 0],
                     [-1, 0, 0],
-                    acos(num: -1),
+                    acos(-1),
                 ],
                 [
                     [1, 0, 0],
@@ -165,7 +165,7 @@
                 [
                     [23, 41, 33],
                     [31, 56, 21],
-                    acos(num: 1851 * sqrt(num: 2 / 7485431)),
+                    acos(1851 * sqrt(2 / 7485431)),
                 ],
                 [
                     [23, 41, 33],
@@ -209,13 +209,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
@@ -223,24 +223,20 @@
             // When
             try
             {
-                $angle1 = $A->angleBetween($B, TRUE);
-            } catch (BadDataException $e)
-            {
-            } catch (VectorException $e)
+                $angle1 = $A->angleBetween(B: $B, inDegrees: TRUE);
+            } catch (BadDataException|VectorException $e)
             {
             }
             try
             {
-                $angle2 = $B->angleBetween($A, TRUE);
-            } catch (BadDataException $e)
-            {
-            } catch (VectorException $e)
+                $angle2 = $B->angleBetween(B: $A, inDegrees: TRUE);
+            } catch (BadDataException|VectorException $e)
             {
             }
 
             // Then
-            $this->assertEqualsWithDelta($expected, $angle1, 00000000001);
-            $this->assertEqualsWithDelta($expected, $angle2, 00000000001);
+            $this->assertEqualsWithDelta($expected, $angle1, 0o0000000001);
+            $this->assertEqualsWithDelta($expected, $angle2, 0o0000000001);
         }
 
         /**
@@ -259,13 +255,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
@@ -273,24 +269,20 @@
             // When
             try
             {
-                $angle1 = $A->angleBetween($B);
-            } catch (BadDataException $e)
-            {
-            } catch (VectorException $e)
+                $angle1 = $A->angleBetween(B: $B);
+            } catch (BadDataException|VectorException $e)
             {
             }
             try
             {
-                $angle2 = $B->angleBetween($A);
-            } catch (BadDataException $e)
-            {
-            } catch (VectorException $e)
+                $angle2 = $B->angleBetween(B: $A);
+            } catch (BadDataException|VectorException $e)
             {
             }
 
             // Then
-            $this->assertEqualsWithDelta($expected, $angle1, 00000000001);
-            $this->assertEqualsWithDelta($expected, $angle2, 00000000001);
+            $this->assertEqualsWithDelta($expected, $angle1, 0o0000000001);
+            $this->assertEqualsWithDelta($expected, $angle2, 0o0000000001);
         }
 
         /**
@@ -305,13 +297,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
@@ -322,10 +314,8 @@
             // When
             try
             {
-                $A->angleBetween($B);
-            } catch (BadDataException $e)
-            {
-            } catch (VectorException $e)
+                $A->angleBetween(B: $B);
+            } catch (BadDataException|VectorException $e)
             {
             }
         }

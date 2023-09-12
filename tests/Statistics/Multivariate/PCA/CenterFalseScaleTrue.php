@@ -4,47 +4,47 @@
 
     class CenterFalseScaleTrue {
 
-        public function QWithNewData()
+        public static function QWithNewData()
         {
         }
 
-        public function getQResiduals()
+        public static function getQResiduals()
         {
         }
 
-        public function t2WithNewData()
+        public static function t2WithNewData()
         {
         }
 
-        public function getT²Distances()
+        public static function getT²Distances()
         {
         }
 
-        public function criticalQ()
+        public static function criticalQ()
         {
         }
 
-        public function criticalT2()
+        public static function criticalT2()
         {
         }
 
-        public function eigenvalues()
+        public static function eigenvalues()
         {
         }
 
-        public function scores()
+        public static function scores()
         {
         }
 
-        public function loadings()
+        public static function loadings()
         {
         }
 
-        public function cumRsq()
+        public static function cumRsq()
         {
         }
 
-        public function rsq()
+        public static function rsq()
         {
         }
     }

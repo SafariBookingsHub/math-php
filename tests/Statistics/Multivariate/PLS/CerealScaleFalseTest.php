@@ -6,21 +6,22 @@
     use MathPHP\Exception\IncorrectTypeException;
     use MathPHP\Exception\MathException;
     use MathPHP\Exception\MatrixException;
+    use MathPHP\LinearAlgebra\ComplexMatrix;
     use MathPHP\LinearAlgebra\Matrix;
     use MathPHP\LinearAlgebra\MatrixFactory;
+    use MathPHP\LinearAlgebra\NumericMatrix;
+    use MathPHP\LinearAlgebra\ObjectMatrix;
+    use MathPHP\LinearAlgebra\ObjectSquareMatrix;
     use MathPHP\SampleData;
     use MathPHP\Statistics\Multivariate\PLS;
     use PHPUnit\Framework\TestCase;
 
     class CerealScaleFalseTest extends TestCase {
-        /** @var PLS */
         private static PLS $pls;
 
-        /** @var Matrix */
-        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $X;
+        private static ComplexMatrix|NumericMatrix|ObjectSquareMatrix|ObjectMatrix|Matrix $X;
 
-        /** @var Matrix */
-        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $Y;
+        private static ComplexMatrix|NumericMatrix|ObjectSquareMatrix|ObjectMatrix|Matrix $Y;
 
         /**
          * R code for expected values:
@@ -37,25 +38,13 @@
             try
             {
                 self::$X = MatrixFactory::create(Cereal::getXData());
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|MatrixException|IncorrectTypeException $e)
             {
             }
             try
             {
                 self::$Y = MatrixFactory::create(Cereal::getYData());
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|MatrixException|IncorrectTypeException $e)
             {
             }
 

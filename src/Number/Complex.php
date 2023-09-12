@@ -31,15 +31,19 @@
          * Floating-point range near zero to consider insignificant.
          */
         private const EPSILON = 1e-6;
+        protected int|float $i;
+        protected int|float $r;
 
         /**
          * Constructor
          *
-         * @param int|float $r Real part
-         * @param int|float $i Imaginary part
+         * @param float|int $r Real part
+         * @param float|int $i Imaginary part
          */
-        public function __construct(protected $r, protected $i)
+        public function __construct(float|int $r, float|int $i)
         {
+            $this->r = $r;
+            $this->i = $i;
         }
 
         /**
@@ -52,6 +56,89 @@
             return new Complex(0, 0);
         }
 
+        public static function equalsFalse()
+        {
+        }
+
+        public static function equalsTrue()
+        {
+        }
+
+        /**************************************************************************
+         * UNARY FUNCTIONS
+         **************************************************************************/
+
+        public static function inverseException()
+        {
+        }
+
+        public static function complexPowTypeError()
+        {
+        }
+
+        public static function powNumber()
+        {
+        }
+
+        public static function complexDivideException()
+        {
+        }
+
+        public static function complexMultiplyException()
+        {
+        }
+
+        public static function complexSubtractException()
+        {
+        }
+
+        public static function complexAddException()
+        {
+        }
+
+        public static function divideReal()
+        {
+        }
+
+        public static function multiplyReal()
+        {
+        }
+        /**************************************************************************
+         * BINARY FUNCTIONS
+         **************************************************************************/
+
+        public static function subtractReal()
+        {
+        }
+
+        public static function addReal()
+        {
+        }
+
+        public static function getException()
+        {
+        }
+
+        public static function get()
+        {
+        }
+
+        public static function toString()
+        {
+        }
+
+        /**************************************************************************
+         * COMPARISON FUNCTIONS
+         **************************************************************************/
+
+        public static function zeroValue()
+        {
+        }
+
+        public static function objectArithmeticInterface()
+        {
+        }
+
         /**
          * String representation of a complex number
          * a + bi, a - bi, etc.
@@ -60,15 +147,22 @@
          */
         public function __toString(): string
         {
-            if ($this->r == 0 & $this->i == 0)
-                return '0'; elseif ($this->r == 0)
+            if (($this->r == 0) & ($this->i == 0))
+            {
+                return '0';
+            } elseif ($this->r == 0)
+            {
                 return "$this->i".'i';
-            elseif ($this->i == 0)
+            } elseif ($this->i == 0)
+            {
                 return "$this->r";
-            elseif ($this->i > 0)
+            } elseif ($this->i > 0)
+            {
                 return "$this->r".' + '."$this->i".'i';
-            else
+            } else
+            {
                 return "$this->r".' - '.abs($this->i).'i';
+            }
         }
 
         /**
@@ -82,16 +176,15 @@
          */
         public function __get(string $part)
         {
-            return match ($part)
+            switch ($part)
             {
-                'r', 'i' => $this->$part,
-                default => throw new Exception\BadParameterException("The $part property does not exist in Complex number"),
-            };
+                case 'r':
+                case 'i':
+                    return $this->$part;
+                default:
+                    return throw new Exception\BadParameterException("The $part property does not exist in Complex number");
+            }
         }
-
-        /**************************************************************************
-         * UNARY FUNCTIONS
-         **************************************************************************/
 
         /**
          * The square root of a complex number
@@ -141,9 +234,9 @@
          *
          * @return array{Complex, Complex} (two roots)
          */
-        public function roots(): array
+        #[Pure] public function roots(): array
         {
-            $sgn = Special::sgn($this->i) >= 0 ? 1 : -1;
+            $sgn = (Special::sgn($this->i) >= 0) ? 1 : -1;
             $γ = sqrt(($this->r + $this->abs()) / 2);
             $δ = $sgn * sqrt((-$this->r + $this->abs()) / 2);
 
@@ -161,11 +254,11 @@
          *        _______
          * |z| = √a² + b²
          *
-         * @return float
+         * @return float|int
          */
         public function abs(): float|int
         {
-            return sqrt($this->r ** 2 + $this->i ** 2);
+            return sqrt(($this->r ** 2) + ($this->i ** 2));
         }
 
         /**
@@ -179,8 +272,10 @@
          */
         public function inverse(): Complex
         {
-            if ($this->r == 0 && $this->i == 0)
+            if (($this->r == 0) && ($this->i == 0))
+            {
                 throw new Exception\BadDataException('Cannot take inverse of 0 + 0i');
+            }
 
             try
             {
@@ -211,9 +306,12 @@
 
                 return new Complex($r, $i);
             } elseif ($c instanceof Complex)
+            {
                 return $this->multiply($c->inverse());
-            else
+            } else
+            {
                 throw new Exception\IncorrectTypeException('Argument must be real or complex number');
+            }
         }
 
         /**
@@ -236,10 +334,14 @@
                 $i = $object_or_scalar * $this->i;
             } elseif ($object_or_scalar instanceof Complex)
             {
-                $r = $this->r * $object_or_scalar->r - $this->i * $object_or_scalar->i;
-                $i = $this->i * $object_or_scalar->r + $this->r * $object_or_scalar->i;
+                $r = ($this->r * $object_or_scalar->r) - ($this->i
+                        * $object_or_scalar->i);
+                $i = ($this->i * $object_or_scalar->r) + ($this->r
+                        * $object_or_scalar->i);
             } else
+            {
                 throw new Exception\IncorrectTypeException('Argument must be real or complex number');
+            }
 
             return new Complex($r, $i);
         }
@@ -285,9 +387,6 @@
 
             return [$r, $θ];
         }
-        /**************************************************************************
-         * BINARY FUNCTIONS
-         **************************************************************************/
 
         /**
          * The argument (phase) of a complex number
@@ -297,7 +396,7 @@
          * If z = a + bi
          * arg(z) = atan(b, a)
          *
-         * @return float
+         * @return float|int
          */
         public function arg(): float|int
         {
@@ -327,7 +426,9 @@
                 $r = $this->r + $object_or_scalar->r;
                 $i = $this->i + $object_or_scalar->i;
             } else
+            {
                 throw new Exception\IncorrectTypeException('Argument must be real or complex number');
+            }
 
             return new Complex($r, $i);
         }
@@ -355,7 +456,9 @@
                 $r = $this->r - $object_or_scalar->r;
                 $i = $this->i - $object_or_scalar->i;
             } else
+            {
                 throw new Exception\IncorrectTypeException('Argument must be real or complex number');
+            }
 
             return new Complex($r, $i);
         }
@@ -385,8 +488,8 @@
             {
                 $r = $this->abs();
                 $θ = $this->arg();
-                $real = $r ** $c->r * exp(-1 * $θ * $c->i);
-                $inner = $r == 0 ? 0 : $c->i * log($r) + $c->r * $θ;
+                $real = ($r ** $c->r) * exp(-1 * $θ * $c->i);
+                $inner = ($r == 0) ? 0 : (($c->i * log($r)) + ($c->r * $θ));
                 $new_r = $real * cos($inner);
                 $new_i = $real * sin($inner);
 
@@ -412,10 +515,6 @@
             return new Complex($r, $i);
         }
 
-        /**************************************************************************
-         * COMPARISON FUNCTIONS
-         **************************************************************************/
-
         /**
          * Test for equality
          * Two complex numbers are equal if and only if both their real and imaginary parts are equal.
@@ -428,79 +527,7 @@
          */
         public function equals(Complex $c): bool
         {
-            return abs($this->r - $c->r) < self::EPSILON
-                && abs($this->i - $c->i) < self::EPSILON;
-        }
-
-        public function equalsFalse()
-        {
-        }
-
-        public function equalsTrue()
-        {
-        }
-
-        public function inverseException()
-        {
-        }
-
-        public function complexPowTypeError()
-        {
-        }
-
-        public function powNumber()
-        {
-        }
-
-        public function complexDivideException()
-        {
-        }
-
-        public function complexMultiplyException()
-        {
-        }
-
-        public function complexSubtractException()
-        {
-        }
-
-        public function complexAddException()
-        {
-        }
-
-        public function divideReal()
-        {
-        }
-
-        public function multiplyReal()
-        {
-        }
-
-        public function subtractReal()
-        {
-        }
-
-        public function addReal()
-        {
-        }
-
-        public function getException()
-        {
-        }
-
-        public function get()
-        {
-        }
-
-        public function toString()
-        {
-        }
-
-        public function zeroValue()
-        {
-        }
-
-        public function objectArithmeticInterface()
-        {
+            return (abs($this->r - $c->r) < self::EPSILON)
+                && (abs($this->i - $c->i) < self::EPSILON);
         }
     }

@@ -97,13 +97,19 @@
         {
             // Basic integer/factorial cases
             if ($z == 0)
+            {
                 return INF;
+            }
             // Negative integer, or negative int as a float
-            if (abs($z - round($z)) < 0.00001 && $z < 0)
+            if ((abs($z - round($z)) < 0.00001) && ($z < 0))
+            {
                 return -INF;
+            }
             // Positive integer, or positive int as a float (Ex: from beta(0.1, 0.9) since it will call Γ(x + y))
-            if (abs($z - round($z)) < 0.00001 && $z > 0)
+            if ((abs($z - round($z)) < 0.00001) && ($z > 0))
+            {
                 return Combinatorics::factorial((int)round($z) - 1);
+            }
 
             // p coefficients: g = 7, n = 9
             static $p = [
@@ -139,7 +145,9 @@
             $z--;
             $A⟮z⟯ = $p[0];
             for ($i = 1; $i < count($p); $i++)
+            {
                 $A⟮z⟯ += $p[$i] / ($z + $i);
+            }
 
             // Compute parts of equation
             $√2π = sqrt(2 * $π);
@@ -180,13 +188,19 @@
         {
             // Basic integer/factorial cases
             if ($n == 0)
+            {
                 return INF;
+            }
             // Negative integer, or negative int as a float
-            if (abs($n - round($n)) < 0.00001 && $n < 0)
+            if ((abs($n - round($n)) < 0.00001) && ($n < 0))
+            {
                 return -INF;
+            }
             // Positive integer, or postive int as a float
-            if (abs($n - round($n)) < 0.00001 && $n > 0)
+            if ((abs($n - round($n)) < 0.00001) && ($n > 0))
+            {
                 return Combinatorics::factorial((int)round($n) - 1);
+            }
 
             // Compute parts of equation
             $√2π = sqrt(2 * M_PI);
@@ -231,7 +245,9 @@
         public static function stirlingError(float $n): float
         {
             if ($n < 0)
+            {
                 throw new Exception\NanException("stirlingError NAN for n < 0: given $n");
+            }
 
             static $S0 = 0.083333333333333333333;        // 1/12
             static $S1 = 0.00277777777777777777778;      // 1/360
@@ -277,24 +293,32 @@
             {
                 $nn = $n + $n;
                 if ($nn == (int)$nn)
+                {
                     return $sferr_halves[$nn];
+                }
                 $M_LN_SQRT_2PI = log(sqrt(2 * M_PI));
 
-                return (self::logGamma($n + 1) - ($n + 0.5) * log($n)) + $n
+                return ((self::logGamma($n + 1) - (($n + 0.5) * log($n))) + $n)
                     - $M_LN_SQRT_2PI;
             }
 
             $n² = $n * $n;
             if ($n > 500)
+            {
                 return ($S0 - ($S1 / $n²)) / $n;
+            }
             if ($n > 80)
+            {
                 return ($S0 - (($S1 - ($S2 / $n²)) / $n²)) / $n;
+            }
             if ($n > 35)
+            {
                 return ($S0 - (($S1 - (($S2 - ($S3 / $n²)) / $n²)) / $n²)) / $n;
+            }
 
             // 15 < n ≤ 35
-            return ($S0 - ($S1 - ($S2 - ($S3 - $S4 / $n²) / $n²) / $n²)
-                        / $n²)
+            return ($S0 - (($S1 - (($S2 - (($S3 - ($S4 / $n²)) / $n²)) / $n²))
+                        / $n²))
                 / $n;
         }
 
@@ -309,44 +333,58 @@
          *
          * @param float $x
          *
-         * @return float
+         * @return float|int
          *
-         * @throws Exception\NanException
-         * @throws Exception\OutOfBoundsException
+         * @throws \MathPHP\Exception\NanException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public static function logGamma(float $x): float|int
         {
             static $xmax = 2.5327372760800758e+305;
 
             if (is_nan($x))
+            {
                 throw new Exception\NanException("Cannot compute logGamma when x is NAN");
+            }
 
             // Negative integer argument
-            if ($x <= 0 && $x == (int)$x)
+            if (($x <= 0) && ($x == (int)$x))
+            {
                 return INF;
+            }
 
             $y = abs($x);
 
             if ($y < 1e-306)
+            {
                 return -log($y);
+            }
             if ($y <= 10)
+            {
                 return log(abs(self::gamma($x)));
+            }
 
             // From this point, y = |x| > 10
 
             if ($y > $xmax)
+            {
                 return INF;
+            }
 
             // y = x > 10
             if ($x > 0)
             {
                 if ($x > 1e17)
+                {
                     return $x * (log($x) - 1);
+                }
                 $M_LN_SQRT_2PI = (M_LNPI + M_LN2) / 2;
                 if ($x > 4934720)
-                    return (($M_LN_SQRT_2PI + ($x - 0.5) * log($x)) - $x);
+                {
+                    return (($M_LN_SQRT_2PI + (($x - 0.5) * log($x))) - $x);
+                }
 
-                return ($M_LN_SQRT_2PI + ($x - 0.5) * log($x)) - $x
+                return (($M_LN_SQRT_2PI + (($x - 0.5) * log($x))) - $x)
                     + self::logGammaCorr($x);
             }
 
@@ -354,7 +392,8 @@
                 = 0.225791352644727432363097614947; // log(sqrt(pi/2))
             $sinpiy = abs(sin(M_PI * $y));
 
-            return $M_LN_SQRT_PId2 + (($x - 0.5) * log($y)) - $x - log($sinpiy)
+            return ($M_LN_SQRT_PId2 + (($x - 0.5) * log($y))) - $x
+                - log($sinpiy)
                 - self::logGammaCorr($y);
         }
 
@@ -386,10 +425,10 @@
          *
          * @param float $x
          *
-         * @return float
+         * @return float|int
          *
-         * @throws Exception\OutOfBoundsException
-         * @throws Exception\NanException
+         * @throws \MathPHP\Exception\NanException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public static function gamma(float $x): float|int
         {
@@ -445,11 +484,15 @@
             static $dxrel = 1.490116119384765696e-8;
 
             if (is_nan($x))
+            {
                 throw new Exception\NanException("gamma cannot compute x when NAN");
+            }
 
             // Undefined (NAN) if x ≤ 0
-            if ($x == 0 || $x < 0 && $x == round($x))
+            if (($x == 0) || (($x < 0) && ($x == round($x))))
+            {
                 throw new Exception\NanException("gamma undefined for x of $x");
+            }
 
             $y = abs($x);
 
@@ -459,13 +502,17 @@
                 // First reduce the interval and find gamma(1 + y) for 0 ≤ y < 1
                 $n = (int)$x;
                 if ($x < 0)
+                {
                     --$n;
+                }
                 $y = $x - $n; // n = floor(x) ==> y in [0, 1)
                 --$n;
-                $value = self::chebyshevEval($y * 2 - 1, $gamcs, $ngam)
+                $value = self::chebyshevEval(($y * 2) - 1, $gamcs, $ngam)
                     + .9375;
                 if ($n == 0)
+                {
                     return $value;
+                }
 
                 // Compute gamma(x) for -10 ≤ x < 1
                 // Exactly 0 or -n was checked above already
@@ -473,18 +520,24 @@
                 {
                     // The argument is so close to 0 that the result would overflow.
                     if ($y < $xsml)
+                    {
                         return INF;
+                    }
 
                     $n = -$n;
                     for ($i = 0; $i < $n; $i++)
+                    {
                         $value /= ($x + $i);
+                    }
 
                     return $value;
                 }
 
                 // gamma(x) for 2 ≤ x ≤ 10
                 for ($i = 1; $i <= $n; $i++)
+                {
                     $value *= ($y + $i);
+                }
 
                 return $value;
             }
@@ -492,23 +545,34 @@
 
             // Overflow (INF is the best answer)
             if ($x > $xmax)
+            {
                 return INF;
+            }
 
             // Underflow (0 is the best answer)
             if ($x < $xmin)
+            {
                 return 0;
+            }
 
-            if ($y <= 50 && $y == (int)$y)
-                $value = Combinatorics::factorial((int)$y - 1); else
+            if (($y <= 50) && ($y == (int)$y))
+            {
+                {
+                    $value = Combinatorics::factorial((int)$y - 1);
+                }
+            } else
             { // Normal case
                 $M_LN_SQRT_2PI = (M_LNPI + M_LN2) / 2;
-                $value = exp((($y - 0.5) * log($y)) - $y + $M_LN_SQRT_2PI + (2
-                        * $y == 2 * $y ? self::stirlingError($y)
+                $value = exp(((($y - 0.5) * log($y)) - $y)
+                    + $M_LN_SQRT_2PI + ((2
+                        * $y == 2 * $y) ? self::stirlingError($y)
                         : self::logGammaCorr($y)));
             }
 
             if ($x > 0)
+            {
                 return $value;
+            }
 
             // The answer is less than half precision because the argument is too near a negative integer.
             if (abs(($x - (int)($x - 0.5)) / $x) < $dxrel)
@@ -539,10 +603,14 @@
          */
         private static function chebyshevEval(float $x, array $a, int $n): float
         {
-            if ($n < 1 || $n > 1000)
+            if (($n < 1) || ($n > 1000))
+            {
                 throw new Exception\OutOfBoundsException("n cannot be < 1 or > 1000: got $n");
-            if ($x < -1.1 || $x > 1.1)
+            }
+            if (($x < -1.1) || ($x > 1.1))
+            {
                 throw new Exception\OutOfBoundsException("x cannot be < -1.1 or greater than 1.1: got $x");
+            }
 
             $２x = $x * 2;
             [$b0, $b1, $b2] = [0, 0, 0];
@@ -551,7 +619,7 @@
             {
                 $b2 = $b1;
                 $b1 = $b0;
-                $b0 = ($２x * $b1) - $b2 + $a[$n - $i];
+                $b0 = (($２x * $b1) - $b2) + $a[$n - $i];
             }
 
             return ($b0 - $b2) * 0.5;
@@ -604,7 +672,9 @@
             static $xmax = 3.745194030963158e306;
 
             if ($x < 10)
+            {
                 throw new Exception\OutOfBoundsException("x cannot be < 10: got $x");
+            }
             if ($x >= $xmax)
             {
                 // allow to underflow below
@@ -614,7 +684,7 @@
 
                 try
                 {
-                    return self::chebyshevEval($tmp * $tmp * 2 - 1, $algmcs,
+                    return self::chebyshevEval(($tmp * $tmp * 2) - 1, $algmcs,
                             $nalgm)
                         / $x;
                 } catch (Exception\OutOfBoundsException $e)
@@ -639,9 +709,7 @@
             try
             {
                 return self::beta($x, $y);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -666,16 +734,26 @@
             static $xmax = 171.61447887182298;
 
             if (is_nan($a) || is_nan($b))
+            {
                 throw new Exception\NanException("Cannot compute beta when a or b is NAN: got a:$a, b:$b");
-            if ($a < 0 || $b < 0)
+            }
+            if (($a < 0) || ($b < 0))
+            {
                 throw new Exception\OutOfBoundsException("a and b must be non-negative for beta: got a:$a, b:$b");
-            if ($a == 0 || $b == 0)
+            }
+            if (($a == 0) || ($b == 0))
+            {
                 return INF;
+            }
             if (is_infinite($a) || is_infinite($b))
+            {
                 return 0;
+            }
 
             if ($a + $b < $xmax)
+            {
                 return self::betaBasic($a, $b);
+            }
 
             $val = self::logBeta($a, $b);
 
@@ -702,29 +780,23 @@
             try
             {
                 $Γ⟮x⟯ = self::gamma($x);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
             try
             {
                 $Γ⟮y⟯ = self::gamma($y);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
             try
             {
                 $Γ⟮x ＋ y⟯ = self::gamma($x + $y);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
 
-            return 1 / $Γ⟮x ＋ y⟯ * $Γ⟮x⟯ * $Γ⟮y⟯;
+            return (1 / $Γ⟮x ＋ y⟯) * $Γ⟮x⟯ * $Γ⟮y⟯;
         }
 
         /**
@@ -747,45 +819,59 @@
         public static function logBeta(float $a, float $b): float
         {
             if (is_nan($a) || is_nan($b))
+            {
                 throw new Exception\NanException("Cannot compute logBeta if a or b is NAN: got a:$a, b:$b");
+            }
 
             $p = $a;
             $q = $a;
             if ($b < $p)
+            {
                 $p = $b;
+            }
             if ($b > $q)
+            {
                 $q = $b;
+            }
 
             // Both arguments must be >= 0
             if ($p < 0)
+            {
                 throw new Exception\OutOfBoundsException("p must be non-negative at this point of logBeta calculation: got $p");
+            }
             if ($p == 0)
+            {
                 return INF;
+            }
             if (is_infinite($q))
+            {
                 return -INF;
+            }
 
             if ($p >= 10)
             {
                 // p and q are big.
-                $corr = self::logGammaCorr($p) + self::logGammaCorr($q)
+                $corr = (self::logGammaCorr($p) + self::logGammaCorr($q))
                     - self::logGammaCorr($p + $q);
                 $M_LN_SQRT_2PI = (M_LNPI + M_LN2) / 2;
 
-                return log($q) * -0.5 + $M_LN_SQRT_2PI + $corr + ($p - 0.5)
-                        * log($p / ($p + $q)) + $q * log1p(-$p / ($p + $q));
+                return (log($q) * -0.5) + $M_LN_SQRT_2PI + $corr + (($p - 0.5)
+                        * log($p / ($p + $q))) + ($q * log1p(-$p / ($p + $q)));
             }
             if ($q >= 10)
             {
                 // p is small, but q is big.
                 $corr = self::logGammaCorr($q) - self::logGammaCorr($p + $q);
 
-                return (self::logGamma($p) + $corr + $p) - ($p * log($p + $q))
-                    + ($q - 0.5) * log1p(-$p / ($p + $q));
+                return ((self::logGamma($p) + $corr + $p) - ($p * log($p + $q)))
+                    + (($q - 0.5) * log1p(-$p / ($p + $q)));
             }
             // p and q are small: p <= q < 10. */
             if ($p < 1e-306)
+            {
                 return self::logGamma($p) + (self::logGamma($q)
                         - self::logGamma($p + $q));
+            }
 
             return log(self::beta($p, $q));
         }
@@ -816,13 +902,17 @@
 
             $∑α = array_sum($αs);
             if ($∑α == INF)
+            {
                 return 0;
+            }
             if ($∑α < $xmax)
             {  // ~= 171.61 for IEEE
                 $Γ⟮∑α⟯ = self::Γ($∑α);
                 $∏ = 1 / $Γ⟮∑α⟯;
                 foreach ($αs as $α)
+                {
                     $∏ *= self::Γ($α);
+                }
 
                 return $∏;
             }
@@ -830,13 +920,13 @@
             try
             {
                 $∑ = -self::logGamma($∑α);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
             foreach ($αs as $α)
+            {
                 $∑ += self::logGamma($α);
+            }
 
             return exp($∑);
         }
@@ -854,9 +944,7 @@
             try
             {
                 return self::gamma($n);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -895,12 +983,18 @@
         public static function lowerIncompleteGamma(float $s, float $x): float
         {
             if ($x == 0)
+            {
                 return 0;
+            }
             if ($s == 0)
+            {
                 return NAN;
+            }
 
             if ($s == 1)
+            {
                 return 1 - exp(-1 * $x);
+            }
             if ($s == .5)
             {
                 $√π = sqrt(M_PI);
@@ -909,12 +1003,14 @@
                 return $√π * self::erf($√x);
             }
             if (round($s * 2) == $s * 2)
+            {
                 return (($s - 1) * self::lowerIncompleteGamma($s - 1, $x))
                     - (($x
                             ** ($s - 1)) * exp(-1 * $x));
+            }
 
             $tol = .000000000001;
-            $xˢ∕s∕eˣ = $x ** $s / exp($x) / $s;
+            $xˢ∕s∕eˣ = ($x ** $s) / exp($x) / $s;
             $sum = 1;
             $fractions = [];
             $element = 1 + $tol;
@@ -964,10 +1060,12 @@
         public static function errorFunction(float $x): float
         {
             if ($x == 0)
+            {
                 return 0;
+            }
 
             $p = 0.3275911;
-            $t = 1 / (1 + $p * abs($x));
+            $t = 1 / (1 + ($p * abs($x)));
 
             $a₁ = 0.254829592;
             $a₂ = -0.284496736;
@@ -975,11 +1073,11 @@
             $a₄ = -1.453152027;
             $a₅ = 1.061405429;
 
-            $error = 1 - ($a₁ * $t + $a₂ * $t ** 2 + $a₃ * $t ** 3 + $a₄
+            $error = 1 - ((($a₁ * $t) + ($a₂ * $t ** 2) + ($a₃ * $t ** 3) + ($a₄
                             * $t
-                            ** 4 + $a₅ * $t ** 5) * exp(-abs($x) ** 2);
+                            ** 4) + ($a₅ * $t ** 5)) * exp(-abs($x) ** 2));
 
-            return $x > 0 ? $error : -$error;
+            return ($x > 0) ? $error : -$error;
         }
 
         /**
@@ -1039,8 +1137,8 @@
          *
          * @return float
          */
-        public static function complementaryErrorFunction(float|int $x): float
-        {
+        #[Pure] public static function complementaryErrorFunction(float|int $x
+        ): float {
             return 1 - self::erf($x);
         }
 
@@ -1052,7 +1150,7 @@
          *
          * @return float
          */
-        public static function erfc(float $x): float
+        #[Pure] public static function erfc(float $x): float
         {
             return 1 - self::erf($x);
         }
@@ -1071,14 +1169,14 @@
         public static function upperIncompleteGamma(float $s, float $x): float
         {
             if ($s <= 0)
+            {
                 throw new Exception\OutOfBoundsException("S must be > 0. S = $s");
+            }
 
             try
             {
                 return self::gamma($s) - self::lowerIncompleteGamma($s, $x);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -1108,9 +1206,7 @@
             try
             {
                 $Γ⟮s⟯ = self::gamma($s);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -1140,15 +1236,7 @@
                 return self::regularizedIncompleteBeta($x, $a, $b)
                     * self::beta($a,
                         $b);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\FunctionFailedToConvergeException $e)
-            {
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\NanException|Exception\FunctionFailedToConvergeException|Exception\BadParameterException $e)
             {
             }
         }
@@ -1196,22 +1284,30 @@
             ];
             Support::checkLimits($limits, ['x' => $x, 'a' => $a, 'b' => $b]);
 
-            if ($x == 1 || $x == 0)
+            if (($x == 1) || ($x == 0))
+            {
                 return $x;
+            }
 
             if ($a == 1)
+            {
                 return 1 - ((1 - $x) ** $b);
+            }
 
             if ($b == 1)
+            {
                 return $x ** $a;
+            }
 
             if ($x > ($a + 1) / ($a + $b + 2))
+            {
                 return 1 - self::regularizedIncompleteBeta((1 - $x), $b, $a);
+            }
 
             // Continued fraction using Lentz's Algorithm.
 
-            $first_term = exp((log($x) * $a) + (log(1.0 - $x) * $b)
-                    - (self::logGamma($a) + self::logGamma($b)
+            $first_term = exp(((log($x) * $a) + (log(1.0 - $x) * $b))
+                    - ((self::logGamma($a) + self::logGamma($b))
                         - self::logGamma($a + $b))) / $a;
 
             // PHP 7.2.0 offers PHP_FLOAT_EPSILON, but 1.0e-30 is used in Lewis Van Winkle's
@@ -1231,21 +1327,26 @@
                 {
                     // Even term
                     $m++;
-                    $numerator = $m * ($b - $m) * $x / (($a + (2.0 * $m)
+                    $numerator = ($m * ($b - $m) * $x) / ((($a + (2.0 * $m))
                                 - 1.0)
-                            * ($a + 2.0 * $m));
+                            * ($a + (2.0 * $m)));
                 } else
-                    $numerator = -(($a + $m) * ($a + $b + $m) * $x) / (($a + (2.0
+                {
+                    $numerator = -(($a + $m) * ($a + $b + $m) * $x) / (($a
+                                + (2.0
                                     * $m)) * ($a + (2.0 * $m) + 1));
+                }
 
                 // Lentz's Algorithm
-                $d = 1.0 + $numerator * $d;
-                $d = 1.0 / (abs($d) < $ε ? $ε : $d);
-                $c = 1.0 + $numerator / (abs($c) < $ε ? $ε : $c);
+                $d = 1.0 + ($numerator * $d);
+                $d = 1.0 / ((abs($d) < $ε) ? $ε : $d);
+                $c = 1.0 + ($numerator / ((abs($c) < $ε) ? $ε : $c));
                 $f *= $c * $d;
 
-                if (abs(1.0 - $c * $d) < 1.0e-8)
+                if (abs(1.0 - ($c * $d)) < 1.0e-8)
+                {
                     return $first_term * ($f - 1.0);
+                }
             }
 
             // Series did not converge.
@@ -1339,7 +1440,7 @@
                 $sum += $product;
                 $a_sum = array_product(Single::add($a, $n - 1));
                 $b_sum = array_product(Single::add($b, $n - 1));
-                $product *= $a_sum * $z / $b_sum / $n;
+                $product *= ($a_sum * $z) / $b_sum / $n;
                 $n++;
             } while ($product / $sum > $tol);
 
@@ -1375,8 +1476,10 @@
             float $z
         ): float {
             if (abs($z) >= 1)
+            {
                 throw new Exception\OutOfBoundsException('|z| must be < 1. |z| = '
                     .abs($z));
+            }
 
             return self::generalizedHypergeometric(2, 1, $a, $b, $c, $z);
         }
@@ -1402,103 +1505,109 @@
         {
             $ℯ = M_E;
 
-            $array_map1 = array_map(function ($z) use ($ℯ) {
-                return $ℯ ** $z;
-            }, $𝐳);
+            $array_map3 = [];
+            foreach ($𝐳 as $key => $z)
+            {
+                $array_map3[$key] = $ℯ ** $z;
+            }
+            $array_map1 = $array_map3;
             $∑ᴷℯᶻᵢ = array_sum($array_map1);
 
-            $array_map = array_map(function ($z) use ($∑ᴷℯᶻᵢ, $ℯ) {
-                return ($ℯ ** $z) / $∑ᴷℯᶻᵢ;
-            }, $𝐳);
+            $array_map2 = [];
+            foreach ($𝐳 as $key => $z)
+            {
+                $array_map2[$key] = ($ℯ ** $z) / $∑ᴷℯᶻᵢ;
+            }
 
-            return $array_map;
+            return $array_map2;
         }
 
-        public function stirlingErrorNan()
+        public static function stirlingErrorNan()
         {
         }
 
-        public function stirlingErrorInfinity()
+        public static function stirlingErrorInfinity()
         {
         }
 
-        public function chebyshevEvalXOutOfBounds()
+        public static function chebyshevEvalXOutOfBounds()
         {
         }
 
-        public function chebyshevEvalNOutOfBounds()
+        public static function chebyshevEvalNOutOfBounds()
         {
         }
 
-        public function hypergeometricExceptionNGreaterThanOne()
+        public static function hypergeometricExceptionNGreaterThanOne()
         {
         }
 
-        public function generalizedHypergeometricExceptionParameterCount()
+        public static function generalizedHypergeometricExceptionParameterCount(
+        )
         {
         }
 
-        public function upperIncompleteGammaExceptionSLessThanZero()
+        public static function upperIncompleteGammaExceptionSLessThanZero()
         {
         }
 
-        public function issue393BugInRegularizedIncompleteBeta()
+        public static function issue393BugInRegularizedIncompleteBeta()
         {
         }
 
-        public function regularizedIncompleteBetaExceptionXOutOfBounds()
+        public static function regularizedIncompleteBetaExceptionXOutOfBounds()
         {
         }
 
-        public function regularizedIncompleteBetaExceptionALessThanZero()
+        public static function regularizedIncompleteBetaExceptionALessThanZero()
         {
         }
 
-        public function lowerIncompleteGammaNanBoundary()
+        public static function lowerIncompleteGammaNanBoundary()
         {
         }
 
-        public function lowerIncompleteGammaZeroBoundary()
+        public static function lowerIncompleteGammaZeroBoundary()
         {
         }
 
-        public function sigmoidSpecialCaseOfLogisitic()
+        public static function sigmoidSpecialCaseOfLogisitic()
         {
         }
 
-        public function logGammaCorrOutOfBounds()
+        public static function logGammaCorrOutOfBounds()
         {
         }
 
-        public function betaOutOfBounds()
+        public static function betaOutOfBounds()
         {
         }
 
-        public function logBetaOutOfBounds()
+        public static function logBetaOutOfBounds()
         {
         }
 
-        public function logBetaNan()
+        public static function logBetaNan()
         {
         }
 
-        public function betaNan()
+        public static function betaNan()
         {
         }
 
-        public function gammaNan()
+        public static function gammaNan()
         {
         }
 
-        public function logGammaNan()
+        public static function logGammaNan()
         {
         }
 
-        public function gammaLargeValues()
+        public static function gammaLargeValues()
         {
         }
 
-        public function gammaExceptionUndefined()
+        public static function gammaExceptionUndefined()
         {
         }
     }

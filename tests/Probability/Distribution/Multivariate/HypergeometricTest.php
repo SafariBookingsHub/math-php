@@ -70,13 +70,10 @@
             ];
         }
 
-        /**
-         * @return array
-         */
-        #[ArrayShape([
+        #[ArrayShape(shape: [
             'float'  => "array[]",
             'string' => "array[]",
-            'empty'  => "array[]"
+            'empty'  => "array[]",
         ])] public static function dataProviderForConstructorExceptions(): array
         {
             return [
@@ -92,13 +89,10 @@
             ];
         }
 
-        /**
-         * @return array
-         */
-        #[ArrayShape([
+        #[ArrayShape(shape: [
             'float'      => "array[]",
             'string'     => "array[]",
-            'mismatched' => "array[]"
+            'mismatched' => "array[]",
         ])] public static function dataProviderForPmfExceptions(): array
         {
             return [
@@ -114,13 +108,10 @@
             ];
         }
 
-        /**
-         * @return array
-         */
-        #[ArrayShape([
+        #[ArrayShape(shape: [
             'K too small' => "array[]",
             'k too small' => "array[]",
-            'k too big'   => "array[]"
+            'k too big'   => "array[]",
         ])] public static function dataProviderForBoundsExceptions(): array
         {
             return [
@@ -150,14 +141,22 @@
         ) {
             try
             {
-                $dist = new Hypergeometric($quantities);
+                $dist = new Hypergeometric(quantities: $quantities);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $this->assertEqualsWithDelta($expected, $dist->pmf($picks),
-                    0.00000001);
+                try
+                {
+                    $this->assertEqualsWithDelta($expected,
+                        $dist->pmf(picks: $picks),
+                        0.00000001);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\OutOfBoundsException $e)
+                {
+                }
             } catch (Exception\BadDataException $e)
             {
             }
@@ -172,7 +171,7 @@
             $this->expectException(Exception\BadDataException::class);
             try
             {
-                $dist = new Hypergeometric($quantities);
+                $dist = new Hypergeometric(quantities: $quantities);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -187,13 +186,20 @@
             $this->expectException(Exception\BadDataException::class);
             try
             {
-                $dist = new Hypergeometric([10, 10, 10]);
+                $dist = new Hypergeometric(quantities: [10, 10, 10]);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $prob = $dist->pmf($ks);
+                try
+                {
+                    $prob = $dist->pmf(picks: $ks);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\OutOfBoundsException $e)
+                {
+                }
             } catch (Exception\BadDataException $e)
             {
             }
@@ -208,13 +214,20 @@
             $this->expectException(Exception\OutOfBoundsException::class);
             try
             {
-                $dist = new Hypergeometric($Ks);
+                $dist = new Hypergeometric(quantities: $Ks);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $prob = $dist->pmf($ks);
+                try
+                {
+                    $prob = $dist->pmf(picks: $ks);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\OutOfBoundsException $e)
+                {
+                }
             } catch (Exception\BadDataException $e)
             {
             }

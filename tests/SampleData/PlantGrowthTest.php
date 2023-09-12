@@ -6,7 +6,6 @@
     use PHPUnit\Framework\TestCase;
 
     class PlantGrowthTest extends TestCase {
-        /** @var SampleData\PlantGrowth */
         private SampleData\PlantGrowth $plantGrowth;
 
         /**
@@ -66,7 +65,11 @@
 
             // Then
             foreach ($data as $observation)
-                $this->assertCount(2, $observation);
+            {
+                {
+                    $this->assertCount(2, $observation);
+                }
+            }
         }
 
         /**

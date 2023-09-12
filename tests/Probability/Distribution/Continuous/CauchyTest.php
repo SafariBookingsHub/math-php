@@ -303,18 +303,22 @@
         public function testRand()
         {
             foreach (range(-5, 5) as $x₀)
-                foreach (range(1, 10) as $γ)
+            {
                 {
-                    // Given
-                    $cauchy = new Cauchy($x₀, $γ);
-                    foreach (range(1, 3) as $ignored)
+                    foreach (range(1, 10) as $γ)
                     {
-                        // When
-                        $random = $cauchy->rand();
+                        // Given
+                        $cauchy = new Cauchy($x₀, $γ);
+                        foreach (range(1, 3) as $ignored)
+                        {
+                            // When
+                            $random = $cauchy->rand();
 
-                        // Then
-                        $this->assertTrue(is_numeric($random));
+                            // Then
+                            $this->assertTrue(is_numeric($random));
+                        }
                     }
                 }
+            }
         }
     }

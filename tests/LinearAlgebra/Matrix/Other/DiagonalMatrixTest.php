@@ -41,15 +41,15 @@
         public function testConstructor(array $A, array $R)
         {
             // Given
-            $R = new NumericMatrix($R);
+            $R = new NumericMatrix(A: $R);
 
             // When
-            $D = MatrixFactory::diagonal($A);
+            $D = MatrixFactory::diagonal(D: $A);
 
             // Then
             $this->assertInstanceOf(NumericDiagonalMatrix::class, $D);
-            $this->assertTrue($R->isEqual($D));
-            $this->assertTrue($D->isEqual($R));
+            $this->assertTrue($R->isEqual(B: $D));
+            $this->assertTrue($D->isEqual(B: $R));
         }
 
         /**
@@ -64,7 +64,7 @@
         public function testGetMatrix(array $A, array $R)
         {
             // Given
-            $D = MatrixFactory::diagonal($A);
+            $D = MatrixFactory::diagonal(D: $A);
 
             // Then
             $this->assertEquals($R, $D->getMatrix());
@@ -81,7 +81,7 @@
         public function testIsSquare(array $A)
         {
             // Given
-            $D = MatrixFactory::diagonal($A);
+            $D = MatrixFactory::diagonal(D: $A);
 
             // Then
             $this->assertTrue($D->isSquare());
@@ -98,7 +98,7 @@
         public function testIsSymmetric(array $A)
         {
             // Given
-            $D = MatrixFactory::diagonal($A);
+            $D = MatrixFactory::diagonal(D: $A);
 
             // Then
             $this->assertTrue($D->isSymmetric());
@@ -115,7 +115,7 @@
         public function testIsLowerTriangular(array $A)
         {
             // Given
-            $D = MatrixFactory::diagonal($A);
+            $D = MatrixFactory::diagonal(D: $A);
 
             // Then
             $this->assertTrue($D->isLowerTriangular());
@@ -132,7 +132,7 @@
         public function testIsUpperTriangular(array $A)
         {
             // Given
-            $D = MatrixFactory::diagonal($A);
+            $D = MatrixFactory::diagonal(D: $A);
 
             // Then
             $this->assertTrue($D->isUpperTriangular());
@@ -149,7 +149,7 @@
         public function testIsTriangular(array $A)
         {
             // Given
-            $D = MatrixFactory::diagonal($A);
+            $D = MatrixFactory::diagonal(D: $A);
 
             // Then
             $this->assertTrue($D->isTriangular());
@@ -166,7 +166,7 @@
         public function testIsDiagonal(array $A)
         {
             // Given
-            $D = MatrixFactory::diagonal($A);
+            $D = MatrixFactory::diagonal(D: $A);
 
             // Then
             $this->assertTrue($D->isDiagonal());
@@ -188,7 +188,7 @@
             $this->expectException(MatrixException::class);
 
             // When
-            $matrix = new NumericDiagonalMatrix($A);
+            $matrix = new NumericDiagonalMatrix(A: $A);
         }
 
         /**
@@ -207,6 +207,6 @@
             $this->expectException(MatrixException::class);
 
             // When
-            $matrix = new NumericDiagonalMatrix($A);
+            $matrix = new NumericDiagonalMatrix(A: $A);
         }
     }

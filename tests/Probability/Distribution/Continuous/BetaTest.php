@@ -940,8 +940,12 @@
          * @param float $β
          * @param float $expected_cdf
          */
-        public function testCdf(float $x, float $α, float $β, float $expected_cdf)
-        {
+        public function testCdf(
+            float $x,
+            float $α,
+            float $β,
+            float $expected_cdf
+        ) {
             // Given
             $beta = new Beta($α, $β);
 
@@ -1112,18 +1116,22 @@
         public function testRand()
         {
             foreach (range(1, 10) as $α)
-                foreach (range(1, 10) as $β)
+            {
                 {
-                    // Given
-                    $beta = new Beta($α, $β);
-                    foreach (range(1, 3) as $ignored)
+                    foreach (range(1, 10) as $β)
                     {
-                        // When
-                        $random = $beta->rand();
+                        // Given
+                        $beta = new Beta($α, $β);
+                        foreach (range(1, 3) as $ignored)
+                        {
+                            // When
+                            $random = $beta->rand();
 
-                        // Then
-                        $this->assertTrue(is_numeric($random));
+                            // Then
+                            $this->assertTrue(is_numeric($random));
+                        }
                     }
                 }
+            }
         }
     }

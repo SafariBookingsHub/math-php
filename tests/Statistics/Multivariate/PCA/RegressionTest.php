@@ -61,9 +61,7 @@
                     [235.426483, 48657.857143],
                     [256.868816, 53160.316186],
                 ]);
-            } catch (BadDataException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException $e)
             {
             }
 
@@ -75,9 +73,7 @@
             try
             {
                 $model = new PCA($data, TRUE, FALSE);
-            } catch (BadDataException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException $e)
             {
             }
 
@@ -99,9 +95,12 @@
             }
 
             // Convert to exactly one or negative one. Cannot be zero.
-            $array_map = array_map(function ($x) {
-                return $x <=> 0;
-            }, $quotient);
+            $array_map1 = [];
+            foreach ($quotient as $key => $x)
+            {
+                $array_map1[$key] = $x <=> 0;
+            }
+            $array_map = $array_map1;
             $signum = $array_map;
             try
             {
@@ -114,11 +113,7 @@
             try
             {
                 $sign_adjusted = $loadings->multiply($sign_change);
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+            } catch (IncorrectTypeException|MathException|MatrixException $e)
             {
             }
 

@@ -6,6 +6,7 @@
     use MathPHP\Exception;
     use MathPHP\Expression\Polynomial;
     use PHPUnit\Framework\TestCase;
+    use ReflectionException;
     use ReflectionMethod;
 
     use function strval;
@@ -739,7 +740,10 @@
             ];
         }
 
-        #[ArrayShape(['degree 5' => "array[]", 'degree 6' => "array[]"])] public static function dataProviderForRootsNAN(): array
+        #[ArrayShape([
+            'degree 5' => "array[]",
+            'degree 6' => "array[]",
+        ])] public static function dataProviderForRootsNAN(): array
         {
             return [
                 'degree 5' => [
@@ -1330,7 +1334,7 @@
             {
                 $polynomial = $method->invokeArgs(new Polynomial([1]),
                     [$input]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
 
@@ -1356,7 +1360,7 @@
             {
                 $polynomial = $method->invokeArgs(new Polynomial([1]),
                     ['not a number']);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
         }

@@ -35,7 +35,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '[0,1]',
             ];
@@ -57,6 +57,22 @@
             parent::__construct($α, $β);
         }
 
+        public static function inverseFailToConvergeException()
+        {
+        }
+
+        public static function medianApproximation()
+        {
+        }
+
+        public static function pdfExceptionXOutOfBounds()
+        {
+        }
+
+        public static function constructorExceptionAlphaBetaLessThanEqualZero()
+        {
+        }
+
         /**
          * Probability density function
          *
@@ -73,11 +89,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -89,13 +101,11 @@
             try
             {
                 $B⟮α、β⟯ = Special::beta($α, $β);
-            } catch (NanException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (NanException|OutOfBoundsException $e)
             {
             }
 
-            return $xᵃ⁻¹ * $⟮1 − x⟯ᵝ⁻¹ / $B⟮α、β⟯;
+            return ($xᵃ⁻¹ * $⟮1 − x⟯ᵝ⁻¹) / $B⟮α、β⟯;
         }
 
         /**
@@ -122,14 +132,21 @@
                 $guess = ($a + $b) / 2;
                 $cdf = $this->cdf($guess);
 
-                if ($cdf == $x || $cdf == 0)
-                    $b = $a; elseif ($cdf > $x)
+                if (($cdf == $x) || ($cdf == 0))
+                {
+                    $b = $a;
+                } elseif ($cdf > $x)
+                {
                     $b = $guess;
-                else
+                } else
+                {
                     $a = $guess;
+                }
 
                 if ($b - $a <= $tolerance)
+                {
                     return $guess;
+                }
             }
 
             throw new MathException("Failed to converge on a Beta inverse within a tolerance of $tolerance after {$max_iterations} iterations");
@@ -149,11 +166,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -163,15 +176,7 @@
             try
             {
                 return Special::regularizedIncompleteBeta($x, $α, $β);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (FunctionFailedToConvergeException $e)
-            {
-            } catch (NanException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|NanException|FunctionFailedToConvergeException|BadParameterException $e)
             {
             }
         }
@@ -218,21 +223,31 @@
             $β = $this->β;
 
             if ($α == $β)
+            {
                 return 0.5;
+            }
 
-            if ($α == 1 && $β > 0)
+            if (($α == 1) && ($β > 0))
+            {
                 return 1 - (2 ** (-1 / $β));
+            }
 
-            if ($β == 1 && $α > 0)
+            if (($β == 1) && ($α > 0))
+            {
                 return 2 ** (-1 / $α);
+            }
 
-            if ($α == 3 && $β == 2)
+            if (($α == 3) && ($β == 2))
+            {
                 return 0.6142724318676105;
+            }
 
-            if ($α == 2 && $β == 3)
+            if (($α == 2) && ($β == 3))
+            {
                 return 0.38572756813238945;
+            }
 
-            return ($α - 1 / 3) / ($α + $β - 2 / 3);
+            return ($α - (1 / 3)) / (($α + $β) - (2 / 3));
         }
 
         /**
@@ -252,12 +267,16 @@
             $α = $this->α;
             $β = $this->β;
 
-            if ($α == 1 && $β > 1)
+            if (($α == 1) && ($β > 1))
+            {
                 return 0;
-            if ($α > 1 && $β == 1)
+            }
+            if (($α > 1) && ($β == 1))
+            {
                 return 1;
+            }
 
-            return ($α - 1) / ($α + $β - 2);
+            return ($α - 1) / (($α + $β) - 2);
         }
 
         /**
@@ -281,23 +300,7 @@
             return $αβ / ($⟮α ＋ β⟯² * $⟮α ＋ β ＋ 1⟯);
         }
 
-        public function rand()
-        {
-        }
-
-        public function inverseFailToConvergeException()
-        {
-        }
-
-        public function medianApproximation()
-        {
-        }
-
-        public function pdfExceptionXOutOfBounds()
-        {
-        }
-
-        public function constructorExceptionAlphaBetaLessThanEqualZero()
+        public function rand(): float|int
         {
         }
     }

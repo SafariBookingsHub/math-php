@@ -68,7 +68,9 @@
         ) {
             // Check that X and Y have the same amount of data.
             if ($X->getM() !== $Y->getM())
+            {
                 throw new Exception\BadDataException('X and Y must have the same number of rows.');
+            }
 
             // Standardize X and Y
             $this->Xcenter = $X->columnMeans();
@@ -127,66 +129,41 @@
                     try
                     {
                         $w = $E->transpose()->multiply($u);
-                    } catch (Exception\IncorrectTypeException $e)
-                    {
-                    } catch (Exception\MatrixException $e)
-                    {
-                    } catch (Exception\MathException $e)
+                    } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
                     {
                     }
                     try
                     {
                         $w = $w->scalarDivide($w->frobeniusNorm());
-                    } catch (Exception\BadParameterException $e)
-                    {
-                    } catch (Exception\IncorrectTypeException $e)
+                    } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
                     {
                     }
 
                     try
                     {
                         $t = $E->multiply($w);
-                    } catch (Exception\IncorrectTypeException $e)
-                    {
-                    } catch (Exception\MatrixException $e)
-                    {
-                    } catch (Exception\MathException $e)
+                    } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
                     {
                     }
                     try
                     {
                         $c = $F->transpose()->multiply($t)
                             ->scalarDivide($t->frobeniusNorm() ** 2);
-                    } catch (Exception\BadParameterException $e)
-                    {
-                    } catch (Exception\IncorrectTypeException $e)
-                    {
-                    } catch (Exception\MatrixException $e)
-                    {
-                    } catch (Exception\MathException $e)
+                    } catch (Exception\BadParameterException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
                     {
                     }
                     try
                     {
                         $new_u = $F->multiply($c);
-                    } catch (Exception\IncorrectTypeException $e)
-                    {
-                    } catch (Exception\MatrixException $e)
-                    {
-                    } catch (Exception\MathException $e)
+                    } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
                     {
                     }
-                    try
-                    {
-                        $diff = $new_u->subtract($u)->frobeniusNorm();
-                    } catch (Exception\IncorrectTypeException $e)
-                    {
-                    } catch (Exception\MatrixException $e)
-                    {
-                    }
+                    $diff = $new_u->subtract($u)->frobeniusNorm();
 
-                    if ($diff < $tol || $iterations > 50)
+                    if (($diff < $tol) || ($iterations > 50))
+                    {
                         $end = TRUE;
+                    }
                     $u = $new_u;
                 }
 
@@ -196,26 +173,14 @@
                 {
                     $p = $E->transpose()->multiply($t)
                         ->scalarDivide($t->frobeniusNorm() ** 2);
-                } catch (Exception\BadParameterException $e)
-                {
-                } catch (Exception\IncorrectTypeException $e)
-                {
-                } catch (Exception\MatrixException $e)
-                {
-                } catch (Exception\MathException $e)
+                } catch (Exception\BadParameterException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
                 {
                 }
                 try
                 {
                     $d = $u->transpose()->multiply($t)
                         ->scalarDivide($t->frobeniusNorm() ** 2)->get(0, 0);
-                } catch (Exception\BadParameterException $e)
-                {
-                } catch (Exception\IncorrectTypeException $e)
-                {
-                } catch (Exception\MatrixException $e)
-                {
-                } catch (Exception\MathException $e)
+                } catch (Exception\BadParameterException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
                 {
                 }
 
@@ -223,24 +188,14 @@
                 try
                 {
                     $E = $E->subtract($t->multiply($p->transpose()));
-                } catch (Exception\IncorrectTypeException $e)
-                {
-                } catch (Exception\MatrixException $e)
-                {
-                } catch (Exception\MathException $e)
+                } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
                 {
                 }
                 try
                 {
                     $F = $F->subtract($t->multiply($c->transpose())
                         ->scalarMultiply($d));
-                } catch (Exception\BadParameterException $e)
-                {
-                } catch (Exception\IncorrectTypeException $e)
-                {
-                } catch (Exception\MatrixException $e)
-                {
-                } catch (Exception\MathException $e)
+                } catch (Exception\BadParameterException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
                 {
                 }
 
@@ -269,26 +224,14 @@
                 $R = $this->W->multiply($this->P->transpose()
                     ->multiply($this->W)
                     ->inverse());
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadParameterException|Exception\MathException|Exception\OutOfBoundsException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
             // @phpstan-ignore-next-line
             try
             {
                 $this->B = $R->multiply($this->C->transpose());
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
             {
             }
         }
@@ -318,8 +261,10 @@
         {
             $scaleArray = [];
             for ($i = 0; $i < $M->getN(); $i++)
+            {
                 $scaleArray[]
                     = Descriptive::standardDeviation($M->getColumn($i));
+            }
 
             try
             {
@@ -446,30 +391,22 @@
         public function predict(Matrix $X): Matrix
         {
             if ($X->getN() !== $this->Xcenter->getN())
+            {
                 throw new Exception\BadDataException('Data does not have the correct number of columns.');
+            }
 
             // Create a matrix the same dimensions as $X, each element is the average of that column in the original data.
             try
             {
                 $ones_column = MatrixFactory::one($X->getM(), 1);
-            } catch (BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (BadDataException|Exception\MathException|Exception\OutOfBoundsException $e)
             {
             }
             try
             {
                 $Ycenter_matrix
                     = $ones_column->multiply(MatrixFactory::createNumeric([$this->Ycenter->getVector()]));
-            } catch (BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -491,11 +428,7 @@
             try
             {
                 $F = $E->multiply($this->B);
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
             {
             }
 
@@ -503,11 +436,7 @@
             try
             {
                 return $F->multiply($Yscale_matrix)->add($Ycenter_matrix);
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
             {
             }
         }

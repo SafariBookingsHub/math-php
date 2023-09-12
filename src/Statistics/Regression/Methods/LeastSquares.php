@@ -56,16 +56,13 @@
          */
         private NumericMatrix $reg_P;
 
-        /** @var float */
         private float $fit_constant;
 
-        /** @var int */
         private int $p;
 
         /** @var int Degrees of freedom */
         private int $ν;
 
-        /** @var NumericMatrix */
         private NumericMatrix $⟮XᵀX⟯⁻¹;
 
         /**
@@ -126,8 +123,10 @@
             $this->ν = $this->n - $this->p - $this->fit_constant;
 
             if ($this->ν <= 0)
+            {
                 throw new Exception\BadDataException('Degrees of freedom ν must be > 0. Computed to be '
                     .$this->ν);
+            }
 
             // y = Xa
             $X = $this->createDesignMatrix($xs);
@@ -163,12 +162,16 @@
         public function createDesignMatrix(mixed $xs): NumericMatrix
         {
             if (is_int($xs) || is_float($xs))
+            {
                 $xs = [$xs];
+            }
 
             /** @var array<float> $xs */
             $X = MatrixFactory::vandermonde($xs, $this->p + 1);
             if ($this->fit_constant == 0)
+            {
                 $X = $X->columnExclude(0);
+            }
 
             return $X;
         }
@@ -277,7 +280,9 @@
         public function sumOfSquaresRegression(): float
         {
             if ($this->fit_constant == 1)
+            {
                 return RandomVariable::sumOfSquaresDeviations($this->yHat());
+            }
 
             return array_sum(Single::square($this->reg_Yhat));
         }
@@ -358,7 +363,8 @@
             $p = $this->p + $this->fit_constant;
 
             return array_map(
-                fn($eᵢ, $hᵢ) => (($eᵢ ** 2) / $mse / $p) * ($hᵢ / (1 - $hᵢ) ** 2),
+                fn($eᵢ, $hᵢ) => (($eᵢ ** 2) / $mse / $p) * ($hᵢ / (1 - $hᵢ)
+                        ** 2),
                 $e,
                 $h
             );
@@ -452,7 +458,8 @@
 
             // Mean square residuals with the the i-th observation removed
             $MSₑ₍ᵢ₎ = array_map(
-                fn($eᵢ, $hᵢ) => ($MSₑ - (($eᵢ ** 2) / ((1 - $hᵢ) * $ν))) * ($ν / ($ν
+                fn($eᵢ, $hᵢ) => ($MSₑ - (($eᵢ ** 2) / ((1 - $hᵢ) * $ν))) * ($ν
+                        / ($ν
                             - 1)),
                 $e,
                 $h
@@ -555,7 +562,10 @@
          * @throws BadParameterException
          * @throws IncorrectTypeException
          */
-        #[ArrayShape(['m' => "float", 'b' => "float"])] public function tProbability(): array
+        #[ArrayShape([
+            'm' => "float",
+            'b' => "float",
+        ])] public function tProbability(): array
         {
             $ν = $this->ν;
             $t = $this->tValues();
@@ -584,7 +594,10 @@
          * @throws BadParameterException
          * @throws IncorrectTypeException
          */
-        #[ArrayShape(['m' => "float|int", 'b' => "float|int"])] public function tValues(): array
+        #[ArrayShape([
+            'm' => "float|int",
+            'b' => "float|int",
+        ])] public function tValues(): array
         {
             $se = $this->standardErrors();
             $m = $this->parameters[1];
@@ -617,10 +630,11 @@
          *
          * @return array{m: float, b: float} [m => se(m), b => se(b)]
          *
-         * @throws Exception\BadParameterException
-         * @throws Exception\IncorrectTypeException
          */
-        #[ArrayShape(['m' => "float", 'b' => "float"])] public function standardErrors(): array
+        #[ArrayShape([
+            'm' => "float",
+            'b' => "float",
+        ])] public function standardErrors(): array
         {
             $⟮XᵀX⟯⁻¹ = $this->⟮XᵀX⟯⁻¹;
             $σ² = $this->meanSquareResidual();
@@ -730,8 +744,6 @@
          *
          * @return float
          *
-         * @throws Exception\MatrixException
-         * @throws Exception\IncorrectTypeException
          */
         public function ci(float $x, float $p): float
         {
@@ -758,24 +770,14 @@
             try
             {
                 $X = $this->createDesignMatrix($x);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (BadDataException|Exception\MathException|Exception\MatrixException|IncorrectTypeException $e)
             {
             }
             $⟮XᵀX⟯⁻¹ = $this->⟮XᵀX⟯⁻¹;
             try
             {
                 $M = $X->multiply($⟮XᵀX⟯⁻¹)->multiply($X->transpose());
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
             {
             }
 
@@ -806,12 +808,10 @@
          *
          * @return float
          *
-         * @throws Exception\MatrixException
-         * @throws Exception\IncorrectTypeException
          */
         public function pi(float $x, float $p, int $q = 1): float
         {
-            $V = $this->regressionVariance($x) + 1 / $q;
+            $V = $this->regressionVariance($x) + (1 / $q);
             $σ² = $this->meanSquareResidual();
 
             // The t-value

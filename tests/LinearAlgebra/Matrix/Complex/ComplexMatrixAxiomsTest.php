@@ -33,28 +33,20 @@
             // Given
             try
             {
-                $A = new ComplexMatrix([
-                    [new Complex(1, 0), new Complex(-2, -1)],
-                    [new Complex(1, 1), new Complex(0, 1)],
+                $A = new ComplexMatrix(A: [
+                    [new Complex(r: 1, i: 0), new Complex(r: -2, i: -1)],
+                    [new Complex(r: 1, i: 1), new Complex(r: 0, i: 1)],
                 ]);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|IncorrectTypeException $e)
             {
             }
             try
             {
-                $B = new ComplexMatrix([
-                    [new Complex(2, 2), new Complex(2, -1)],
-                    [new Complex(1, 4), new Complex(3, -2)],
+                $B = new ComplexMatrix(A: [
+                    [new Complex(r: 2, i: 2), new Complex(r: 2, i: -1)],
+                    [new Complex(r: 1, i: 4), new Complex(r: 3, i: -2)],
                 ]);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|IncorrectTypeException $e)
             {
             }
 
@@ -62,13 +54,13 @@
             try
             {
                 $Aᴴ ＋ Bᴴ = $A->conjugateTranspose()
-                    ->add($B->conjugateTranspose());
+                    ->add(B: $B->conjugateTranspose());
             } catch (IncorrectTypeException $e)
             {
             }
             try
             {
-                $⟮A ＋ B⟯ᴴ = $A->add($B)->conjugateTranspose();
+                $⟮A ＋ B⟯ᴴ = $A->add(object_or_scalar: $B)->conjugateTranspose();
             } catch (IncorrectTypeException $e)
             {
             }
@@ -86,37 +78,19 @@
             // Given
             try
             {
-                $A = new ComplexMatrix([
-                    [new Complex(1, 0), new Complex(-2, -1)],
-                    [new Complex(1, 1), new Complex(0, 1)],
+                $A = new ComplexMatrix(A: [
+                    [new Complex(r: 1, i: 0), new Complex(r: -2, i: -1)],
+                    [new Complex(r: 1, i: 1), new Complex(r: 0, i: 1)],
                 ]);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|IncorrectTypeException $e)
             {
             }
-            $z = new Complex(3, -2);
+            $z = new Complex(r: 3, i: -2);
 
             // When
-            try
-            {
-                $⟮zA⟯ᴴ = $A->scalarMultiply($z)->conjugateTranspose();
-            } catch (BadParameterException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            }
-            try
-            {
-                $z‾Aᴴ = $A->conjugateTranspose()
-                    ->scalarMultiply($z->complexConjugate());
-            } catch (BadParameterException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            }
+            $⟮zA⟯ᴴ = $A->scalarMultiply(λ: $z)->conjugateTranspose();
+            $z‾Aᴴ = $A->conjugateTranspose()
+                ->scalarMultiply(λ: $z->complexConjugate());
 
             // Then
             $this->assertEquals($⟮zA⟯ᴴ->getMatrix(), $z‾Aᴴ->getMatrix());
@@ -130,47 +104,54 @@
             // Given
             try
             {
-                $A = new ComplexMatrix([
-                    [new Complex(1, 0), new Complex(-2, -1)],
-                    [new Complex(1, 1), new Complex(0, 1)],
+                $A = new ComplexMatrix(A: [
+                    [new Complex(r: 1, i: 0), new Complex(r: -2, i: -1)],
+                    [new Complex(r: 1, i: 1), new Complex(r: 0, i: 1)],
                 ]);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|IncorrectTypeException $e)
             {
             }
             try
             {
-                $B = new ComplexMatrix([
-                    [new Complex(2, 2), new Complex(2, -1)],
-                    [new Complex(1, 4), new Complex(3, -2)],
+                $B = new ComplexMatrix(A: [
+                    [new Complex(r: 2, i: 2), new Complex(r: 2, i: -1)],
+                    [new Complex(r: 1, i: 4), new Complex(r: 3, i: -2)],
                 ]);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|IncorrectTypeException $e)
             {
             }
 
             // When
             try
             {
-                $⟮AB⟯ᴴ = $A->multiply($B)->conjugateTranspose();
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
+                try
+                {
+                    $⟮AB⟯ᴴ = $A->multiply(object_or_scalar: $B)
+                        ->conjugateTranspose();
+                } catch (IncorrectTypeException $e)
+                {
+                } catch (MatrixException $e)
+                {
+                } catch (MathException $e)
+                {
+                }
+            } catch (IncorrectTypeException|MatrixException $e)
             {
             }
             try
             {
-                $BᴴAᴴ = $B->conjugateTranspose()
-                    ->multiply($A->conjugateTranspose());
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
+                try
+                {
+                    $BᴴAᴴ = $B->conjugateTranspose()
+                        ->multiply(object_or_scalar: $A->conjugateTranspose());
+                } catch (IncorrectTypeException $e)
+                {
+                } catch (MatrixException $e)
+                {
+                } catch (MathException $e)
+                {
+                }
+            } catch (IncorrectTypeException|MatrixException $e)
             {
             }
 
@@ -188,15 +169,11 @@
             // Given
             try
             {
-                $A = new ComplexMatrix([
-                    [new Complex(1, 0), new Complex(-2, -1)],
-                    [new Complex(1, 1), new Complex(0, 1)],
+                $A = new ComplexMatrix(A: [
+                    [new Complex(r: 1, i: 0), new Complex(r: -2, i: -1)],
+                    [new Complex(r: 1, i: 1), new Complex(r: 0, i: 1)],
                 ]);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|IncorrectTypeException $e)
             {
             }
 
@@ -219,25 +196,39 @@
             // Given
             try
             {
-                $A = new ComplexMatrix($A);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MathException $e)
+                $A = new ComplexMatrix(A: $A);
+            } catch (BadDataException|MathException|IncorrectTypeException $e)
             {
             }
 
             // When
             try
             {
-                $det⟮Aᴴ⟯ = $A->conjugateTranspose()->det();
+                try
+                {
+                    $det⟮Aᴴ⟯ = $A->conjugateTranspose()->det();
+                } catch (BadParameterException $e)
+                {
+                } catch (IncorrectTypeException $e)
+                {
+                } catch (MatrixException $e)
+                {
+                }
             } catch (MatrixException $e)
             {
             }
             try
             {
-                $‾det⟮A⟯‾ = $A->det()->complexConjugate();
+                try
+                {
+                    $‾det⟮A⟯‾ = $A->det()->complexConjugate();
+                } catch (BadParameterException $e)
+                {
+                } catch (IncorrectTypeException $e)
+                {
+                } catch (MatrixException $e)
+                {
+                }
             } catch (MatrixException $e)
             {
             }
@@ -258,12 +249,8 @@
             // Given
             try
             {
-                $A = new ComplexMatrix($A);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MathException $e)
+                $A = new ComplexMatrix(A: $A);
+            } catch (BadDataException|MathException|IncorrectTypeException $e)
             {
             }
 

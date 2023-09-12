@@ -4,87 +4,87 @@
 
     class MatrixRowOperations {
 
-        public function rowSubtractScalarExceptionRowGreaterThanM()
+        public static function rowSubtractScalarExceptionRowGreaterThanM()
         {
         }
 
-        public function rowSubtractScalar()
+        public static function rowSubtractScalar()
         {
         }
 
-        public function rowSubtractExceptionRowGreaterThanM()
+        public static function rowSubtractExceptionRowGreaterThanM()
         {
         }
 
-        public function rowSubtract()
+        public static function rowSubtract()
         {
         }
 
-        public function rowAddVectorExceptionElementMismatch()
+        public static function rowAddVectorExceptionElementMismatch()
         {
         }
 
-        public function rowAddVectorExceptionRowExists()
+        public static function rowAddVectorExceptionRowExists()
         {
         }
 
-        public function rowAddVector()
+        public static function rowAddVector()
         {
         }
 
-        public function rowAddScalarExceptionRowGreaterThanM()
+        public static function rowAddScalarExceptionRowGreaterThanM()
         {
         }
 
-        public function rowAddScalar()
+        public static function rowAddScalar()
         {
         }
 
-        public function rowAddExceptionKIsZero()
+        public static function rowAddExceptionKIsZero()
         {
         }
 
-        public function rowAddExceptionRowGreaterThanM()
+        public static function rowAddExceptionRowGreaterThanM()
         {
         }
 
-        public function rowAdd()
+        public static function rowAdd()
         {
         }
 
-        public function rowDivideExceptionKIsZero()
+        public static function rowDivideExceptionKIsZero()
         {
         }
 
-        public function rowDivideExceptionRowGreaterThanM()
+        public static function rowDivideExceptionRowGreaterThanM()
         {
         }
 
-        public function rowDivide()
+        public static function rowDivide()
         {
         }
 
-        public function rowMultiplyExceptionRowGreaterThanM()
+        public static function rowMultiplyExceptionRowGreaterThanM()
         {
         }
 
-        public function rowMultiply()
+        public static function rowMultiply()
         {
         }
 
-        public function rowExcludeExceptionRowDoesNotExist()
+        public static function rowExcludeExceptionRowDoesNotExist()
         {
         }
 
-        public function rowExclude()
+        public static function rowExclude()
         {
         }
 
-        public function rowInterchangeExceptionRowGreaterThanM()
+        public static function rowInterchangeExceptionRowGreaterThanM()
         {
         }
 
-        public function rowInterchange()
+        public static function rowInterchange()
         {
         }
     }

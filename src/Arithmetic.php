@@ -9,7 +9,6 @@
     use function floor;
     use function intdiv;
     use function log;
-    use function pow;
     use function sqrt;
 
     class Arithmetic {
@@ -43,8 +42,10 @@
          */
         public static function root(float $x, int $nᵗʰ): float
         {
-            if ($x >= 0 || $nᵗʰ % 2 === 0)
+            if (($x >= 0) || ($nᵗʰ % 2 === 0))
+            {
                 return $x ** (1 / $nᵗʰ);
+            }
 
             return -(abs($x) ** (1 / $nᵗʰ));
         }
@@ -63,7 +64,9 @@
         public static function isqrt(float $x): int
         {
             if ($x < 0)
+            {
                 throw new Exception\BadParameterException("x must be non-negative for isqrt - got $x");
+            }
 
             return (int)floor(sqrt($x));
         }
@@ -86,7 +89,9 @@
             $root = $x;
 
             while ($root >= 10)
+            {
                 $root = self::digitSum($root);
+            }
 
             return $root;
         }
@@ -114,8 +119,10 @@
             $∑1／bⁿ⟮x mod bⁿ⁺¹ − x mod bⁿ⟯ = 0;
 
             for ($n = 0; $n <= $logx; $n++)
+            {
                 $∑1／bⁿ⟮x mod bⁿ⁺¹ − x mod bⁿ⟯ += intdiv(($x % ($b ** ($n + 1)))
                     - ($x % $b ** $n), ($b ** $n));
+            }
 
             return $∑1／bⁿ⟮x mod bⁿ⁺¹ − x mod bⁿ⟯;
         }
@@ -147,7 +154,7 @@
          */
         public static function copySign(float $magnitude, float $sign): float
         {
-            return $sign >= 0
+            return ($sign >= 0)
                 ? abs($magnitude)
                 : -abs($magnitude);
         }
@@ -183,57 +190,59 @@
         public static function modulo(int $a, int $n): int
         {
             if ($n === 0)
+            {
                 return $a;
+            }
 
-            return (int)($a - $n * floor($a / $n));
+            return (int)($a - ($n * floor($a / $n)));
         }
 
-        public function isqrtNegativeNumberIsBadParameterError()
+        public static function isqrtNegativeNumberIsBadParameterError()
         {
         }
 
-        public function moduloZeroDivisorIsDividend()
+        public static function moduloZeroDivisorIsDividend()
         {
         }
 
-        public function moduloNegativeDividendAndDivisor()
+        public static function moduloNegativeDividendAndDivisor()
         {
         }
 
-        public function moduloNegativeDivisor()
+        public static function moduloNegativeDivisor()
         {
         }
 
-        public function moduloNegativeDividend()
+        public static function moduloNegativeDividend()
         {
         }
 
-        public function moduloPositiveDividendAndDivisorIsSameAsBuiltInRemainderOperator(
+        public static function moduloPositiveDividendAndDivisorIsSameAsBuiltInRemainderOperator(
         )
         {
         }
 
-        public function moduloPositiveDividendAndDivisor()
+        public static function moduloPositiveDividendAndDivisor()
         {
         }
 
-        public function digitSumBaseTwo()
+        public static function digitSumBaseTwo()
         {
         }
 
-        public function nestedArithmetic()
+        public static function nestedArithmetic()
         {
         }
 
-        public function multipleProducts()
+        public static function multipleProducts()
         {
         }
 
-        public function multipleSums()
+        public static function multipleSums()
         {
         }
 
-        public function sum()
+        public static function sum()
         {
         }
     }

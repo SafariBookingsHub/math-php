@@ -121,7 +121,7 @@
             $this->expectException(OutOfBoundsException::class);
 
             // When
-            $uniform = new Uniform($a, $b);
+            $uniform = new Uniform(a: $a, b: $b);
         }
 
         /**
@@ -138,10 +138,10 @@
         public function testPdf(float $a, float $b, float $x, float $expected)
         {
             // Given
-            $uniform = new Uniform($a, $b);
+            $uniform = new Uniform(a: $a, b: $b);
 
             // When
-            $pdf = $uniform->pdf($x);
+            $pdf = $uniform->pdf(x: $x);
 
             // Then
             $this->assertEqualsWithDelta($expected, $pdf, 0.001);
@@ -161,10 +161,10 @@
         public function testCdf(float $a, float $b, float $x, float $expected)
         {
             // Given
-            $uniform = new Uniform($a, $b);
+            $uniform = new Uniform(a: $a, b: $b);
 
             // When
-            $cdf = $uniform->cdf($x);
+            $cdf = $uniform->cdf(x: $x);
 
             // Then
             $this->assertEqualsWithDelta($expected, $cdf, 0.001);
@@ -183,7 +183,7 @@
         public function testMean(float $a, float $b, float $μ)
         {
             // Given
-            $uniform = new Uniform($a, $b);
+            $uniform = new Uniform(a: $a, b: $b);
 
             // When
             $mean = $uniform->mean();
@@ -205,7 +205,7 @@
         public function testMedian(float $a, float $b, float $μ)
         {
             // Given
-            $uniform = new Uniform($a, $b);
+            $uniform = new Uniform(a: $a, b: $b);
 
             // When
             $median = $uniform->median();
@@ -226,7 +226,7 @@
         public function testMode(float $a, float $b)
         {
             // Given
-            $uniform = new Uniform($a, $b);
+            $uniform = new Uniform(a: $a, b: $b);
 
             // When
             $mode = $uniform->mode();
@@ -249,7 +249,7 @@
         public function testVariance(float $a, float $b, float $expected)
         {
             // Given
-            $uniform = new Uniform($a, $b);
+            $uniform = new Uniform(a: $a, b: $b);
 
             // When
             $variance = $uniform->variance();

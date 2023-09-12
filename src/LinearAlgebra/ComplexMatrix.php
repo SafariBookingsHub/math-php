@@ -6,8 +6,6 @@
     use MathPHP\Number\Complex;
     use MathPHP\Number\ObjectArithmetic;
 
-    use function get_class;
-
     class ComplexMatrix extends ObjectMatrix {
         /** @var Complex[][] Matrix array of arrays */
         protected array $A;
@@ -29,10 +27,18 @@
         protected function validateComplexData(array $A): void
         {
             foreach ($A as $i => $row)
-                foreach ($row as $object)
-                    if ( ! ($object instanceof Complex))
-                        throw new Exception\IncorrectTypeException("All elements in the complex matrix must be complex. Got "
-                            .$object::class);
+            {
+                {
+                    foreach ($row as $object)
+                    {
+                        if ( ! ($object instanceof Complex))
+                        {
+                            throw new Exception\IncorrectTypeException("All elements in the complex matrix must be complex. Got "
+                                .$object::class);
+                        }
+                    }
+                }
+            }
         }
 
         /**
@@ -45,13 +51,17 @@
             try
             {
                 return new ComplexMatrix([[new Complex(0, 0)]]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
+        }
+
+        public static function constructorException()
+        {
+        }
+
+        public static function construction()
+        {
         }
 
         /**
@@ -70,18 +80,8 @@
                 return $this->transpose()->map(
                     fn(Complex $c) => $c->complexConjugate()
                 );
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
+            } catch (Exception\IncorrectTypeException|Exception\MatrixException $e)
             {
             }
-        }
-
-        public function constructorException()
-        {
-        }
-
-        public function construction()
-        {
         }
     }

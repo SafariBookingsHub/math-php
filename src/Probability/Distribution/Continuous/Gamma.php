@@ -36,7 +36,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '(0,∞)',
             ];
@@ -58,6 +58,10 @@
             parent::__construct($k, $θ);
         }
 
+        public static function modeNan()
+        {
+        }
+
         /**
          * Probability density function
          *
@@ -75,30 +79,21 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             $k = $this->k;
             $θ = $this->θ;
 
-            try
-            {
-                $Γ⟮k⟯ = Special::Γ($k);
-            } catch (OutOfBoundsException $e)
-            {
-            }
+            $Γ⟮k⟯ = Special::Γ($k);
             $θᵏ = $θ ** $k;
             $Γ⟮k⟯θᵏ = $Γ⟮k⟯ * $θᵏ;
 
             $xᵏ⁻¹ = $x ** ($k - 1);
             $e = M_E ** (-$x / $θ);
 
-            return $xᵏ⁻¹ * $e / $Γ⟮k⟯θᵏ;
+            return ($xᵏ⁻¹ * $e) / $Γ⟮k⟯θᵏ;
         }
 
         /**
@@ -117,29 +112,15 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             $k = $this->k;
             $θ = $this->θ;
 
-            try
-            {
-                $Γ⟮k⟯ = Special::Γ($k);
-            } catch (OutOfBoundsException $e)
-            {
-            }
-            try
-            {
-                $γ = Special::γ($k, $x / $θ);
-            } catch (OutOfBoundsException $e)
-            {
-            }
+            $Γ⟮k⟯ = Special::Γ($k);
+            $γ = Special::γ($k, $x / $θ);
 
             return $γ / $Γ⟮k⟯;
         }
@@ -184,7 +165,11 @@
         public function mode(): float
         {
             if ($this->k < 1)
-                return NAN;
+            {
+                {
+                    return NAN;
+                }
+            }
 
             return ($this->k - 1) * $this->θ;
         }
@@ -199,9 +184,5 @@
         public function variance(): float
         {
             return $this->k * $this->θ ** 2;
-        }
-
-        public function modeNan()
-        {
         }
     }

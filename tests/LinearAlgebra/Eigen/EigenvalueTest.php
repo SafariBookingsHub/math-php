@@ -46,8 +46,8 @@
                         [1, -2],
                         [-2, 0],
                     ],
-                    [(1 + sqrt(17)) / 2, (1 - sqrt(17)) / 2],
-                    (1 + sqrt(17)) / 2,
+                    [(1 + sqrt(num: 17)) / 2, (1 - sqrt(num: 17)) / 2],
+                    (1 + sqrt(num: 17)) / 2,
                 ],
                 [
                     [
@@ -90,8 +90,8 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    [3 * (5 + sqrt(33)) / 2, -3 * (sqrt(33) - 5) / 2, 0],
-                    3 * (5 + sqrt(33)) / 2,
+                    [(3 * (5 + sqrt(33))) / 2, (-3 * (sqrt(33) - 5)) / 2, 0],
+                    (3 * (5 + sqrt(33))) / 2,
                 ],
                 [
                     [
@@ -135,9 +135,10 @@
             ];
         }
 
-        #[ArrayShape(['1x1'        => "array[]",
-                      '5x5'        => "array[]",
-                      'not_square' => "array[]"
+        #[ArrayShape(shape: [
+            '1x1'        => "array[]",
+            '5x5'        => "array[]",
+            'not_square' => "array[]",
         ])] public static function dataProviderForEigenvalueException(): array
         {
             return [
@@ -496,9 +497,10 @@
             ];
         }
 
-        #[ArrayShape(['1x1'          => "array[]",
-                      'not_symetric' => "array[]",
-                      'not_square'   => "array[]"
+        #[ArrayShape(shape: [
+            '1x1'          => "array[]",
+            'not_symetric' => "array[]",
+            'not_square'   => "array[]",
         ])] public static function dataProviderForSymmetricException(): array
         {
             return [
@@ -601,15 +603,15 @@
         public function testClosedFormPolynomialRootMethod(array $A, array $S)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $eigenvalues = Eigenvalue::closedFormPolynomialRootMethod($A);
+            $eigenvalues = Eigenvalue::closedFormPolynomialRootMethod(A: $A);
 
             // Then
             $this->assertEqualsWithDelta($S, $eigenvalues, 0.0001);
             $this->assertEqualsWithDelta($S,
-                $A->eigenvalues(Eigenvalue::CLOSED_FORM_POLYNOMIAL_ROOT_METHOD),
+                $A->eigenvalues(method: Eigenvalue::CLOSED_FORM_POLYNOMIAL_ROOT_METHOD),
                 0.0001);
         }
 
@@ -627,11 +629,11 @@
             array $S
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $eigenvalues
-                = $A->eigenvalues(Eigenvalue::CLOSED_FORM_POLYNOMIAL_ROOT_METHOD);
+                = $A->eigenvalues(method: Eigenvalue::CLOSED_FORM_POLYNOMIAL_ROOT_METHOD);
 
             // Then
             $this->assertEqualsWithDelta($S, $eigenvalues, 0.0001);
@@ -650,10 +652,10 @@
         public function testJacobiMethod(array $A, array $S)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $eigenvalues = Eigenvalue::jacobiMethod($A);
+            $eigenvalues = Eigenvalue::jacobiMethod(A: $A);
 
             // Then
             $this->assertEqualsWithDelta($S, $eigenvalues, 0.0001);
@@ -672,10 +674,10 @@
         public function testJacobiMethodViaMatrix(array $A, array $S)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $eigenvalues = $A->eigenvalues(Eigenvalue::JACOBI_METHOD);
+            $eigenvalues = $A->eigenvalues(method: Eigenvalue::JACOBI_METHOD);
 
             // Then
             $this->assertEqualsWithDelta($S, $eigenvalues, 0.0001);
@@ -699,10 +701,10 @@
             float $max_abs_eigenvalue
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $eigenvalues = Eigenvalue::powerIteration($A);
+            $eigenvalues = Eigenvalue::powerIteration(A: $A);
 
             // Then
             $this->assertEqualsWithDelta([$max_abs_eigenvalue], $eigenvalues,
@@ -727,10 +729,10 @@
             float $max_abs_eigenvalue
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $eigenvalues = $A->eigenvalues(Eigenvalue::POWER_ITERATION);
+            $eigenvalues = $A->eigenvalues(method: Eigenvalue::POWER_ITERATION);
 
             // Then
             $this->assertEqualsWithDelta([$max_abs_eigenvalue], $eigenvalues,
@@ -749,13 +751,13 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Eigenvalue::closedFormPolynomialRootMethod($A);
+            Eigenvalue::closedFormPolynomialRootMethod(A: $A);
         }
 
         /**
@@ -765,7 +767,7 @@
         public function testMatrixEigenvalueInvalidMethodException()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -776,7 +778,7 @@
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->eigenvalues($invalidMethod);
+            $A->eigenvalues(method: $invalidMethod);
         }
 
         /**
@@ -790,13 +792,13 @@
         public function testJacobiExceptionMatrixNotCorrectSize(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Eigenvalue::jacobiMethod($A);
+            Eigenvalue::jacobiMethod(A: $A);
         }
 
         /**
@@ -810,13 +812,13 @@
         public function testPowerIterationFail(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->expectException(Exception\FunctionFailedToConvergeException::class);
 
             // When
-            Eigenvalue::powerIteration($A, 0);
+            Eigenvalue::powerIteration(A: $A, iterations: 0);
         }
 
         /**
@@ -829,7 +831,7 @@
         public function testSmartEigenvalues(array $A, array $S)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $eigenvalues = $A->eigenvalues();
@@ -846,7 +848,7 @@
         public function testSmartEigenvalueFailure(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->expectException(Exception\MatrixException::class);
@@ -887,13 +889,11 @@
             // Given
             try
             {
-                $A = MatrixFactory::createNumeric([
+                $A = MatrixFactory::createNumeric(A: [
                     [11090.868109438, 2292930.5298083],
                     [2292930.5298083, 474044636.63249],
                 ]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException $e)
             {
             }
 
@@ -903,10 +903,8 @@
             // When
             try
             {
-                $eigenvalues = Eigenvalue::jacobiMethod($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\MathException $e)
+                $eigenvalues = Eigenvalue::jacobiMethod(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException $e)
             {
             }
 

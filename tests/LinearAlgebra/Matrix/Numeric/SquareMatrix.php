@@ -4,19 +4,19 @@
 
     class SquareMatrix {
 
-        public function isSquare()
+        public static function isSquare()
         {
         }
 
-        public function getMatrix()
+        public static function getMatrix()
         {
         }
 
-        public function constructorExceptionNotSquareMatrix()
+        public static function constructorExceptionNotSquareMatrix()
         {
         }
 
-        public function constructor()
+        public static function constructor()
         {
         }
     }

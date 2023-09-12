@@ -4,551 +4,564 @@
 
     class MatrixAxioms {
 
-        public function nilpotentCannotBeInvertible()
+        public static function nilpotentCannotBeInvertible()
         {
         }
 
-        public function nilpotentDetIsZero()
+        public static function nilpotentDetIsZero()
         {
         }
 
-        public function nilpotentTraceIsZero()
+        public static function nilpotentTraceIsZero()
         {
         }
 
-        public function householderTransformMatrixEigenvalues()
+        public static function householderTransformMatrixEigenvalues()
         {
         }
 
-        public function householderTransformMatrixDeterminant()
+        public static function householderTransformMatrixDeterminant()
         {
         }
 
-        public function householderTransformMatrixInvolutoryProperty()
+        public static function householderTransformMatrixInvolutoryProperty()
         {
         }
 
-        public function orthogonalMatrixDeterminateIsOne()
+        public static function orthogonalMatrixDeterminateIsOne()
         {
         }
 
-        public function orthogonalMatrixInverseEqualsTransposeOfOrthogonalMatrix(
+        public static function orthogonalMatrixInverseEqualsTransposeOfOrthogonalMatrix(
         )
         {
         }
 
-        public function orthogonalTransposeOfOrthogonalMatrixTimesMatrixIsIdentityMatrix(
+        public static function orthogonalTransposeOfOrthogonalMatrixTimesMatrixIsIdentityMatrix(
         )
         {
         }
 
-        public function orthogonalMatrixTimesTransposeIsIdentityMatrix()
+        public static function orthogonalMatrixTimesTransposeIsIdentityMatrix()
         {
         }
 
-        public function tridiagonalMatrixIsUpperAndLowerHessenberg()
+        public static function tridiagonalMatrixIsUpperAndLowerHessenberg()
         {
         }
 
-        public function upperBidiagonalMatrixIsLowerHessenberg()
+        public static function upperBidiagonalMatrixIsLowerHessenberg()
         {
         }
 
-        public function lowerBidiagonalMatrixIsUpperHessenberg()
+        public static function lowerBidiagonalMatrixIsUpperHessenberg()
         {
         }
 
-        public function rankTransposeEqualities()
+        public static function rankTransposeEqualities()
         {
         }
 
-        public function squareMatrixInvertibleIfFullRank()
+        public static function squareMatrixInvertibleIfFullRank()
         {
         }
 
-        public function zeroMatrixHasRankOfZero()
+        public static function zeroMatrixHasRankOfZero()
         {
         }
 
-        public function rankLessThanMinDimension()
+        public static function rankLessThanMinDimension()
         {
         }
 
-        public function matrixTimesItsAdjugateEqualsAdjugateTimesMatrixEqualsDetTimesIdentity(
+        public static function matrixTimesItsAdjugateEqualsAdjugateTimesMatrixEqualsDetTimesIdentity(
         )
         {
         }
 
-        public function adjugateOfTransposeEqualsTransposeOfAdjugate()
+        public static function adjugateOfTransposeEqualsTransposeOfAdjugate()
         {
         }
 
-        public function adjugateBTimesAdjugateAEqualsDetBTimesInverseBTimesDetATimesInverseAEqualsDetABTimesInverseAB(
+        public static function adjugateBTimesAdjugateAEqualsDetBTimesInverseBTimesDetATimesInverseAEqualsDetABTimesInverseAB(
         )
         {
         }
 
-        public function adjugateAtimesCEqualsAdjugateATimesCRaisedToNMinusOne()
-        {
-        }
-
-        public function adjugateABEqualsAdjugateBTimesAdjugateA()
-        {
-        }
-
-        public function adjugateOfIdenetityMatrixIsIdentity()
-        {
-        }
-
-        public function inverseEqualsOneOverDetTimesAdjugate()
-        {
-        }
-
-        public function adjugateEqualsInverseOfATimesDeterminant()
-        {
-        }
-
-        public function adjugateTimesAIsIdentityMatrixTimesDeterminantOfA()
-        {
-        }
-
-        public function adjugateIsTransoseOfCofactorMatrix()
-        {
-        }
-
-        public function choleskyDecompositionLTransposeIsUpperTriangular()
-        {
-        }
-
-        public function choleskyDecompositionLIsLowerTriangular()
-        {
-        }
-
-        public function choleskyDecompositionLTimesLTransposeIsA()
-        {
-        }
-
-        public function hilbertMatrixIsPositiveDefinite()
-        {
-        }
-
-        public function hilbertMatrixIsSymmetric()
-        {
-        }
-
-        public function signatureMatrixIsInvolutory()
-        {
-        }
-
-        public function traceOfExchangeMatrix()
-        {
-        }
-
-        public function inverseOfExchangeMatrix()
-        {
-        }
-
-        public function transposeOfExchangeMatrix()
-        {
-        }
-
-        public function reducedRowEchelonFormIsUpperTriangular()
-        {
-        }
-
-        public function diagonalMatrixIsInvertibleIfAndOnlyIfDigaonalEntriesAreAllNonZero(
+        public static function adjugateAtimesCEqualsAdjugateATimesCRaisedToNMinusOne(
         )
         {
         }
 
-        public function productOfDiagonalMatrixByConstantIsDiagonal()
+        public static function adjugateABEqualsAdjugateBTimesAdjugateA()
         {
         }
 
-        public function inverseOfInvertibleDiagonalMatrixIsDiagonal()
+        public static function adjugateOfIdenetityMatrixIsIdentity()
         {
         }
 
-        public function sumOfTwoDiagonalMatricesIsDiagonal()
+        public static function inverseEqualsOneOverDetTimesAdjugate()
         {
         }
 
-        public function productOfTwoDiagonalMatricesIsDiagonal()
+        public static function adjugateEqualsInverseOfATimesDeterminant()
         {
         }
 
-        public function transposeOfDiagonalMatrixIsDiagonal()
-        {
-        }
-
-        public function upperTriangularMatrixIsInvertibleIfAndOnlyIfDigaonalEntriesAreAllNonZero(
+        public static function adjugateTimesAIsIdentityMatrixTimesDeterminantOfA(
         )
         {
         }
 
-        public function lowerTriangularMatrixIsInvertibleIfAndOnlyIfDigaonalEntriesAreAllNonZero(
+        public static function adjugateIsTransoseOfCofactorMatrix()
+        {
+        }
+
+        public static function choleskyDecompositionLTransposeIsUpperTriangular(
         )
         {
         }
 
-        public function productOfUpperTriangularMatrixByConstantIsUpperTriangular(
+        public static function choleskyDecompositionLIsLowerTriangular()
+        {
+        }
+
+        public static function choleskyDecompositionLTimesLTransposeIsA()
+        {
+        }
+
+        public static function hilbertMatrixIsPositiveDefinite()
+        {
+        }
+
+        public static function hilbertMatrixIsSymmetric()
+        {
+        }
+
+        public static function signatureMatrixIsInvolutory()
+        {
+        }
+
+        public static function traceOfExchangeMatrix()
+        {
+        }
+
+        public static function inverseOfExchangeMatrix()
+        {
+        }
+
+        public static function transposeOfExchangeMatrix()
+        {
+        }
+
+        public static function reducedRowEchelonFormIsUpperTriangular()
+        {
+        }
+
+        public static function diagonalMatrixIsInvertibleIfAndOnlyIfDigaonalEntriesAreAllNonZero(
         )
         {
         }
 
-        public function productOfLowerTriangularMatrixByConstantIsLowerTriangular(
+        public static function productOfDiagonalMatrixByConstantIsDiagonal()
+        {
+        }
+
+        public static function inverseOfInvertibleDiagonalMatrixIsDiagonal()
+        {
+        }
+
+        public static function sumOfTwoDiagonalMatricesIsDiagonal()
+        {
+        }
+
+        public static function productOfTwoDiagonalMatricesIsDiagonal()
+        {
+        }
+
+        public static function transposeOfDiagonalMatrixIsDiagonal()
+        {
+        }
+
+        public static function upperTriangularMatrixIsInvertibleIfAndOnlyIfDigaonalEntriesAreAllNonZero(
         )
         {
         }
 
-        public function inverseOfInvertibleUpperTriangularMatrixIsUpperTriangular(
+        public static function lowerTriangularMatrixIsInvertibleIfAndOnlyIfDigaonalEntriesAreAllNonZero(
         )
         {
         }
 
-        public function inverseOfInvertibleLowerTriangularMatrixIsLowerTriangular(
+        public static function productOfUpperTriangularMatrixByConstantIsUpperTriangular(
         )
         {
         }
 
-        public function sumOfTwoUpperTriangularMatricesIsUpperTriangular()
-        {
-        }
-
-        public function sumOfTwoLowerTriangularMatricesIsLowerTriangular()
-        {
-        }
-
-        public function productOfTwoUpperTriangularMatricesIsUpperTriangular()
-        {
-        }
-
-        public function productOfTwoLowerTriangularMatricesIsLowerTriangular()
-        {
-        }
-
-        public function transposeOfUpperTriangularMatrixIsLowerTriangular()
-        {
-        }
-
-        public function transposeOfLowerTriangularMatrixIsUpperTriangular()
-        {
-        }
-
-        public function zeroMatrixIsDiagonal()
-        {
-        }
-
-        public function zeroMatrixIsUpperTriangular()
-        {
-        }
-
-        public function zeroMatrixIsLowerTriangular()
-        {
-        }
-
-        public function positiveDefiniteBABIsPositiveDefinite()
-        {
-        }
-
-        public function positiveDefiniteABAIsPositiveDefinite()
-        {
-        }
-
-        public function positiveDefiniteAAAIsPositiveDefinite()
-        {
-        }
-
-        public function positiveDefiniteAPlusBIsPositiveDefinite()
-        {
-        }
-
-        public function positiveDefiniteAPlusAIsPositiveDefinite()
-        {
-        }
-
-        public function positiveDefiniteThenScalarMultiplyWithPositiveNumberIsPositiveDefinite(
+        public static function productOfLowerTriangularMatrixByConstantIsLowerTriangular(
         )
         {
         }
 
-        public function negativeDefiniteInverseIsNegativeDefinite()
-        {
-        }
-
-        public function positiveDefiniteInverseIsPositiveDefinite()
-        {
-        }
-
-        public function negativeDefiniteIsAlsoNegativeSemidefinite()
-        {
-        }
-
-        public function positiveDefiniteIsAlsoPositiveSemidefinite()
-        {
-        }
-
-        public function positiveSemidefiniteNegativeisNegativeSemidefinite()
-        {
-        }
-
-        public function positiveDefiniteNegativeisNegativeDefinite()
-        {
-        }
-
-        public function covarianceMatrixIsSymmetric()
-        {
-        }
-
-        public function kroneckerSum()
-        {
-        }
-
-        public function kroneckerProductDeterminant()
-        {
-        }
-
-        public function kroneckerProductTranspose()
-        {
-        }
-
-        public function kroneckerProductInverse()
-        {
-        }
-
-        public function kroneckerProductScalarMultiplication()
-        {
-        }
-
-        public function kroneckerProductMultiplication()
-        {
-        }
-
-        public function kroneckerProductAssociativity()
-        {
-        }
-
-        public function kroneckerProductBilinearity2()
-        {
-        }
-
-        public function kroneckerProductBilinearity1()
-        {
-        }
-
-        public function skewSymmetricMatrixAddedToIdentityIsInvertible()
-        {
-        }
-
-        public function skewSymmetricMatrixDiagonalElementsAreZeroAndThereforeTraceIsZero(
+        public static function inverseOfInvertibleUpperTriangularMatrixIsUpperTriangular(
         )
         {
         }
 
-        public function scalarMultipleOfSkewSymmetricMatrixIsSkewSymmetric()
-        {
-        }
-
-        public function sumOfTwoSkewSymmetricMatricesIsSkewSymmetric()
-        {
-        }
-
-        public function matrixIsSkewSymmetricDeterminantGreaterThanZero()
-        {
-        }
-
-        public function matrixIsInvertibleSymmetricThenInverseIsSymmetric()
-        {
-        }
-
-        public function transposeTimesSymmetricMatrixIsSymmetric()
-        {
-        }
-
-        public function symmetricMatrixTimesTransposeIsSymmetric()
-        {
-        }
-
-        public function symmetricMatricesTimesScalarIsSymmetric()
-        {
-        }
-
-        public function symmetricMatricesDifferenceIsSymmetric()
-        {
-        }
-
-        public function symmetricMatricesSumIsSymmetric()
-        {
-        }
-
-        public function symmetricInverseTransposeEqualsIdentity()
-        {
-        }
-
-        public function symmetricEqualsTranspose()
-        {
-        }
-
-        public function symmetricMatrixIsSquare()
-        {
-        }
-
-        public function solveRref()
-        {
-        }
-
-        public function solveQrDecomposition()
-        {
-        }
-
-        public function solveLuDecomposition()
-        {
-        }
-
-        public function solveInverseBEqualsX()
-        {
-        }
-
-        public function solveEquationForZero()
-        {
-        }
-
-        public function PInverseEqualsPTranspose()
-        {
-        }
-
-        public function choleskyDecompositionAEqualsLLᵀ()
-        {
-        }
-
-        public function croutDecompositionAEqualsLDU()
-        {
-        }
-
-        public function qrDecompositionPropertyQTransposeEqualsQInverse()
-        {
-        }
-
-        public function qrDecompositionPropertyREqualsQTransposeA()
-        {
-        }
-
-        public function qrDecompositionOrthonormalMatrixQPropertyQTransposeQIsIdentity(
+        public static function inverseOfInvertibleLowerTriangularMatrixIsLowerTriangular(
         )
         {
         }
 
-        public function QRDecompositionQOrthogonalRUpperTriangular()
-        {
-        }
-
-        public function QRDecompositionAEqualsQR()
-        {
-        }
-
-        public function inverseWithLUDecompositionInverse()
-        {
-        }
-
-        public function LUDecompositionPPTransposeEqualsIdentity()
-        {
-        }
-
-        public function LUDecompositionAEqualsPInverseLU()
-        {
-        }
-
-        public function LUDecompositionPAEqualsLU()
-        {
-        }
-
-        public function determinantProductSameAsProductOfDeterminants()
-        {
-        }
-
-        public function determinantSameAsDeterminantOfTranspose()
-        {
-        }
-
-        public function traceOfProductIsSameRegardlessOfOrderMultiplied()
-        {
-        }
-
-        public function traceIsSameAsTraceOfTranspose()
-        {
-        }
-
-        public function transposeSumIsSameAsSumOfTransposes()
-        {
-        }
-
-        public function transposeProductIsProductOfTranposesInReverseOrder()
-        {
-        }
-
-        public function scalarMultiplicationOfTransposeOrder()
-        {
-        }
-
-        public function transposeOfInverseIsInverseOfTranspose()
-        {
-        }
-
-        public function transposeOfTransposeIsOriginalMatrix()
-        {
-        }
-
-        public function ifMatrixIsInvertibleThenProductOfTransposeAndMatrixIsInvertible(
+        public static function sumOfTwoUpperTriangularMatricesIsUpperTriangular(
         )
         {
         }
 
-        public function ifMatrixIsInvertibleThenProductOfMatrixAndTransposeIsInvertible(
+        public static function sumOfTwoLowerTriangularMatricesIsLowerTriangular(
         )
         {
         }
 
-        public function ifMatrixIsInvertibleThenTransposeIsInvertible()
+        public static function productOfTwoUpperTriangularMatricesIsUpperTriangular(
+        )
         {
         }
 
-        public function inverseProductIsReverseProductOfInverses()
+        public static function productOfTwoLowerTriangularMatricesIsLowerTriangular(
+        )
         {
         }
 
-        public function inverseOfInverseIsOriginalMatrix()
+        public static function transposeOfUpperTriangularMatrixIsLowerTriangular(
+        )
         {
         }
 
-        public function matrixTimesInverseIsIdentity()
+        public static function transposeOfLowerTriangularMatrixIsUpperTriangular(
+        )
         {
         }
 
-        public function identityMatrixIsInvolutory()
+        public static function zeroMatrixIsDiagonal()
         {
         }
 
-        public function matrixTimesIdentityIsOriginalMatrix()
+        public static function zeroMatrixIsUpperTriangular()
         {
         }
 
-        public function scalarMultiplcationOrder()
+        public static function zeroMatrixIsLowerTriangular()
         {
         }
 
-        public function multiplicationIsDistributive()
+        public static function positiveDefiniteBABIsPositiveDefinite()
         {
         }
 
-        public function multiplicationIsAssociative()
+        public static function positiveDefiniteABAIsPositiveDefinite()
         {
         }
 
-        public function addNegateIsZeroMatrix()
+        public static function positiveDefiniteAAAIsPositiveDefinite()
         {
         }
 
-        public function scalarMultiplicationOrderAddition()
+        public static function positiveDefiniteAPlusBIsPositiveDefinite()
+        {
+        }
+
+        public static function positiveDefiniteAPlusAIsPositiveDefinite()
+        {
+        }
+
+        public static function positiveDefiniteThenScalarMultiplyWithPositiveNumberIsPositiveDefinite(
+        )
+        {
+        }
+
+        public static function negativeDefiniteInverseIsNegativeDefinite()
+        {
+        }
+
+        public static function positiveDefiniteInverseIsPositiveDefinite()
+        {
+        }
+
+        public static function negativeDefiniteIsAlsoNegativeSemidefinite()
+        {
+        }
+
+        public static function positiveDefiniteIsAlsoPositiveSemidefinite()
+        {
+        }
+
+        public static function positiveSemidefiniteNegativeisNegativeSemidefinite(
+        )
+        {
+        }
+
+        public static function positiveDefiniteNegativeisNegativeDefinite()
+        {
+        }
+
+        public static function covarianceMatrixIsSymmetric()
+        {
+        }
+
+        public static function kroneckerSum()
+        {
+        }
+
+        public static function kroneckerProductDeterminant()
+        {
+        }
+
+        public static function kroneckerProductTranspose()
+        {
+        }
+
+        public static function kroneckerProductInverse()
+        {
+        }
+
+        public static function kroneckerProductScalarMultiplication()
+        {
+        }
+
+        public static function kroneckerProductMultiplication()
+        {
+        }
+
+        public static function kroneckerProductAssociativity()
+        {
+        }
+
+        public static function kroneckerProductBilinearity2()
+        {
+        }
+
+        public static function kroneckerProductBilinearity1()
+        {
+        }
+
+        public static function skewSymmetricMatrixAddedToIdentityIsInvertible()
+        {
+        }
+
+        public static function skewSymmetricMatrixDiagonalElementsAreZeroAndThereforeTraceIsZero(
+        )
+        {
+        }
+
+        public static function scalarMultipleOfSkewSymmetricMatrixIsSkewSymmetric(
+        )
+        {
+        }
+
+        public static function sumOfTwoSkewSymmetricMatricesIsSkewSymmetric()
+        {
+        }
+
+        public static function matrixIsSkewSymmetricDeterminantGreaterThanZero()
+        {
+        }
+
+        public static function matrixIsInvertibleSymmetricThenInverseIsSymmetric(
+        )
+        {
+        }
+
+        public static function transposeTimesSymmetricMatrixIsSymmetric()
+        {
+        }
+
+        public static function symmetricMatrixTimesTransposeIsSymmetric()
+        {
+        }
+
+        public static function symmetricMatricesTimesScalarIsSymmetric()
+        {
+        }
+
+        public static function symmetricMatricesDifferenceIsSymmetric()
+        {
+        }
+
+        public static function symmetricMatricesSumIsSymmetric()
+        {
+        }
+
+        public static function symmetricInverseTransposeEqualsIdentity()
+        {
+        }
+
+        public static function symmetricEqualsTranspose()
+        {
+        }
+
+        public static function symmetricMatrixIsSquare()
+        {
+        }
+
+        public static function solveRref()
+        {
+        }
+
+        public static function solveQrDecomposition()
+        {
+        }
+
+        public static function solveLuDecomposition()
+        {
+        }
+
+        public static function solveInverseBEqualsX()
+        {
+        }
+
+        public static function solveEquationForZero()
+        {
+        }
+
+        public static function PInverseEqualsPTranspose()
+        {
+        }
+
+        public static function choleskyDecompositionAEqualsLLᵀ()
+        {
+        }
+
+        public static function croutDecompositionAEqualsLDU()
+        {
+        }
+
+        public static function qrDecompositionPropertyQTransposeEqualsQInverse()
+        {
+        }
+
+        public static function qrDecompositionPropertyREqualsQTransposeA()
+        {
+        }
+
+        public static function qrDecompositionOrthonormalMatrixQPropertyQTransposeQIsIdentity(
+        )
+        {
+        }
+
+        public static function QRDecompositionQOrthogonalRUpperTriangular()
+        {
+        }
+
+        public static function QRDecompositionAEqualsQR()
+        {
+        }
+
+        public static function inverseWithLUDecompositionInverse()
+        {
+        }
+
+        public static function LUDecompositionPPTransposeEqualsIdentity()
+        {
+        }
+
+        public static function LUDecompositionAEqualsPInverseLU()
+        {
+        }
+
+        public static function LUDecompositionPAEqualsLU()
+        {
+        }
+
+        public static function determinantProductSameAsProductOfDeterminants()
+        {
+        }
+
+        public static function determinantSameAsDeterminantOfTranspose()
+        {
+        }
+
+        public static function traceOfProductIsSameRegardlessOfOrderMultiplied()
+        {
+        }
+
+        public static function traceIsSameAsTraceOfTranspose()
+        {
+        }
+
+        public static function transposeSumIsSameAsSumOfTransposes()
+        {
+        }
+
+        public static function transposeProductIsProductOfTranposesInReverseOrder(
+        )
+        {
+        }
+
+        public static function scalarMultiplicationOfTransposeOrder()
+        {
+        }
+
+        public static function transposeOfInverseIsInverseOfTranspose()
+        {
+        }
+
+        public static function transposeOfTransposeIsOriginalMatrix()
+        {
+        }
+
+        public static function ifMatrixIsInvertibleThenProductOfTransposeAndMatrixIsInvertible(
+        )
+        {
+        }
+
+        public static function ifMatrixIsInvertibleThenProductOfMatrixAndTransposeIsInvertible(
+        )
+        {
+        }
+
+        public static function ifMatrixIsInvertibleThenTransposeIsInvertible()
+        {
+        }
+
+        public static function inverseProductIsReverseProductOfInverses()
+        {
+        }
+
+        public static function inverseOfInverseIsOriginalMatrix()
+        {
+        }
+
+        public static function matrixTimesInverseIsIdentity()
+        {
+        }
+
+        public static function identityMatrixIsInvolutory()
+        {
+        }
+
+        public static function matrixTimesIdentityIsOriginalMatrix()
+        {
+        }
+
+        public static function scalarMultiplcationOrder()
+        {
+        }
+
+        public static function multiplicationIsDistributive()
+        {
+        }
+
+        public static function multiplicationIsAssociative()
+        {
+        }
+
+        public static function addNegateIsZeroMatrix()
+        {
+        }
+
+        public static function scalarMultiplicationOrderAddition()
         {
         }
     }

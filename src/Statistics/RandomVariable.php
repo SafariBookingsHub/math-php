@@ -40,12 +40,12 @@
      * https://en.wikipedia.org/wiki/Random_variable
      */
     class RandomVariable {
-        public const SAMPLE_SKEWNESS = 'sample';
-        public const POPULATION_SKEWNESS = 'population';
-        public const ALTERNATIVE_SKEWNESS = 'alternative';
+        public final const SAMPLE_SKEWNESS = 'sample';
+        public final const POPULATION_SKEWNESS = 'population';
+        public final const ALTERNATIVE_SKEWNESS = 'alternative';
 
-        public const SAMPLE_KURTOSIS = 'sample';
-        public const POPULATION_KURTOSIS = 'population';
+        public final const SAMPLE_KURTOSIS = 'sample';
+        public final const POPULATION_KURTOSIS = 'population';
 
         /**
          * Skewness
@@ -71,13 +71,17 @@
             array $X,
             string $type = self::SAMPLE_SKEWNESS
         ): float {
-            return match ($type)
+            switch ($type)
             {
-                self::SAMPLE_SKEWNESS => self::sampleSkewness($X),
-                self::POPULATION_SKEWNESS => self::populationSkewness($X),
-                self::ALTERNATIVE_SKEWNESS => self::alternativeSkewness($X),
-                default => throw new Exception\IncorrectTypeException("Type $type is not a valid skewness algorithm type"),
-            };
+                case self::SAMPLE_SKEWNESS:
+                    return self::sampleSkewness($X);
+                case self::POPULATION_SKEWNESS:
+                    return self::populationSkewness($X);
+                case self::ALTERNATIVE_SKEWNESS:
+                    return self::alternativeSkewness($X);
+                default:
+                    return throw new Exception\IncorrectTypeException("Type $type is not a valid skewness algorithm type");
+            }
         }
 
         /**
@@ -107,18 +111,22 @@
         {
             $n = count($X);
             if ($n < 3)
+            {
                 throw new Exception\BadDataException('Cannot find the sample skewness of less than three numbers');
+            }
 
             $μ₃ = self::centralMoment($X, 3);
             $μ₂ = self::centralMoment($X, 2);
 
             $μ₂³′² = $μ₂ ** (3 / 2);
             if ($μ₂³′² == 0)
+            {
                 return NAN;
+            }
 
             $√⟮n⟮n − 1⟯⟯ = sqrt($n * ($n - 1));
 
-            return $μ₃ / $μ₂³′² * ($√⟮n⟮n − 1⟯⟯ / ($n - 2));
+            return ($μ₃ / $μ₂³′²) * ($√⟮n⟮n − 1⟯⟯ / ($n - 2));
         }
 
         /**
@@ -141,12 +149,17 @@
         public static function centralMoment(array $X, int $n): float
         {
             if (empty($X))
+            {
                 throw new Exception\BadDataException('Cannot find the central moment of an empty list of numbers');
+            }
 
             $μ = Average::mean($X);
-            $array_map = array_map(function ($xᵢ) use ($μ, $n) {
-                return pow(($xᵢ - $μ), $n);
-            }, $X);
+            $array_map1 = [];
+            foreach ($X as $key => $xᵢ)
+            {
+                $array_map1[$key] = pow(($xᵢ - $μ), $n);
+            }
+            $array_map = $array_map1;
             $∑⟮xᵢ − μ⟯ⁿ = array_sum($array_map);
             $N = count($X);
 
@@ -178,14 +191,18 @@
         public static function populationSkewness(array $X): float
         {
             if (empty($X))
+            {
                 throw new Exception\BadDataException('Cannot find the population skewness of an empty list of numbers');
+            }
 
             $μ₃ = self::centralMoment($X, 3);
             $μ₂ = self::centralMoment($X, 2);
 
             $μ₂³′² = $μ₂ ** (3 / 2);
             if ($μ₂³′² == 0)
+            {
                 return NAN;
+            }
 
             return $μ₃ / $μ₂³′²;
         }
@@ -215,18 +232,25 @@
         {
             $N = count($X);
             if ($N < 2)
+            {
                 throw new Exception\BadDataException('Cannot find the skewness of less than two numbers');
+            }
 
             $μ = Average::mean($X);
-            $array_map = array_map(function ($xᵢ) use ($μ) {
-                return pow(($xᵢ - $μ), 3);
-            }, $X);
+            $array_map1 = [];
+            foreach ($X as $key => $xᵢ)
+            {
+                $array_map1[$key] = pow(($xᵢ - $μ), 3);
+            }
+            $array_map = $array_map1;
             $∑⟮xᵢ − μ⟯³ = array_sum($array_map);
             $σ³ = Descriptive::standardDeviation($X, Descriptive::SAMPLE) ** 3;
 
             $⟮σ³ × ⟮N − 1⟯⟯ = $σ³ * ($N - 1);
             if ($⟮σ³ × ⟮N − 1⟯⟯ == 0)
+            {
                 return NAN;
+            }
 
             return $∑⟮xᵢ − μ⟯³ / $⟮σ³ × ⟮N − 1⟯⟯;
         }
@@ -248,9 +272,7 @@
             try
             {
                 return self::kurtosis($X, $type) < 0;
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadDataException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -281,12 +303,15 @@
             array $X,
             string $type = self::POPULATION_KURTOSIS
         ): float {
-            return match ($type)
+            switch ($type)
             {
-                self::SAMPLE_KURTOSIS => self::sampleKurtosis($X),
-                self::POPULATION_KURTOSIS => self::populationKurtosis($X),
-                default => throw new Exception\IncorrectTypeException("Type $type is not a valid kurtosis algorithm type"),
-            };
+                case self::SAMPLE_KURTOSIS:
+                    return self::sampleKurtosis($X);
+                case self::POPULATION_KURTOSIS:
+                    return self::populationKurtosis($X);
+                default:
+                    return throw new Exception\IncorrectTypeException("Type $type is not a valid kurtosis algorithm type");
+            }
         }
 
         /**
@@ -312,15 +337,19 @@
         public static function sampleKurtosis(array $X): float
         {
             if (empty($X))
+            {
                 throw new Exception\BadDataException('Cannot find the kurtosis of an empty list of numbers');
+            }
 
             $μ₄ = self::centralMoment($X, 4);
             $μ₂² = self::centralMoment($X, 2) ** 2;
 
             if ($μ₂² == 0)
+            {
                 return NAN;
+            }
 
-            return $μ₄ / $μ₂² - 3;
+            return ($μ₄ / $μ₂²) - 3;
         }
 
         /**
@@ -349,14 +378,16 @@
         public static function populationKurtosis(array $X): float
         {
             if (count($X) < 4)
+            {
                 throw new Exception\BadDataException('Cannot find the kurtosis of an empty list of numbers');
+            }
 
             $g₂ = self::sampleKurtosis($X);
 
             $n = count($X);
-            $⟮n ＋ 1⟯g₂ ＋ 6 = ($n + 1) * $g₂ + 6;
+            $⟮n ＋ 1⟯g₂ ＋ 6 = (($n + 1) * $g₂) + 6;
 
-            return $⟮n ＋ 1⟯g₂ ＋ 6 * ($n - 1) / (($n - 2) * ($n - 3));
+            return ($⟮n ＋ 1⟯g₂ ＋ 6 * ($n - 1)) / (($n - 2) * ($n - 3));
         }
 
         /**
@@ -376,9 +407,7 @@
             try
             {
                 return self::kurtosis($X, $type) > 0;
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadDataException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -400,9 +429,7 @@
             try
             {
                 return self::kurtosis($X, $type) == 0;
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadDataException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -424,10 +451,12 @@
         public static function sek(int $n): float
         {
             if ($n < 4)
+            {
                 throw new Exception\BadDataException("SEK requires a dataset of n > 3. N of $n given.");
+            }
 
             $２⟮SES⟯ = 2 * self::ses($n);
-            $⟮n² − 1⟯ = $n ** 2 - 1;
+            $⟮n² − 1⟯ = ($n ** 2) - 1;
             $⟮n − 3⟯⟮n ＋ 5⟯ = ($n - 3) * ($n + 5);
 
             return $２⟮SES⟯ * sqrt($⟮n² − 1⟯ / $⟮n − 3⟯⟮n ＋ 5⟯);
@@ -450,7 +479,9 @@
         public static function ses(int $n): float
         {
             if ($n < 3)
+            {
                 throw new Exception\BadDataException("SES requires a dataset of n > 2. N of $n given.");
+            }
 
             $６n⟮n − 1⟯ = 6 * $n * ($n - 1);
             $⟮n − 2⟯⟮n ＋ 1⟯⟮n ＋ 2⟯ = ($n - 2) * ($n + 1) * ($n + 3);
@@ -495,7 +526,9 @@
         public static function standardErrorOfTheMean(array $X): float
         {
             if (empty($X))
+            {
                 throw new Exception\BadDataException('Cannot find the SEM of an empty list of numbers');
+            }
 
             $s = Descriptive::standardDeviation($X, Descriptive::SAMPLE);
             $√n = sqrt(count($X));
@@ -536,11 +569,13 @@
             string $cl
         ): array {
             if ($n === 0)
+            {
                 return [
                     'ci'          => NULL,
                     'lower_bound' => NULL,
                     'upper_bound' => NULL,
                 ];
+            }
 
             $z = Table\StandardNormal::getZScoreForConfidenceInterval($cl);
 
@@ -570,7 +605,9 @@
         public static function sumOfSquares(array $numbers): float
         {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the sum of squares of an empty list of numbers');
+            }
 
             return array_sum(Map\Single::square($numbers));
         }
@@ -589,113 +626,118 @@
         public static function sumOfSquaresDeviations(array $numbers): float
         {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the sum of squares deviations of an empty list of numbers');
+            }
 
             $μ = Average::mean($numbers);
-            $array_map = array_map(function ($xᵢ) use ($μ) {
-                return pow(($xᵢ - $μ), 2);
-            }, $numbers);
+            $array_map1 = [];
+            foreach ($numbers as $key => $xᵢ)
+            {
+                $array_map1[$key] = pow(($xᵢ - $μ), 2);
+            }
+            $array_map = $array_map1;
 
             return array_sum($array_map);
         }
 
-        public function sumOfSquaresDeviationsNullWhenEmptyArray()
+        public static function sumOfSquaresDeviationsNullWhenEmptyArray()
         {
         }
 
-        public function sumOfSquaresNullWhenEmptyArray()
+        public static function sumOfSquaresNullWhenEmptyArray()
         {
         }
 
-        public function standardErrorOfTheMeanNullWhenEmptyArray()
+        public static function standardErrorOfTheMeanNullWhenEmptyArray()
         {
         }
 
-        public function sekException()
+        public static function sekException()
         {
         }
 
-        public function isNotLeptokurtic()
+        public static function isNotLeptokurtic()
         {
         }
 
-        public function isNotPlatykurtic()
+        public static function isNotPlatykurtic()
         {
         }
 
-        public function kurtosisTypeError()
+        public static function kurtosisTypeError()
         {
         }
 
-        public function kurtosisErrorWhenEmptyArray()
+        public static function kurtosisErrorWhenEmptyArray()
         {
         }
 
-        public function skewnessDefaultTypeIsPopulationKurtosis()
+        public static function skewnessDefaultTypeIsPopulationKurtosis()
         {
         }
 
-        public function populationKurtosisErrorFewerThanFourNumbers()
+        public static function populationKurtosisErrorFewerThanFourNumbers()
         {
         }
 
-        public function populationKurtosisNan()
+        public static function populationKurtosisNan()
         {
         }
 
-        public function sampleKurtosisNan()
+        public static function sampleKurtosisNan()
         {
         }
 
-        public function sampleKurtosisErrorWhenEmptyArray()
+        public static function sampleKurtosisErrorWhenEmptyArray()
         {
         }
 
-        public function sesException()
+        public static function sesException()
         {
         }
 
-        public function skewnessTypeError()
+        public static function skewnessTypeError()
         {
         }
 
-        public function skewnessErrorWhenEmptyArray()
+        public static function skewnessErrorWhenEmptyArray()
         {
         }
 
-        public function skewnessDefaultTypeIsSampleSkewness()
+        public static function skewnessDefaultTypeIsSampleSkewness()
         {
         }
 
-        public function alternativeSkewnessErrorWhenEmptyArray()
+        public static function alternativeSkewnessErrorWhenEmptyArray()
         {
         }
 
-        public function alternativeSkewnessNan()
+        public static function alternativeSkewnessNan()
         {
         }
 
-        public function sampleSkewnessNan()
+        public static function sampleSkewnessNan()
         {
         }
 
-        public function populationSkewnessNan()
+        public static function populationSkewnessNan()
         {
         }
 
-        public function sampleSkewnessNullWhenSmallArray()
+        public static function sampleSkewnessNullWhenSmallArray()
         {
         }
 
-        public function sampleSkewnessNullWhenEmptyArray()
+        public static function sampleSkewnessNullWhenEmptyArray()
         {
         }
 
-        public function populationSkewnessNullWhenEmptyArray()
+        public static function populationSkewnessNullWhenEmptyArray()
         {
         }
 
-        public function centralMomentNullIfXEmpty()
+        public static function centralMomentNullIfXEmpty()
         {
         }
     }

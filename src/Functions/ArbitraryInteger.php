@@ -26,26 +26,35 @@
          * @throws Exception\BadParameterException
          * @throws Exception\IncorrectTypeException
          */
-        public static function ackermann(int|string|Number\ArbitraryInteger $m, int|string|Number\ArbitraryInteger $n): Number\ArbitraryInteger
-        {
+        public static function ackermann(
+            int|string|Number\ArbitraryInteger $m,
+            int|string|Number\ArbitraryInteger $n
+        ): Number\ArbitraryInteger {
             $m = Number\ArbitraryInteger::create($m);
             $n = Number\ArbitraryInteger::create($n);
 
             if ($m->equals(0))
-                return $n->add(1); elseif ($m->equals(1))
+            {
+                return $n->add(1);
+            } elseif ($m->equals(1))
+            {
                 return $n->add(2);
-            elseif ($m->equals(2))
+            } elseif ($m->equals(2))
+            {
                 return $n->leftShift(1)->add(3);
-            elseif ($m->equals(3))
+            } elseif ($m->equals(3))
             {
                 $one = new Number\ArbitraryInteger(1);
 
                 return $one->leftShift($n->add(3))->subtract(3);  // 2^(n+3) - 3
             } elseif ($n->equals(0))
+            {
                 return self::ackermann($m->subtract(1), 1);
-            else
+            } else
+            {
                 return self::ackermann($m->subtract(1),
                     self::ackermann($m, $n->subtract(1)));
+            }
         }
 
         /**
@@ -56,25 +65,31 @@
          * @return Number\ArbitraryInteger
          *
          * @throws Exception\BadParameterException
-         * @throws Exception\IncorrectTypeException
          */
         public static function rand(int $bytes): Number\ArbitraryInteger
         {
             if ($bytes <= 0)
+            {
                 throw new Exception\BadParameterException('Cannot produce a random number with zero or negative bytes.');
+            }
 
             try
             {
-                return Number\ArbitraryInteger::fromBinary(random_bytes($bytes),
-                    mt_rand(0, 1) === 0);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+                try
+                {
+                    return Number\ArbitraryInteger::fromBinary(random_bytes($bytes),
+                        mt_rand(0, 1) === 0);
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                }
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
         }
 
-        public function incorrectTypeExceptionPrepareParameter()
+        public static function incorrectTypeExceptionPrepareParameter()
         {
         }
     }

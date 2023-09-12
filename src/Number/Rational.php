@@ -72,7 +72,9 @@
         private static function normalize(int $w, int $n, int $d): array
         {
             if ($d == 0)
+            {
                 throw new Exception\BadDataException('Denominator cannot be zero');
+            }
             // Make sure $d is positive
             if ($d < 0)
             {
@@ -87,7 +89,7 @@
                 $n %= $d;
             }
             $gcd = 0;
-            while ($gcd != 1 && $n !== 0)
+            while (($gcd != 1) && ($n !== 0))
             {
                 $gcd = abs(Algebra::gcd((int)$n, (int)$d));
                 $n /= $gcd;
@@ -95,8 +97,8 @@
             }
 
             // Make the signs of $n and $w match
-            if (Special::sgn($w) !== Special::sgn($n) && $w !== 0
-                && $n !== 0
+            if ((Special::sgn($w) !== Special::sgn($n)) && ($w !== 0)
+                && ($n !== 0)
             )
             {
                 $w -= Special::sgn($w);
@@ -104,7 +106,9 @@
             }
 
             if ($n == 0)
+            {
                 $d = 1;
+            }
 
             return [$w, (int)$n, (int)$d];
         }
@@ -118,6 +122,50 @@
         {
             return new Rational(0, 0, 1);
         }
+
+        public static function powException()
+        {
+        }
+
+        public static function divideException()
+        {
+        }
+
+        public static function multiplyException()
+        {
+        }
+
+        public static function subtractException()
+        {
+        }
+
+        public static function addException()
+        {
+        }
+
+        public static function inverseException()
+        {
+        }
+
+        public static function subtractInt()
+        {
+        }
+
+        /**************************************************************************
+         * UNARY FUNCTIONS
+         **************************************************************************/
+
+        public static function normalizeException()
+        {
+        }
+
+        public static function toString()
+        {
+        }
+
+        /**************************************************************************
+         * BINARY FUNCTIONS
+         **************************************************************************/
 
         public function getWholePart(): int
         {
@@ -146,23 +194,31 @@
             $whole = '';
             $fraction = '';
 
-            if (Special::sgn($this->whole) === -1
-                || Special::sgn($this->numerator) === -1
+            if ((Special::sgn($this->whole) === -1)
+                || (Special::sgn($this->numerator) === -1)
             )
+            {
                 $sign = '-';
+            }
             if ($this->whole !== 0)
+            {
                 $whole = abs($this->whole);
+            }
             if ($this->numerator !== 0)
             {
                 if ($this->whole !== 0)
+                {
                     $whole .= ' ';
+                }
                 $fraction = $this->numeratorToSuperscript().'/'
                     .$this->denominatorToSubscript();
             }
 
             $string = $sign.$whole.$fraction;
             if ($string == '')
+            {
                 $string = '0';
+            }
 
             return $string;
         }
@@ -217,10 +273,6 @@
             );
         }
 
-        /**************************************************************************
-         * UNARY FUNCTIONS
-         **************************************************************************/
-
         /**
          * Rational number as a float
          *
@@ -244,10 +296,6 @@
                 abs($this->denominator));
         }
 
-        /**************************************************************************
-         * BINARY FUNCTIONS
-         **************************************************************************/
-
         /**
          * Inverse of a rational number
          *
@@ -261,10 +309,12 @@
             $n = $this->numerator;
             $d = $this->denominator;
 
-            if ($w == 0 && $n == 0)
+            if (($w == 0) && ($n == 0))
+            {
                 throw new Exception\DivisionByZeroException('Cannot take the inverse of zero.');
+            }
 
-            return new Rational(0, $d, $d * $w + $n);
+            return new Rational(0, $d, ($d * $w) + $n);
         }
 
         /**
@@ -279,11 +329,20 @@
         public function subtract(mixed $object_or_scalar): Rational
         {
             if (is_int($object_or_scalar))
-                return $this->add(-1 * $object_or_scalar); elseif ($object_or_scalar instanceof Rational)
+            {
+                return $this->add(-1 * $object_or_scalar);
+            } elseif ($object_or_scalar instanceof Rational)
+            {
                 return $this->add($object_or_scalar->multiply(-1));
-            else
+            } else
+            {
                 throw new Exception\IncorrectTypeException('Argument must be an integer or RationalNumber');
+            }
         }
+
+        /**************************************************************************
+         * COMPARISON FUNCTIONS
+         **************************************************************************/
 
         /**
          * Addition
@@ -297,10 +356,15 @@
         public function add(mixed $object_or_scalar): Rational
         {
             if (is_int($object_or_scalar))
-                return $this->addInt($object_or_scalar); elseif ($object_or_scalar instanceof Rational)
+            {
+                return $this->addInt($object_or_scalar);
+            } elseif ($object_or_scalar instanceof Rational)
+            {
                 return $this->addRational($object_or_scalar);
-            else
+            } else
+            {
                 throw new Exception\IncorrectTypeException('Argument must be an integer or RationalNumber');
+            }
         }
 
         /**
@@ -337,7 +401,7 @@
             $w += $rw;
 
             $lcm = Algebra::lcm($d, $rd);
-            $n = $n * intdiv($lcm, $d) + $rn * intdiv($lcm, $rd);
+            $n = ($n * intdiv($lcm, $d)) + ($rn * intdiv($lcm, $rd));
             $d = $lcm;
 
             return new Rational($w, $n, $d);
@@ -356,10 +420,15 @@
         public function multiply(mixed $object_or_scalar): Rational
         {
             if (is_int($object_or_scalar))
-                return $this->multiplyInt($object_or_scalar); elseif ($object_or_scalar instanceof Rational)
+            {
+                return $this->multiplyInt($object_or_scalar);
+            } elseif ($object_or_scalar instanceof Rational)
+            {
                 return $this->multiplyRational($object_or_scalar);
-            else
+            } else
+            {
                 throw new Exception\IncorrectTypeException('Argument must be an integer or RationalNumber');
+            }
         }
 
         /**
@@ -395,7 +464,7 @@
             $d2 = $r->denominator;
 
             $new_w = $w * $w2;
-            $new_n = $w * $n2 * $d + $w2 * $n * $d2 + $n2 * $n;
+            $new_n = ($w * $n2 * $d) + ($w2 * $n * $d2) + ($n2 * $n);
             $new_d = $d * $d2;
 
             return new Rational($new_w, $new_n, $new_d);
@@ -414,10 +483,15 @@
         public function divide(Rational|int $r): Rational
         {
             if (is_int($r))
-                return $this->divideInt($r); elseif ($r instanceof Rational)
+            {
+                return $this->divideInt($r);
+            } elseif ($r instanceof Rational)
+            {
                 return $this->divideRational($r);
-            else
+            } else
+            {
                 throw new Exception\IncorrectTypeException('Argument must be an integer or RationalNumber');
+            }
         }
 
         /**
@@ -433,7 +507,7 @@
             $n = $this->numerator;
             $d = $this->denominator;
 
-            return new Rational(0, $w * $d + $n, $int * $d);
+            return new Rational(0, ($w * $d) + $n, $int * $d);
         }
 
         /**
@@ -454,15 +528,11 @@
             $d2 = $r->denominator;
 
             $new_w = 0;
-            $new_n = $d2 * ($w * $d + $n);
-            $new_d = $d * ($w2 * $d2 + $n2);
+            $new_n = $d2 * (($w * $d) + $n);
+            $new_d = $d * (($w2 * $d2) + $n2);
 
             return new Rational($new_w, $new_n, $new_d);
         }
-
-        /**************************************************************************
-         * COMPARISON FUNCTIONS
-         **************************************************************************/
 
         /**
          * A rational number raised to an integer exponent
@@ -480,11 +550,13 @@
             $d = $this->denominator;
             if ($p < 0)
             {
-                if ($w == 0 && $n == 0)
+                if (($w == 0) && ($n == 0))
+                {
                     throw new Exception\DivisionByZeroException('Cannot raise zero to a negative exponent.');
+                }
                 $p = abs($p);
 
-                return new Rational(0, $d ** $p, ($d * $w + $n) ** $p);
+                return new Rational(0, $d ** $p, (($d * $w) + $n) ** $p);
             }
 
             return new Rational(0, (($d * $w) + $n) ** $p, $d ** $p);
@@ -501,44 +573,8 @@
          */
         public function equals(Rational $rn): bool
         {
-            return $this->whole == $rn->whole
-                && $this->numerator == $rn->numerator
-                && $this->denominator == $rn->denominator;
-        }
-
-        public function powException()
-        {
-        }
-
-        public function divideException()
-        {
-        }
-
-        public function multiplyException()
-        {
-        }
-
-        public function subtractException()
-        {
-        }
-
-        public function addException()
-        {
-        }
-
-        public function inverseException()
-        {
-        }
-
-        public function subtractInt()
-        {
-        }
-
-        public function normalizeException()
-        {
-        }
-
-        public function toString()
-        {
+            return ($this->whole == $rn->whole)
+                && ($this->numerator == $rn->numerator)
+                && ($this->denominator == $rn->denominator);
         }
     }

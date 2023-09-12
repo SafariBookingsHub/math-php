@@ -155,10 +155,10 @@
             float $expected_pdf
         ) {
             // Given
-            $log_normal = new LogNormal($μ, $σ);
+            $log_normal = new LogNormal(μ: $μ, λ: $σ);
 
             // When
-            $pdf = $log_normal->pdf($x);
+            $pdf = $log_normal->pdf(x: $x);
 
             // Then
             $this->assertEqualsWithDelta($expected_pdf, $pdf, 0.000001);
@@ -180,10 +180,10 @@
             float $expected_pdf
         ) {
             // Given
-            $log_normal = new LogNormal($μ, $σ);
+            $log_normal = new LogNormal(μ: $μ, λ: $σ);
 
             // When
-            $cdf = $log_normal->cdf($x);
+            $cdf = $log_normal->cdf(x: $x);
 
             // Then
             $this->assertEqualsWithDelta($expected_pdf, $cdf, 0.000001);
@@ -200,7 +200,7 @@
         public function testMean(float $μ, float $σ, float $expected_mean)
         {
             // Given
-            $log_normal = new LogNormal($μ, $σ);
+            $log_normal = new LogNormal(μ: $μ, λ: $σ);
 
             // When
             $mean = $log_normal->mean();
@@ -220,7 +220,7 @@
         public function testMedian(float $μ, float $σ, float $expected_median)
         {
             // Given
-            $log_normal = new LogNormal($μ, $σ);
+            $log_normal = new LogNormal(μ: $μ, λ: $σ);
 
             // When
             $median = $log_normal->median();
@@ -240,7 +240,7 @@
         public function testMode(float $μ, float $σ, float $expected)
         {
             // Given
-            $log_normal = new LogNormal($μ, $σ);
+            $log_normal = new LogNormal(μ: $μ, λ: $σ);
 
             // When
             $mode = $log_normal->mode();
@@ -260,7 +260,7 @@
         public function testVariance(float $μ, float $σ, float $expected)
         {
             // Given
-            $log_normal = new LogNormal($μ, $σ);
+            $log_normal = new LogNormal(μ: $μ, λ: $σ);
 
             // When
             $variance = $log_normal->variance();
@@ -285,10 +285,10 @@
             float $expected_inverse
         ) {
             // Given
-            $log_normal = new LogNormal($μ, $σ);
+            $log_normal = new LogNormal(μ: $μ, λ: $σ);
 
             // When
-            $inverse = $log_normal->inverse($p);
+            $inverse = $log_normal->inverse(p: $p);
 
             // Then
             $this->assertEqualsWithDelta($expected_inverse, $inverse, 0.001);
@@ -305,11 +305,11 @@
         public function testInverseOfCdf(float $x, float $μ, float $σ)
         {
             // Given
-            $log_normal = new LogNormal($μ, $σ);
-            $cdf = $log_normal->cdf($x);
+            $log_normal = new LogNormal(μ: $μ, λ: $σ);
+            $cdf = $log_normal->cdf(x: $x);
 
             // When
-            $inverse_of_cdf = $log_normal->inverse($cdf);
+            $inverse_of_cdf = $log_normal->inverse(p: $cdf);
 
             // Then
             $this->assertEqualsWithDelta($x, $inverse_of_cdf, 0.001);
@@ -320,17 +320,21 @@
          */
         public function testRand()
         {
-            foreach (range(-3, 3) as $μ)
-                foreach (range(1, 3) as $σ)
+            foreach (range(start: -3, end: 3) as $μ)
+            {
                 {
-                    // Given
-                    $log_normal = new LogNormal($μ, $σ);
+                    foreach (range(1, 3) as $σ)
+                    {
+                        // Given
+                        $log_normal = new LogNormal($μ, $σ);
 
-                    // When
-                    $random = $log_normal->rand();
+                        // When
+                        $random = $log_normal->rand();
 
-                    // Then
-                    $this->assertTrue(is_numeric($random));
+                        // Then
+                        $this->assertTrue(is_numeric($random));
+                    }
                 }
+            }
         }
     }

@@ -658,7 +658,7 @@
             $regression = new Linear($points);
 
             // Then
-            $this->assertEqualsWithDelta($ci, $regression->ci($x, $p),
+            $this->assertEqualsWithDelta($ci, Linear::ci($x, $p),
                 .0000001);
         }
 
@@ -1021,10 +1021,8 @@
             // When
             try
             {
-                $ci = $regression->ci($x, 0.05);
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
+                $ci = Linear::ci($x, 0.05);
+            } catch (IncorrectTypeException|MatrixException $e)
             {
             }
 
@@ -1055,7 +1053,7 @@
             $regression = new Linear($points);
 
             // Then
-            $this->assertEqualsWithDelta($pi, $regression->pi($x, $p, $q),
+            $this->assertEqualsWithDelta($pi, Linear::pi($x, $p, $q),
                 .0000001);
         }
 
@@ -1074,7 +1072,7 @@
             // When
             try
             {
-                $Fprob = $regression->fProbability();
+                $Fprob = Linear::fProbability();
             } catch (BadDataException $e)
             {
             }
@@ -1102,10 +1100,8 @@
             // When
             try
             {
-                $Tprob = $regression->tProbability();
-            } catch (BadParameterException $e)
-            {
-            } catch (IncorrectTypeException $e)
+                $Tprob = Linear::tProbability();
+            } catch (BadParameterException|IncorrectTypeException $e)
             {
             }
 
@@ -1127,12 +1123,14 @@
             $regression = new Linear($points);
 
             // When
-            $test_leverages = $regression->leverages();
+            $test_leverages = Linear::leverages();
 
             // Then
             foreach ($leverages as $key => $value)
+            {
                 $this->assertEqualsWithDelta($value, $test_leverages[$key],
                     .0000001);
+            }
         }
 
         /**
@@ -1169,9 +1167,13 @@
 
             // Then
             foreach ($P as $row_num => $row)
+            {
                 foreach ($row as $column_num => $value)
+                {
                     $this->assertEqualsWithDelta($value,
                         $test_P[$row_num][$column_num], .0000001);
+                }
+            }
         }
 
         /**
@@ -1236,8 +1238,12 @@
 
             // Then
             foreach ($test_cook as $key => $value)
+            {
                 $this->assertEqualsWithDelta($value, $cook[$key], .0000001);
+            }
             foreach ($test_dffits as $key => $value)
+            {
                 $this->assertEqualsWithDelta($value, $DFFITS[$key], .0000001);
+            }
         }
     }

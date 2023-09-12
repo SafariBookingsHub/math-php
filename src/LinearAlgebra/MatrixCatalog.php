@@ -14,25 +14,18 @@
         /** @var Matrix<T> inverse */
         private Matrix $A⁻¹;
 
-        /** @var Reduction\RowEchelonForm */
         private Reduction\RowEchelonForm $REF;
 
-        /** @var Reduction\ReducedRowEchelonForm */
         private Reduction\ReducedRowEchelonForm $RREF;
 
-        /** @var Decomposition\LU */
         private Decomposition\LU $LU;
 
-        /** @var Decomposition\QR */
         private Decomposition\QR $QR;
 
-        /** @var Decomposition\Cholesky */
         private Decomposition\Cholesky $cholesky;
 
-        /** @var Decomposition\Crout */
         private Decomposition\Crout $crout;
 
-        /** @var Decomposition\SVD */
         private Decomposition\SVD $SVD;
 
         /** @var int|float|ObjectArithmetic determinant */
@@ -242,9 +235,6 @@
 
         // DETERMINANT
 
-        /**
-         * @param float|int|ObjectArithmetic $det
-         */
         public function addDeterminant(ObjectArithmetic|float|int $det): void
         {
             $this->det = $det;
@@ -256,9 +246,6 @@
             return isset($this->det);
         }
 
-        /**
-         * @return int|float|ObjectArithmetic
-         */
         public function getDeterminant(): ObjectArithmetic|float|int
         {
             return $this->det;

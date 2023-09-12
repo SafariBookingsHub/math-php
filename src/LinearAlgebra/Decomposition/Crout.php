@@ -21,11 +21,6 @@
      * @property-read NumericMatrix $U Normalized upper triangular matrix
      */
     class Crout extends Decomposition {
-        /** @var NumericMatrix Lower triangular matrix LD */
-        private NumericMatrix $L;
-
-        /** @var NumericMatrix Normalized upper triangular matrix */
-        private NumericMatrix $U;
 
         /**
          * Crout constructor
@@ -33,10 +28,10 @@
          * @param NumericMatrix $L Lower triangular matrix LD
          * @param NumericMatrix $U Normalized upper triangular matrix
          */
-        private function __construct(NumericMatrix $L, NumericMatrix $U)
-        {
-            $this->L = $L;
-            $this->U = $U;
+        private function __construct(
+            private NumericMatrix $L,
+            private NumericMatrix $U
+        ) {
         }
 
         /**
@@ -45,7 +40,7 @@
          *
          * @param NumericMatrix $A
          *
-         * @return Crout
+         * @return \MathPHP\LinearAlgebra\Decomposition\Decomposition
          *
          * @throws Exception\BadDataException
          * @throws Exception\IncorrectTypeException
@@ -53,7 +48,7 @@
          * @throws Exception\MatrixException if there is division by 0 because of a 0-value determinant
          * @throws Exception\OutOfBoundsException
          */
-        public static function decompose(NumericMatrix $A): Crout
+        public static function decompose(NumericMatrix $A): Decomposition
         {
             $m = $A->getM();
             $n = $A->getN();
@@ -67,7 +62,11 @@
                 {
                     $sum = 0;
                     for ($k = 0; $k < $j; $k++)
-                        $sum = $sum + ($L[$i][$k] * $U[$k][$j]);
+                    {
+                        {
+                            $sum = $sum + ($L[$i][$k] * $U[$k][$j]);
+                        }
+                    }
                     $L[$i][$j] = $A[$i][$j] - $sum;
                 }
 
@@ -75,9 +74,17 @@
                 {
                     $sum = 0;
                     for ($k = 0; $k < $j; $k++)
-                        $sum = $sum + ($L[$j][$k] * $U[$k][$i]);
+                    {
+                        {
+                            $sum = $sum + ($L[$j][$k] * $U[$k][$i]);
+                        }
+                    }
                     if ($L[$j][$j] == 0)
-                        throw new Exception\MatrixException('Cannot do Crout decomposition. det(L) close to 0 - Cannot divide by 0');
+                    {
+                        {
+                            throw new Exception\MatrixException('Cannot do Crout decomposition. det(L) close to 0 - Cannot divide by 0');
+                        }
+                    }
                     $U[$j][$i] = ($A[$j][$i] - $sum) / $L[$j][$j];
                 }
             }
@@ -88,6 +95,18 @@
             $U = MatrixFactory::create((array)$U);
 
             return new Crout($L, $U);
+        }
+
+        public static function countDecompositionInvalidProperty()
+        {
+        }
+
+        public static function croutDecompositionException()
+        {
+        }
+
+        public static function croutDecomposition()
+        {
         }
 
         /**
@@ -101,22 +120,13 @@
          */
         public function __get(string $name): NumericMatrix
         {
-            return match ($name)
+            switch ($name)
             {
-                'L', 'U' => $this->$name,
-                default => throw new Exception\MatrixException("Crout class does not have a gettable property: $name"),
-            };
-        }
-
-        public function countDecompositionInvalidProperty()
-        {
-        }
-
-        public function croutDecompositionException()
-        {
-        }
-
-        public function croutDecomposition()
-        {
+                case 'L':
+                case 'U':
+                    return $this->$name;
+                default:
+                    return throw new Exception\MatrixException("Crout class does not have a gettable property: $name");
+            }
         }
     }

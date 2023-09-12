@@ -53,20 +53,23 @@
          *      If $source is a set of points, do not input any
          *      $args. Example: approximate($source).
          *
-         * @return float
+         * @return float|int The approximation of f'($target), i.e. the derivative
          *      The approximation of f'($target), i.e. the derivative
          *      of our input at our target point
          *
-         * @throws Exception\BadDataException
+         * @throws \MathPHP\Exception\BadDataException
          */
-        public static function differentiate(float $target, callable|array $source, ...$args): float|int
-        {
+        public static function differentiate(
+            float $target,
+            callable|array $source,
+            ...$args
+        ): float|int {
             // Get an array of points from our $source argument
             $points = self::getPoints($source, $args);
 
             // Validate input, sort points, make sure spacing is constant, and make
             // sure our target is contained in an interval supplied by our $source
-            self::validate($points, degree: 3);
+            self::validate($points, 3);
             $sorted = self::sort($points);
             self::assertSpacingConstant($sorted);
 
@@ -76,7 +79,11 @@
 
             // Guard clause - target must equal the x-component of the midpoint
             if ($sorted[1][$x] != $target)
-                throw new Exception\BadDataException('Your target must be the midpoint of your input');
+            {
+                {
+                    throw new Exception\BadDataException('Your target must be the midpoint of your input');
+                }
+            }
 
             // Initialize
             $h = ($sorted[2][$x] - $sorted[0][$x]) / 2;
@@ -92,22 +99,22 @@
             $f⟮x₀⟯ = $sorted[1][$y];
             $f⟮x₀⧾h⟯ = $sorted[2][$y];
 
-            return (($f⟮x₀⧿h⟯ - 2 * $f⟮x₀⟯) + $f⟮x₀⧾h⟯) / $h ** 2;
+            return (($f⟮x₀⧿h⟯ - (2 * $f⟮x₀⟯)) + $f⟮x₀⧾h⟯) / $h ** 2;
         }
 
-        public function targetException()
+        public static function targetException()
         {
         }
 
-        public function zeroErrorPoints()
+        public static function zeroErrorPoints()
         {
         }
 
-        public function nonZeroErrorCallback()
+        public static function nonZeroErrorCallback()
         {
         }
 
-        public function zeroErrorCallback()
+        public static function zeroErrorCallback()
         {
         }
     }

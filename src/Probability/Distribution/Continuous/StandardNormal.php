@@ -13,14 +13,14 @@
          *
          * @var int
          */
-        protected const μ = 0;
+        protected final const μ = 0;
 
         /**
          * Standard deviation is always 1
          *
          * @var int
          */
-        protected const σ = 1;
+        protected final const σ = 1;
 
         /**
          * Distribution parameter bounds limits
@@ -54,35 +54,37 @@
             parent::__construct(self::μ, self::σ);
         }
 
-        public function inverse()
+        public static function cdfEqualsNormalWithMeanZeroAndStandardDeviationOne(
+        )
         {
         }
 
-        public function variance()
+        public static function pdfEqualsNormalWithMeanZeroAndStandardDeviationOne(
+        )
         {
         }
 
-        public function mode()
+        public function inverse(float $p): float
         {
         }
 
-        public function mean()
+        public function variance(): float
         {
         }
 
-        public function cdfEqualsNormalWithMeanZeroAndStandardDeviationOne()
+        public function mode(): float
         {
         }
 
-        public function cdf()
+        public function mean(): float
         {
         }
 
-        public function pdfEqualsNormalWithMeanZeroAndStandardDeviationOne()
+        public function cdf(float $x): float
         {
         }
 
-        public function pdf()
+        public function pdf(float $x): float
         {
         }
     }

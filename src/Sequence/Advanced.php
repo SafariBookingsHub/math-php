@@ -1,4 +1,5 @@
-<?php /** @noinspection ALL */
+<?php
+    /** @noinspection ALL */
 
     /** @noinspection ALL */
 
@@ -78,21 +79,29 @@
 
             // Bad input; return empty list
             if ($n <= 0)
+            {
                 return $fibonacci;
+            }
 
             // Base case (n = 1): F₀ = 0
             $fibonacci[] = 0;
             if ($n === 1)
+            {
                 return $fibonacci;
+            }
 
             // Base case (n = 2): F₀ = 0, F₁ = 1
             $fibonacci[] = 1;
             if ($n === 2)
+            {
                 return $fibonacci;
+            }
 
             // Standard iterative case (n > 1): Fᵢ = Fᵢ₋₁ + Fᵢ₋₂
             for ($i = 2; $i < $n; $i++)
+            {
                 $fibonacci[] = $fibonacci[$i - 1] + $fibonacci[$i - 2];
+            }
 
             return $fibonacci;
         }
@@ -122,21 +131,29 @@
 
             // Bad input; return empty list
             if ($n <= 0)
+            {
                 return $lucas;
+            }
 
             // Base case (n = 1): L₀ = 2
             $lucas[] = 2;
             if ($n === 1)
+            {
                 return $lucas;
+            }
 
             // Base case (n = 2): , L₀ = 2L₁ = 1
             $lucas[] = 1;
             if ($n === 2)
+            {
                 return $lucas;
+            }
 
             // Standard iterative case: Lᵢ = Lᵢ₋₁ + Lᵢ₋₂
             for ($i = 2; $i < $n; $i++)
+            {
                 $lucas[$i] = $lucas[$i - 1] + $lucas[$i - 2];
+            }
 
             return $lucas;
         }
@@ -165,21 +182,29 @@
 
             // Bad input; return empty list
             if ($n <= 0)
+            {
                 return $pell;
+            }
 
             // Base case (n = 1): P₀ = 0
             $pell[] = 0;
             if ($n === 1)
+            {
                 return $pell;
+            }
 
             // Base case (n = 2): P₀ = 0, P₁ = 1
             $pell[] = 1;
             if ($n === 2)
+            {
                 return $pell;
+            }
 
             // Standard iterative case: Pᵢ = 2Pᵢ₋₁ + Pᵢ₋₂
             for ($i = 2; $i < $n; $i++)
+            {
                 $pell[$i] = (2 * $pell[$i - 1]) + $pell[$i - 2];
+            }
 
             return $pell;
         }
@@ -207,11 +232,15 @@
             $triangular = [];
             // Bad input; return empty list
             if ($n <= 0)
+            {
                 return $triangular;
+            }
 
             // Standard case for pn: n(n + 1) / 2
             for ($i = 1; $i <= $n; $i++)
+            {
                 $triangular[$i] = ($i * ($i + 1)) / 2;
+            }
 
             return $triangular;
         }
@@ -239,11 +268,15 @@
             $pentagonal = [];
             // Bad input; return empty list
             if ($n <= 0)
+            {
                 return $pentagonal;
+            }
 
             // Standard case for pn: (3n² - n) / 2
             for ($i = 1; $i <= $n; $i++)
+            {
                 $pentagonal[$i] = ((3 * ($i ** 2)) - $i) / 2;
+            }
 
             return $pentagonal;
         }
@@ -272,11 +305,15 @@
 
             // Bad input; return empty list
             if ($n <= 0)
+            {
                 return $hexagonal;
+            }
 
             // Standard case for hn: (2n × (2n - 1)) / 2
             for ($i = 1; $i <= $n; $i++)
+            {
                 $hexagonal[$i] = ((2 * $i) * ((2 * $i) - 1)) / 2;
+            }
 
             return $hexagonal;
         }
@@ -305,11 +342,15 @@
 
             // Bad input; return empty list
             if ($n <= 0)
+            {
                 return $heptagonal;
+            }
 
             // Standard case for Hn: (5n² - 3n) / 2
             for ($i = 1; $i <= $n; $i++)
+            {
                 $heptagonal[$i] = ((5 * $i ** 2) - (3 * $i)) / 2;
+            }
 
             return $heptagonal;
         }
@@ -345,7 +386,9 @@
         public static function lookAndSay(int $n): array
         {
             if ($n <= 0)
+            {
                 return [];
+            }
 
             // Initialize
             $list = [1 => '1'];
@@ -353,7 +396,9 @@
 
             // Base case
             if ($n === 1)
+            {
                 return $list;
+            }
 
             for ($i = 2; $i <= $n; $i++)
             {
@@ -362,14 +407,18 @@
                 $len = strlen($previous);
 
                 for ($j = 1; $j < $len; $j++)
+                {
                     if (substr($previous, $j, 1) === substr($previous, $j - 1,
                             1)
                     )
-                        $count++; else
+                    {
+                        $count++;
+                    } else
                     {
                         $sequence .= $count.substr($previous, $j - 1, 1);
                         $count = 1;
                     }
+                }
 
                 $sequence .= $count.substr($previous, $j - 1, 1);
                 $previous = $sequence;
@@ -409,12 +458,16 @@
         public static function lazyCaterers(int $n): array
         {
             if ($n < 0)
+            {
                 return [];
+            }
 
             $p = [];
 
             for ($i = 0; $i < $n; $i++)
+            {
                 $p[] = (($i ** 2) + $i + 2) / 2;
+            }
 
             return $p;
         }
@@ -443,12 +496,16 @@
         public static function magicSquares(int $n): array
         {
             if ($n < 0)
+            {
                 return [];
+            }
 
             $M = [];
 
             for ($i = 0; $i < $n; $i++)
+            {
                 $M[] = ($i * (($i ** 2) + 1)) / 2;
+            }
 
             return $M;
         }
@@ -472,10 +529,14 @@
         public static function perfectNumbers(int $n): array
         {
             if ($n <= 0)
+            {
                 return [];
+            }
 
             if ($n <= 10)
+            {
                 return array_slice(self::PERFECT_NUMBERS, 0, $n);
+            }
 
             throw new OutOfBoundsException("Perfect numbers beyond the tenth are too large to compute");
         }
@@ -502,7 +563,9 @@
             $pp = [];
 
             if ($n <= 0)
+            {
                 return $pp;
+            }
 
             $i = 2;
             while ($n > 0)
@@ -538,7 +601,9 @@
             $npp = [];
 
             if ($n <= 0)
+            {
                 return $npp;
+            }
 
             $i = 2;
             while ($n > 0)
@@ -581,18 +646,24 @@
         public static function primesUpTo(int $n): array
         {
             if ($n < 2)
+            {
                 return [];
+            }
 
             $primes = array_fill_keys(range(2, $n), TRUE);
             $√n = ceil(sqrt($n));
 
             for ($i = 2; $i <= $√n; $i++)
+            {
                 if ($primes[$i] === TRUE)
                 {
                     $i² = $i ** 2;
                     for ($j = $i²; $j <= $n; $j += $i)
+                    {
                         $primes[$j] = FALSE;
+                    }
                 }
+            }
 
             return array_keys(array_filter($primes));
         }

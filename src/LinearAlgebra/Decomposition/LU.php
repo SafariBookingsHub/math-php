@@ -59,14 +59,6 @@
      * @property-read NumericMatrix $P Permutation matrix in LUP decomposition
      */
     class LU extends Decomposition {
-        /** @var NumericMatrix Lower triangular matrix in LUP decomposition */
-        private NumericMatrix $L;
-
-        /** @var NumericMatrix Upper triangular matrix in LUP decomposition */
-        private NumericMatrix $U;
-
-        /** @var NumericMatrix Permutation matrix in LUP decomposition */
-        private NumericMatrix $P;
 
         /**
          * LU constructor
@@ -76,13 +68,10 @@
          * @param NumericMatrix $P Permutation matrix
          */
         private function __construct(
-            NumericMatrix $L,
-            NumericMatrix $U,
-            NumericMatrix $P
+            private NumericMatrix $L,
+            private NumericMatrix $U,
+            private NumericMatrix $P
         ) {
-            $this->L = $L;
-            $this->U = $U;
-            $this->P = $P;
         }
 
         /**
@@ -91,7 +80,7 @@
          *
          * @param NumericMatrix $A
          *
-         * @return LU
+         * @return \MathPHP\LinearAlgebra\Decomposition\Decomposition
          *
          * @throws Exception\BadDataException
          * @throws Exception\IncorrectTypeException
@@ -100,18 +89,18 @@
          * @throws Exception\OutOfBoundsException
          * @throws Exception\VectorException
          */
-        public static function decompose(NumericMatrix $A): LU
+        public static function decompose(NumericMatrix $A): Decomposition
         {
             if ( ! $A->isSquare())
+            {
                 throw new Exception\MatrixException('LU decomposition only works on square matrices');
+            }
 
             $n = $A->getN();
 
             // Initialize L as diagonal ones matrix, and U as zero matrix
             /** @var array<int> $fill */
-            $array_fill = [];
-            for ($l = 0; $l < $n; $l++)
-                $array_fill[$l] = 1;
+            $array_fill = array_fill(0, $n - 0, 1);
             $fill = $array_fill;
             $L = MatrixFactory::diagonal($fill)->getMatrix();
             $U = MatrixFactory::zero($n, $n)->getMatrix();
@@ -128,7 +117,9 @@
                 {
                     $sum = 0;
                     for ($k = 0; $k < $j; $k++)
+                    {
                         $sum += $U[$k][$i] * $L[$j][$k];
+                    }
                     $U[$j][$i] = $PA[$j][$i] - $sum;
                 }
 
@@ -137,9 +128,11 @@
                 {
                     $sum = 0;
                     for ($k = 0; $k < $i; $k++)
+                    {
                         $sum += $U[$k][$i] * $L[$j][$k];
-                    $L[$j][$i] = $U[$i][$i] == 0 ? NAN
-                        : ($PA[$j][$i] - $sum) / $U[$i][$i];
+                    }
+                    $L[$j][$i] = ($U[$i][$i] == 0) ? NAN
+                        : (($PA[$j][$i] - $sum) / $U[$i][$i]);
                 }
             }
 
@@ -190,18 +183,50 @@
 
                 // Check for column element below Aᵢᵢ that is bigger
                 for ($j = $i; $j < $n; $j++)
+                {
                     if ($A[$j][$i] > $max)
                     {
                         $max = $A[$j][$i];
                         $row = $j;
                     }
+                }
 
                 // Swap rows if a larger column element below Aᵢᵢ was found
                 if ($i != $row)
+                {
                     $P = $P->rowInterchange($i, $row);
+                }
             }
 
             return $P;
+        }
+
+        public static function LUDecompositionSolveIncorrectTypeError()
+        {
+        }
+
+        public static function LUDecompositionInvalidProperty()
+        {
+        }
+
+        public static function LUDecompositionExceptionNotSquare()
+        {
+        }
+
+        public static function luDecompositionSmallPivots()
+        {
+        }
+
+        public static function LUDecompositionLAndUProperties()
+        {
+        }
+
+        public static function LUDecompositionPaEqualsLu()
+        {
+        }
+
+        public static function LUDecomposition()
+        {
         }
 
         /**
@@ -250,10 +275,14 @@
         public function solve(array|Vector $b): Vector
         {
             // Input must be a Vector or array.
-            if ( ! ($b instanceof Vector || is_array($b)))
+            if ( ! (($b instanceof Vector) || is_array($b)))
+            {
                 throw new Exception\IncorrectTypeException('b in Ax = b must be a Vector or array');
+            }
             if (is_array($b))
+            {
                 $b = new Vector($b);
+            }
 
             $L = $this->L;
             $U = $this->U;
@@ -274,7 +303,9 @@
             {
                 $sum = 0;
                 for ($j = 0; $j <= $i - 1; $j++)
+                {
                     $sum += $L[$i][$j] * $y[$j];
+                }
                 $y[$i] = ($Pb[$i][0] - $sum) / $L[$i][$i];
             }
 
@@ -289,9 +320,13 @@
             {
                 $sum = 0;
                 for ($j = $i + 1; $j < $m; $j++)
+                {
                     $sum += $U[$i][$j] * $x[$j];
+                }
                 if ($U[$i][$i] == 0)
+                {
                     throw new Exception\DivisionByZeroException("Uᵢᵢ (U[$i][$i]) is 0 during solve for Ux = y using back substitution in LU solve for Ax = b");
+                }
                 $x[$i] = ($y[$i] - $sum) / $U[$i][$i];
             }
 
@@ -310,38 +345,14 @@
          */
         public function __get(string $name): NumericMatrix
         {
-            return match ($name)
+            switch ($name)
             {
-                'L', 'U', 'P' => $this->$name,
-                default => throw new Exception\MatrixException("LU class does not have a gettable property: $name"),
-            };
-        }
-
-        public function LUDecompositionSolveIncorrectTypeError()
-        {
-        }
-
-        public function LUDecompositionInvalidProperty()
-        {
-        }
-
-        public function LUDecompositionExceptionNotSquare()
-        {
-        }
-
-        public function luDecompositionSmallPivots()
-        {
-        }
-
-        public function LUDecompositionLAndUProperties()
-        {
-        }
-
-        public function LUDecompositionPaEqualsLu()
-        {
-        }
-
-        public function LUDecomposition()
-        {
+                case 'L':
+                case 'U':
+                case 'P':
+                    return $this->$name;
+                default:
+                    return throw new Exception\MatrixException("LU class does not have a gettable property: $name");
+            }
         }
     }

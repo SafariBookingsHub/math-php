@@ -6,7 +6,6 @@
     use PHPUnit\Framework\TestCase;
 
     class IrisTest extends TestCase {
-        /** @var SampleData\Iris */
         private SampleData\Iris $iris;
 
         /**
@@ -75,7 +74,11 @@
 
             // Then
             foreach ($data as $observation)
-                $this->assertCount(5, $observation);
+            {
+                {
+                    $this->assertCount(5, $observation);
+                }
+            }
         }
 
         /**

@@ -3,22 +3,23 @@
     namespace MathPHP\Tests\Statistics\Multivariate\PLS;
 
     use MathPHP\Exception;
+    use MathPHP\LinearAlgebra\ComplexMatrix;
     use MathPHP\LinearAlgebra\Matrix;
     use MathPHP\LinearAlgebra\MatrixFactory;
+    use MathPHP\LinearAlgebra\NumericMatrix;
+    use MathPHP\LinearAlgebra\ObjectMatrix;
+    use MathPHP\LinearAlgebra\ObjectSquareMatrix;
     use MathPHP\SampleData;
     use MathPHP\SampleData\MtCars;
     use MathPHP\Statistics\Multivariate\PLS;
     use PHPUnit\Framework\TestCase;
 
     class MtCarsPLS1ScaleFalseTest extends TestCase {
-        /** @var PLS */
         private static PLS $pls;
 
-        /** @var Matrix */
-        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $X;
+        private static ComplexMatrix|NumericMatrix|ObjectSquareMatrix|ObjectMatrix|Matrix $X;
 
-        /** @var Matrix */
-        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $Y;
+        private static ComplexMatrix|NumericMatrix|ObjectSquareMatrix|ObjectMatrix|Matrix $Y;
 
         /**
          * R code for expected values:

@@ -32,7 +32,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '(-∞,∞)',
             ];
@@ -72,18 +72,14 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             $μ = $this->μ;
             $b = $this->b;
 
-            return 1 / (2 * $b) * exp(-(abs($x - $μ) / $b));
+            return (1 / (2 * $b)) * exp(-(abs($x - $μ) / $b));
         }
 
         /**
@@ -108,11 +104,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -120,9 +112,11 @@
             $b = $this->b;
 
             if ($x < $μ)
+            {
                 return (1 / 2) * exp(($x - $μ) / $b);
+            }
 
-            return 1 - 1 / 2 * exp(-($x - $μ) / $b);
+            return 1 - ((1 / 2) * exp(-($x - $μ) / $b));
         }
 
         /**
@@ -135,9 +129,13 @@
         public function inverse(float $p): float
         {
             if ($p == 0)
+            {
                 return -INF;
+            }
             if ($p == 1)
+            {
                 return INF;
+            }
 
             return parent::inverse($p);
         }
@@ -190,7 +188,7 @@
             return 2 * $this->b ** 2;
         }
 
-        public function rand()
+        public function rand(): float|int
         {
         }
     }

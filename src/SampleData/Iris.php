@@ -195,8 +195,7 @@
         {
             /** @var array<array<string, float>> $array_map */
             $array_map = [];
-            foreach (self::DATA as $ignored => {
-                array $data)}
+            foreach (self::DATA as $ignored => array $data)
 
             return $array_map;
         }
@@ -251,35 +250,35 @@
             return array_column(self::DATA, 4);
         }
 
-        public function numberOfSpecies()
+        public static function numberOfSpecies()
         {
         }
 
-        public function numberOfPetalWidth()
+        public static function numberOfPetalWidth()
         {
         }
 
-        public function numberOfPetalLength()
+        public static function numberOfPetalLength()
         {
         }
 
-        public function numberOfSepalWidth()
+        public static function numberOfSepalWidth()
         {
         }
 
-        public function numberOfSepalLength()
+        public static function numberOfSepalLength()
         {
         }
 
-        public function labeledData()
+        public static function labeledData()
         {
         }
 
-        public function dataHas5Variables()
+        public static function dataHas5Variables()
         {
         }
 
-        public function dataHas150Observations()
+        public static function dataHas150Observations()
         {
         }
     }

@@ -58,7 +58,7 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
@@ -79,7 +79,7 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
@@ -100,13 +100,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
 
             // When
-            $pnorm = $A->pNorm(p: $p);
+            $pnorm = $A->pNorm($p);
 
             // Then
             $this->assertEqualsWithDelta($expected, $pnorm, 0.0001);
@@ -121,7 +121,7 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }

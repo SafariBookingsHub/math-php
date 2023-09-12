@@ -49,13 +49,15 @@
          * @throws Exception\BadDataException
          * @throws Exception\IncorrectTypeException
          */
-        public static function interpolate(callable|array $source, ...$args): Polynomial
-        {
+        public static function interpolate(
+            callable|array $source,
+            ...$args
+        ): Polynomial {
             // Get an array of points from our $source argument
             $points = self::getPoints($source, $args);
 
             // Validate input and sort points
-            self::validate($points, degree: 1);
+            self::validate($points, 1);
             $sorted = self::sort($points);
 
             // Descriptive constants
@@ -77,7 +79,11 @@
                 for ($j = 0; $j < $n; $j++)
                 {
                     if ($j == $i)
-                        continue;
+                    {
+                        {
+                            continue;
+                        }
+                    }
                     $xᵢ = $sorted[$i][$x];
                     $xⱼ = $sorted[$j][$x];
                     $Lᵢ⟮t⟯ = new Polynomial([
@@ -92,15 +98,15 @@
             return $p⟮t⟯;
         }
 
-        public function solveNonZeroError()
+        public static function solveNonZeroError()
         {
         }
 
-        public function solveZeroError()
+        public static function solveZeroError()
         {
         }
 
-        public function polynomialAgrees()
+        public static function polynomialAgrees()
         {
         }
     }

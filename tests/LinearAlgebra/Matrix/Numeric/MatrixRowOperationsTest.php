@@ -470,11 +470,11 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
-            $R = $A->rowMultiply($mᵢ, $k);
+            $R = $A->rowMultiply(mᵢ: $mᵢ, k: $k);
 
             // Then
             $this->assertEqualsWithDelta($expectedMatrix, $R, 0.00001);
@@ -487,7 +487,7 @@
         public function testRowMultiplyExceptionRowGreaterThanM()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -497,7 +497,7 @@
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->rowMultiply(4, 5);
+            $A->rowMultiply(mᵢ: 4, k: 5);
         }
 
         /**
@@ -518,11 +518,11 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
-            $R = $A->rowDivide($mᵢ, $k);
+            $R = $A->rowDivide(mᵢ: $mᵢ, k: $k);
 
             // Then
             $this->assertEqualsWithDelta($expectedMatrix, $R, 0.00001);
@@ -535,7 +535,7 @@
         public function testRowDivideExceptionRowGreaterThanM()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -545,7 +545,7 @@
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->rowDivide(4, 5);
+            $A->rowDivide(mᵢ: 4, k: 5);
         }
 
         /**
@@ -555,7 +555,7 @@
         public function testRowDivideExceptionKIsZero()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -565,7 +565,7 @@
             $this->expectException(Exception\BadParameterException::class);
 
             // When
-            $A->rowDivide(2, 0);
+            $A->rowDivide(mᵢ: 2, k: 0);
         }
 
         /**
@@ -588,11 +588,11 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
-            $R = $A->rowAdd($mᵢ, $mⱼ, $k);
+            $R = $A->rowAdd(mᵢ: $mᵢ, mⱼ: $mⱼ, k: $k);
 
             // Then
             $this->assertEquals($expectedMatrix, $R);
@@ -605,7 +605,7 @@
         public function testRowAddExceptionRowGreaterThanM()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -615,7 +615,7 @@
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->rowAdd(4, 5, 2);
+            $A->rowAdd(mᵢ: 4, mⱼ: 5, k: 2);
         }
 
         /**
@@ -625,7 +625,7 @@
         public function testRowAddExceptionKIsZero()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -635,7 +635,7 @@
             $this->expectException(Exception\BadParameterException::class);
 
             // When
-            $A->rowAdd(1, 2, 0);
+            $A->rowAdd(mᵢ: 1, mⱼ: 2, k: 0);
         }
 
         /**
@@ -656,11 +656,11 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
-            $R = $A->rowAddScalar($mᵢ, $k);
+            $R = $A->rowAddScalar(mᵢ: $mᵢ, k: $k);
 
             // Then
             $this->assertEquals($expectedMatrix, $R);
@@ -673,7 +673,7 @@
         public function testRowAddScalarExceptionRowGreaterThanM()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -683,7 +683,7 @@
             $this->expectException(Exception\MatrixException::class);
 
             // Then
-            $A->rowAddScalar(4, 5);
+            $A->rowAddScalar(mᵢ: 4, k: 5);
         }
 
         /**
@@ -704,12 +704,12 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::createNumeric($A);
-            $V = new Vector($vector);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::createNumeric(A: $A);
+            $V = new Vector(A: $vector);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
-            $R = $A->rowAddVector($mᵢ, $V);
+            $R = $A->rowAddVector(mᵢ: $mᵢ, V: $V);
 
             // Then
             $this->assertEquals($expectedMatrix, $R);
@@ -722,19 +722,19 @@
         public function testRowAddVectorExceptionRowExists()
         {
             // Given
-            $A = MatrixFactory::createNumeric([
+            $A = MatrixFactory::createNumeric(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
             ]);
 
-            $b = new Vector([1, 2, 3]);
+            $b = new Vector(A: [1, 2, 3]);
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->rowAddVector(4, $b);
+            $A->rowAddVector(mᵢ: 4, V: $b);
         }
 
         /**
@@ -744,19 +744,19 @@
         public function testRowAddVectorExceptionElementMismatch()
         {
             // Given
-            $A = MatrixFactory::createNumeric([
+            $A = MatrixFactory::createNumeric(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
             ]);
 
-            $b = new Vector([1, 2, 3, 4]);
+            $b = new Vector(A: [1, 2, 3, 4]);
 
             // Then
             $this->expectException(Exception\BadParameterException::class);
 
             // When
-            $A->rowAddVector(1, $b);
+            $A->rowAddVector(mᵢ: 1, V: $b);
         }
 
         /**
@@ -779,11 +779,11 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
-            $R = $A->rowSubtract($mᵢ, $mⱼ, $k);
+            $R = $A->rowSubtract(mᵢ: $mᵢ, mⱼ: $mⱼ, k: $k);
 
             // Then
             $this->assertEqualsWithDelta($expectedMatrix, $R, 0.00001);
@@ -796,7 +796,7 @@
         public function testRowSubtractExceptionRowGreaterThanM()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -806,7 +806,7 @@
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->rowSubtract(4, 5, 2);
+            $A->rowSubtract(mᵢ: 4, mⱼ: 5, k: 2);
         }
 
         /**
@@ -827,11 +827,11 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
-            $R = $A->rowSubtractScalar($mᵢ, $k);
+            $R = $A->rowSubtractScalar(mᵢ: $mᵢ, k: $k);
 
             // Then
             $this->assertEqualsWithDelta($expectedMatrix, $R, 0.00001);
@@ -844,7 +844,7 @@
         public function testRowSubtractScalarExceptionRowGreaterThanM()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -854,6 +854,6 @@
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->rowSubtractScalar(4, 5);
+            $A->rowSubtractScalar(mᵢ: 4, k: 5);
         }
     }

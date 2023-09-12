@@ -39,13 +39,10 @@
         /** @var array<string, string> */
         protected array $support_limit;
 
-        /** @var int */
         protected int $N;
 
-        /** @var int */
         protected int $K;
 
-        /** @var int */
         protected int $n;
 
         /**
@@ -71,16 +68,12 @@
             {
                 Support::checkLimits($dynamic_parameter_limits,
                     ['K' => $K, 'n' => $n]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             $this->support_limit = [
-                'k' => '['.max(0, $n + $K - $N).','.min($n, $K).']',
+                'k' => '['.max(0, ($n + $K) - $N).','.min($n, $K).']',
             ];
         }
 
@@ -117,11 +110,7 @@
             try
             {
                 Support::checkLimits($this->support_limit, ['k' => $k]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -149,7 +138,7 @@
             {
             }
 
-            return $KCk * $⟮N − K⟯C⟮n − k⟯ / $NCn;
+            return ($KCk * $⟮N − K⟯C⟮n − k⟯) / $NCn;
         }
 
         /**
@@ -183,11 +172,7 @@
             try
             {
                 Support::checkLimits($this->support_limit, ['k' => $k]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -217,13 +202,14 @@
 
             try
             {
-                $₃F₂ = Special::generalizedHypergeometric(3, 2, 1, $k + 1 - $K,
-                    $k + 1 - $n, $k + 2, $N + $k + 2 - $K - $n, 1);
+                $₃F₂ = Special::generalizedHypergeometric(3, 2, 1,
+                    ($k + 1) - $K,
+                    ($k + 1) - $n, $k + 2, ($N + $k + 2) - $K - $n, 1);
             } catch (BadParameterException $e)
             {
             }
 
-            return $nC⟮k ＋ 1⟯ * $⟮N − n⟯C⟮K − k − 1⟯ / $NCK * $₃F₂;
+            return ($nC⟮k ＋ 1⟯ * $⟮N − n⟯C⟮K − k − 1⟯ / $NCK) * $₃F₂;
         }
 
         /**
@@ -266,8 +252,8 @@
             $n = $this->n;
 
             return [
-                ceil(($n + 1) * ($K + 1) / ($N + 2)) - 1,
-                floor(($n + 1) * ($K + 1) / ($N + 2)),
+                ceil((($n + 1) * ($K + 1)) / ($N + 2)) - 1,
+                floor((($n + 1) * ($K + 1)) / ($N + 2)),
             ];
         }
 

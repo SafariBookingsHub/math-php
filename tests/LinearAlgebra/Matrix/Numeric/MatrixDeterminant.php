@@ -4,19 +4,19 @@
 
     class MatrixDeterminant {
 
-        public function detOfNonSingularMatrixIsNonZero()
+        public static function detOfNonSingularMatrixIsNonZero()
         {
         }
 
-        public function detOfSingularMatrixIsZero()
+        public static function detOfSingularMatrixIsZero()
         {
         }
 
-        public function detExceptionNotSquareMatrix()
+        public static function detExceptionNotSquareMatrix()
         {
         }
 
-        public function det()
+        public static function det()
         {
         }
     }

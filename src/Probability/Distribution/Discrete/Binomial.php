@@ -33,7 +33,7 @@
          *
          * @var array{"r": string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'r' => '[0,∞)',
             ];
@@ -68,17 +68,15 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['r' => $r]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             $cdf = 0;
             for ($i = $r; $i >= 0; $i--)
+            {
                 $cdf += $this->pmf($i);
+            }
 
             return $cdf;
         }
@@ -100,17 +98,13 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['r' => $r]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             try
             {
-                return $this->n < 150
+                return ($this->n < 150)
                     ? $this->combinatorialMethod($r)
                     : Binomial::multiplicationMethod($r, $this->n, $this->p);
             } catch (OutOfBoundsException $e)
@@ -163,12 +157,15 @@
             float $p
         ): float {
             if (2 * $r > $n)
+            {
                 return Binomial::multiplicationMethod($n - $r, $n, 1 - $p);
+            }
 
             [$j₀, $j₁, $j₂] = [0, 0, 0];
             $f = 1;
 
-            while ($j₀ < $r | $j₁ < $r | $j₂ < $n - $r)
+            while (($j₀ < $r) | ($j₁ < $r) | ($j₂ < $n - $r))
+            {
                 if (($j₀ < $r) && ($f < 1))
                 {
                     $j₀++;
@@ -182,6 +179,7 @@
                     $j₂++;
                     $f *= 1 - $p;
                 }
+            }
 
             return $f;
         }

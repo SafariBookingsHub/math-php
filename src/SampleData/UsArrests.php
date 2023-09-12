@@ -98,8 +98,7 @@
         {
             /** @var array<string, int|float> $array_map */
             $array_map = [];
-            foreach (self::DATA as $ignored => {
-                array $data)}
+            foreach (self::DATA as $ignored => array $data)
 
             return $array_map;
         }
@@ -180,39 +179,39 @@
                 array_column(self::DATA, 3));
         }
 
-        public function numberOfRapes()
+        public static function numberOfRapes()
         {
         }
 
-        public function numberOfUrbanPops()
+        public static function numberOfUrbanPops()
         {
         }
 
-        public function numberOfAssaults()
+        public static function numberOfAssaults()
         {
         }
 
-        public function numberOfMurders()
+        public static function numberOfMurders()
         {
         }
 
-        public function labeledData()
+        public static function labeledData()
         {
         }
 
-        public function stateNames()
+        public static function stateNames()
         {
         }
 
-        public function numberOfModels()
+        public static function numberOfModels()
         {
         }
 
-        public function dataHas4Variables()
+        public static function dataHas4Variables()
         {
         }
 
-        public function dataHas50Observations()
+        public static function dataHas50Observations()
         {
         }
     }

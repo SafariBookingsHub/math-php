@@ -2,6 +2,7 @@
 
     namespace MathPHP\Statistics\Regression;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Exception;
 
     /**
@@ -28,6 +29,53 @@
     class Linear extends ParametricRegression {
         use Methods\LeastSquares;
         use Models\LinearModel;
+
+        public static function outliers()
+        {
+        }
+
+        public static function meanSquares()
+        {
+        }
+
+        public static function getProjection()
+        {
+        }
+
+        public static function DF()
+        {
+        }
+
+        public static function leverages()
+        {
+        }
+
+        #[ArrayShape([
+            'm' => "float",
+            'b' => "float",
+        ])] public static function TProbability()
+        {
+        }
+
+        public static function FProbability()
+        {
+        }
+
+        public static function PI()
+        {
+        }
+
+        public static function bugIssue429CI()
+        {
+        }
+
+        public static function CI()
+        {
+        }
+
+        public static function constructor()
+        {
+        }
 
         /**
          * Calculates the regression parameters.
@@ -56,71 +104,27 @@
             return $this->evaluateModel($x, $this->parameters);
         }
 
-        public function outliers()
+        public function getSampleSize(): int
         {
         }
 
-        public function meanSquares()
+        public function getParameters(): array
         {
         }
 
-        public function getProjection()
+        public function getEquation(): string
         {
         }
 
-        public function DF()
+        public function getYs(): array
         {
         }
 
-        public function leverages()
+        public function getXs(): array
         {
         }
 
-        public function TProbability()
-        {
-        }
-
-        public function FProbability()
-        {
-        }
-
-        public function PI()
-        {
-        }
-
-        public function bugIssue429CI()
-        {
-        }
-
-        public function CI()
-        {
-        }
-
-        public function getSampleSize()
-        {
-        }
-
-        public function getParameters()
-        {
-        }
-
-        public function getEquation()
-        {
-        }
-
-        public function getYs()
-        {
-        }
-
-        public function getXs()
-        {
-        }
-
-        public function getPoints()
-        {
-        }
-
-        public function constructor()
+        public function getPoints(): array
         {
         }
     }

@@ -4,19 +4,19 @@
 
     class MatrixProperties {
 
-        public function isRectangularDiagonal()
+        public static function isRectangularDiagonal()
         {
         }
 
-        public function isNotSquare()
+        public static function isNotSquare()
         {
         }
 
-        public function isSquareFalseNonSquareMatrix()
+        public static function isSquareFalseNonSquareMatrix()
         {
         }
 
-        public function isSquare()
+        public static function isSquare()
         {
         }
     }

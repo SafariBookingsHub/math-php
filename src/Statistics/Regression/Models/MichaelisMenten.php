@@ -36,7 +36,7 @@
             $V = $params[self::$V];
             $K = $params[self::$K];
 
-            return $V * $x / ($K + $x);
+            return ($V * $x) / ($K + $x);
         }
 
         /**
@@ -46,7 +46,10 @@
          *
          * @return array{V: float, K: float} [ V => number, K => number ]
          */
-        #[ArrayShape(['V' => "float", 'K' => "float"])] public function getModelParameters(array $params): array
+        #[ArrayShape([
+            'V' => "float",
+            'K' => "float",
+        ])] public function getModelParameters(array $params): array
         {
             return [
                 'V' => $params[self::$V],

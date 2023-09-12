@@ -26,8 +26,8 @@
      *  - SEM (Standard Error of the Mean)
      */
     class Significance {
-        public const Z_TABLE_VALUE = TRUE;
-        public const Z_RAW_VALUE = FALSE;
+        public final const Z_TABLE_VALUE = TRUE;
+        public final const Z_RAW_VALUE = FALSE;
 
         /**
          * One-sample Z-test
@@ -48,7 +48,11 @@
          *   p2 => two-tailed p value
          * ]
          */
-        public static function zTest(
+        #[ArrayShape([
+            'z'  => "float",
+            'p1' => "float",
+            'p2' => "float",
+        ])] public static function zTest(
             float $Hₐ,
             int $n,
             float $H₀,
@@ -85,7 +89,11 @@
          *   p2 => two-tailed p value
          * ]
          */
-        #[ArrayShape(['z' => "float", 'p1' => "float", 'p2' => "float"])] public static function zTestOneSample(
+        #[ArrayShape([
+            'z'  => "float",
+            'p1' => "float",
+            'p2' => "float",
+        ])] public static function zTestOneSample(
             float $Hₐ,
             int $n,
             float $H₀,
@@ -98,8 +106,12 @@
             // One- and two-tailed P values
             $standardNormal = new StandardNormal();
             if ($Hₐ < $H₀)
-                $p1 = $standardNormal->cdf($z); else
+            {
+                $p1 = $standardNormal->cdf($z);
+            } else
+            {
                 $p1 = $standardNormal->above($z);
+            }
             $p2 = $standardNormal->outside(-abs($z), abs($z));
 
             return [
@@ -203,7 +215,11 @@
          *   p2 => two-tailed p value
          * ]
          */
-        #[ArrayShape(['z' => "float", 'p1' => "float", 'p2' => "float"])] public static function zTestTwoSample(
+        #[ArrayShape([
+            'z'  => "float",
+            'p1' => "float",
+            'p2' => "float",
+        ])] public static function zTestTwoSample(
             float $μ₁,
             float $μ₂,
             int $n₁,
@@ -213,8 +229,8 @@
             float $Δ = 0.0
         ): array {
             // Calculate z score (test statistic)
-            $z = ($μ₁ - $μ₂ - $Δ) / sqrt($σ₁ ** 2 / $n₁ + $σ₂ ** 2
-                        / $n₂);
+            $z = ($μ₁ - $μ₂ - $Δ) / sqrt(($σ₁ ** 2 / $n₁) + (($σ₂ ** 2)
+                        / $n₂));
 
             $standardNormal = new StandardNormal();
             // One- and two-tailed P values
@@ -254,14 +270,17 @@
          * }
          *
          * @throws Exception\BadParameterException
-         * @throws Exception\OutOfBoundsException
          */
         public static function tTest(array $a, float|array $b): array
         {
             if (is_numeric($b))
+            {
                 return self::tTestOneSample($a, $b);
+            }
             if (is_array($b))
+            {
                 return self::tTestTwoSample($a, $b);
+            }
 
             throw new Exception\BadParameterException('Second parameter must be numeric for one-sample t-test, or an array for two-sample t-test');
         }
@@ -299,7 +318,14 @@
          * ]
          *
          */
-        public static function tTestOneSample(array $a, float $H₀): array
+        #[ArrayShape([
+            't'    => "float",
+            'df'   => "int",
+            'p1'   => "float",
+            'p2'   => "float",
+            'mean' => "float",
+            'sd'   => "float",
+        ])] public static function tTestOneSample(array $a, float $H₀): array
         {
             $n = count($a);
             try
@@ -311,9 +337,7 @@
             try
             {
                 $σ = Descriptive::standardDeviation($a, Descriptive::SAMPLE);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -354,12 +378,13 @@
          *   sd   => standard deviation
          * ]
          */
-        #[ArrayShape(['t'    => "float",
-                      'df'   => "int",
-                      'p1'   => "float",
-                      'p2'   => "float",
-                      'mean' => "float",
-                      'sd'   => "float"
+        #[ArrayShape([
+            't'    => "float",
+            'df'   => "int",
+            'p1'   => "float",
+            'p2'   => "float",
+            'mean' => "float",
+            'sd'   => "float",
         ])] public static function tTestOneSampleFromSummaryData(
             float $Hₐ,
             float $s,
@@ -375,8 +400,12 @@
             // One- and two-tailed P values
             $studentT = new StudentT($ν);
             if ($Hₐ < $H₀)
-                $p1 = $studentT->cdf($t); else
+            {
+                $p1 = $studentT->cdf($t);
+            } else
+            {
                 $p1 = $studentT->above($t);
+            }
             $p2 = $studentT->outside(-abs($t), abs($t));
 
             return [
@@ -470,7 +499,16 @@
          * ]
          *
          */
-        public static function tTestTwoSample(array $x₁, array $x₂): array
+        #[ArrayShape([
+            't'     => "float",
+            'df'    => "float",
+            'p1'    => "float",
+            'p2'    => "float",
+            'mean1' => "float",
+            'mean2' => "float",
+            'sd1'   => "float",
+            'sd2'   => "float",
+        ])] public static function tTestTwoSample(array $x₁, array $x₂): array
         {
             $n₁ = count($x₁);
             $n₂ = count($x₂);
@@ -491,17 +529,13 @@
             try
             {
                 $σ₁ = Descriptive::sd($x₁, Descriptive::SAMPLE);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
             try
             {
                 $σ₂ = Descriptive::sd($x₂, Descriptive::SAMPLE);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -570,14 +604,15 @@
          *   sd2   => standard deviation of sample set 2
          * ]
          */
-        #[ArrayShape(['t'     => "float",
-                      'df'    => "float",
-                      'p1'    => "float",
-                      'p2'    => "float",
-                      'mean1' => "float",
-                      'mean2' => "float",
-                      'sd1'   => "float",
-                      'sd2'   => "float"
+        #[ArrayShape([
+            't'     => "float",
+            'df'    => "float",
+            'p1'    => "float",
+            'p2'    => "float",
+            'mean1' => "float",
+            'mean2' => "float",
+            'sd1'   => "float",
+            'sd2'   => "float",
         ])] public static function tTestTwoSampleFromSummaryData(
             float $μ₁,
             float $μ₂,
@@ -587,13 +622,13 @@
             float $σ₂
         ): array {
             // Calculate t score (test statistic)
-            $t = ($μ₁ - $μ₂) / sqrt($σ₁ ** 2 / $n₁ + $σ₂ ** 2 / $n₂);
+            $t = ($μ₁ - $μ₂) / sqrt(($σ₁ ** 2 / $n₁) + (($σ₂ ** 2) / $n₂));
 
             // Degrees of freedom
-            $ν = ($σ₁ ** 2 / $n₁ + $σ₂ ** 2 / $n₂) ** 2
+            $ν = ((($σ₁ ** 2 / $n₁) + (($σ₂ ** 2) / $n₂)) ** 2)
                 /
-                (($σ₁ ** 2 / $n₁) ** 2 / ($n₁ - 1) + ($σ₂ ** 2 / $n₂)
-                            ** 2 / ($n₂ - 1));
+                (((($σ₁ ** 2) / $n₁) ** 2 / ($n₁ - 1)) + (((($σ₂ ** 2) / $n₂)
+                            ** 2) / ($n₂ - 1)));
 
             // One- and two-tailed P values
             $studentT = new StudentT($ν);
@@ -639,13 +674,18 @@
          *
          * @throws Exception\BadDataException if count of observed does not equal count of expected
          */
-        #[ArrayShape(['chi-square' => "float|int", 'p' => "float"])] public static function chiSquaredTest(
+        #[ArrayShape([
+            'chi-square' => "float|int",
+            'p'          => "float",
+        ])] public static function chiSquaredTest(
             array $observed,
             array $expected
         ): array {
             // Arrays must have the same number of elements
             if (count($observed) !== count($expected))
+            {
                 throw new Exception\BadDataException('Observed and expected must have the same number of elements');
+            }
 
             // Reset array indexes and initialize
             $O = array_values($observed);
@@ -660,7 +700,9 @@
              *            Eᵢ
              */
             for ($i = 0; $i < $n; $i++)
+            {
                 $χ² += (($O[$i] - $E[$i]) ** 2) / $E[$i];
+            }
 
             $chiSquared = new ChiSquared($k);
             $p = $chiSquared->above($χ²);
@@ -671,35 +713,35 @@
             ];
         }
 
-        public function issue458()
+        public static function issue458()
         {
         }
 
-        public function chiSquaredTestExceptionCountsDiffer()
+        public static function chiSquaredTestExceptionCountsDiffer()
         {
         }
 
-        public function TTestBadParameterException()
+        public static function TTestBadParameterException()
         {
         }
 
-        public function TTestTwoSampleFromSummaryDataRegression()
+        public static function TTestTwoSampleFromSummaryDataRegression()
         {
         }
 
-        public function tTestWithTwoSamples()
+        public static function tTestWithTwoSamples()
         {
         }
 
-        public function TTestOneSampleFromSummaryData2()
+        public static function TTestOneSampleFromSummaryData2()
         {
         }
 
-        public function TTestWithOneSampleData()
+        public static function TTestWithOneSampleData()
         {
         }
 
-        public function ZScoreRaw()
+        public static function ZScoreRaw()
         {
         }
     }

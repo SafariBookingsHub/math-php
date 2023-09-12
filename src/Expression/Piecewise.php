@@ -76,11 +76,19 @@
                 $lastB = $b ?? -INF;
                 $lastBOpen = $bOpen ?? FALSE;
 
-                $array_filter = array_filter($interval, function ($value) {
-                    return is_numeric($value);
-                });
+                $array_filter1 = [];
+                foreach ($interval as $key => $value)
+                {
+                    if (is_numeric($value))
+                    {
+                        $array_filter1[$key] = $value;
+                    }
+                }
+                $array_filter = $array_filter1;
                 if (count($array_filter) !== 2)
+                {
                     throw new Exception\BadDataException('Each interval must contain two numbers.');
+                }
 
                 // Fetch values from current interval
                 $a = $interval[0];
@@ -114,16 +122,26 @@
             array $functions
         ): void {
             if (count($intervals) !== count($functions))
+            {
                 throw new Exception\BadDataException('For a piecewise function you must provide the same number of intervals as functions.');
+            }
 
             // @phpstan-ignore-next-line (Parameter #2 $callback of function array_filter expects callable(callable(): mixed): mixed, '\\is_callable' given.)
-            $array_filter = array_filter($functions, function ($value) {
-                return is_callable($value);
-            });
+            $array_filter1 = [];
+            foreach ($functions as $key => $value)
+            {
+                if (is_callable($value))
+                {
+                    $array_filter1[$key] = $value;
+                }
+            }
+            $array_filter = $array_filter1;
             if (count($array_filter)
                 !== count($intervals)
             )
+            {
                 throw new Exception\BadDataException('Not every function provided is valid. Ensure that each function is callable.');
+            }
         }
 
         /**
@@ -154,14 +172,95 @@
             bool $aOpen,
             bool $bOpen
         ): void {
-            if ($a === $b && ($aOpen || $bOpen))
+            if (($a === $b) && ($aOpen || $bOpen))
+            {
                 throw new Exception\BadDataException("Your interval [{$a}, {$b}] is a point and thus needs to be closed at both ends");
+            }
             if ($a > $b)
+            {
                 throw new Exception\BadDataException("Interval must be increasing. Try again using [{$b}, {$a}] instead of [{$a}, {$b}]");
-            if ($a === $lastB && ! $aOpen && ! $lastBOpen)
+            }
+            if (($a === $lastB) && ! $aOpen && ! $lastBOpen)
+            {
                 throw new Exception\BadDataException("The intervals [{$lastA}, {$lastB}] and [{$a}, {$b}] share a point, but both intervals are also closed at that point. For intervals to share a point, one or both sides of that point must be open.");
+            }
             if ($a < $lastB)
+            {
                 throw new Exception\BadDataException("The intervals [{$lastA}, {$lastB}] and [{$a}, {$b}] overlap. The subintervals of a piecewise functions cannot overlap.");
+            }
+        }
+
+        public static function checkAsAndBsExceptionOverlappingIntervals()
+        {
+        }
+
+        public static function checkAsAndBsExceptionTwoIntervalsSharePointNotClosedAtBothEnds(
+        )
+        {
+        }
+
+        public static function checkAsAndBsExceptionIntervalNotIncreasing()
+        {
+        }
+
+        public static function checkAsAndBsExceptionPointNotClosed()
+        {
+        }
+
+        public static function constructorPreconditionCallableException()
+        {
+        }
+
+        public static function constructorPreconditionCountException()
+        {
+        }
+
+        public static function duplicatedIntervalException()
+        {
+        }
+
+        public static function evaluatedAtOpenPointException()
+        {
+        }
+
+        public static function evaluationNotInDomainException()
+        {
+        }
+
+        public static function numberOfIntervalsAndFunctionsUnequalException()
+        {
+        }
+
+        public static function inputFunctionsAreNotCallableException()
+        {
+        }
+
+        public static function subintervalContainsOpenPoint()
+        {
+        }
+
+        public static function subintervalContainsOnePoints()
+        {
+        }
+
+        public static function subintervalContainsMoreThanTwoPoints()
+        {
+        }
+
+        public static function subintervalDecreasingException()
+        {
+        }
+
+        public static function subintervalsOverlapException()
+        {
+        }
+
+        public static function subintervalsShareClosedPointException()
+        {
+        }
+
+        public static function eval()
+        {
         }
 
         /**
@@ -187,7 +286,7 @@
          * the function that corresponds to that subinterval. If no subinterval is found
          * such that our input is contained within it, a false is returned.
          *
-         * @param float $x The value at which we are searching for a subinterval that
+         * @param float $x  The value at which we are searching for a subinterval that
          *                  contains it, and thus has a corresponding function.
          *
          * @return callable Returns the function that contains $x in its domain
@@ -204,16 +303,18 @@
                 $bOpen = $interval[3] ?? FALSE;
 
                 // Four permutations: open-open, open-closed, closed-open, closed-closed
-                if ((Piecewise::openOpen($aOpen, $bOpen) && $x > $a
+                if ((Piecewise::openOpen($aOpen, $bOpen) && ($x > $a)
                         && ($x < $b))
                     || (Piecewise::openClosed($aOpen, $bOpen) && ($x > $a)
                         && ($x <= $b))
                     || (Piecewise::closedOpen($aOpen, $bOpen) && ($x >= $a)
                         && ($x < $b))
-                    || Piecewise::closedClosed($aOpen, $bOpen) && ($x >= $a)
-                        && ($x <= $b)
+                    || (Piecewise::closedClosed($aOpen, $bOpen) && ($x >= $a)
+                        && ($x <= $b))
                 )
+                {
                     return $this->functions[$i];
+                }
             }
 
             throw new Exception\BadDataException("The input {$x} is not in the domain of this piecewise function, thus it is undefined at that point.");
@@ -269,78 +370,5 @@
         private static function closedClosed(bool $aOpen, bool $bOpen): bool
         {
             return ! $aOpen && ! $bOpen;
-        }
-
-        public function checkAsAndBsExceptionOverlappingIntervals()
-        {
-        }
-
-        public function checkAsAndBsExceptionTwoIntervalsSharePointNotClosedAtBothEnds(
-        )
-        {
-        }
-
-        public function checkAsAndBsExceptionIntervalNotIncreasing()
-        {
-        }
-
-        public function checkAsAndBsExceptionPointNotClosed()
-        {
-        }
-
-        public function constructorPreconditionCallableException()
-        {
-        }
-
-        public function constructorPreconditionCountException()
-        {
-        }
-
-        public function duplicatedIntervalException()
-        {
-        }
-
-        public function evaluatedAtOpenPointException()
-        {
-        }
-
-        public function evaluationNotInDomainException()
-        {
-        }
-
-        public function numberOfIntervalsAndFunctionsUnequalException()
-        {
-        }
-
-        public function inputFunctionsAreNotCallableException()
-        {
-        }
-
-        public function subintervalContainsOpenPoint()
-        {
-        }
-
-        public function subintervalContainsOnePoints()
-        {
-        }
-
-        public function subintervalContainsMoreThanTwoPoints()
-        {
-        }
-
-        public function subintervalDecreasingException()
-        {
-        }
-
-        public function subintervalsOverlapException()
-        {
-        }
-
-        public function subintervalsShareClosedPointException()
-        {
-        }
-
-        public function eval()
-        {
         }
     }

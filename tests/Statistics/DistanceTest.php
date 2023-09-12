@@ -628,9 +628,9 @@
         }
 
         #[ArrayShape([
-            'both zero ' => "array[]",
+            'both zero '                         => "array[]",
             '∑｜uᵢ + vᵢ｜ denominator is zero (1)' => "\int[][]",
-            '∑｜uᵢ + vᵢ｜ demoninator is zero (2)' => "array[]"
+            '∑｜uᵢ + vᵢ｜ demoninator is zero (2)' => "array[]",
         ])] public static function dataProviderForBrayCurtisNan(): array
         {
             return [
@@ -758,7 +758,7 @@
 
         #[ArrayShape([
             'both zero ' => "array[]",
-            'all zeros'  => "array[]"
+            'all zeros'  => "array[]",
         ])] public static function dataProviderForCanberraNan(): array
         {
             return [
@@ -1230,9 +1230,7 @@
             try
             {
                 $distance = Distance::cosine($A, $B);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\VectorException $e)
+            } catch (Exception\BadDataException|Exception\VectorException $e)
             {
             }
 
@@ -1256,9 +1254,7 @@
             try
             {
                 $distance = Distance::cosine($A, $B);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\VectorException $e)
+            } catch (Exception\BadDataException|Exception\VectorException $e)
             {
             }
         }
@@ -1280,9 +1276,7 @@
             try
             {
                 $distance = Distance::cosineSimilarity($A, $B);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\VectorException $e)
+            } catch (Exception\BadDataException|Exception\VectorException $e)
             {
             }
 
@@ -1306,9 +1300,7 @@
             try
             {
                 $distance = Distance::cosineSimilarity($A, $B);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\VectorException $e)
+            } catch (Exception\BadDataException|Exception\VectorException $e)
             {
             }
         }

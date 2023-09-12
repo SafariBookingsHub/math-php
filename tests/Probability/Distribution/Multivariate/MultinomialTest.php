@@ -35,10 +35,10 @@
             $expectedPmf
         ) {
             // Given
-            $multinomial = new Multinomial($probabilities);
+            $multinomial = new Multinomial(probabilities: $probabilities);
 
             // When
-            $pmf = $multinomial->pmf($frequencies);
+            $pmf = $multinomial->pmf(frequencies: $frequencies);
 
             // Then
             $this->assertEqualsWithDelta($expectedPmf, $pmf, 0.001);
@@ -54,13 +54,13 @@
             // Given
             $probabilities = [0.3, 0.4, 0.2, 0.1];
             $frequencies = [1, 2, 3];
-            $multinomial = new Multinomial($probabilities);
+            $multinomial = new Multinomial(probabilities: $probabilities);
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // when
-            $multinomial->pmf($frequencies);
+            $multinomial->pmf(frequencies: $frequencies);
         }
 
         /**
@@ -72,13 +72,13 @@
             // Given
             $probabilities = [0.3, 0.4, 0.2, 0.1];
             $frequencies = [1, 2.3, 3, 4.4];
-            $multinomial = new Multinomial($probabilities);
+            $multinomial = new Multinomial(probabilities: $probabilities);
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // when
-            $multinomial->pmf($frequencies);
+            $multinomial->pmf(frequencies: $frequencies);
         }
 
         /**
@@ -91,6 +91,6 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $multinomial = new Multinomial([0.3, 0.2, 0.1]);
+            $multinomial = new Multinomial(probabilities: [0.3, 0.2, 0.1]);
         }
     }

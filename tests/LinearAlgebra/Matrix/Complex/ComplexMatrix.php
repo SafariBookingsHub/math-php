@@ -4,11 +4,11 @@
 
     class ComplexMatrix {
 
-        public function constructorException()
+        public static function constructorException()
         {
         }
 
-        public function construction()
+        public static function construction()
         {
         }
     }

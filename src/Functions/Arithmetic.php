@@ -21,7 +21,9 @@
             $sum = function ($x, ...$args) {
                 $function = 0;
                 foreach ($args as $arg)
+                {
                     $function += $arg($x);
+                }
 
                 return $function;
             };
@@ -42,7 +44,9 @@
             $product = function ($x, ...$args) {
                 $function = 1;
                 foreach ($args as $arg)
+                {
                     $function *= $arg($x);
+                }
 
                 return $function;
             };

@@ -161,8 +161,8 @@
         public function testCholeskyDecomposition(array $A, array $expected_L)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $expected_L = MatrixFactory::create(A: $expected_L);
+            $A = MatrixFactory::create($A);
+            $expected_L = MatrixFactory::create($expected_L);
             $expected_Lᵀ = $expected_L->transpose();
 
             // When
@@ -194,7 +194,7 @@
                 [2, 3, 4],
                 [3, 4, 5],
             ];
-            $A = MatrixFactory::create(A: $A);
+            $A = MatrixFactory::create($A);
 
             // Then
             $this->expectException(Exception\MatrixException::class);
@@ -210,7 +210,7 @@
         public function testCholeskyDecompositionInvalidProperty()
         {
             // Given
-            $A = MatrixFactory::create(A: [
+            $A = MatrixFactory::create([
                 [4, 1, -1],
                 [1, 2, 1],
                 [-1, 1, 2],

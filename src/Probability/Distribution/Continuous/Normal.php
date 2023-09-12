@@ -2,6 +2,7 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use Exception;
     use MathPHP\Exception\BadDataException;
     use MathPHP\Exception\BadParameterException;
     use MathPHP\Exception\OutOfBoundsException;
@@ -64,6 +65,23 @@
             parent::__construct($μ, $σ);
         }
 
+        public static function pdfCovarianceMatrixDifferentNumberOfElementsException(
+        )
+        {
+        }
+
+        public static function pdfXAndMuDifferentNumberOfElementsException()
+        {
+        }
+
+        public static function pdfCovarianceMatrixNotPositiveDefiniteException()
+        {
+        }
+
+        public static function inverseOfCdf()
+        {
+        }
+
         /**
          * Probability density function
          *
@@ -80,11 +98,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -93,11 +107,11 @@
             $π = M_PI;
             $σ√⟮2π⟯ = $σ * sqrt(2 * $π);
 
-            $⟮x − μ⟯²∕2σ² = ($x - $μ) ** 2 / 2 * $σ ** 2;
+            $⟮x − μ⟯²∕2σ² = (($x - $μ) ** 2 / 2) * $σ ** 2;
 
             $ℯ＾−⟮x − μ⟯²∕2σ² = exp(-$⟮x − μ⟯²∕2σ²);
 
-            return 1 / $σ√⟮2π⟯ * $ℯ＾−⟮x − μ⟯²∕2σ²;
+            return (1 / $σ√⟮2π⟯) * $ℯ＾−⟮x − μ⟯²∕2σ²;
         }
 
         /**
@@ -118,18 +132,14 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             $μ = $this->μ;
             $σ = $this->σ;
 
-            return 1 / 2 * (1 + Special::erf(($x - $μ) / ($σ * sqrt(2))));
+            return (1 / 2) * (1 + Special::erf(($x - $μ) / ($σ * sqrt(2))));
         }
 
         /**
@@ -142,9 +152,17 @@
         public function inverse(float $p): float
         {
             if ($p == 0)
-                return -INF;
+            {
+                {
+                    return -INF;
+                }
+            }
             if ($p == 1)
-                return INF;
+            {
+                {
+                    return INF;
+                }
+            }
 
             return parent::inverse($p);
         }
@@ -202,52 +220,36 @@
          *
          * https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
          *
-         * @return float
+         * @return float|int
          */
         public function rand(): float|int
         {
             try
             {
                 $rand1 = random_int(0, PHP_INT_MAX) / PHP_INT_MAX;
-            } catch (\Exception $e)
+            } catch (Exception $e)
             {
             }
             try
             {
                 $rand2 = random_int(0, PHP_INT_MAX) / PHP_INT_MAX;
-            } catch (\Exception $e)
+            } catch (Exception $e)
             {
             }
 
-            return sqrt(-2 * log($rand1)) * cos(2 * pi() * $rand2) * $this->σ
+            return (sqrt(-2 * log($rand1)) * cos(2 * pi() * $rand2) * $this->σ)
                 + $this->μ;
         }
 
-        public function pdfCovarianceMatrixDifferentNumberOfElementsException()
+        public function above(float $x): float
         {
         }
 
-        public function pdfXAndMuDifferentNumberOfElementsException()
+        public function outside(float $x₁, float $x₂): float
         {
         }
 
-        public function pdfCovarianceMatrixNotPositiveDefiniteException()
-        {
-        }
-
-        public function inverseOfCdf()
-        {
-        }
-
-        public function above()
-        {
-        }
-
-        public function outside()
-        {
-        }
-
-        public function between()
+        public function between(float $x₁, float $x₂): float
         {
         }
     }

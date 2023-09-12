@@ -181,7 +181,7 @@
             // When
             try
             {
-                $H = Entropy::shannonEntropy($p);
+                $H = Entropy::shannonEntropy(p: $p);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -202,7 +202,7 @@
             // When
             try
             {
-                Entropy::shannonEntropy($p);
+                Entropy::shannonEntropy(p: $p);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -216,7 +216,7 @@
             // When
             try
             {
-                $H = Entropy::shannonNatEntropy($p);
+                $H = Entropy::shannonNatEntropy(p: $p);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -237,7 +237,7 @@
             // When
             try
             {
-                Entropy::shannonNatEntropy($p);
+                Entropy::shannonNatEntropy(p: $p);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -251,7 +251,7 @@
             // When
             try
             {
-                $H = Entropy::shannonHartleyEntropy($p);
+                $H = Entropy::shannonHartleyEntropy(p: $p);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -272,7 +272,7 @@
             // When
             try
             {
-                Entropy::shannonHartleyEntropy($p);
+                Entropy::shannonHartleyEntropy(p: $p);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -286,7 +286,7 @@
             // When
             try
             {
-                $BD = Entropy::crossEntropy($p, $q);
+                $BD = Entropy::crossEntropy(p: $p, q: $q);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -307,7 +307,7 @@
             // When
             try
             {
-                Entropy::crossEntropy($p, $q);
+                Entropy::crossEntropy(p: $p, q: $q);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -326,7 +326,7 @@
             // When
             try
             {
-                Entropy::crossEntropy($p, $q);
+                Entropy::crossEntropy(p: $p, q: $q);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -340,7 +340,7 @@
             // When
             try
             {
-                $H = Entropy::jointEntropy($p);
+                $H = Entropy::jointEntropy(P⟮x、y⟯: $p);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -361,7 +361,7 @@
             // When
             try
             {
-                Entropy::jointEntropy($p);
+                Entropy::jointEntropy(P⟮x、y⟯: $p);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -375,10 +375,8 @@
             // When
             try
             {
-                $H = Entropy::renyiEntropy($p, $α);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+                $H = Entropy::renyiEntropy(p: $p, α: $α);
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -399,10 +397,8 @@
             // When
             try
             {
-                Entropy::renyiEntropy($p, $α);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+                Entropy::renyiEntropy(p: $p, α: $α);
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -419,10 +415,8 @@
             // When
             try
             {
-                Entropy::renyiEntropy($p, $α);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+                Entropy::renyiEntropy(p: $p, α: $α);
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -439,10 +433,8 @@
             // When
             try
             {
-                Entropy::renyiEntropy($p, $α);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+                Entropy::renyiEntropy(p: $p, α: $α);
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -455,7 +447,7 @@
             // When
             try
             {
-                $H = Entropy::perplexity($p);
+                $H = Entropy::perplexity(p: $p);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -476,7 +468,7 @@
             // When
             try
             {
-                Entropy::perplexity($p);
+                Entropy::perplexity(p: $p);
             } catch (Exception\BadDataException $e)
             {
             }

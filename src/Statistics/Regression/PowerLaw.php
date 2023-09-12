@@ -33,11 +33,13 @@
         use Models\PowerModel;
         use Methods\LeastSquares;
 
-        /** @var float */
         protected float $a;
 
-        /** @var float */
         protected float $b;
+
+        public static function constructor()
+        {
+        }
 
         /**
          * Calculate the regression parameters by least squares on linearized data
@@ -52,11 +54,10 @@
         {
             // Linearize the relationship by taking the log of both sides.
             $array_map1 = [];
-            foreach ($this->xs as $ignored => {
-                float}
+            foreach ($this->xs as $ignored => float
             $x’ = $array_map1;
-            $array_map = [];foreach ($this->ys as $ignored => {
-            float}
+            $array_map = [];
+            foreach ($this->ys as $ignored => float
             $y’ = $array_map;
 
             // Perform Least Squares Fit
@@ -83,15 +84,11 @@
             return $this->evaluateModel($x, $this->parameters);
         }
 
-        public function getParameters()
+        public function getParameters(): array
         {
         }
 
-        public function getEquation()
-        {
-        }
-
-        public function constructor()
+        public function getEquation(): string
         {
         }
     }

@@ -2,26 +2,29 @@
 
     namespace MathPHP\Tests\Statistics\Multivariate\PLS;
 
+    use JetBrains\PhpStorm\Pure;
     use MathPHP\Exception\BadDataException;
     use MathPHP\Exception\IncorrectTypeException;
     use MathPHP\Exception\MathException;
     use MathPHP\Exception\MatrixException;
+    use MathPHP\Exception\OutOfBoundsException;
+    use MathPHP\LinearAlgebra\ComplexMatrix;
     use MathPHP\LinearAlgebra\Matrix;
     use MathPHP\LinearAlgebra\MatrixFactory;
+    use MathPHP\LinearAlgebra\NumericMatrix;
+    use MathPHP\LinearAlgebra\ObjectMatrix;
+    use MathPHP\LinearAlgebra\ObjectSquareMatrix;
     use MathPHP\SampleData;
     use MathPHP\SampleData\Cereal;
     use MathPHP\Statistics\Multivariate\PLS;
     use PHPUnit\Framework\TestCase;
 
     class CerealScaleTrueTest extends TestCase {
-        /** @var PLS */
         private static PLS $pls;
 
-        /** @var Matrix */
-        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $X;
+        private static ComplexMatrix|NumericMatrix|ObjectSquareMatrix|ObjectMatrix|Matrix $X;
 
-        /** @var Matrix */
-        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $Y;
+        private static ComplexMatrix|NumericMatrix|ObjectSquareMatrix|ObjectMatrix|Matrix $Y;
 
         /**
          * R code for expected values:
@@ -38,25 +41,13 @@
             try
             {
                 self::$X = MatrixFactory::create(Cereal::getXData());
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|MatrixException|IncorrectTypeException $e)
             {
             }
             try
             {
                 self::$Y = MatrixFactory::create(Cereal::getYData());
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|MatrixException|IncorrectTypeException $e)
             {
             }
 
@@ -66,6 +57,40 @@
             } catch (BadDataException $e)
             {
             }
+        }
+
+        #[Pure] public static function dataProviderForRegression(): array
+        {
+            $cereal = new SampleData\Cereal();
+
+            return [
+                [
+                    [Cereal::getXData()[0]],
+                    [
+                        [
+                            18477.0390263222,
+                            41.5281149343885,
+                            6.57031011991723,
+                            1.90026547049335,
+                            60.2644668311084,
+                            2.29765285930859,
+                        ],
+                    ],
+                ],
+                [
+                    [Cereal::getXData()[9]],
+                    [
+                        [
+                            18213.1527906436,
+                            40.5422275834801,
+                            6.81637687565496,
+                            1.63361755716235,
+                            68.5844929048772,
+                            1.67599676584021,
+                        ],
+                    ],
+                ],
+            ];
         }
 
         /**
@@ -93,14 +118,7 @@
         public function testConstructionFailureXAndYRowMismatch()
         {
             // Given
-            try
-            {
-                $Y = self::$Y->rowExclude(0);
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            }
+            $Y = self::$Y->rowExclude(0);
 
             // Then
             $this->expectException(BadDataException::class);
@@ -108,7 +126,16 @@
             // When
             try
             {
-                $pls = new PLS(self::$X, $Y, 2, TRUE);
+                try
+                {
+                    $pls = new PLS(self::$X, $Y, 2, TRUE);
+                } catch (BadDataException $e)
+                {
+                } catch (MatrixException $e)
+                {
+                } catch (OutOfBoundsException $e)
+                {
+                }
             } catch (BadDataException $e)
             {
             }
@@ -3681,13 +3708,7 @@
             try
             {
                 $input = MatrixFactory::create($X);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|MatrixException|IncorrectTypeException $e)
             {
             }
 
@@ -3703,40 +3724,6 @@
             $this->assertEqualsWithDelta($expected, $actual, .00001, '');
         }
 
-        public static function dataProviderForRegression(): array
-        {
-            $cereal = new SampleData\Cereal();
-
-            return [
-                [
-                    [Cereal::getXData()[0]],
-                    [
-                        [
-                            18477.0390263222,
-                            41.5281149343885,
-                            6.57031011991723,
-                            1.90026547049335,
-                            60.2644668311084,
-                            2.29765285930859,
-                        ],
-                    ],
-                ],
-                [
-                    [Cereal::getXData()[9]],
-                    [
-                        [
-                            18213.1527906436,
-                            40.5422275834801,
-                            6.81637687565496,
-                            1.63361755716235,
-                            68.5844929048772,
-                            1.67599676584021,
-                        ],
-                    ],
-                ],
-            ];
-        }
-
         /**
          * @test predict error if the input X columns do not match
          */
@@ -3746,13 +3733,7 @@
             try
             {
                 $X = MatrixFactory::create([[6, 160, 3.9, 2.62, 16.46]]);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|MatrixException|IncorrectTypeException $e)
             {
             }
 

@@ -146,7 +146,9 @@
         public static function populationCovariance(array $X, array $Y): float
         {
             if (count($X) !== count($Y))
+            {
                 throw new Exception\BadDataException('X and Y must have the same number of elements.');
+            }
             $μₓ = Average::mean($X);
             $μy = Average::mean($Y);
 
@@ -224,7 +226,9 @@
         public static function sampleCovariance(array $X, array $Y): float
         {
             if (count($X) !== count($Y))
+            {
                 throw new Exception\BadDataException('X and Y must have the same number of elements.');
+            }
             $x = Average::mean($X);
             $y = Average::mean($Y);
 
@@ -301,8 +305,10 @@
             array $Y,
             array $w
         ): float {
-            if (count($X) !== count($Y) || count($X) !== count($w))
+            if ((count($X) !== count($Y)) || (count($X) !== count($w)))
+            {
                 throw new Exception\BadDataException('X, Y and w must have the same number of elements.');
+            }
 
             $μₓ = Average::weightedMean($X, $w);
             $μy = Average::weightedMean($Y, $w);
@@ -342,7 +348,7 @@
             'r'   => "float",
             'r2'  => "float",
             'tau' => "float",
-            'rho' => "float"
+            'rho' => "float",
         ])] public static function describe(
             array $X,
             array $Y,
@@ -447,7 +453,9 @@
         public static function kendallsTau(array $X, array $Y): float
         {
             if (count($X) !== count($Y))
+            {
                 throw new Exception\BadDataException('Both random variables must have the same number of elements');
+            }
 
             $n = count($X);
 
@@ -468,7 +476,9 @@
 
             // Tally concordant, discordant, and tied pairs
             for ($i = 0; $i < $n; $i++)
+            {
                 for ($j = $i + 1; $j < $n; $j++)
+                {
                     if (($xy[$i][self::X] == $xy[$j][self::X])
                         && ($xy[$i][self::Y] == $xy[$j][self::Y])
                     )
@@ -477,21 +487,20 @@
                     } elseif ($xy[$i][self::X] == $xy[$j][self::X])
                     {
                         $ties_x++;
-                        // yᵢ = yⱼ -- neither concordant or discordant
                     } elseif ($xy[$i][self::Y] == $xy[$j][self::Y])
                     {
                         $ties_y++;
-                        // xᵢ < xⱼ and yᵢ < yⱼ -- concordant
                     } elseif (($xy[$i][self::X] < $xy[$j][self::X])
                         && ($xy[$i][self::Y] < $xy[$j][self::Y])
                     )
                     {
                         $nc++;
-                        // xᵢ > xⱼ and yᵢ < yⱼ or  xᵢ < xⱼ and yᵢ > yⱼ -- discordant
                     } else
                     {
                         $nd++;
                     }
+                }
+            }
 
             // Numerator: (number of concordant pairs) - (number of discordant pairs)
             $⟮nc − nd⟯ = $nc - $nd;
@@ -502,8 +511,10 @@
              *   τ = ----------
              *       n(n - 1)/2
              */
-            if ($ties_x == 0 && $ties_y == 0)
+            if (($ties_x == 0) && ($ties_y == 0))
+            {
                 return $⟮nc − nd⟯ / (($n * ($n - 1)) / 2);
+            }
 
             /* tau-b (rank ties exist):
              *
@@ -540,7 +551,9 @@
         public static function spearmansRho(array $X, array $Y): float
         {
             if (count($X) !== count($Y))
+            {
                 throw new Exception\BadDataException('Both random variables for spearmansRho must have the same number of elements');
+            }
 
             $rgᵪ = Distribution::fractionalRanking($X);
             $rgᵧ = Distribution::fractionalRanking($Y);
@@ -569,8 +582,11 @@
          * @return array<array<float>> paired x and y points on an ellipse aligned with the data provided
          *
          * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\BadParameterException
          * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
          * @throws \MathPHP\Exception\MatrixException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public static function confidenceEllipse(
             array $X,
@@ -579,7 +595,7 @@
             int $num_points = 11
         ): array {
             $standardNormal = new StandardNormal();
-            $p = 2 * $standardNormal->cdf($z) - 1;
+            $p = (2 * $standardNormal->cdf($z)) - 1;
             $chiSquared = new ChiSquared(2);
             $χ² = $chiSquared->inverse($p);
 
@@ -590,13 +606,7 @@
             try
             {
                 $covariance_matrix = $data_matrix->covarianceMatrix();
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\VectorException $e)
+            } catch (Exception\BadParameterException|Exception\VectorException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -605,15 +615,28 @@
             try
             {
                 $eigenvalues = Eigenvalue::closedFormPolynomialRootMethod($cov);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException $e)
             {
             }
 
             // Sort the eigenvalues from highest to lowest
             rsort($eigenvalues);
-            $V = Eigenvector::eigenvectors($cov, $eigenvalues);
+            try
+            {
+                $V = Eigenvector::eigenvectors($cov, $eigenvalues);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Make ia diagonal matrix of the eigenvalues
             $D = MatrixFactory::diagonal($eigenvalues);
@@ -621,11 +644,7 @@
             try
             {
                 $transformation_matrix = $V->multiply($D);
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
             {
             }
 
@@ -645,15 +664,7 @@
             {
                 $unit_circle_with_ones
                     = $unit_circle->augment(MatrixFactory::one($num_points, 1));
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\OutOfBoundsException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -663,55 +674,52 @@
                 $ellipse
                     = $transformation_matrix->multiply($unit_circle_with_ones->transpose())
                     ->transpose();
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\IncorrectTypeException|Exception\MathException|Exception\MatrixException $e)
             {
             }
 
             return $ellipse->getMatrix();
         }
 
-        public function ellipse()
+        public static function ellipse()
         {
         }
 
-        public function spearmansRhoExceptionDifferentLengthArrays()
+        public static function spearmansRhoExceptionDifferentLengthArrays()
         {
         }
 
-        public function kendallsTauExceptionDifferentLengthArrays()
+        public static function kendallsTauExceptionDifferentLengthArrays()
         {
         }
 
-        public function RSample()
+        public static function RSample()
         {
         }
 
-        public function RPopulation()
+        public static function RPopulation()
         {
         }
 
-        public function sampleCovarianceExceptionWhenXAndYHaveDifferentCounts()
-        {
-        }
-
-        public function covarianceSample()
-        {
-        }
-
-        public function populationCovarianceExceptionWhenXAndYHaveDifferentCounts(
+        public static function sampleCovarianceExceptionWhenXAndYHaveDifferentCounts(
         )
         {
         }
 
-        public function weightedCovarianceException()
+        public static function covarianceSample()
         {
         }
 
-        public function covariancePopulation()
+        public static function populationCovarianceExceptionWhenXAndYHaveDifferentCounts(
+        )
+        {
+        }
+
+        public static function weightedCovarianceException()
+        {
+        }
+
+        public static function covariancePopulation()
         {
         }
     }

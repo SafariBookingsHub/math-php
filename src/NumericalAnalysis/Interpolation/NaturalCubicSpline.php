@@ -53,13 +53,15 @@
          *
          * @throws Exception\BadDataException
          */
-        public static function interpolate(callable|array $source, ...$args): Piecewise
-        {
+        public static function interpolate(
+            callable|array $source,
+            ...$args
+        ): Piecewise {
             // Get an array of points from our $source argument
             $points = self::getPoints($source, $args);
 
             // Validate input and sort points
-            self::validate($points, degree: 1);
+            self::validate($points, 1);
             $sorted = self::sort($points);
 
             // Descriptive constants
@@ -87,18 +89,22 @@
                 $h[$i] = $xᵢ₊₁ - $xᵢ;
 
                 if ($i == 0)
-                    continue;
+                {
+                    {
+                        continue;
+                    }
+                }
 
                 $xᵢ₋₁ = $sorted[$i - 1][$x];
                 $f⟮xᵢ⟯ = $sorted[$i][$y];    // yᵢ
                 $f⟮xᵢ₊₁⟯ = $sorted[$i + 1][$y];  // yᵢ₊₁
                 $f⟮xᵢ₋₁⟯ = $sorted[$i - 1][$y];  // yᵢ₋₁
 
-                $α = 3 / $h[$i] * ($f⟮xᵢ₊₁⟯ - $f⟮xᵢ⟯) - 3 / $h[$i - 1]
-                        * ($f⟮xᵢ⟯ - $f⟮xᵢ₋₁⟯);
-                $l = 2 * ($xᵢ₊₁ - $xᵢ₋₁) - $h[$i - 1] * $μ[$i - 1];
+                $α = (3 / $h[$i] * ($f⟮xᵢ₊₁⟯ - $f⟮xᵢ⟯)) - ((3 / $h[$i - 1])
+                        * ($f⟮xᵢ⟯ - $f⟮xᵢ₋₁⟯));
+                $l = (2 * ($xᵢ₊₁ - $xᵢ₋₁)) - ($h[$i - 1] * $μ[$i - 1]);
                 $μ[$i] = $h[$i] / $l;
-                $z[$i] = ($α - $h[$i - 1] * $z[$i - 1]) / $l;
+                $z[$i] = ($α - ($h[$i - 1] * $z[$i - 1])) / $l;
             }
 
             for ($i = $k - 1; $i >= 0; $i--)
@@ -108,38 +114,46 @@
                 $f⟮xᵢ⟯ = $sorted[$i][$y];    // yᵢ
                 $f⟮xᵢ₊₁⟯ = $sorted[$i + 1][$y];  // yᵢ₊₁
 
-                $c[$i] = $z[$i] - $μ[$i] * $c[$i + 1];
-                $b[$i] = ($f⟮xᵢ₊₁⟯ - $f⟮xᵢ⟯) / $h[$i] - $h[$i] * ($c[$i + 1]
-                                + 2
-                                    * $c[$i]) / 3;
+                $c[$i] = $z[$i] - ($μ[$i] * $c[$i + 1]);
+                $b[$i] = (($f⟮xᵢ₊₁⟯ - $f⟮xᵢ⟯) / $h[$i]) - (($h[$i] * ($c[$i + 1]
+                                + (2
+                                    * $c[$i]))) / 3);
                 $d[$i] = ($c[$i + 1] - $c[$i]) / (3 * $h[$i]);
 
                 $poly[$i] = new Polynomial([
                     $d[$i],
-                    $c[$i] - 3 * $d[$i] * $xᵢ,
-                    $b[$i] - (2 * $c[$i] * $xᵢ) + 3 * $d[$i] * $xᵢ ** 2,
-                    ($a[$i] - $b[$i] * $xᵢ) + $c[$i] * ($xᵢ ** 2) - $d[$i]
+                    $c[$i] - (3 * $d[$i] * $xᵢ),
+                    ($b[$i] - (2 * $c[$i] * $xᵢ)) + (3 * $d[$i] * $xᵢ ** 2),
+                    (($a[$i] - ($b[$i] * $xᵢ)) + $c[$i] * ($xᵢ ** 2)) - ($d[$i]
                         * $xᵢ
-                            ** 3,
+                        ** 3),
                 ]);
 
                 if ($i == 0)
-                    $int[$i] = [$xᵢ, $xᵢ₊₁]; else
-                    $int[$i] = [$xᵢ, $xᵢ₊₁, TRUE, FALSE];
+                {
+                    {
+                        $int[$i] = [$xᵢ, $xᵢ₊₁];
+                    }
+                } else
+                {
+                    {
+                        $int[$i] = [$xᵢ, $xᵢ₊₁, TRUE, FALSE];
+                    }
+                }
             }
 
             return new Piecewise($int, $poly);
         }
 
-        public function solveNonZeroError()
+        public static function solveNonZeroError()
         {
         }
 
-        public function solveZeroError()
+        public static function solveZeroError()
         {
         }
 
-        public function polynomialAgrees()
+        public static function polynomialAgrees()
         {
         }
     }

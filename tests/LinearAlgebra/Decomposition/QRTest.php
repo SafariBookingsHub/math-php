@@ -335,13 +335,13 @@
                     'Q' => [
                         [-1.0, 0.0, 0.0],
                         [0.0, -1.0, 0.0],
-                        [0.0, 0.0, -1 / sqrt(num: 17)],
-                        [0.0, 0.0, -4 / sqrt(num: 17)],
+                        [0.0, 0.0, -1 / sqrt(17)],
+                        [0.0, 0.0, -4 / sqrt(17)],
                     ],
                     'R' => [
                         [-2.0, 2.0, 3.0],
                         [0.0, 6.0, 1.0],
-                        [0.0, 0.0, -1 * sqrt(num: 17)],
+                        [0.0, 0.0, -1 * sqrt(17)],
                     ],
                 ],
                 [
@@ -468,7 +468,7 @@
         public function testQrDecompositionPropertyAEqualsQR(array $A)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
+            $A = MatrixFactory::create($A);
 
             // And
             $qrDecomposition = $A->qrDecomposition();
@@ -494,7 +494,7 @@
         public function testQrDecompositionPropertiesOfQR(array $A)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
+            $A = MatrixFactory::create($A);
 
             // When
             $qr = $A->qrDecomposition();
@@ -522,9 +522,9 @@
             array $R
         ) {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $Q = MatrixFactory::create(A: $Q);
-            $R = MatrixFactory::create(A: $R);
+            $A = MatrixFactory::create($A);
+            $Q = MatrixFactory::create($Q);
+            $R = MatrixFactory::create($R);
 
             // When
             $qr = $A->qrDecomposition();
@@ -553,8 +553,8 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $I = MatrixFactory::identity(n: min($A->getM(), $A->getN()));
+            $A = MatrixFactory::create($A);
+            $I = MatrixFactory::identity(min($A->getM(), $A->getN()));
 
             // And
             $qr = $A->qrDecomposition();
@@ -581,7 +581,7 @@
         public function testQrDecompositionPropertyREqualsQTransposeA(array $A)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
+            $A = MatrixFactory::create($A);
 
             // And
             $qrDecomposition = $A->qrDecomposition();
@@ -608,7 +608,7 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create(A: $A);
+            $A = MatrixFactory::create($A);
 
             // And
             $Q = $A->qrDecomposition()->Q;
@@ -635,11 +635,11 @@
         public function testSolve(array $A, array $b, array $expected)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
+            $A = MatrixFactory::create($A);
             $QR = $A->qrDecomposition();
 
             // And
-            $expected = new Vector(A: $expected);
+            $expected = new Vector($expected);
 
             // When
             $x = $QR->solve(b: $b);
@@ -655,7 +655,7 @@
         public function testQRDecompositionInvalidProperty()
         {
             // Given
-            $A = MatrixFactory::create(A: [
+            $A = MatrixFactory::create([
                 [4, 1, -1],
                 [1, 2, 1],
                 [-1, 1, 2],
@@ -676,7 +676,7 @@
         public function testQRDecompositionSolveIncorrectTypeException()
         {
             // Given
-            $A = MatrixFactory::create(A: [
+            $A = MatrixFactory::create([
                 [4, 1, -1],
                 [1, 2, 1],
                 [-1, 1, 2],

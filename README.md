@@ -2,77 +2,79 @@
 
 ### MathPHP - Powerful Modern Math Library for PHP
 
-The only library you need to integrate mathematical functions into your applications. It is a self-contained library in pure PHP with no external dependencies.
+The only library you need to integrate mathematical functions into your applications. It is a self-contained library in
+pure PHP with no external dependencies.
 
 [![Coverage Status](https://coveralls.io/repos/github/markrogoyski/math-php/badge.svg?branch=master)](https://coveralls.io/github/markrogoyski/math-php?branch=master)
 [![License](https://poser.pugx.org/markrogoyski/math-php/license)](https://packagist.org/packages/markrogoyski/math-php)
 
 Features
 --------
- * [Algebra](#algebra)
- * [Arithmetic](#arithmetic)
- * Expression
-   - [Polynomial](#expression---polynomial)
- * [Finance](#finance)
- * Functions
-   - [Map](#functions---map---single-array)
-   - [Special Functions](#functions---special-functions)
- * Information Theory
-   - [Entropy](#information-theory---entropy)
- * Linear Algebra
-   - [Matrix](#linear-algebra---matrix)
-   - [Vector](#linear-algebra---vector)
- * Numbers
-   - [Arbitrary Integer](#number---arbitrary-length-integers)
-   - [Complex](#number---complex-numbers)
-   - [Quaternion](#number---quaternion)
-   - [Rational](#number---rational-numbers)
- * Number Theory
-   - [Integers](#number-theory---integers)
- * Numerical Analysis
-   - [Interpolation](#numerical-analysis---interpolation)
-   - [Numerical Differentiation](#numerical-analysis---numerical-differentiation)
-   - [Numerical Integration](#numerical-analysis---numerical-integration)
-   - [Root Finding](#numerical-analysis---root-finding)
- * Probability
-     - [Combinatorics](#probability---combinatorics)
-     - Distributions
-         * [Continuous](#probability---continuous-distributions)
-         * [Discrete](#probability---discrete-distributions)
-         * [Multivariate](#probability---multivariate-distributions)
-         * [Tables](#probability---distribution-tables)
- * [Sample Data](#sample-data)
- * [Search](#search)
- * Sequences
-     - [Basic](#sequences---basic)
-     - [Advanced](#sequences---advanced)
-     - [NonInteger](#sequences---non-integer)
- * [Set Theory](#set-theory)
- * Statistics
-     - [ANOVA](#statistics---anova)
-     - [Averages](#statistics---averages)
-     - [Circular](#statistics---circular)
-     - [Correlation](#statistics---correlation)
-     - [Descriptive](#statistics---descriptive)
-     - [Distance](#statistics---distance)
-     - [Distributions](#statistics---distributions)
-     - [Divergence](#statistics---divergence)
-     - [Effect Size](#statistics---effect-size)
-     - [Experiments](#statistics---experiments)
-     - [Kernel Density Estimation](#statistics---kernel-density-estimation)
-     - Multivariate
+
+* [Algebra](#algebra)
+* [Arithmetic](#arithmetic)
+* Expression
+    - [Polynomial](#expression---polynomial)
+* [Finance](#finance)
+* Functions
+    - [Map](#functions---map---single-array)
+    - [Special Functions](#functions---special-functions)
+* Information Theory
+    - [Entropy](#information-theory---entropy)
+* Linear Algebra
+    - [Matrix](#linear-algebra---matrix)
+    - [Vector](#linear-algebra---vector)
+* Numbers
+    - [Arbitrary Integer](#number---arbitrary-length-integers)
+    - [Complex](#number---complex-numbers)
+    - [Quaternion](#number---quaternion)
+    - [Rational](#number---rational-numbers)
+* Number Theory
+    - [Integers](#number-theory---integers)
+* Numerical Analysis
+    - [Interpolation](#numerical-analysis---interpolation)
+    - [Numerical Differentiation](#numerical-analysis---numerical-differentiation)
+    - [Numerical Integration](#numerical-analysis---numerical-integration)
+    - [Root Finding](#numerical-analysis---root-finding)
+* Probability
+    - [Combinatorics](#probability---combinatorics)
+    - Distributions
+        * [Continuous](#probability---continuous-distributions)
+        * [Discrete](#probability---discrete-distributions)
+        * [Multivariate](#probability---multivariate-distributions)
+        * [Tables](#probability---distribution-tables)
+* [Sample Data](#sample-data)
+* [Search](#search)
+* Sequences
+    - [Basic](#sequences---basic)
+    - [Advanced](#sequences---advanced)
+    - [NonInteger](#sequences---non-integer)
+* [Set Theory](#set-theory)
+* Statistics
+    - [ANOVA](#statistics---anova)
+    - [Averages](#statistics---averages)
+    - [Circular](#statistics---circular)
+    - [Correlation](#statistics---correlation)
+    - [Descriptive](#statistics---descriptive)
+    - [Distance](#statistics---distance)
+    - [Distributions](#statistics---distributions)
+    - [Divergence](#statistics---divergence)
+    - [Effect Size](#statistics---effect-size)
+    - [Experiments](#statistics---experiments)
+    - [Kernel Density Estimation](#statistics---kernel-density-estimation)
+    - Multivariate
         * [PCA (Principal Component Analysis)](#statistics---multivariate---principal-component-analysis)
         * [PLS (Partial Least Squares Regression)](#statistics---multivariate---partial-least-squares-regression)
-     - [Outlier](#statistics---outlier)
-     - [Random Variables](#statistics---random-variables)
-     - [Regressions](#statistics---regressions)
-     - [Significance Testing](#statistics---significance-testing)
- * [Trigonometry](#trigonometry)
+    - [Outlier](#statistics---outlier)
+    - [Random Variables](#statistics---random-variables)
+    - [Regressions](#statistics---regressions)
+    - [Significance Testing](#statistics---significance-testing)
+* [Trigonometry](#trigonometry)
 
 Setup
 -----
 
- Add the library to your `composer.json` file in your project:
+Add the library to your `composer.json` file in your project:
 
 ```javascript
 {
@@ -102,14 +104,16 @@ $ php composer.phar require markrogoyski/math-php:2.*
 ```
 
 ### Minimum Requirements
- * PHP 7.2
 
- Note: For PHP 7.0 and 7.1, use v1.0 (`markrogoyski/math-php:1.*`)
+* PHP 7.2
+
+Note: For PHP 7.0 and 7.1, use v1.0 (`markrogoyski/math-php:1.*`)
 
 Usage
 -----
 
 ### Algebra
+
 ```php
 use MathPHP\Algebra;
 
@@ -147,6 +151,7 @@ $Δ           = Algebra::discriminant($a, $b, $c);
 ```
 
 ### Arithmetic
+
 ```php
 use MathPHP\Arithmetic;
 
@@ -177,6 +182,7 @@ $modulo   = Arithmetic::modulo(-$dividend, $divisor); // 3
 ```
 
 ### Expression - Polynomial
+
 ```php
 use MathPHP\Expression\Polynomial;
 
@@ -217,6 +223,7 @@ $companion = $polynomial->companionMatrix();
 ```
 
 ### Finance
+
 ```php
 use MathPHP\Finance;
 
@@ -281,6 +288,7 @@ $profitability_index = Finance::profitabilityIndex($values, $rate); // The profi
 ```
 
 ### Functions - Map - Single Array
+
 ```php
 use MathPHP\Functions\Map;
 
@@ -301,6 +309,7 @@ $reciprocals = Map\Single::reciprocal($x);  // [1, 1/2, 1/3, 1/4]
 ```
 
 ### Functions - Map - Multiple Arrays
+
 ```php
 use MathPHP\Functions\Map;
 
@@ -323,6 +332,7 @@ $sums = Map\Multi::add($x, $y, $z); // [15, 17, 21, 27]
 ```
 
 ### Functions - Special Functions
+
 ```php
 use MathPHP\Functions\Special;
 
@@ -390,6 +400,7 @@ $err = Special::stirlingError($n);
 ```
 
 ### Information Theory - Entropy
+
 ```php
 use MathPHP\InformationTheory\Entropy;
 
@@ -418,6 +429,7 @@ $perplexity = Entropy::perplexity($p);         // log₂
 ```
 
 ### Linear Algebra - Matrix
+
 ```php
 use MathPHP\LinearAlgebra\Matrix;
 use MathPHP\LinearAlgebra\MatrixFactory;
@@ -622,6 +634,7 @@ $Aᵢⱼ  = $A[$mᵢ][$nⱼ];    // ArrayAccess
 ```
 
 #### Linear Algebra - Matrix Construction (Factory)
+
 ```php
 $matrix = [
     [1, 2, 3],
@@ -660,6 +673,7 @@ $givens_matrix                = MatrixFactory::givens($m, $n, $angle, $size);  /
 ```
 
 ### Linear Algebra - Vector
+
 ```php
 use MathPHP\LinearAlgebra\Vector;
 
@@ -725,6 +739,7 @@ foreach ($A as $element) { ... }  // Iterator
 ```
 
 ### Number - Arbitrary Length Integers
+
 ```php
 use MathPHP\Number;
 use MathPHP\Functions;
@@ -766,6 +781,7 @@ $randomBigInt = Functions\ArbitaryInteger::rand($intNumberOfBytes);
 ```
 
 ### Number - Complex Numbers
+
 ```php
 use MathPHP\Number\Complex;
 
@@ -798,6 +814,7 @@ $string = (string) $complex;
 ```
 
 ### Number - Quaternion
+
 ```php
 Use MathPHP\Number\Quaternion;
 
@@ -828,6 +845,7 @@ $bool = $quaternion->equals($quaternion);
 ```
 
 ### Number - Rational Numbers
+
 ```php
 use MathPHP\Number\Rational;
 
@@ -860,6 +878,7 @@ $string = (string) $rational;
 ```
 
 ### Number Theory - Integers
+
 ```php
 use MathPHP\NumberTheory\Integer;
 
@@ -912,6 +931,7 @@ $bool = Integer::isOdd($n);
 ```
 
 ### Numerical Analysis - Interpolation
+
 ```php
 use MathPHP\NumericalAnalysis\Interpolation;
 
@@ -1013,6 +1033,7 @@ $interpolation = $rgi($coordinates);  // -75.18
 ```
 
 ### Numerical Analysis - Numerical Differentiation
+
 ```php
 use MathPHP\NumericalAnalysis\NumericalDifferentiation;
 
@@ -1062,6 +1083,7 @@ $derivative = NumericalDifferentiation\SecondDerivativeMidpointFormula::differen
 ```
 
 ### Numerical Analysis - Numerical Integration
+
 ```php
 use MathPHP\NumericalAnalysis\NumericalIntegration;
 
@@ -1133,6 +1155,7 @@ $∫f⟮x⟯dx = NumericalIntegration\MidpointRule::approximate($f⟮x⟯, $star
 ```
 
 ### Numerical Analysis - Root Finding
+
 ```php
 use MathPHP\NumericalAnalysis\RootFinding;
 
@@ -1177,6 +1200,7 @@ $x   = RootFinding\FixedPointIteration::solve($g⟮x⟯, $a, $b, $p, $tol); // S
 ```
 
 ### Probability - Combinatorics
+
 ```php
 use MathPHP\Probability\Combinatorics;
 
@@ -1212,6 +1236,7 @@ $divisions = Combinatorics::multinomial($groups);
 ```
 
 ### Probability - Continuous Distributions
+
 ```php
 use MathPHP\Probability\Distribution\Continuous;
 
@@ -1562,6 +1587,7 @@ $mode = Zipf::mode();
 ```
 
 ### Probability - Multivariate Distributions
+
 ```php
 use MathPHP\Probability\Distribution\Multivariate;
 
@@ -1595,6 +1621,7 @@ $pmf           = $multinomial->pmf($frequencies);
 ```
 
 ### Probability - Distribution Tables
+
 ```php
 use MathPHP\Probability\Distribution\Table;
 
@@ -1688,6 +1715,7 @@ $names       = People::getNames();
 ```
 
 ### Search
+
 ```php
 use MathPHP\Search;
 
@@ -1704,6 +1732,7 @@ $indices = Search::nonZero($list);     // Find the array indices of the scalar v
 ```
 
 ### Sequences - Basic
+
 ```php
 use MathPHP\Sequence\Basic;
 
@@ -1751,6 +1780,7 @@ $digit_root = Basic::digitalRoot($n);
 ```
 
 ### Sequences - Advanced
+
 ```php
 use MathPHP\Sequence\Advanced;
 
@@ -1814,6 +1844,7 @@ $primes = Advanced::primesUpTo(30);
 ```
 
 ### Sequences - Non-Integer
+
 ```php
 use MathPHP\Sequence\NonInteger;
 
@@ -1835,6 +1866,7 @@ $hyperharmonic = NonInteger::hyperharmonic($n, $r);
 ```
 
 ### Set Theory
+
 ```php
 use MathPHP\SetTheory\Set;
 use MathPHP\SetTheory\ImmutableSet;
@@ -1890,6 +1922,7 @@ $A->add(5)->add(6)->remove(4)->addMulti([7, 8, 9]);
 ```
 
 ### Statistics - ANOVA
+
 ```php
 use MathPHP\Statistics\ANOVA;
 
@@ -2004,6 +2037,7 @@ print_r($anova);
 ```
 
 ### Statistics - Averages
+
 ```php
 use MathPHP\Statistics\Average;
 
@@ -2076,6 +2110,7 @@ print_r($averages);
 ```
 
 ### Statistics - Circular
+
 ```php
 use MathPHP\Statistics\Circular;
 
@@ -2101,6 +2136,7 @@ print_r($stats);
 ```
 
 ### Statistics - Correlation
+
 ```php
 use MathPHP\Statistics\Correlation;
 
@@ -2148,6 +2184,7 @@ $ellipse_data = Correlation::confidenceEllipse($X, $Y, $sd, $num_points);
 ```
 
 ### Statistics - Descriptive
+
 ```php
 use MathPHP\Statistics\Descriptive;
 
@@ -2250,6 +2287,7 @@ $summary = Descriptive::fiveNumberSummary($numbers);
 ```
 
 ### Statistics - Distance
+
 ```php
 use MathPHP\Statistics\Distance;
 
@@ -2286,6 +2324,7 @@ $D = Distance::mahalanobis($data, $otherData);  // Mahalanobis distance between 
 ```
 
 ### Statistics - Distributions
+
 ```php
 use MathPHP\Statistics\Distribution;
 
@@ -2326,6 +2365,7 @@ Distribution::stemAndLeafPlot($values, Distribution::PRINT);
 ```
 
 ### Statistics - Divergence
+
 ```php
 use MathPHP\Statistics\Divergence;
 
@@ -2339,6 +2379,7 @@ $JSD⟮X‖Y⟯ = Divergence::jensenShannon($X, $Y);
 ```
 
 ### Statistics - Effect Size
+
 ```php
 use MathPHP\Statistics\EffectSize;
 
@@ -2379,6 +2420,7 @@ $Δ = EffectSize::glassDelta($μ₁, $μ₂, $σ₂);
 ```
 
 ### Statistics - Experiments
+
 ```php
 use MathPHP\Statistics\Experiment;
 
@@ -2405,6 +2447,7 @@ $LL          = Experiment::likelihoodRatioSS($sensitivity, $specificity);
 ```
 
 ### Statistics - Kernel Density Estimation
+
 ```php
 use MathPHP\Statistics\KernelDensityEstimation
 
@@ -2442,6 +2485,7 @@ $kde = new KernelDesnsityEstimation($data, $h, $kernel);
 ```
 
 ### Statistics - Multivariate - Principal Component Analysis
+
 ```php
 use MathPHP\Statistics\Multivariate\PCA;
 use MathPHP\LinearAlgebra\MatrixFactory;
@@ -2498,6 +2542,7 @@ $yPredictions = $pls->predict($xMatrix);
 ```
 
 ### Statistics - Outlier
+
 ```php
 use MathPHP\Statistics\Outlier;
 
@@ -2519,6 +2564,7 @@ $criticalValue   = Outlier::grubbsCriticalValue($𝛼, $n, Outlier::ONE_SIDED);
 ```
 
 ### Statistics - Random Variables
+
 ```php
 use MathPHP\Statistics\RandomVariable;
 
@@ -2558,6 +2604,7 @@ $ci = RandomVariable::confidenceInterval($μ, $n, $σ, $cl); // Array( [ci] => 3
 ```
 
 ### Statistics - Regressions
+
 ```php
 use MathPHP\Statistics\Regression;
 
@@ -2568,17 +2615,17 @@ $regression = new Regression\Linear($points);
 $parameters = $regression->getParameters();          // [m => 1.2209302325581, b => 0.6046511627907]
 $equation   = $regression->getEquation();            // y = 1.2209302325581x + 0.6046511627907
 $y          = $regression->evaluate(5);              // Evaluate for y at x = 5 using regression equation
-$ci         = $regression->ci(5, 0.5);               // Confidence interval for x = 5 with p-value of 0.5
-$pi         = $regression->pi(5, 0.5);               // Prediction interval for x = 5 with p-value of 0.5; Optional number of trials parameter.
+$ci         = Linear::ci(5, 0.5);               // Confidence interval for x = 5 with p-value of 0.5
+$pi         = Linear::pi(5, 0.5);               // Prediction interval for x = 5 with p-value of 0.5; Optional number of trials parameter.
 $Ŷ          = $regression->yHat();
 $r          = $regression->r();                      // same as correlationCoefficient
 $r²         = $regression->r2();                     // same as coefficientOfDetermination
 $se         = $regression->standardErrors();         // [m => se(m), b => se(b)]
 $t          = $regression->tValues();                // [m => t, b => t]
-$p          = $regression->tProbability();           // [m => p, b => p]
+$p          = Linear::tProbability();           // [m => p, b => p]
 $F          = $regression->fStatistic();
-$p          = $regression->fProbability();
-$h          = $regression->leverages();
+$p          = Linear::fProbability();
+$h          = Linear::leverages();
 $e          = $regression->residuals();
 $D          = $regression->cooksD();
 $DFFITS     = $regression->dffits();
@@ -2645,6 +2692,7 @@ $Ŷ          = $regression->yHat();
 ```
 
 ### Statistics - Significance Testing
+
 ```php
 use MathPHP\Statistics\Significance;
 
@@ -2762,6 +2810,7 @@ $χ²       = Significance::chiSquaredTest($observed, $expected);
 ```
 
 ### Trigonometry
+
 ```php
 use MathPHP\Trigonometry;
 
@@ -2774,8 +2823,10 @@ Unit Tests
 
 Beyond 100% code coverage!
 
-MathPHP has thousands of unit tests testing individual functions directly with numerous data inputs to achieve 100% test coverage.
-MathPHP unit tests also test mathematical axioms which indirectly test the same functions in multiple different ways ensuring that those math properties all work out according to the axioms.
+MathPHP has thousands of unit tests testing individual functions directly with numerous data inputs to achieve 100% test
+coverage.
+MathPHP unit tests also test mathematical axioms which indirectly test the same functions in multiple different ways
+ensuring that those math properties all work out according to the axioms.
 
 ```bash
 $ cd tests
@@ -2789,9 +2840,9 @@ Standards
 
 MathPHP conforms to the following standards:
 
- * PSR-1  - Basic coding standard (http://www.php-fig.org/psr/psr-1/)
- * PSR-4  - Autoloader (http://www.php-fig.org/psr/psr-4/)
- * PSR-12 - Extended coding style guide (http://www.php-fig.org/psr/psr-12/)
+* PSR-1 - Basic coding standard (http://www.php-fig.org/psr/psr-1/)
+* PSR-4 - Autoloader (http://www.php-fig.org/psr/psr-4/)
+* PSR-12 - Extended coding style guide (http://www.php-fig.org/psr/psr-12/)
 
 License
 -------

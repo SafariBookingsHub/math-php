@@ -4,7 +4,7 @@
 
     class LeastSquares {
 
-        public function leastSquaresDegreesOfFreedomBadDataException()
+        public static function leastSquaresDegreesOfFreedomBadDataException()
         {
         }
     }

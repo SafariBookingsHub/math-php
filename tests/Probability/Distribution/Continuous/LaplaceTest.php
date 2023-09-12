@@ -164,6 +164,7 @@
         public function testMean()
         {
             foreach (range(-5, 5) as $μ)
+            {
                 foreach (range(1, 3) as $b)
                 {
                     // Given
@@ -175,6 +176,7 @@
                     // Then
                     $this->assertEquals($μ, $mean);
                 }
+            }
         }
 
         /**
@@ -183,6 +185,7 @@
         public function testMedian()
         {
             foreach (range(-5, 5) as $μ)
+            {
                 foreach (range(1, 3) as $b)
                 {
                     // Given
@@ -194,6 +197,7 @@
                     // Then
                     $this->assertEquals($μ, $median);
                 }
+            }
         }
 
         /**
@@ -202,6 +206,7 @@
         public function testMode()
         {
             foreach (range(-5, 5) as $μ)
+            {
                 foreach (range(1, 3) as $b)
                 {
                     // Given
@@ -213,6 +218,7 @@
                     // Then
                     $this->assertEquals($μ, $mode);
                 }
+            }
         }
 
         /**
@@ -266,16 +272,23 @@
         public function testRand()
         {
             foreach (range(-3, 3) as $μ)
+            {
                 foreach (range(1, 3) as $b)
                 {
                     // Given
                     $laplace = new Laplace($μ, $b);
 
                     // When
-                    $random = $laplace->rand();
+                    try
+                    {
+                        $random = $laplace->rand();
+                    } catch (\Exception $e)
+                    {
+                    }
 
                     // Then
                     $this->assertTrue(is_numeric($random));
                 }
+            }
         }
     }

@@ -21,7 +21,6 @@
     use function log;
     use function max;
     use function min;
-    use function pow;
     use function sort;
     use function sqrt;
 
@@ -58,11 +57,17 @@
             array $weights
         ): float {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the weightedMean of an empty list of numbers');
+            }
             if (empty($weights))
+            {
                 return Average::mean($numbers);
+            }
             if (count($numbers) !== count($weights))
+            {
                 throw new Exception\BadDataException('Numbers and weights must have the same number of elements.');
+            }
 
             $∑⟮xᵢwᵢ⟯ = array_sum(array_map(
                 fn($xᵢ, $wᵢ) => $xᵢ * $wᵢ,
@@ -90,7 +95,9 @@
         public static function mean(array $numbers): float
         {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the average of an empty list of numbers');
+            }
 
             return array_sum($numbers) / count($numbers);
         }
@@ -112,9 +119,7 @@
             try
             {
                 return self::truncatedMean($numbers, 25);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -148,16 +153,22 @@
             int $trim_percent
         ): float {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the truncated mean of an empty list of numbers');
-            if ($trim_percent < 0 || $trim_percent > 50)
+            }
+            if (($trim_percent < 0) || ($trim_percent > 50))
+            {
                 throw new Exception\OutOfBoundsException('Trim percent must be between 0 and 50.');
+            }
 
             $n = count($numbers);
             $trim_count = floor($n * ($trim_percent / 100));
 
             sort($numbers);
             if ($trim_percent == 50)
+            {
                 return self::median($numbers);
+            }
 
             for ($i = 1; $i <= $trim_count; $i++)
             {
@@ -181,9 +192,13 @@
         public static function median(array $numbers): float
         {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the median of an empty list of numbers');
+            }
             if (count($numbers) === 1)
+            {
                 return array_pop($numbers);
+            }
 
             // Reset the array key indexes because we don't know what might be passed in
             $numbers = array_values($numbers);
@@ -236,9 +251,13 @@
         {
             $n = count($numbers);
             if ($n === 0)
+            {
                 throw new Exception\BadDataException('Cannot find the k-th smallest of an empty list of numbers');
+            }
             if ($k >= $n)
+            {
                 throw new Exception\OutOfBoundsException('k cannot be greater than or equal to the count of numbers');
+            }
 
             // Reset the array key indexes because we don't know what might be passed in
             $numbers = array_values($numbers);
@@ -255,8 +274,10 @@
             $num_slices = ceil($n / 5);
             $median_array = [];
             for ($i = 0; $i < $num_slices; $i++)
+            {
                 $median_array[] = self::median(array_slice($numbers, 5 * $i,
                     5));
+            }
 
             // Then we find the median of the medians.
             $median_of_medians = self::median($median_array);
@@ -268,11 +289,16 @@
 
             // Lastly, we find which group of values our value of interest is in, and find it in the smaller array.
             if ($k < $lower_number)
-                return self::kthSmallest($lower_upper['lower'], $k); elseif ($k < $lower_number + $equal_number)
+            {
+                return self::kthSmallest($lower_upper['lower'], $k);
+            } elseif ($k < $lower_number + $equal_number)
+            {
                 return $median_of_medians;
-            else
+            } else
+            {
                 return self::kthSmallest($lower_upper['upper'],
                     $k - $lower_number - $equal_number);
+            }
         }
 
         /**
@@ -292,7 +318,7 @@
         #[ArrayShape([
             'lower' => "array",
             'upper' => "array",
-            'equal' => "int"
+            'equal' => "int",
         ])] private static function splitAtValue(
             array $numbers,
             float $value
@@ -302,14 +328,20 @@
             $number_equal = 0;
 
             foreach ($numbers as $number)
+            {
                 if ($number < $value)
-                    $lower[] = $number; elseif ($number > $value)
+                {
+                    {
+                        $lower[] = $number;
+                    }
+                } elseif ($number > $value)
                 {
                     $upper[] = $number;
                 } else
                 {
                     $number_equal++;
                 }
+            }
 
             return [
                 'lower' => $lower,
@@ -361,17 +393,25 @@
         public static function generalizedMean(array $numbers, float $p): float
         {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the generalized mean of an empty list of numbers');
+            }
 
             // Special cases for infinite p
             if ($p == -INF)
+            {
                 return min($numbers);
+            }
             if ($p == INF)
+            {
                 return max($numbers);
+            }
 
             // Special case for p = 0 (geometric mean)
             if ($p == 0)
+            {
                 return self::geometricMean($numbers);
+            }
 
             // Standard case for non-infinite p
             $n = count($numbers);
@@ -397,7 +437,9 @@
         public static function geometricMean(array $numbers): float
         {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the geometric mean of an empty list of numbers');
+            }
 
             $n = count($numbers);
             $a₀a₁a₂⋯ = array_reduce(
@@ -444,8 +486,8 @@
             // Calculating successive values: New value comes in; old value drops out
             while ($new < $m)
             {
-                $SMA[] = $SMA[$yesterday] + $numbers[$new] / $n
-                    - $numbers[$drop] / $n;
+                $SMA[] = ($SMA[$yesterday] + $numbers[$new] / $n)
+                    - ($numbers[$drop] / $n);
                 $drop++;
                 $yesterday++;
                 $new++;
@@ -480,7 +522,9 @@
             $CMA[] = $numbers[0];
 
             for ($i = 1; $i < $m; $i++)
+            {
                 $CMA[] = (($numbers[$i]) + ($CMA[$i - 1] * $i)) / ($i + 1);
+            }
 
             return $CMA;
         }
@@ -508,7 +552,9 @@
             array $weights
         ): array {
             if (count($weights) !== $n)
+            {
                 throw new Exception\BadDataException('Number of weights must equal number of n-points');
+            }
 
             $m = count($numbers);
             $∑w = array_sum($weights);
@@ -552,7 +598,9 @@
 
             // Each day after: EMAtoday = α⋅xtoday + (1-α)EMAyesterday
             for ($i = 1; $i < $m; $i++)
+            {
                 $EMA[] = ($α * $numbers[$i]) + ((1 - $α) * $EMA[$i - 1]);
+            }
 
             return $EMA;
         }
@@ -564,10 +612,16 @@
          * @param float $y
          *
          * @return float
+         * @throws \MathPHP\Exception\BadDataException
          */
         public static function agm(float $x, float $y): float
         {
-            return self::arithmeticGeometricMean($x, $y);
+            try
+            {
+                return self::arithmeticGeometricMean($x, $y);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -593,20 +647,26 @@
             float $y
         ): float {
             // x or y < 0 = NaN
-            if ($x < 0 || $y < 0)
+            if (($x < 0) || ($y < 0))
+            {
                 return NAN;
+            }
 
             // x or y zero = 0
-            if ($x == 0 || $y == 0)
+            if (($x == 0) || ($y == 0))
+            {
                 return 0;
+            }
 
             // Standard case x and y > 0
             [$a, $g] = [$x, $y];
             for ($i = 0; $i <= 10; $i++)
+            {
                 [$a, $g] = [
                     self::mean([$a, $g]),
                     self::geometricMean([$a, $g]),
                 ];
+            }
 
             return $a;
         }
@@ -632,10 +692,14 @@
          */
         public static function logarithmicMean(float $x, float $y): float
         {
-            if ($x == 0 || $y == 0)
+            if (($x == 0) || ($y == 0))
+            {
                 return 0;
+            }
             if ($x == $y)
+            {
                 return $x;
+            }
 
             return ($y - $x) / (log($y) - log($x));
         }
@@ -653,7 +717,7 @@
          */
         public static function heronianMean(float $A, float $B): float
         {
-            return 1 / 3 * ($A + sqrt($A * $B) + $B);
+            return (1 / 3) * ($A + sqrt($A * $B) + $B);
         }
 
         /**
@@ -674,19 +738,23 @@
         public static function identricMean(float $x, float $y): float
         {
             // x and y must be positive
-            if ($x <= 0 || $y <= 0)
+            if (($x <= 0) || ($y <= 0))
+            {
                 throw new Exception\OutOfBoundsException('x and y must be positive real numbers.');
+            }
 
             // Special case: x if x = y
             if ($x == $y)
+            {
                 return $x;
+            }
 
             // Standard case
             $ℯ = M_E;
             $xˣ = $x ** $x;
             $yʸ = $y ** $y;
 
-            return 1 / $ℯ * ($xˣ / $yʸ) ** (1 / ($x - $y));
+            return (1 / $ℯ) * ($xˣ / $yʸ) ** (1 / ($x - $y));
         }
 
         /**************************************************************************
@@ -742,32 +810,34 @@
          *
          * @throws Exception\BadDataException if the input array of numbers is empty
          * @noinspection Annotator
-         * @noinspection Annotator
-         * @noinspection Annotator
-         * @noinspection Annotator
          */
         public static function mode(array $numbers): array
         {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the mode of an empty list of numbers');
+            }
 
             // Count how many times each number occurs.
             // Determine the max any number occurs.
             // Find all numbers that occur max times.
             $array_map1 = [];
-            foreach ($numbers as $ignored => {
-                mixed}
+            foreach ($numbers as $ignored => mixed
             $number_strings = $array_map1;
             $number_counts = array_count_values($number_strings);
             $max = max($number_counts);
             $modes = array();
             foreach ($number_counts as $number => $count)
+            {
                 if ($count === $max)
+                {
                     $modes[] = $number;
+                }
+            }
 
             // Cast back to numbers
-            $array_map = [];foreach ($modes as $ignored => {
-            mixedreturn}
+            $array_map = [];
+            foreach ($modes as $ignored => mixedreturn
         }
 
         /**
@@ -793,14 +863,24 @@
         public static function harmonicMean(array $numbers): float
         {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the harmonic mean of an empty list of numbers');
+            }
 
-            $array_filter = array_filter($numbers, function ($x) {
-                return $x < 0;
-            });
+            $array_filter1 = [];
+            foreach ($numbers as $key => $x)
+            {
+                if ($x < 0)
+                {
+                    $array_filter1[$key] = $x;
+                }
+            }
+            $array_filter = $array_filter1;
             $negativeValues = $array_filter;
             if ( ! empty($negativeValues))
+            {
                 throw new Exception\BadDataException('Harmonic mean cannot be computed for negative values.');
+            }
 
             $n = count($numbers);
             $∑1／xᵢ = array_sum(Map\Single::reciprocal($numbers));
@@ -860,13 +940,19 @@
         public static function lehmerMean(array $numbers, float $p): float
         {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the lehmer mean of an empty list of numbers');
+            }
 
             // Special cases for infinite p
             if ($p == -INF)
+            {
                 return min($numbers);
+            }
             if ($p == INF)
+            {
                 return max($numbers);
+            }
 
             // Standard case for non-infinite p
             $∑xᵢᵖ = array_sum(Map\Single::pow($numbers, $p));
@@ -908,12 +994,17 @@
         public static function rootMeanSquare(array $numbers): float
         {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the root mean square of an empty list of numbers');
+            }
 
             $n = count($numbers);
-            $array_map = array_map(function ($x) {
-                return $x ** 2;
-            }, $numbers);
+            $array_map1 = [];
+            foreach ($numbers as $key => $x)
+            {
+                $array_map1[$key] = $x ** 2;
+            }
+            $array_map = $array_map1;
             $x₁²＋x₂²＋⋯ = array_sum($array_map);
 
             return sqrt($x₁²＋x₂²＋⋯ / $n);
@@ -942,7 +1033,7 @@
             $Q₂ = $quartiles['Q2'];
             $Q₃ = $quartiles['Q3'];
 
-            return ($Q₁ + 2 * $Q₂ + $Q₃) / 4;
+            return ($Q₁ + (2 * $Q₂) + $Q₃) / 4;
         }
 
         /**
@@ -959,9 +1050,7 @@
             try
             {
                 return self::truncatedMean($numbers, 25);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -983,7 +1072,9 @@
         public static function cubicMean(array $numbers): float
         {
             if (empty($numbers))
+            {
                 throw new Exception\BadDataException('Cannot find the cubic mean of an empty list of numbers');
+            }
 
             $n = count($numbers);
             $∑xᵢ³ = array_sum(Map\Single::cube($numbers));
@@ -991,143 +1082,145 @@
             return ($∑xᵢ³ / $n) ** (1 / 3);
         }
 
-        public function identricMeanExceptionNegativeValue()
+        public static function identricMeanExceptionNegativeValue()
         {
         }
 
-        public function arithmeticGeometricMeanNegativeNAN()
+        public static function arithmeticGeometricMeanNegativeNAN()
         {
         }
 
-        public function weightedMovingAverageExceptionWeightsDifferFromN()
+        public static function weightedMovingAverageExceptionWeightsDifferFromN(
+        )
         {
         }
 
-        public function generalizedMeanPEqualsThreeIsCubicMean()
+        public static function generalizedMeanPEqualsThreeIsCubicMean()
         {
         }
 
-        public function generalizedMeanPEqualsTwoIsQuadraticMean()
+        public static function generalizedMeanPEqualsTwoIsQuadraticMean()
         {
         }
 
-        public function generalizedMeanPEqualsOneIsArithmeticMean()
+        public static function generalizedMeanPEqualsOneIsArithmeticMean()
         {
         }
 
-        public function generalizedMeanPEqualsZeroIsGeometricMean()
+        public static function generalizedMeanPEqualsZeroIsGeometricMean()
         {
         }
 
-        public function generalizedMeanPEqualsNegativeOneIsHarmonicMean()
+        public static function generalizedMeanPEqualsNegativeOneIsHarmonicMean()
         {
         }
 
-        public function generalizedMeanPEqualsInfinityIsMax()
+        public static function generalizedMeanPEqualsInfinityIsMax()
         {
         }
 
-        public function generalizedMeanPEqualsNegativeInfinityIsMin()
+        public static function generalizedMeanPEqualsNegativeInfinityIsMin()
         {
         }
 
-        public function generalizedMeanExceptionWhenEmptyList()
+        public static function generalizedMeanExceptionWhenEmptyList()
         {
         }
 
-        public function lehmerMeanPEqualsOneIsArithmeticMean()
+        public static function lehmerMeanPEqualsOneIsArithmeticMean()
         {
         }
 
-        public function lehmerMeanPEqualsOneHalfIsGeometricMean()
+        public static function lehmerMeanPEqualsOneHalfIsGeometricMean()
         {
         }
 
-        public function lehmerMeanPEqualsZeroIsHarmonicMean()
+        public static function lehmerMeanPEqualsZeroIsHarmonicMean()
         {
         }
 
-        public function lehmerMeanPEqualsInfinityIsMax()
+        public static function lehmerMeanPEqualsInfinityIsMax()
         {
         }
 
-        public function lehmerMeanPEqualsNegativeInfinityIsMin()
+        public static function lehmerMeanPEqualsNegativeInfinityIsMin()
         {
         }
 
-        public function lehmerMeanExceptionWhenEmptyList()
+        public static function lehmerMeanExceptionWhenEmptyList()
         {
         }
 
-        public function cubicMeanExceptionWhenEmptyList()
+        public static function cubicMeanExceptionWhenEmptyList()
         {
         }
 
-        public function truncatedMeanExceptionGreaterThan50TrimPercent()
+        public static function truncatedMeanExceptionGreaterThan50TrimPercent()
         {
         }
 
-        public function truncatedMeanExceptionLessThanZeroTrimPercent()
+        public static function truncatedMeanExceptionLessThanZeroTrimPercent()
         {
         }
 
-        public function truncatedMeanExceptionEmptyList()
+        public static function truncatedMeanExceptionEmptyList()
         {
         }
 
-        public function quadraticMeanExceptionWhenEmptyList()
+        public static function quadraticMeanExceptionWhenEmptyList()
         {
         }
 
-        public function rootMeanSquareExceptionWhenEmptyList()
+        public static function rootMeanSquareExceptionWhenEmptyList()
         {
         }
 
-        public function quadradicMean()
+        public static function quadradicMean()
         {
         }
 
-        public function harmonicMeanExceptionNegativeValues()
+        public static function harmonicMeanExceptionNegativeValues()
         {
         }
 
-        public function harmonicMeanNullWhenEmptyArray()
+        public static function harmonicMeanNullWhenEmptyArray()
         {
         }
 
-        public function geometricMeanExceptionWhenEmptyArray()
+        public static function geometricMeanExceptionWhenEmptyArray()
         {
         }
 
-        public function modeEmptyArrayWhenEmptyArray()
+        public static function modeEmptyArrayWhenEmptyArray()
         {
         }
 
-        public function kthSmallestExceptionWhenKIsLargerThanN()
+        public static function kthSmallestExceptionWhenKIsLargerThanN()
         {
         }
 
-        public function kthSmallestExceptionWhenEmptyArray()
+        public static function kthSmallestExceptionWhenEmptyArray()
         {
         }
 
-        public function medianExceptionWhenEmptyArray()
+        public static function medianExceptionWhenEmptyArray()
         {
         }
 
-        public function weightedMeanBadDataExceptionWhenCountsDoNotMatch()
+        public static function weightedMeanBadDataExceptionWhenCountsDoNotMatch(
+        )
         {
         }
 
-        public function weightedMeanIsJustMeanWhenEmptyWeights()
+        public static function weightedMeanIsJustMeanWhenEmptyWeights()
         {
         }
 
-        public function weightedMeanExceptionWhenEmptyArray()
+        public static function weightedMeanExceptionWhenEmptyArray()
         {
         }
 
-        public function meanExceptionWhenEmptyArray()
+        public static function meanExceptionWhenEmptyArray()
         {
         }
     }

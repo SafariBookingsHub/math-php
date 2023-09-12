@@ -27,7 +27,7 @@
             $m = $params[self::$M];
             $b = $params[self::$B];
 
-            return $m * $x + $b;
+            return ($m * $x) + $b;
         }
 
         /**
@@ -39,7 +39,10 @@
          *
          * @return array{m: float, b: float} [ m => number, b => number ]
          */
-        #[ArrayShape(['m' => "float", 'b' => "float"])] public function getModelParameters(array $params): array
+        #[ArrayShape([
+            'm' => "float",
+            'b' => "float",
+        ])] public function getModelParameters(array $params): array
         {
             return [
                 'm' => $params[self::$M],

@@ -183,7 +183,11 @@
 
             // Then
             foreach ($test_yHat as $key => $value)
-                $this->assertEqualsWithDelta($yHat[$key], $value, .0000001);
+            {
+                {
+                    $this->assertEqualsWithDelta($yHat[$key], $value, .0000001);
+                }
+            }
         }
 
         /**

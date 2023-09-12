@@ -47,24 +47,30 @@
             array $eigenvalues = []
         ): NumericMatrix {
             if (empty($eigenvalues))
+            {
                 $eigenvalues = Eigenvalue::closedFormPolynomialRootMethod($A);
+            }
             if ( ! $A->isSquare())
+            {
                 throw new Exception\BadDataException('Matrix must be square');
+            }
             // Scale the whole matrix by the max absolute value
             // to ensure computability.
             $max_abs = 0;
             $matrix = $A->getMatrix();
             for ($i = 0; $i < $A->getM(); $i++)
+            {
                 for ($j = 0; $j < $A->getN(); $j++)
+                {
                     $max_abs = max($matrix[$i][$j], $max_abs);
+                }
+            }
             // Prevent divide by zero errors
-            $max_abs = $max_abs === 0 ? 1 : $max_abs;
+            $max_abs = ($max_abs === 0) ? 1 : $max_abs;
             try
             {
                 $A = $A->scalarDivide($max_abs);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
             $eig = new Vector($eigenvalues);
@@ -73,7 +79,9 @@
 
             // There cannot be more eigenvalues than the size of A, nor can there be zero.
             if ($number > $A->getM())
+            {
                 throw new Exception\BadDataException('Improper number of eigenvalues provided');
+            }
             $M = [];
 
             // We will store all our solutions here first because, in the case where there are duplicate
@@ -92,48 +100,37 @@
                     {
                         $Iλ = MatrixFactory::identity($number)
                             ->scalarMultiply($eigenvalue);
-                    } catch (Exception\BadParameterException $e)
-                    {
-                    } catch (Exception\IncorrectTypeException $e)
-                    {
-                    } catch (Exception\OutOfBoundsException $e)
-                    {
-                    } catch (Exception\MathException $e)
+                    } catch (Exception\BadParameterException|Exception\MathException|Exception\OutOfBoundsException|Exception\IncorrectTypeException $e)
                     {
                     }
-                    try
-                    {
-                        $T = $A->subtract($Iλ);
-                    } catch (Exception\IncorrectTypeException $e)
-                    {
-                    } catch (MatrixException $e)
-                    {
-                    }
+                    $T = $A->subtract($Iλ);
 
                     try
                     {
                         $rref = $T->rref();
-                    } catch (Exception\BadDataException $e)
-                    {
-                    } catch (Exception\BadParameterException $e)
-                    {
-                    } catch (Exception\IncorrectTypeException $e)
-                    {
-                    } catch (MatrixException $e)
+                    } catch (Exception\BadDataException|MatrixException|Exception\IncorrectTypeException|Exception\BadParameterException $e)
                     {
                     }
 
                     $number_of_solutions = self::countSolutions($rref);
                     if ($number_of_solutions === 0)
+                    {
                         throw new Exception\BadDataException($eigenvalue
                             .' is not an eigenvalue of this matrix');
+                    }
                     if ($number_of_solutions == $number)
+                    {
                         return MatrixFactory::identity($number);
+                    }
 
                     // Remove the zero rows from $rref
                     for ($i = 0; $i < $number_of_solutions; $i++)
+                    {
                         if ($rref->getM() > 1)
+                        {
                             $rref = $rref->rowExclude($rref->getM() - 1);
+                        }
+                    }
 
                     try
                     {
@@ -145,9 +142,7 @@
                     // A column of all zeroes means that a vector in that direction is a solution.
                     foreach ($zero_columns as $column)
                     {
-                        $array_fill = [];
-                        for ($k = 0; $k < $number; $k++)
-                            $array_fill[$k] = 0;
+                        $array_fill = array_fill(0, $number - 0, 0);
                         $solution = $array_fill;
                         $solution[$column] = 1;
                         $solution_array[] = [
@@ -160,15 +155,7 @@
                             $rref
                                 = $rref->augmentBelow(MatrixFactory::create([$solution]))
                                 ->rref();
-                        } catch (Exception\BadDataException $e)
-                        {
-                        } catch (Exception\BadParameterException $e)
-                        {
-                        } catch (Exception\IncorrectTypeException $e)
-                        {
-                        } catch (MatrixException $e)
-                        {
-                        } catch (Exception\MathException $e)
+                        } catch (Exception\BadDataException|Exception\MathException|MatrixException|Exception\IncorrectTypeException|Exception\BadParameterException $e)
                         {
                         }
                         $number_of_solutions--;
@@ -190,40 +177,35 @@
                         $solution = new Vector($fill);
                         $matrix = $rref;
                         for (
-                            $i = 0; $i < $n
-                        && count($forced_variables) < $number_to_force; $i++
+                            $i = 0; ($i < $n)
+                        && (count($forced_variables) < $number_to_force); $i++
                         )
                         {
                             // Make sure that removing column $i does not leave behind a row of zeros
                             $column_can_be_used = TRUE;
                             for (
-                                $j = 0; $j <= $i && $j < $rref->getM()
+                                $j = 0; ($j <= $i) && ($j < $rref->getM())
                             && $column_can_be_used; $j++
                             )
+                            {
                                 if ($matrix->columnExclude($i
                                         - count($forced_variables))->getRow($j)
                                     == array_fill(0, $matrix->getN() - 1, 0)
                                 )
+                                {
                                     $column_can_be_used = FALSE;
+                                }
+                            }
                             if ($column_can_be_used)
                             {
-                                try
-                                {
-                                    $matrix = $matrix->columnExclude($i
-                                        - count($forced_variables));
-                                } catch (Exception\IncorrectTypeException $e)
-                                {
-                                } catch (MatrixException $e)
-                                {
-                                }
+                                $matrix = $matrix->columnExclude($i
+                                    - count($forced_variables));
                                 $forced_variables[] = $i;
                                 try
                                 {
                                     $new_column
                                         = new Vector($rref->getColumn($i));
-                                } catch (Exception\BadDataException $e)
-                                {
-                                } catch (MatrixException $e)
+                                } catch (Exception\BadDataException|MatrixException $e)
                                 {
                                 }
                                 try
@@ -240,26 +222,20 @@
                         {
                             $eigenvector = $matrix->solve($solution)
                                 ->getVector();
-                        } catch (Exception\BadParameterException $e)
-                        {
-                        } catch (Exception\IncorrectTypeException $e)
-                        {
-                        } catch (MatrixException $e)
-                        {
-                        } catch (Exception\OutOfBoundsException $e)
-                        {
-                        } catch (Exception\VectorException $e)
+                        } catch (Exception\BadParameterException|Exception\VectorException|Exception\OutOfBoundsException|MatrixException|Exception\IncorrectTypeException $e)
                         {
                         }
 
                         // Set all the forced variables to 1.
                         foreach ($forced_variables as $column)
+                        {
                             array_splice($eigenvector, $column, 0, 1);
+                        }
 
                         $eigenvector_scaled = $eigenvector;
 
                         // Scale it to be a unit vector.
-                        $sign = Special::sgn($eigenvector_scaled[0]) == 1 ? 1
+                        $sign = (Special::sgn($eigenvector_scaled[0]) == 1) ? 1
                             : -1;
                         $scale_factor = $sign
                             / sqrt(array_sum(Single::square($eigenvector_scaled)));
@@ -276,9 +252,11 @@
                         // of $rref. Doing this will set the constraint that the dot product between the next
                         // solution and this solution be zero, or that they are orthoganol.
                         if ($vectors_found < $number_of_solutions)
+                        {
                             $rref
                                 = $rref->augmentBelow(MatrixFactory::create([$eigenvector]))
                                 ->rref();
+                        }
                     }
                     $key = array_search($eigenvalue,
                         array_column($solution_array, 'eigenvalue'));
@@ -292,24 +270,11 @@
             try
             {
                 $matrix = MatrixFactory::create($M);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
-            try
-            {
-                return $matrix->transpose();
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            }
+            return $matrix->transpose();
         }
 
         /**
@@ -327,13 +292,11 @@
             $more_solutions = TRUE;
             $m = $M->getM();
             // We will count the number of rows with all zeros, starting at the bottom.
-            for ($i = $m - 1; $i >= 0 && $more_solutions; $i--)
+            for ($i = $m - 1; ($i >= 0) && $more_solutions; $i--)
             {
                 // Every row of zeros is a degree of freedom (a solution) with that eigenvalue
                 // Once we find a row with nonzero values, there are no more.
-                $array_fill = [];
-                for ($j = 0; $j < $m; $j++)
-                    $array_fill[$j] = 0;
+                $array_fill = array_fill(0, $m - 0, 0);
                 try
                 {
                     if ($M->getRow($i) == $array_fill)
@@ -366,38 +329,38 @@
             $zero_columns = [];
             for ($i = 0; $i < $M->getN(); $i++)
             {
-                $array_fill = [];
-                for ($j = 0; $j < $m; $j++)
-                    $array_fill[$j] = 0;
+                $array_fill = array_fill(0, $m - 0, 0);
                 if ($M->getColumn($i) == $array_fill)
+                {
                     $zero_columns[] = $i;
+                }
             }
 
             return $zero_columns;
         }
 
-        public function matrixEigenvectorInvalidMethodException()
+        public static function matrixEigenvectorInvalidMethodException()
         {
         }
 
-        public function eigenvectorNotAnEigenvector()
+        public static function eigenvectorNotAnEigenvector()
         {
         }
 
-        public function incorrectNumberOfEigenvectors()
+        public static function incorrectNumberOfEigenvectors()
         {
         }
 
-        public function eigenvectorMatrixNotCorrectSize()
+        public static function eigenvectorMatrixNotCorrectSize()
         {
         }
 
-        public function eigenvectorsUsingClosedFormPolynomialRootMethodFromMatrix(
+        public static function eigenvectorsUsingClosedFormPolynomialRootMethodFromMatrix(
         )
         {
         }
 
-        public function eigenvectorsUsingClosedFormPolynomialRootMethod()
+        public static function eigenvectorsUsingClosedFormPolynomialRootMethod()
         {
         }
     }

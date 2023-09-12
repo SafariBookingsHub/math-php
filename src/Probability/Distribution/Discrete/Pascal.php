@@ -7,23 +7,23 @@
      * https://en.wikipedia.org/wiki/Negative_binomial_distribution
      */
     class Pascal extends NegativeBinomial {
-        public function variance()
+        public function variance(): float
         {
         }
 
-        public function mode()
+        public function mode(): float
         {
         }
 
-        public function mean()
+        public function mean(): float
         {
         }
 
-        public function cdf()
+        public function cdf(int $x): float
         {
         }
 
-        public function pmf()
+        public function pmf(int $x): float
         {
         }
     }

@@ -25,14 +25,14 @@
      * The kernel function K, must be a non-negative function with a mean of 0 and integrates to 1
      */
     class KernelDensityEstimation {
-        public const STANDARD_NORMAL = 'StandardNormal';
-        public const NORMAL = 'Normal';
-        public const UNIFORM = 'Uniform';
-        public const TRIANGULAR = 'Triangular';
+        public final const STANDARD_NORMAL = 'StandardNormal';
+        public final const NORMAL = 'Normal';
+        public final const UNIFORM = 'Uniform';
+        public final const TRIANGULAR = 'Triangular';
 
         // Available built-in kernel functions
-        public const EPANECHNIKOV = 'Epanechnikov';
-        public const TRICUBE = 'Tricube';
+        public final const EPANECHNIKOV = 'Epanechnikov';
+        public final const TRICUBE = 'Tricube';
         /** @var array<float> Data used for the esimtation */
         protected array $data;
         /** @var int number of data points */
@@ -60,7 +60,9 @@
         ) {
             $this->n = count($data);
             if ($this->n === 0)
+            {
                 throw new Exception\BadDataException('Dataset cannot be empty.');
+            }
             $this->data = $data;
 
             $this->setBandwidth($h);
@@ -84,7 +86,9 @@
             }
 
             if ($h <= 0)
+            {
                 throw new Exception\OutOfBoundsException("Bandwidth must be > 0. h = $h");
+            }
 
             $this->h = $h;
         }
@@ -108,9 +112,7 @@
             try
             {
                 $４σ⁵ = 4 * Descriptive::standardDeviation($this->data) ** 5;
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
             $３n = 3 * $this->n;
@@ -134,14 +136,20 @@
         public function setKernelFunction(callable|string $kernel = NULL): void
         {
             if ($kernel === NULL)
+            {
                 $this->kernel
-                    = $this->getKernelFunctionFromLibrary(self::STANDARD_NORMAL); elseif (is_string($kernel))
+                    = $this->getKernelFunctionFromLibrary(self::STANDARD_NORMAL);
+            } elseif (is_string($kernel))
+            {
                 $this->kernel = $this->getKernelFunctionFromLibrary($kernel);
-            elseif (is_callable($kernel))
+            } elseif (is_callable($kernel))
+            {
                 $this->kernel = $kernel;
-            else
+            } else
+            {
                 throw new Exception\BadParameterException('Kernel must be a callable or a string. Type is: '
                     .gettype($kernel));
+            }
         }
 
         /**
@@ -178,7 +186,9 @@
                 case self::UNIFORM:
                     return function ($x) {
                         if (abs($x) > 1)
+                        {
                             return 0;
+                        }
 
                         return .5;
                     };
@@ -186,7 +196,9 @@
                 case self::TRIANGULAR:
                     return function ($x) {
                         if (abs($x) > 1)
+                        {
                             return 0;
+                        }
 
                         return 1 - abs($x);
                     };
@@ -194,7 +206,9 @@
                 case self::EPANECHNIKOV:
                     return function ($x) {
                         if (abs($x) > 1)
+                        {
                             return 0;
+                        }
 
                         return .75 * (1 - ($x ** 2));
                     };
@@ -202,7 +216,9 @@
                 case self::TRICUBE:
                     return function ($x) {
                         if (abs($x) > 1)
+                        {
                             return 0;
+                        }
 
                         return (70 / 81) * (1 - (abs($x) ** 3)) ** 3;
                     };
@@ -210,6 +226,42 @@
                 default:
                     throw new Exception\BadDataException("Unknown kernel function: $kernel");
             }
+        }
+
+        public static function emptyData()
+        {
+        }
+
+        public static function badSetBandwidth()
+        {
+        }
+
+        public static function unknownBuildInKernel()
+        {
+        }
+
+        public static function badKernel()
+        {
+        }
+
+        public static function normal()
+        {
+        }
+
+        public static function kernels()
+        {
+        }
+
+        public static function defaultKernelDensityCustomBoth()
+        {
+        }
+
+        public static function defaultKernelDensityCustomH()
+        {
+        }
+
+        public static function defaultKernelDensity()
+        {
         }
 
         /**
@@ -230,48 +282,15 @@
             $h = $this->h;
             $n = $this->n;
 
-            $array_map = array_map(function ($xᵢ) use ($x, $h) {
-                return ($x - $xᵢ) / $h;
-            }, $this->data);
+            $array_map1 = [];
+            foreach ($this->data as $key => $xᵢ)
+            {
+                $array_map1[$key] = ($x - $xᵢ) / $h;
+            }
+            $array_map = $array_map1;
             $scale = $array_map;
             $K = array_map($this->kernel, $scale);
 
             return array_sum($K) / ($n * $h);
-        }
-
-        public function emptyData()
-        {
-        }
-
-        public function badSetBandwidth()
-        {
-        }
-
-        public function unknownBuildInKernel()
-        {
-        }
-
-        public function badKernel()
-        {
-        }
-
-        public function normal()
-        {
-        }
-
-        public function kernels()
-        {
-        }
-
-        public function defaultKernelDensityCustomBoth()
-        {
-        }
-
-        public function defaultKernelDensityCustomH()
-        {
-        }
-
-        public function defaultKernelDensity()
-        {
         }
     }

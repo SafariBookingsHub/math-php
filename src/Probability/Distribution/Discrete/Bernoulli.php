@@ -32,7 +32,7 @@
          *
          * @var array{"k": string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'k' => '[0,1]',
             ];
@@ -40,7 +40,6 @@
         /** @var float probability of success */
         protected float $p;
 
-        /** @var float */
         protected float $q;
 
         /**
@@ -52,6 +51,10 @@
         {
             $q = 1 - $p;
             parent::__construct($p, $q);
+        }
+
+        public static function pmfIsBinomialWithNEqualsOne()
+        {
         }
 
         /**
@@ -69,16 +72,14 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             if ($k === 0)
+            {
                 return $this->q;
+            }
 
             return $this->p;
         }
@@ -97,9 +98,13 @@
         public function cdf(int $k): float
         {
             if ($k < 0)
+            {
                 return 0;
+            }
             if ($k < 1)
+            {
                 return 1 - $this->p;
+            }
 
             return 1;
         }
@@ -131,9 +136,13 @@
             $½ = 0.5;
 
             if ($p < $½)
+            {
                 return 0;
+            }
             if ($p == $½)
+            {
                 return $½;
+            }
 
             return 1;
         }
@@ -153,9 +162,13 @@
             $½ = 0.5;
 
             if ($p < $½)
+            {
                 return [0];
+            }
             if ($p == $½)
+            {
                 return [0, 1];
+            }
 
             return [1];
         }
@@ -170,9 +183,5 @@
         public function variance(): float
         {
             return $this->p * $this->q;
-        }
-
-        public function pmfIsBinomialWithNEqualsOne()
-        {
         }
     }

@@ -1350,9 +1350,10 @@
                     0,
                     36,
                     99.9,
-                    ['ci'          => NULL,
-                     'lower_bound' => NULL,
-                     'upper_bound' => NULL,
+                    [
+                        'ci'          => NULL,
+                        'lower_bound' => NULL,
+                        'upper_bound' => NULL,
                     ],
                 ],
             ];

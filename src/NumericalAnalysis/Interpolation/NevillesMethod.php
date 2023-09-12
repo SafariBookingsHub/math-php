@@ -56,7 +56,7 @@
             $points = self::getPoints($source, $args);
 
             // Validate input and sort points
-            self::validate($points, degree: 2);
+            self::validate($points);
             $sorted = self::sort($points);
 
             // Descriptive constants
@@ -69,41 +69,49 @@
 
             // Build our 0th-degree Lagrange polynomials: Q₍ᵢ₎₍₀₎ = yᵢ for all i < n
             for ($i = 0; $i < $n; $i++)
-                $Q[$i][0] = new Polynomial([$sorted[$i][$y]]);
+            {
+                {
+                    $Q[$i][0] = new Polynomial([$sorted[$i][$y]]);
+                }
+            }
 
             // Recursively generate our (n-1)th-degree Lagrange polynomial at $target
             for ($i = 1; $i < $n; $i++)
-                for ($j = 1; $j <= $i; $j++)
+            {
                 {
-                    $xᵢ₋ⱼ = $sorted[$i - $j][$x];
-                    $xᵢ = $sorted[$i][$x];
-                    $Q₍ᵢ₎₍ⱼ₋₁₎ = $Q[$i][$j - 1]($target);
-                    $Q₍ᵢ₋₁₎₍ⱼ₋₁₎ = $Q[$i - 1][$j - 1]($target);
-                    $Q[$i][$j] = LagrangePolynomial::interpolate([
-                        [
-                            $xᵢ₋ⱼ,
-                            $Q₍ᵢ₋₁₎₍ⱼ₋₁₎,
-                        ],
-                        [
-                            $xᵢ,
-                            $Q₍ᵢ₎₍ⱼ₋₁₎,
-                        ],
-                    ]);
+                    for ($j = 1; $j <= $i; $j++)
+                    {
+                        $xᵢ₋ⱼ = $sorted[$i - $j][$x];
+                        $xᵢ = $sorted[$i][$x];
+                        $Q₍ᵢ₎₍ⱼ₋₁₎ = $Q[$i][$j - 1]($target);
+                        $Q₍ᵢ₋₁₎₍ⱼ₋₁₎ = $Q[$i - 1][$j - 1]($target);
+                        $Q[$i][$j] = LagrangePolynomial::interpolate([
+                            [
+                                $xᵢ₋ⱼ,
+                                $Q₍ᵢ₋₁₎₍ⱼ₋₁₎,
+                            ],
+                            [
+                                $xᵢ,
+                                $Q₍ᵢ₎₍ⱼ₋₁₎,
+                            ],
+                        ]);
+                    }
                 }
+            }
 
             // Return our (n-1)th-degree Lagrange polynomial evaluated at $target
             return $Q[$n - 1][$n - 1]($target);
         }
 
-        public function solveNonZeroError()
+        public static function solveNonZeroError()
         {
         }
 
-        public function solve()
+        public static function solve()
         {
         }
 
-        public function polynomialAgrees()
+        public static function polynomialAgrees()
         {
         }
     }

@@ -35,7 +35,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '(0,∞)',
             ];
@@ -57,6 +57,10 @@
             parent::__construct($μ, $λ);
         }
 
+        public static function inverseOfCdf()
+        {
+        }
+
         /**
          * Log normal distribution - probability density function
          *
@@ -76,11 +80,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -92,7 +92,7 @@
             $⟮ln x − μ⟯² = (log($x) - $μ) ** 2;
             $σ² = $σ ** 2;
 
-            return 1 / $xσ√2π * exp(-($⟮ln x − μ⟯² / (2 * $σ²)));
+            return (1 / $xσ√2π) * exp(-($⟮ln x − μ⟯² / (2 * $σ²)));
         }
 
         /**
@@ -113,11 +113,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -127,7 +123,7 @@
             $⟮ln x − μ⟯ = log($x) - $μ;
             $√2σ = sqrt(2) * $σ;
 
-            return 1 / 2 + 1 / 2 * Special::erf($⟮ln x − μ⟯ / $√2σ);
+            return (1 / 2) + ((1 / 2) * Special::erf($⟮ln x − μ⟯ / $√2σ));
         }
 
         /**
@@ -142,15 +138,23 @@
         public function inverse(float $p): float
         {
             if ($p == 0)
-                return 0;
+            {
+                {
+                    return 0;
+                }
+            }
             if ($p == 1)
-                return INF;
+            {
+                {
+                    return INF;
+                }
+            }
 
             $μ = $this->μ;
             $σ = $this->σ;
             $standard_normal = new StandardNormal();
 
-            return exp($μ + $σ * $standard_normal->inverse($p));
+            return exp($μ + ($σ * $standard_normal->inverse($p)));
         }
 
         /**
@@ -165,7 +169,7 @@
             $μ = $this->μ;
             $σ = $this->σ;
 
-            return exp($μ + $σ ** 2 / 2);
+            return exp($μ + (($σ ** 2) / 2));
         }
 
         /**
@@ -189,7 +193,7 @@
          */
         public function mode(): float
         {
-            return exp($this->μ - $this->σ ** 2);
+            return exp($this->μ - ($this->σ ** 2));
         }
 
         /**
@@ -210,11 +214,7 @@
             return (exp($σ²) - 1) * exp($２μ + $σ²);
         }
 
-        public function rand()
-        {
-        }
-
-        public function inverseOfCdf()
+        public function rand(): float|int
         {
         }
     }

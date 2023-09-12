@@ -22,7 +22,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '(-∞,∞)',
             ];
@@ -63,7 +63,9 @@
         public function pdf(float $x): float
         {
             if ($x == 0)
+            {
                 return INF;
+            }
 
             return 0;
         }
@@ -85,7 +87,9 @@
         public function cdf(float $x): int
         {
             if ($x >= 0)
+            {
                 return 1;
+            }
 
             return 0;
         }
@@ -122,7 +126,7 @@
             return 0;
         }
 
-        public function rand()
+        public function rand(): float|int
         {
         }
     }

@@ -4,14 +4,17 @@
 
     use MathPHP\Exception;
     use MathPHP\Expression\Polynomial;
+    use MathPHP\LinearAlgebra\ComplexMatrix;
+    use MathPHP\LinearAlgebra\Matrix;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\LinearAlgebra\NumericMatrix;
+    use MathPHP\LinearAlgebra\ObjectMatrix;
+    use MathPHP\LinearAlgebra\ObjectSquareMatrix;
     use PHPUnit\Framework\TestCase;
 
     class MatrixAugmentationTest extends TestCase {
 
-        /** @var NumericMatrix */
-        private \MathPHP\LinearAlgebra\ComplexMatrix|NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|\MathPHP\LinearAlgebra\Matrix $matrix;
+        private ComplexMatrix|NumericMatrix|ObjectSquareMatrix|ObjectMatrix|Matrix $matrix;
 
         public static function dataProviderForAugment(): array
         {
@@ -375,7 +378,7 @@
                 [2, 3, 4],
                 [4, 5, 6],
             ];
-            $this->matrix = MatrixFactory::create($A);
+            $this->matrix = MatrixFactory::create(A: $A);
         }
 
         /**
@@ -391,9 +394,9 @@
         public function testAugment(array $A, array $B, array $⟮A∣B⟯)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $⟮A∣B⟯ = MatrixFactory::create($⟮A∣B⟯);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
+            $⟮A∣B⟯ = MatrixFactory::create(A: $⟮A∣B⟯);
 
             // When
             $augmented = $A->augment($B);
@@ -409,12 +412,12 @@
         public function testAugmentExceptionRowsDoNotMatch()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
             ]);
-            $B = MatrixFactory::create([
+            $B = MatrixFactory::create(A: [
                 [4, 5],
                 [5, 6],
             ]);
@@ -434,8 +437,8 @@
         public function testAugmentIdentity(array $C, array $⟮C∣I⟯)
         {
             // Given
-            $C = MatrixFactory::create($C);
-            $⟮C∣I⟯ = MatrixFactory::create($⟮C∣I⟯);
+            $C = MatrixFactory::create(A: $C);
+            $⟮C∣I⟯ = MatrixFactory::create(A: $⟮C∣I⟯);
 
             // Then
             $this->assertEquals($⟮C∣I⟯, $C->augmentIdentity());
@@ -448,7 +451,7 @@
         public function testAugmentIdentityExceptionNotSquare()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2],
                 [2, 3],
                 [3, 4],
@@ -474,9 +477,9 @@
         public function testAugmentBelow(array $A, array $B, array $⟮A∣B⟯)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $⟮A∣B⟯ = MatrixFactory::create($⟮A∣B⟯);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
+            $⟮A∣B⟯ = MatrixFactory::create(A: $⟮A∣B⟯);
 
             // When
             $augmented = $A->augmentBelow($B);
@@ -492,12 +495,12 @@
         public function testAugmentBelowExceptionColumnsDoNotMatch()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
             ]);
-            $B = MatrixFactory::create([
+            $B = MatrixFactory::create(A: [
                 [4, 5],
                 [5, 6],
             ]);
@@ -522,9 +525,9 @@
         public function testAugmentAbove(array $A, array $B, array $⟮A∣B⟯)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $⟮A∣B⟯ = MatrixFactory::create($⟮A∣B⟯);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
+            $⟮A∣B⟯ = MatrixFactory::create(A: $⟮A∣B⟯);
 
             // When
             $augmented = $A->augmentAbove($B);
@@ -540,12 +543,12 @@
         public function testAugmentAboveExceptionColumnsDoNotMatch()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
             ]);
-            $B = MatrixFactory::create([
+            $B = MatrixFactory::create(A: [
                 [4, 5],
                 [5, 6],
             ]);
@@ -570,9 +573,9 @@
         public function testAugmentLeft(array $A, array $B, array $⟮B∣A⟯)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $⟮B∣A⟯ = MatrixFactory::create($⟮B∣A⟯);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
+            $⟮B∣A⟯ = MatrixFactory::create(A: $⟮B∣A⟯);
 
             // When
             $augmented = $A->augmentLeft($B);
@@ -587,12 +590,12 @@
          */
         public function testAugmentLeftExceptionRowsDoNotMatch()
         {
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
             ]);
-            $B = MatrixFactory::create([
+            $B = MatrixFactory::create(A: [
                 [4, 5],
                 [5, 6],
             ]);
@@ -608,8 +611,15 @@
         public function testAugmentExceptionTypeMismatch()
         {
             // Given
-            $A = MatrixFactory::create([[1]]);
-            $B = MatrixFactory::create([[new Polynomial([1, 1])]]);
+            $A = MatrixFactory::create(A: [[1]]);
+            $B = MatrixFactory::create(A: [
+                [
+                    new Polynomial(coefficients: [
+                        1,
+                        1,
+                    ]),
+                ],
+            ]);
 
             // Then
             $this->expectException(Exception\MatrixException::class);
@@ -625,8 +635,15 @@
         public function testAugmentLeftExceptionTypeMismatch()
         {
             // Given
-            $A = MatrixFactory::create([[1]]);
-            $B = MatrixFactory::create([[new Polynomial([1, 1])]]);
+            $A = MatrixFactory::create(A: [[1]]);
+            $B = MatrixFactory::create(A: [
+                [
+                    new Polynomial(coefficients: [
+                        1,
+                        1,
+                    ]),
+                ],
+            ]);
 
             // Then
             $this->expectException(Exception\MatrixException::class);
@@ -642,8 +659,15 @@
         public function testAugmentAboveExceptionTypeMismatch()
         {
             // Given
-            $A = MatrixFactory::create([[1]]);
-            $B = MatrixFactory::create([[new Polynomial([1, 1])]]);
+            $A = MatrixFactory::create(A: [[1]]);
+            $B = MatrixFactory::create(A: [
+                [
+                    new Polynomial(coefficients: [
+                        1,
+                        1,
+                    ]),
+                ],
+            ]);
 
             // Then
             $this->expectException(Exception\MatrixException::class);
@@ -659,8 +683,15 @@
         public function testAugmentBelowExceptionTypeMismatch()
         {
             // Given
-            $A = MatrixFactory::create([[1]]);
-            $B = MatrixFactory::create([[new Polynomial([1, 1])]]);
+            $A = MatrixFactory::create(A: [[1]]);
+            $B = MatrixFactory::create(A: [
+                [
+                    new Polynomial(coefficients: [
+                        1,
+                        1,
+                    ]),
+                ],
+            ]);
 
             // Then
             $this->expectException(Exception\MatrixException::class);

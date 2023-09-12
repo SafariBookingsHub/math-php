@@ -4,24 +4,25 @@
 
     class MatrixIssue386 {
 
-        public function solve()
+        public static function solve()
         {
         }
 
-        public function solveRref()
+        public static function solveRref()
         {
         }
 
-        public function determinantOfSingularMatrix()
+        public static function determinantOfSingularMatrix()
         {
         }
 
-        public function largeSingularMatrixWithLotsOfFloatingPointValuesUsingErrorTolerance(
+        public static function largeSingularMatrixWithLotsOfFloatingPointValuesUsingErrorTolerance(
         )
         {
         }
 
-        public function largeSingularMatrixWithLotsOfFloatingPointValues()
+        public static function largeSingularMatrixWithLotsOfFloatingPointValues(
+        )
         {
         }
     }

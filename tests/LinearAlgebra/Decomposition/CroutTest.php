@@ -120,9 +120,9 @@
         public function testCroutDecomposition(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $L = MatrixFactory::create(A: $expected['L']);
-            $U = MatrixFactory::create(A: $expected['U']);
+            $A = MatrixFactory::create($A);
+            $L = MatrixFactory::create($expected['L']);
+            $U = MatrixFactory::create($expected['U']);
 
             // When
             $lu = $A->croutDecomposition();
@@ -141,7 +141,7 @@
         public function testCroutDecompositionException()
         {
             // Given
-            $A = MatrixFactory::create(A: [
+            $A = MatrixFactory::create([
                 [3, 4],
                 [6, 8],
             ]);
@@ -160,7 +160,7 @@
         public function testCountDecompositionInvalidProperty()
         {
             // Given
-            $A = MatrixFactory::create(A: [
+            $A = MatrixFactory::create([
                 [4, 1, -1],
                 [1, 2, 1],
                 [-1, 1, 2],

@@ -4,107 +4,107 @@
 
     class SetAxioms {
 
-        public function cardinalityOfPowerSet()
+        public static function cardinalityOfPowerSet()
         {
         }
 
-        public function cardinalityOfCartesianProduct()
+        public static function cardinalityOfCartesianProduct()
         {
         }
 
-        public function AUnionBCrossCEqualsUnsionOfACRossCAndBCrossC()
+        public static function AUnionBCrossCEqualsUnsionOfACRossCAndBCrossC()
         {
         }
 
-        public function ACrossUnionBCEqualsACrossBUnionACrossC()
+        public static function ACrossUnionBCEqualsACrossBUnionACrossC()
         {
         }
 
-        public function ACartesianProductWithEmptySetIsEmptySet()
+        public static function ACartesianProductWithEmptySetIsEmptySet()
         {
         }
 
-        public function ASymmetricDifferentBEqualsUnionADiffBAndBDiffA()
+        public static function ASymmetricDifferentBEqualsUnionADiffBAndBDiffA()
         {
         }
 
-        public function ADiffItselfIsEmptySet()
+        public static function ADiffItselfIsEmptySet()
         {
         }
 
-        public function ADiffBDifferentFromBDiffAWhenNotEqual()
+        public static function ADiffBDifferentFromBDiffAWhenNotEqual()
         {
         }
 
-        public function AIntersectionEmptySetIsEmptySet()
+        public static function AIntersectionEmptySetIsEmptySet()
         {
         }
 
-        public function AIntersectionAEqualsA()
+        public static function AIntersectionAEqualsA()
         {
         }
 
-        public function AIntersectionBIsSubsetOfA()
+        public static function AIntersectionBIsSubsetOfA()
         {
         }
 
-        public function intersectionAbsorbtion()
+        public static function intersectionAbsorbtion()
         {
         }
 
-        public function intersectionDistributive()
+        public static function intersectionDistributive()
         {
         }
 
-        public function intersectionAssociative()
+        public static function intersectionAssociative()
         {
         }
 
-        public function intersectionCommutative()
+        public static function intersectionCommutative()
         {
         }
 
-        public function cardinalityOfUnion()
+        public static function cardinalityOfUnion()
         {
         }
 
-        public function AUnionEmptySetEqualsA()
+        public static function AUnionEmptySetEqualsA()
         {
         }
 
-        public function AUnionAEqualsA()
+        public static function AUnionAEqualsA()
         {
         }
 
-        public function AIsSubsetOfAUnionB()
+        public static function AIsSubsetOfAUnionB()
         {
         }
 
-        public function unionAbsorbtion()
+        public static function unionAbsorbtion()
         {
         }
 
-        public function unionDistributive()
+        public static function unionDistributive()
         {
         }
 
-        public function unsionAssociative()
+        public static function unsionAssociative()
         {
         }
 
-        public function unionCommutative()
+        public static function unionCommutative()
         {
         }
 
-        public function equalSetsAreSubsetsInBothDirections()
+        public static function equalSetsAreSubsetsInBothDirections()
         {
         }
 
-        public function setIsSubsetOfItself()
+        public static function setIsSubsetOfItself()
         {
         }
 
-        public function emptySetSubsetOfEverySet()
+        public static function emptySetSubsetOfEverySet()
         {
         }
     }

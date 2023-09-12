@@ -124,7 +124,11 @@
             // Tricube
             $kernel = function ($x) {
                 if (abs($x) > 1)
-                    return 0;
+                {
+                    {
+                        return 0;
+                    }
+                }
 
                 return (70 / 81) * (1 - (abs($x) ** 3)) ** 3;
             };
@@ -182,11 +186,7 @@
             try
             {
                 $KDE = new KernelDensityEstimation($data);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
 
@@ -228,11 +228,7 @@
             try
             {
                 $KDE = new KernelDensityEstimation($data);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
             try
@@ -282,22 +278,14 @@
             try
             {
                 $KDE = new KernelDensityEstimation($this->data, $h, $kernel);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
             $kernel2 = KernelDensityEstimation::TRICUBE;
             try
             {
                 $KDE2 = new KernelDensityEstimation($this->data, $h, $kernel2);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
 
@@ -324,11 +312,7 @@
             try
             {
                 $KDE = new KernelDensityEstimation($this->data, 1, $kernel);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
 
@@ -353,11 +337,7 @@
             try
             {
                 $KDE = new KernelDensityEstimation($this->data);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
             $h = 0.3932;
@@ -370,11 +350,7 @@
             try
             {
                 $KDE->setKernelFunction(KernelDensityEstimation::NORMAL);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
 
@@ -398,11 +374,7 @@
             try
             {
                 $KDE = new KernelDensityEstimation($this->data, 1, 1.0);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
         }
@@ -416,11 +388,7 @@
             try
             {
                 $KDE = new KernelDensityEstimation($this->data);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
 
@@ -431,11 +399,7 @@
             try
             {
                 $KDE->setKernelFunction('DoesNotExist');
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
         }
@@ -449,11 +413,7 @@
             try
             {
                 $KDE = new KernelDensityEstimation($this->data);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
 
@@ -484,11 +444,7 @@
             try
             {
                 $KDE = new KernelDensityEstimation([]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
         }

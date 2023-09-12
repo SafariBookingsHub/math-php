@@ -4,119 +4,119 @@
 
     class Descriptive {
 
-        public function describeSekNullForSmallN()
+        public static function describeSekNullForSmallN()
         {
         }
 
-        public function describeSesNullForSmallN()
+        public static function describeSesNullForSmallN()
         {
         }
 
-        public function describeSample()
+        public static function describeSample()
         {
         }
 
-        public function describePopulation()
+        public static function describePopulation()
         {
         }
 
-        public function sCoefficientOfVariation()
+        public static function sCoefficientOfVariation()
         {
         }
 
-        public function midhingeEmptyList()
+        public static function midhingeEmptyList()
         {
         }
 
-        public function percentileOutOfUpperBoundsP()
+        public static function percentileOutOfUpperBoundsP()
         {
         }
 
-        public function percentileOutOfLowerBoundsP()
+        public static function percentileOutOfLowerBoundsP()
         {
         }
 
-        public function percentileEmptyList()
+        public static function percentileEmptyList()
         {
         }
 
-        public function quartilesInclusiveExceptionWhenEmptyArray()
+        public static function quartilesInclusiveExceptionWhenEmptyArray()
         {
         }
 
-        public function quartilesExclusiveExceptionWhenEmptyArray()
+        public static function quartilesExclusiveExceptionWhenEmptyArray()
         {
         }
 
-        public function medianAbsoluteDeviationExceptionWhenEmptyArray()
+        public static function medianAbsoluteDeviationExceptionWhenEmptyArray()
         {
         }
 
-        public function meanAbsoluteDeviationExceptionWhenEmptyArray()
+        public static function meanAbsoluteDeviationExceptionWhenEmptyArray()
         {
         }
 
-        public function SDExceptionWhenEmptyArray()
+        public static function SDExceptionWhenEmptyArray()
         {
         }
 
-        public function standardDeviationExceptionWhenEmptyArray()
+        public static function standardDeviationExceptionWhenEmptyArray()
         {
         }
 
-        public function SDeviationUsingSampleVariance()
+        public static function SDeviationUsingSampleVariance()
         {
         }
 
-        public function standardDeviationUsingSampleVariance()
+        public static function standardDeviationUsingSampleVariance()
         {
         }
 
-        public function sdUsingPopulationVariance()
+        public static function sdUsingPopulationVariance()
         {
         }
 
-        public function standardDeviationUsingPopulationVariance()
+        public static function standardDeviationUsingPopulationVariance()
         {
         }
 
-        public function weightedSampleVarianceException()
+        public static function weightedSampleVarianceException()
         {
         }
 
-        public function weightedSampleVarianceSetOfOne()
+        public static function weightedSampleVarianceSetOfOne()
         {
         }
 
-        public function weightedSampleVarianceBiased()
+        public static function weightedSampleVarianceBiased()
         {
         }
 
-        public function weightedSampleVarianceUnbiased()
+        public static function weightedSampleVarianceUnbiased()
         {
         }
 
-        public function varianceExceptionDFLessThanZero()
+        public static function varianceExceptionDFLessThanZero()
         {
         }
 
-        public function sampleVarianceZeroWhenListContainsOnlyOneItem()
+        public static function sampleVarianceZeroWhenListContainsOnlyOneItem()
         {
         }
 
-        public function sampleVarianceExceptionWhenEmptyArray()
+        public static function sampleVarianceExceptionWhenEmptyArray()
         {
         }
 
-        public function populationVarianceExceptionWhenEmptyArray()
+        public static function populationVarianceExceptionWhenEmptyArray()
         {
         }
 
-        public function midrangeExceptionWhenEmptyArray()
+        public static function midrangeExceptionWhenEmptyArray()
         {
         }
 
-        public function rangeExceptionWhenEmptyArray()
+        public static function rangeExceptionWhenEmptyArray()
         {
         }
     }

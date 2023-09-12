@@ -27,8 +27,8 @@
 
             for ($i = 0; $i <= $n; $i++)
             {
-                $x = cos(2 * pi() * $i / $n);
-                $y = sin(2 * pi() * $i / $n);
+                $x = cos((2 * pi() * $i) / $n);
+                $y = sin((2 * pi() * $i) / $n);
                 $unit_circle[] = [$x, $y];
             }
 

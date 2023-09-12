@@ -183,11 +183,11 @@
         public function testPdf(array $x, array $μ, array $∑, float $expected)
         {
             // Given
-            $∑ = MatrixFactory::create($∑);
-            $normal = new Normal($μ, $∑);
+            $∑ = MatrixFactory::create(A: $∑);
+            $normal = new Normal(μ: $μ, ∑: $∑);
 
             // When
-            $pdf = $normal->pdf($x);
+            $pdf = $normal->pdf(X: $x);
 
             // Then
             $this->assertEqualsWithDelta($expected, $pdf, 0.00000000000001);
@@ -206,13 +206,13 @@
         ) {
             // Given
             $μ = [0, 0];
-            $∑ = MatrixFactory::create($M);
+            $∑ = MatrixFactory::create(A: $M);
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $normal = new Normal($μ, $∑);
+            $normal = new Normal(μ: $μ, ∑: $∑);
         }
 
         /**
@@ -223,18 +223,18 @@
         {
             // Given
             $μ = [0, 0];
-            $∑ = MatrixFactory::create([
+            $∑ = MatrixFactory::create(A: [
                 [1, 0],
                 [0, 1],
             ]);
             $x = [0, 0, 0];
-            $normal = new Normal($μ, $∑);
+            $normal = new Normal(μ: $μ, ∑: $∑);
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $pdf = $normal->pdf($x);
+            $pdf = $normal->pdf(X: $x);
         }
 
         /**
@@ -246,7 +246,7 @@
         {
             // Given
             $μ = [0, 0];
-            $∑ = MatrixFactory::create([
+            $∑ = MatrixFactory::create(A: [
                 [1, 0, 0],
                 [0, 1, 0],
             ]);
@@ -255,6 +255,6 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $normal = new Normal($μ, $∑);
+            $normal = new Normal(μ: $μ, ∑: $∑);
         }
     }

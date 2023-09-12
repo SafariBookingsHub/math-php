@@ -34,10 +34,10 @@
         /** @var Vector Scale */
         private Vector $scale;
 
-        /** @var Vector $EVal Eigenvalues of the correlation Matrix - Also the Loading Matrix for the PCA */
+        /** @var Vector|null $EVal Eigenvalues of the correlation Matrix - Also the Loading Matrix for the PCA */
         private ?Vector $EVal = NULL;
 
-        /** @var NumericMatrix $EVec Eigenvectors of the correlation matrix */
+        /** @var NumericMatrix|null $EVec Eigenvectors of the correlation matrix */
         private ?NumericMatrix $EVec = NULL;
 
         /**
@@ -57,9 +57,11 @@
         ) {
             // Check that there is enough data: at least two columns and rows
             if ( ! ($M->getM() > 1) || ! ($M->getN() > 1))
+            {
                 throw new Exception\BadDataException('Data matrix must be at least 2x2.');
+            }
 
-            $this->center = $center === TRUE
+            $this->center = ($center === TRUE)
                 ? ($this->center = $M->columnMeans())
                 : ($this->center = new Vector(array_fill(0, $M->getN(), 0)));
 
@@ -67,11 +69,15 @@
             {
                 $scaleArray = [];
                 for ($i = 0; $i < $M->getN(); $i++)
+                {
                     $scaleArray[]
                         = Descriptive::standardDeviation($M->getColumn($i));
+                }
                 $this->scale = new Vector($scaleArray);
             } else
+            {
                 $this->scale = new Vector(array_fill(0, $M->getN(), 1));
+            }
 
             // Save the source data to the class
             $this->data = $M;
@@ -108,7 +114,11 @@
         public function standardizeData(NumericMatrix $new_data = NULL
         ): NumericMatrix {
             if ($new_data === NULL)
-                $X = $this->data; else
+            {
+                {
+                    $X = $this->data;
+                }
+            } else
             {
                 $this->checkNewData($new_data);
                 $X = $new_data;
@@ -136,7 +146,21 @@
         private function checkNewData(NumericMatrix $newData): void
         {
             if ($newData->getN() !== $this->data->getN())
+            {
                 throw new Exception\BadDataException('Data does not have the same number of columns');
+            }
+        }
+
+        public static function newDataException()
+        {
+        }
+
+        public static function constructorException()
+        {
+        }
+
+        public static function construction()
+        {
         }
 
         /**
@@ -204,7 +228,11 @@
             $vars = $this->data->getN();
 
             if ($new_data === NULL)
-                $X = $this->data; else
+            {
+                {
+                    $X = $this->data;
+                }
+            } else
             {
                 $this->checkNewData($new_data);
                 $X = $this->standardizeData($new_data);
@@ -262,7 +290,11 @@
             $vars = $this->data->getN();
 
             if ($new_data === NULL)
-                $X = $this->data; else
+            {
+                {
+                    $X = $this->data;
+                }
+            } else
             {
                 $this->checkNewData($new_data);
                 $X = $this->standardizeData($new_data);
@@ -318,7 +350,7 @@
             for ($i = 1; $i <= $vars; $i++)
             {
                 $F = new F($i, $samp - $i);
-                $T = $i * ($samp - 1) * $F->inverse(1 - $alpha) / ($samp
+                $T = ($i * ($samp - 1) * $F->inverse(1 - $alpha)) / ($samp
                         - $i);
                 $T²Critical[] = $T;
             }
@@ -349,15 +381,17 @@
                 $t2 = array_sum(Single::square($evals));
                 $t3 = array_sum(Single::pow($evals, 3));
 
-                $h0 = 1 - 2 * $t1 * $t3 / 3 / $t2 ** 2;
+                $h0 = 1 - ((2 * $t1 * $t3) / 3 / $t2 ** 2);
                 if ($h0 < .001)
+                {
                     $h0 = .001;
+                }
 
                 $normal = new StandardNormal();
                 $ca = $normal->inverse(1 - $alpha);
 
-                $h1 = $ca * sqrt(2 * $t2 * $h0 ** 2) / $t1;
-                $h2 = $t2 * $h0 * ($h0 - 1) / $t1 ** 2;
+                $h1 = ($ca * sqrt(2 * $t2 * $h0 ** 2)) / $t1;
+                $h2 = ($t2 * $h0 * ($h0 - 1)) / $t1 ** 2;
 
                 $QCritical[] = $t1 * (1 + $h1 + $h2) ** (1 / $h0);
             }
@@ -379,8 +413,10 @@
         {
             $EV = [];
             for ($i = 0; $i < $this->data->getN(); $i++)
+            {
                 $EV[] = Descriptive::standardDeviation($this->getScores()
                         ->getColumn($i)) ** 2;
+            }
 
             return new Vector($EV);
         }
@@ -399,24 +435,16 @@
         public function getScores(NumericMatrix $new_data = NULL): NumericMatrix
         {
             if ($new_data === NULL)
-                $scaled_data = $this->data; else
+            {
+                {
+                    $scaled_data = $this->data;
+                }
+            } else
             {
                 $this->checkNewData($new_data);
                 $scaled_data = $this->standardizeData($new_data);
             }
 
             return $scaled_data->multiply($this->EVec);
-        }
-
-        public function newDataException()
-        {
-        }
-
-        public function constructorException()
-        {
-        }
-
-        public function construction()
-        {
         }
     }

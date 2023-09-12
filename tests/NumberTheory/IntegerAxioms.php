@@ -4,7 +4,7 @@
 
     class IntegerAxioms {
 
-        public function coprimeProductEqualsLcm()
+        public static function coprimeProductEqualsLcm()
         {
         }
     }

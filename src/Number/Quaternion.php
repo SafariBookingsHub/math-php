@@ -19,14 +19,14 @@
      */
     class Quaternion implements ObjectArithmetic {
         /** Floating-point range near zero to consider insignificant */
-        const EPSILON = 1e-6;
-        /** @var int|float Real part of the quaternionic number */
+        public final const EPSILON = 1e-6;
+        /** @var string|int|float Real part of the quaternionic number */
         protected string|int|float $r;
-        /** @var int|float First Imaginary part of the quaternionic number */
+        /** @var string|int|float First Imaginary part of the quaternionic number */
         protected string|int|float $i;
-        /** @var int|float Second Imaginary part of the quaternionic number */
+        /** @var string|int|float Second Imaginary part of the quaternionic number */
         protected string|int|float $j;
-        /** @var int|float Third Imaginary part of the quaternionic number */
+        /** @var string|int|float Third Imaginary part of the quaternionic number */
         protected string|int|float $k;
 
         /**
@@ -37,12 +37,18 @@
          *
          * @throws \MathPHP\Exception\BadDataException
          */
-        public function __construct(float|int $r, float|int $i, float|int $j, float|int $k)
-        {
+        public function __construct(
+            float|int $r,
+            float|int $i,
+            float|int $j,
+            float|int $k
+        ) {
             if ( ! is_numeric($r) || ! is_numeric($i) || ! is_numeric($j)
                 || ! is_numeric($k)
             )
+            {
                 throw new Exception\BadDataException('Values must be real numbers.');
+            }
             $this->r = $r;
             $this->i = $i;
             $this->j = $j;
@@ -64,6 +70,70 @@
             }
         }
 
+        public static function quaternionDivideException()
+        {
+        }
+
+        public static function quaternionSubtractException()
+        {
+        }
+
+        /**************************************************************************
+         * UNARY FUNCTIONS
+         **************************************************************************/
+
+        public static function quaternionAddException()
+        {
+        }
+
+        public static function subtractReal()
+        {
+        }
+
+        public static function addReal()
+        {
+        }
+
+        public static function inverseException()
+        {
+        }
+
+        /**************************************************************************
+         * BINARY FUNCTIONS
+         **************************************************************************/
+
+        public static function constructorException()
+        {
+        }
+
+        public static function getException()
+        {
+        }
+
+        public static function get()
+        {
+        }
+
+        public static function toString()
+        {
+        }
+
+        /**************************************************************************
+         * COMPARISON FUNCTIONS
+         **************************************************************************/
+
+        public static function zeroValue()
+        {
+        }
+
+        /**************************************************************************
+         * PRIVATE FUNCTIONS
+         **************************************************************************/
+
+        public static function objectArithmeticInterface()
+        {
+        }
+
         /**
          * String representation of a complex number
          * a + bi + cj + dk, a - bi - cj - dk, etc.
@@ -72,10 +142,12 @@
          */
         #[Pure] public function __toString(): string
         {
-            if ($this->r == 0 & $this->i == 0 & $this->j == 0 & $this->k
-                    == 0
+            if (($this->r == 0) & ($this->i == 0) & ($this->j == 0) & ($this->k
+                    == 0)
             )
+            {
                 return '0';
+            }
             $string = self::stringifyNumberPart($this->r);
             $string = self::stringifyNumberPart($this->i, 'i', $string);
             $string = self::stringifyNumberPart($this->j, 'j', $string);
@@ -98,21 +170,19 @@
             string $string = ''
         ): string {
             if ($q == 0)
+            {
                 return $string;
+            }
             if ($q > 0)
             {
-                $plus = $string == '' ? '' : ' + ';
+                $plus = ($string == '') ? '' : ' + ';
 
                 return $string.$plus."$q".$unit;
             }
-            $minus = $string == '' ? '-' : ' - ';
+            $minus = ($string == '') ? '-' : ' - ';
 
             return $string.$minus.abs($q).$unit;
         }
-
-        /**************************************************************************
-         * UNARY FUNCTIONS
-         **************************************************************************/
 
         /**
          * Get r or i or j or k
@@ -125,11 +195,16 @@
          */
         public function __get(string $part)
         {
-            return match ($part)
+            switch ($part)
             {
-                'r', 'i', 'j', 'k' => $this->$part,
-                default => throw new Exception\BadParameterException("The $part property does not exist in Quaternion"),
-            };
+                case 'r':
+                case 'i':
+                case 'j':
+                case 'k':
+                    return $this->$part;
+                default:
+                    return throw new Exception\BadParameterException("The $part property does not exist in Quaternion");
+            }
         }
 
         /**
@@ -147,10 +222,12 @@
          */
         public function inverse(): Quaternion
         {
-            if ($this->r == 0 && $this->i == 0 && $this->j == 0
-                && $this->k == 0
+            if (($this->r == 0) && ($this->i == 0) && ($this->j == 0)
+                && ($this->k == 0)
             )
+            {
                 throw new Exception\BadDataException('Cannot take inverse of 0 + 0i');
+            }
 
             try
             {
@@ -173,9 +250,11 @@
          */
         public function divide(Quaternion|float|int $q): Quaternion
         {
-            if ( ! is_numeric($q) && ! $q instanceof Quaternion)
+            if ( ! is_numeric($q) && ! ($q instanceof Quaternion))
+            {
                 throw new Exception\IncorrectTypeException('Argument must be real or quaternion'
                     .print_r($q, TRUE));
+            }
 
             if (is_numeric($q))
             {
@@ -195,9 +274,7 @@
             try
             {
                 return $this->multiply($q->inverse());
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadDataException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -223,32 +300,40 @@
          */
         public function multiply(mixed $object_or_scalar): Quaternion
         {
-            if ( ! is_numeric($object_or_scalar) && ! $object_or_scalar instanceof Quaternion)
+            if ( ! is_numeric($object_or_scalar)
+                && ! ($object_or_scalar instanceof Quaternion)
+            )
+            {
                 throw new Exception\IncorrectTypeException('Argument must be real or quaternion'
                     .print_r($object_or_scalar, TRUE));
+            }
             if (is_numeric($object_or_scalar))
-                return new Quaternion($this->r * $object_or_scalar, $this->i * $object_or_scalar,
+            {
+                return new Quaternion($this->r * $object_or_scalar,
+                    $this->i * $object_or_scalar,
                     $this->j * $object_or_scalar, $this->k * $object_or_scalar);
+            }
 
             [$a₁, $b₁, $c₁, $d₁] = [$this->r, $this->i, $this->j, $this->k];
-            [$a₂, $b₂, $c₂, $d₂] = [$object_or_scalar->r, $object_or_scalar->i, $object_or_scalar->j, $object_or_scalar->k];
+            [$a₂, $b₂, $c₂, $d₂] = [
+                $object_or_scalar->r,
+                $object_or_scalar->i,
+                $object_or_scalar->j,
+                $object_or_scalar->k,
+            ];
 
             try
             {
                 return new Quaternion(
-                    $a₁ * $a₂ - $b₁ * $b₂ - $c₁ * $c₂ - $d₁ * $d₂,
-                    ($b₁ * $a₂) + ($a₁ * $b₂) + ($c₁ * $d₂) - $d₁ * $c₂,
-                    ($a₁ * $c₂) - ($b₁ * $d₂) + $c₁ * $a₂ + $d₁ * $b₂,
-                    ($a₁ * $d₂ + $b₁ * $c₂) - ($c₁ * $b₂) + $d₁ * $a₂
+                    ($a₁ * $a₂) - ($b₁ * $b₂) - ($c₁ * $c₂) - ($d₁ * $d₂),
+                    (($b₁ * $a₂) + ($a₁ * $b₂) + ($c₁ * $d₂)) - ($d₁ * $c₂),
+                    (($a₁ * $c₂) - ($b₁ * $d₂)) + ($c₁ * $a₂) + ($d₁ * $b₂),
+                    ((($a₁ * $d₂) + ($b₁ * $c₂)) - ($c₁ * $b₂)) + ($d₁ * $a₂)
                 );
             } catch (Exception\BadDataException $e)
             {
             }
         }
-
-        /**************************************************************************
-         * BINARY FUNCTIONS
-         **************************************************************************/
 
         /**
          * The conjugate of a quaternion
@@ -277,13 +362,13 @@
          *        _________________
          * |z| = √a² + b² + c² + d²
          *
-         * @return float
+         * @return float|int
          */
         public function abs(): float|int
         {
-            return sqrt($this->r ** 2 + $this->i ** 2 + $this->j ** 2
-                + $this->k
-                    ** 2);
+            return sqrt(($this->r ** 2) + ($this->i ** 2) + ($this->j ** 2)
+                + ($this->k
+                    ** 2));
         }
 
         /**
@@ -317,9 +402,13 @@
          */
         public function add(mixed $object_or_scalar): Quaternion
         {
-            if ( ! is_numeric($object_or_scalar) && ! $object_or_scalar instanceof Quaternion)
+            if ( ! is_numeric($object_or_scalar)
+                && ! ($object_or_scalar instanceof Quaternion)
+            )
+            {
                 throw new Exception\IncorrectTypeException('Argument must be real or quaternion'
                     .print_r($object_or_scalar, TRUE));
+            }
             if (is_numeric($object_or_scalar))
             {
                 $r = $this->r + $object_or_scalar;
@@ -345,10 +434,6 @@
             }
         }
 
-        /**************************************************************************
-         * COMPARISON FUNCTIONS
-         **************************************************************************/
-
         /**
          * Quaternion subtraction
          *
@@ -363,9 +448,13 @@
          */
         public function subtract(mixed $object_or_scalar): Quaternion
         {
-            if ( ! is_numeric($object_or_scalar) && ! $object_or_scalar instanceof Quaternion)
+            if ( ! is_numeric($object_or_scalar)
+                && ! ($object_or_scalar instanceof Quaternion)
+            )
+            {
                 throw new Exception\IncorrectTypeException('Argument must be real or quaternion'
                     .print_r($object_or_scalar, TRUE));
+            }
             if (is_numeric($object_or_scalar))
             {
                 $r = $this->r - $object_or_scalar;
@@ -391,10 +480,6 @@
             }
         }
 
-        /**************************************************************************
-         * PRIVATE FUNCTIONS
-         **************************************************************************/
-
         /**
          * Test for equality
          * Two quaternions are equal if and only if both their real and imaginary parts are equal.
@@ -406,57 +491,9 @@
          */
         public function equals(Quaternion $q): bool
         {
-            return abs($this->r - $q->r) < self::EPSILON
-                && abs($this->i - $q->i) < self::EPSILON
-                && abs($this->j - $q->j) < self::EPSILON
-                && abs($this->k - $q->k) < self::EPSILON;
-        }
-
-        public function quaternionDivideException()
-        {
-        }
-
-        public function quaternionSubtractException()
-        {
-        }
-
-        public function quaternionAddException()
-        {
-        }
-
-        public function subtractReal()
-        {
-        }
-
-        public function addReal()
-        {
-        }
-
-        public function inverseException()
-        {
-        }
-
-        public function constructorException()
-        {
-        }
-
-        public function getException()
-        {
-        }
-
-        public function get()
-        {
-        }
-
-        public function toString()
-        {
-        }
-
-        public function zeroValue()
-        {
-        }
-
-        public function objectArithmeticInterface()
-        {
+            return (abs($this->r - $q->r) < self::EPSILON)
+                && (abs($this->i - $q->i) < self::EPSILON)
+                && (abs($this->j - $q->j) < self::EPSILON)
+                && (abs($this->k - $q->k) < self::EPSILON);
         }
     }

@@ -81,7 +81,9 @@
         public function testSolve(float $x)
         {
             // f(x) = x⁴ + 8x³ -13x² -92x + 96
-            $f = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
+            $f = fn($x) => (($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2) - (92
+                        * $x))
+                + 96;
 
             // And
             $a = 0;
@@ -124,7 +126,9 @@
         public function testSolveNonZeroError(float $x)
         {
             // f(x) = x⁴ + 8x³ -13x² -92x + 96
-            $f = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
+            $f = fn($x) => (($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2) - (92
+                        * $x))
+                + 96;
 
             // And
             $a = 0;

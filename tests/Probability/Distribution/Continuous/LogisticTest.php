@@ -163,10 +163,10 @@
             float $expected_pdf
         ) {
             // Given
-            $logistic = new Logistic($μ, $s);
+            $logistic = new Logistic(μ: $μ, :$s);
 
             // When
-            $pdf = $logistic->pdf($x);
+            $pdf = $logistic->pdf(x: $x);
 
             // Then
             $this->assertEqualsWithDelta($expected_pdf, $pdf, 0.000001);
@@ -188,10 +188,10 @@
             float $expected_cdf
         ) {
             // Given
-            $logistic = new Logistic($μ, $s);
+            $logistic = new Logistic(μ: $μ, s: $s);
 
             // When
-            $cdf = $logistic->cdf($x);
+            $cdf = $logistic->cdf(x: $x);
 
             // Then
             $this->assertEqualsWithDelta($expected_cdf, $cdf, 0.000001);
@@ -208,11 +208,11 @@
         public function testInverseOfCdf(float $x, float $μ, float $s)
         {
             // Given
-            $logistic = new Logistic($μ, $s);
-            $cdf = $logistic->cdf($x);
+            $logistic = new Logistic(μ: $μ, s: $s);
+            $cdf = $logistic->cdf(x: $x);
 
             // When
-            $inverse_of_cdf = $logistic->inverse($cdf);
+            $inverse_of_cdf = $logistic->inverse(p: $cdf);
 
             // Then
             $this->assertEqualsWithDelta($x, $inverse_of_cdf, 0.000001);
@@ -223,11 +223,12 @@
          */
         public function testMean()
         {
-            foreach (range(-3, 3) as $μ)
-                foreach (range(1, 3) as $s)
+            foreach (range(start: -3, end: 3) as $μ)
+            {
+                foreach (range(start: 1, end: 3) as $s)
                 {
                     // Given
-                    $logistic = new Logistic($μ, $s);
+                    $logistic = new Logistic(μ: $μ, s: $s);
 
                     // When
                     $mean = $logistic->mean();
@@ -235,6 +236,7 @@
                     // Then
                     $this->assertEquals($μ, $mean);
                 }
+            }
         }
 
         /**
@@ -242,11 +244,12 @@
          */
         public function testMedian()
         {
-            foreach (range(-3, 3) as $μ)
-                foreach (range(1, 3) as $s)
+            foreach (range(start: -3, end: 3) as $μ)
+            {
+                foreach (range(start: 1, end: 3) as $s)
                 {
                     // Given
-                    $logistic = new Logistic($μ, $s);
+                    $logistic = new Logistic(μ: $μ, s: $s);
 
                     // When
                     $median = $logistic->median();
@@ -254,6 +257,7 @@
                     // Then
                     $this->assertEquals($μ, $median);
                 }
+            }
         }
 
         /**
@@ -261,11 +265,12 @@
          */
         public function testMode()
         {
-            foreach (range(-3, 3) as $μ)
-                foreach (range(1, 3) as $s)
+            foreach (range(start: -3, end: 3) as $μ)
+            {
+                foreach (range(start: 1, end: 3) as $s)
                 {
                     // Given
-                    $logistic = new Logistic($μ, $s);
+                    $logistic = new Logistic(μ: $μ, s: $s);
 
                     // When
                     $mode = $logistic->mode();
@@ -273,6 +278,7 @@
                     // Then
                     $this->assertEquals($μ, $mode);
                 }
+            }
         }
 
         /**
@@ -286,7 +292,7 @@
         public function testVariance(float $μ, float $s, float $expected)
         {
             // Given
-            $logistic = new Logistic($μ, $s);
+            $logistic = new Logistic(μ: $μ, s: $s);
 
             // When
             $variance = $logistic->variance();
@@ -311,10 +317,10 @@
             $expected_inverse
         ) {
             // Given
-            $logistic = new Logistic($μ, $s);
+            $logistic = new Logistic(μ: $μ, s: $s);
 
             // When
-            $inverse = $logistic->inverse($p);
+            $inverse = $logistic->inverse(p: $p);
 
             // Then
             $this->assertEqualsWithDelta($expected_inverse, $inverse, 0.00001);
@@ -325,17 +331,24 @@
          */
         public function testRand()
         {
-            foreach (range(-3, 3) as $μ)
-                foreach (range(1, 3) as $s)
+            foreach (range(start: -3, end: 3) as $μ)
+            {
+                foreach (range(start: 1, end: 3) as $s)
                 {
                     // Given
-                    $logistic = new Logistic($μ, $s);
+                    $logistic = new Logistic(μ: $μ, s: $s);
 
                     // When
-                    $rand = $logistic->rand();
+                    try
+                    {
+                        $rand = $logistic->rand();
+                    } catch (\Exception $e)
+                    {
+                    }
 
                     // Then
-                    $this->assertTrue(is_numeric($rand));
+                    $this->assertTrue(is_numeric(value: $rand));
                 }
+            }
         }
     }

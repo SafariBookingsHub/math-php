@@ -16,8 +16,8 @@
     abstract class Continuous
         extends Distribution
         implements ContinuousDistribution {
-        protected const GUESS_THRESHOLD = 10;
-        protected const GUESS_ALLOWANCE = 8;
+        protected final const GUESS_THRESHOLD = 10;
+        protected final const GUESS_ALLOWANCE = 8;
 
         /**
          * CDF outside - Probability of being below x₁ and above x₂.
@@ -72,7 +72,7 @@
         /**
          * Produce a random number with a particular distribution
          *
-         * @return float
+         * @return float|int
          *
          * @throws \Exception
          */
@@ -96,7 +96,11 @@
         {
             $initial = $this->mean();
             if (is_nan($initial))
-                $initial = $this->median();
+            {
+                {
+                    $initial = $this->median();
+                }
+            }
 
             $tolerance = .0000000001;
             $dif = $tolerance + 1;
@@ -114,14 +118,19 @@
 
                 // Handle edge case of guesses flipping between two or more small numbers
                 $guess_history["$guess"] = isset($guess_history["$guess"])
-                    ? $guess_history["$guess"] + 1
+                    ? ($guess_history["$guess"] + 1)
                     : 0;
                 if ($guess_history["$guess"] > self::GUESS_THRESHOLD)
                 {
-                    $array_filter = array_filter($guess_history,
-                        function ($repeated_guess) {
-                            return $repeated_guess > self::GUESS_ALLOWANCE;
-                        });
+                    $array_filter1 = [];
+                    foreach ($guess_history as $key => $repeated_guess)
+                    {
+                        if ($repeated_guess > self::GUESS_ALLOWANCE)
+                        {
+                            $array_filter1[$key] = $repeated_guess;
+                        }
+                    }
+                    $array_filter = $array_filter1;
                     $repeated_guesses = $array_filter;
 
                     return array_sum(array_keys($repeated_guesses))
@@ -134,8 +143,5 @@
             return $guess;
         }
 
-        /**
-         * @return int|float
-         */
         abstract public function median(): float|int;
     }

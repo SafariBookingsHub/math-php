@@ -4,43 +4,43 @@
 
     class MtCarsPLS2ScaleTrue {
 
-        public function predictDataColumnMisMatch()
+        public static function predictDataColumnMisMatch()
         {
         }
 
-        public function regression()
+        public static function regression()
         {
         }
 
-        public function w()
+        public static function w()
         {
         }
 
-        public function u()
+        public static function u()
         {
         }
 
-        public function t()
+        public static function t()
         {
         }
 
-        public function p()
+        public static function p()
         {
         }
 
-        public function c()
+        public static function c()
         {
         }
 
-        public function b()
+        public static function b()
         {
         }
 
-        public function constructionFailureXAndYRowMismatch()
+        public static function constructionFailureXAndYRowMismatch()
         {
         }
 
-        public function construction()
+        public static function construction()
         {
         }
     }

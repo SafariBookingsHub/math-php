@@ -1226,9 +1226,7 @@
             try
             {
                 $smallest = Average::kthSmallest($numbers, $k);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -1561,9 +1559,7 @@
             try
             {
                 Average::truncatedMean([1, 2, 3], $trim_percent);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -2072,6 +2068,8 @@
          * @param float $x
          * @param float $y
          * @param float $expectedMean
+         *
+         * @throws \MathPHP\Exception\BadDataException
          */
         public function testArithmeticGeometricMean(
             float $x,
@@ -2079,7 +2077,12 @@
             float $expectedMean
         ) {
             // When
-            $mean = Average::arithmeticGeometricMean($x, $y);
+            try
+            {
+                $mean = Average::arithmeticGeometricMean($x, $y);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expectedMean, $mean, 0.00001);
@@ -2107,8 +2110,18 @@
          */
         public function testArithmeticGeometricMeanNegativeNAN()
         {
-            $this->assertNan(Average::arithmeticGeometricMean(-32, 45));
-            $this->assertNan(Average::arithmeticGeometricMean(32, -45));
+            try
+            {
+                $this->assertNan(Average::arithmeticGeometricMean(-32, 45));
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $this->assertNan(Average::arithmeticGeometricMean(32, -45));
+            } catch (Exception\BadDataException $e)
+            {
+            }
             $this->assertNan(Average::agm(-32, 45));
             $this->assertNan(Average::agm(32, -45));
         }

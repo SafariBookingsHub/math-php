@@ -30,7 +30,7 @@
         public function testZeroErrorCallback()
         {
             // Given f(x) = 13x² -92x + 96
-            $f = fn($x) => (13 * $x ** 2 - 92 * $x) + 96;
+            $f = fn($x) => ((13 * $x ** 2) - (92 * $x)) + 96;
 
             // And $f’’ - 26
             $f’’ = fn() => 26;
@@ -74,7 +74,7 @@
         public function testNonZeroErrorCallback()
         {
             // Given f(x) = x⁴ - 13x² -92x + 96
-            $f = fn($x) => ($x ** 4 - 13 * $x ** 2 - 92 * $x) + 96;
+            $f = fn($x) => (($x ** 4) - (13 * $x ** 2) - (92 * $x)) + 96;
 
             // And $f’’(x) = 12x² - 26
             $f’’ = fn($x) => (12 * $x ** 2) - 26;
@@ -119,7 +119,7 @@
         public function testZeroErrorPoints()
         {
             // Given f(x) = 13x² -92x + 96
-            $f = fn($x) => (13 * $x ** 2 - 92 * $x) + 96;
+            $f = fn($x) => ((13 * $x ** 2) - (92 * $x)) + 96;
             $points = [[0, $f(0)], [2, $f(2)], [4, $f(4)]];
 
             // And $f’’ - 26
@@ -144,7 +144,7 @@
         public function testTargetException()
         {
             // Given f(x) = 13x² -92x + 96
-            $f = fn($x) => (13 * $x ** 2 - 92 * $x) + 96;
+            $f = fn($x) => ((13 * $x ** 2) - (92 * $x)) + 96;
 
             $points = [[0, $f(0)], [2, $f(2)], [4, $f(4)]];
 

@@ -9,7 +9,6 @@
     class StandardNormalTest extends TestCase {
         private const μ = 0;
         private const σ = 1;
-        /** @var StandardNormal */
         private StandardNormal $standardNormal;
 
         /**

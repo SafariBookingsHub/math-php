@@ -4,7 +4,7 @@
 
     class IterZipGenerator {
 
-        public function zipTwoGeneratorsSameSize()
+        public static function zipTwoGeneratorsSameSize()
         {
         }
     }

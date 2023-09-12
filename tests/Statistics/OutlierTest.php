@@ -48,7 +48,7 @@
         #[ArrayShape([
             'min 199.31, mean 206.4338, sd 15.85256' => "array",
             'min 3, mean 148.9091, sd 57.81082'      => "array",
-            'min -48, mean 3, sd 16.76305'           => "array"
+            'min -48, mean 3, sd 16.76305'           => "array",
         ])] public static function dataProviderForGrubbsStatisticOneSidedLower(
         ): array
         {
@@ -85,7 +85,7 @@
         #[ArrayShape([
             'max 245.57, mean 206.4338, sd 15.85256' => "array",
             'max 220, mean 148.9091, sd 57.81082'    => "array",
-            'max 46, mean 3, sd 16.76305'            => "array"
+            'max 46, mean 3, sd 16.76305'            => "array",
         ])] public static function dataProviderForGrubbsStatisticOneSidedUpper(
         ): array
         {

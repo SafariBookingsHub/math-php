@@ -339,7 +339,7 @@
             // Given
             try
             {
-                $V = new Vector($V);
+                $V = new Vector(A: $V);
             } catch (BadDataException $e)
             {
             }
@@ -368,7 +368,7 @@
             // Given
             try
             {
-                $V = new Vector($V);
+                $V = new Vector(A: $V);
             } catch (BadDataException $e)
             {
             }
@@ -397,7 +397,7 @@
             // Given
             try
             {
-                $V = new Vector($V);
+                $V = new Vector(A: $V);
             } catch (BadDataException $e)
             {
             }
@@ -424,13 +424,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
@@ -438,13 +438,13 @@
             // When
             try
             {
-                $A⋅B = $A->dotProduct($B);
+                $A⋅B = $A->dotProduct(B: $B);
             } catch (VectorException $e)
             {
             }
             try
             {
-                $B⋅A = $B->dotProduct($A);
+                $B⋅A = $B->dotProduct(B: $A);
             } catch (VectorException $e)
             {
             }
@@ -463,13 +463,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $zero = new Vector($zero);
+                $zero = new Vector(A: $zero);
             } catch (BadDataException $e)
             {
             }
@@ -477,13 +477,13 @@
             // When
             try
             {
-                $A⋅zero = $A->dotProduct($zero);
+                $A⋅zero = $A->dotProduct(B: $zero);
             } catch (VectorException $e)
             {
             }
             try
             {
-                $zero⋅A = $zero->dotProduct($A);
+                $zero⋅A = $zero->dotProduct(B: $A);
             } catch (VectorException $e)
             {
             }
@@ -504,13 +504,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
@@ -518,13 +518,13 @@
             // When
             try
             {
-                $AxB = $A->crossProduct($B);
+                $AxB = $A->crossProduct(B: $B);
             } catch (VectorException $e)
             {
             }
             try
             {
-                $BxA = $B->crossProduct($A);
+                $BxA = $B->crossProduct(B: $A);
             } catch (VectorException $e)
             {
             }
@@ -545,13 +545,15 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $zero = new Vector(array_fill(0, $A->getN(), 0));
+                $zero = new Vector(A: array_fill(start_index: 0,
+                    count: $A->getN(),
+                    value: 0));
             } catch (BadDataException $e)
             {
             }
@@ -559,7 +561,7 @@
             // When
             try
             {
-                $Ax0 = $A->crossProduct($zero);
+                $Ax0 = $A->crossProduct(B: $zero);
             } catch (VectorException $e)
             {
             }
@@ -582,19 +584,19 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $C = new Vector($C);
+                $C = new Vector(A: $C);
             } catch (BadDataException $e)
             {
             }
@@ -602,18 +604,15 @@
             // When
             try
             {
-                $Ax⟮B＋C⟯ = $A->crossProduct($B->add($C));
-            } catch (BadDataException $e)
-            {
-            } catch (VectorException $e)
+                $Ax⟮B＋C⟯ = $A->crossProduct(B: $B->add(B: $C));
+            } catch (BadDataException|VectorException $e)
             {
             }
             try
             {
-                $⟮AxB⟯＋⟮AxC⟯ = $A->crossProduct($B)->add($A->crossProduct($C));
-            } catch (BadDataException $e)
-            {
-            } catch (VectorException $e)
+                $⟮AxB⟯＋⟮AxC⟯ = $A->crossProduct(B: $B)
+                    ->add(B: $A->crossProduct(B: $C));
+            } catch (BadDataException|VectorException $e)
             {
             }
 
@@ -636,13 +635,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
@@ -650,14 +649,14 @@
             // When
             try
             {
-                $AxB = $A->crossProduct($B);
+                $AxB = $A->crossProduct(B: $B);
             } catch (VectorException $e)
             {
             }
 
             // Then
-            $this->assertEquals(0, $AxB->innerProduct(B: $A));
-            $this->assertEquals(0, $AxB->innerProduct(B: $B));
+            $this->assertEquals(0, $AxB->innerProduct($A));
+            $this->assertEquals(0, $AxB->innerProduct($B));
         }
 
         /**
@@ -673,19 +672,19 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $C = new Vector($C);
+                $C = new Vector(A: $C);
             } catch (BadDataException $e)
             {
             }
@@ -693,13 +692,13 @@
             // When
             try
             {
-                $A⋅⟮BxC⟯ = $A->dotProduct($B->crossProduct($C));
+                $A⋅⟮BxC⟯ = $A->dotProduct(B: $B->crossProduct(B: $C));
             } catch (VectorException $e)
             {
             }
             try
             {
-                $⟮AxB⟯⋅C = $A->crossProduct($B)->dotProduct($C);
+                $⟮AxB⟯⋅C = $A->crossProduct(B: $B)->dotProduct(B: $C);
             } catch (VectorException $e)
             {
             }
@@ -721,19 +720,19 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $C = new Vector($C);
+                $C = new Vector(A: $C);
             } catch (BadDataException $e)
             {
             }
@@ -741,25 +740,25 @@
             // When
             try
             {
-                $Ax⟮BxC⟯ = $A->crossProduct($B->crossProduct($C));
+                $Ax⟮BxC⟯ = $A->crossProduct(B: $B->crossProduct(B: $C));
             } catch (VectorException $e)
             {
             }
             try
             {
-                $⟮A⋅C⟯B = $B->scalarMultiply($A->dotProduct($C));
+                $⟮A⋅C⟯B = $B->scalarMultiply(k: $A->dotProduct(B: $C));
             } catch (VectorException $e)
             {
             }
             try
             {
-                $⟮A⋅B⟯C = $C->scalarMultiply($A->dotProduct($B));
+                $⟮A⋅B⟯C = $C->scalarMultiply(k: $A->dotProduct(B: $B));
             } catch (VectorException $e)
             {
             }
             try
             {
-                $⟮A⋅C⟯B−⟮A⋅B⟯C = $⟮A⋅C⟯B->subtract($⟮A⋅B⟯C);
+                $⟮A⋅C⟯B−⟮A⋅B⟯C = $⟮A⋅C⟯B->subtract(B: $⟮A⋅B⟯C);
             } catch (VectorException $e)
             {
             }
@@ -782,17 +781,17 @@
             // Given Vector A⨂B
             try
             {
-                $Av = new Vector($A);
+                $Av = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $Bv = new Vector($B);
+                $Bv = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
-            $A⨂B = $Av->outerProduct(B: $Bv);
+            $A⨂B = $Av->outerProduct($Bv);
 
             // When Matrix multiplication ABᵀ
             try
@@ -803,7 +802,7 @@
             }
             try
             {
-                $Bᵀ = new NumericMatrix([
+                $Bᵀ = new NumericMatrix(A: [
                     $Bv->getVector(),
                 ]);
             } catch (BadDataException $e)
@@ -811,12 +810,8 @@
             }
             try
             {
-                $ABᵀ = $Am->multiply($Bᵀ);
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+                $ABᵀ = $Am->multiply(B: $Bᵀ);
+            } catch (IncorrectTypeException|MathException|MatrixException $e)
             {
             }
 
@@ -834,20 +829,27 @@
             // Given Outer product
             try
             {
-                $Av = new Vector($A);
+                $Av = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $Bv = new Vector($B);
+                $Bv = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
-            $A⨂B = $Av->outerProduct(B: $Bv);
+            $A⨂B = $Av->outerProduct($Bv);
 
             // When Direct product
-            $AB = $Av->directProduct(B: $Bv);
+            try
+            {
+                $AB = $Av->directProduct($Bv);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($A⨂B->getMatrix(), $AB->getMatrix());
@@ -864,7 +866,7 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
@@ -872,13 +874,12 @@
             $d = 9;
 
             // When
-            $⟮c＋d⟯A = $A->scalarMultiply(k: $c + $d);
+            $⟮c＋d⟯A = $A->scalarMultiply($c + $d);
             try
             {
-                $⟮cA＋dA⟯ = $A->scalarMultiply($c)->add($A->scalarMultiply($d));
-            } catch (BadDataException $e)
-            {
-            } catch (VectorException $e)
+                $⟮cA＋dA⟯ = $A->scalarMultiply(k: $c)
+                    ->add(B: $A->scalarMultiply(k: $d));
+            } catch (BadDataException|VectorException $e)
             {
             }
 
@@ -899,13 +900,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
@@ -914,18 +915,15 @@
             // When
             try
             {
-                $c⟮A＋B⟯ = $A->add($B)->scalarMultiply($c);
-            } catch (BadDataException $e)
-            {
-            } catch (VectorException $e)
+                $c⟮A＋B⟯ = $A->add(B: $B)->scalarMultiply(k: $c);
+            } catch (BadDataException|VectorException $e)
             {
             }
             try
             {
-                $⟮cA＋cB⟯ = $A->scalarMultiply($c)->add($B->scalarMultiply($c));
-            } catch (BadDataException $e)
-            {
-            } catch (VectorException $e)
+                $⟮cA＋cB⟯ = $A->scalarMultiply(k: $c)
+                    ->add(B: $B->scalarMultiply(k: $c));
+            } catch (BadDataException|VectorException $e)
             {
             }
 
@@ -944,13 +942,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
 
             // When
-            $１A = $A->scalarMultiply(k: 1);
+            $１A = $A->scalarMultiply(1);
 
             // Then
             $this->assertEquals($A, $１A);
@@ -967,16 +965,18 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
 
             // When
-            $０A = $A->scalarMultiply(k: 0);
+            $０A = $A->scalarMultiply(0);
             try
             {
-                $zero = new Vector(array_fill(0, $A->getN(), 0));
+                $zero = new Vector(A: array_fill(start_index: 0,
+                    count: $A->getN(),
+                    value: 0));
             } catch (BadDataException $e)
             {
             }
@@ -998,16 +998,16 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
 
             // When
-            $ーA = $A->scalarMultiply(k: -1);
+            $ーA = $A->scalarMultiply(-1);
             try
             {
-                $R = new Vector($R);
+                $R = new Vector(A: $R);
             } catch (BadDataException $e)
             {
             }
@@ -1027,7 +1027,7 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
@@ -1041,7 +1041,7 @@
             }
             try
             {
-                $A⋅A⊥ = $A->dotProduct($A⊥);
+                $A⋅A⊥ = $A->dotProduct(B: $A⊥);
             } catch (VectorException $e)
             {
             }
@@ -1060,7 +1060,7 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
@@ -1068,7 +1068,7 @@
             // When
             try
             {
-                $A⊥⋅A = $A->perpDotProduct($A);
+                $A⊥⋅A = $A->perpDotProduct(B: $A);
             } catch (VectorException $e)
             {
             }
@@ -1087,7 +1087,7 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
@@ -1101,13 +1101,13 @@
             // When
             try
             {
-                $A⋅A⊥ = $A->dotProduct($A⊥);
+                $A⋅A⊥ = $A->dotProduct(B: $A⊥);
             } catch (VectorException $e)
             {
             }
             try
             {
-                $A⊥⋅A = $A⊥->dotProduct($A);
+                $A⊥⋅A = $A⊥->dotProduct(B: $A);
             } catch (VectorException $e)
             {
             }
@@ -1126,27 +1126,25 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
 
             // When
-            $projᵇA = $A->projection(B: $B);
-            $perpᵇA = $A->perp(B: $B);
+            $projᵇA = $A->projection($B);
+            $perpᵇA = $A->perp($B);
 
             try
             {
-                $projᵇA＋perpᵇA = $projᵇA->add($perpᵇA);
-            } catch (BadDataException $e)
-            {
-            } catch (VectorException $e)
+                $projᵇA＋perpᵇA = $projᵇA->add(B: $perpᵇA);
+            } catch (BadDataException|VectorException $e)
             {
             }
 
@@ -1166,21 +1164,21 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
 
             // When
             $│A│² = ($A->length()) ** 2;
-            $│projᵇA│² = ($A->projection(B: $B)->length()) ** 2;
-            $│perpᵇA│² = ($A->perp(B: $B)->length()) ** 2;
+            $│projᵇA│² = ($A->projection($B)->length()) ** 2;
+            $│perpᵇA│² = ($A->perp($B)->length()) ** 2;
 
             // Then
             $this->assertEqualsWithDelta($│A│², $│projᵇA│² + $│perpᵇA│²,
@@ -1197,24 +1195,24 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
 
             // When
-            $projᵇA = $A->projection(B: $B);
-            $perpᵇA = $A->perp(B: $B);
+            $projᵇA = $A->projection($B);
+            $perpᵇA = $A->perp($B);
 
             try
             {
-                $projᵇA⋅perpᵇA = $projᵇA->dotProduct($perpᵇA);
+                $projᵇA⋅perpᵇA = $projᵇA->dotProduct(B: $perpᵇA);
             } catch (VectorException $e)
             {
             }
@@ -1235,30 +1233,30 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
 
             // When
-            $projᵇA = $A->projection(B: $B);
+            $projᵇA = $A->projection($B);
             try
             {
-                $projᵇA⊥ = $A->projection($B)->perpendicular();
+                $projᵇA⊥ = $A->projection(B: $B)->perpendicular();
             } catch (VectorException $e)
             {
             }
-            $perpᵇA = $A->perp(B: $B);
+            $perpᵇA = $A->perp($B);
 
             try
             {
-                $projᵇA⊥⋅perpᵇA = abs($projᵇA⊥->dotProduct($perpᵇA));
+                $projᵇA⊥⋅perpᵇA = abs(num: $projᵇA⊥->dotProduct(B: $perpᵇA));
             } catch (VectorException $e)
             {
             }

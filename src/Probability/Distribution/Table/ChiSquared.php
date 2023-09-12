@@ -34,7 +34,7 @@
          *
          * @var array<int<1, 1000>, array<numeric|string, float>>
          */
-        public const CHI_SQUARED_SCORES
+        public final const CHI_SQUARED_SCORES
             = [
                 1    => [
                     '0.995' => 0.0000393,
@@ -3496,7 +3496,11 @@
         public static function getChiSquareValue(int $df, float $p): float
         {
             if (isset(self::CHI_SQUARED_SCORES[$df][sprintf('%1.3f', $p)]))
-                return self::CHI_SQUARED_SCORES[$df][sprintf('%1.3f', $p)];
+            {
+                {
+                    return self::CHI_SQUARED_SCORES[$df][sprintf('%1.3f', $p)];
+                }
+            }
 
             throw new Exception\BadDataException("No chi-squared value for degrees of freedom $df and p value "
                 .sprintf('%1.3f', $p));

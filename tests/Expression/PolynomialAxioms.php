@@ -4,55 +4,55 @@
 
     class PolynomialAxioms {
 
-        public function arithmeteicIntegrationProperty()
+        public static function arithmeteicIntegrationProperty()
         {
         }
 
-        public function arithmeticDerivativeProperty()
+        public static function arithmeticDerivativeProperty()
         {
         }
 
-        public function arithmeticMultiplicationProperty()
+        public static function arithmeticMultiplicationProperty()
         {
         }
 
-        public function arithmeticAdditionProperty()
+        public static function arithmeticAdditionProperty()
         {
         }
 
-        public function negateSameAsMultiplyingByNegativeOne()
+        public static function negateSameAsMultiplyingByNegativeOne()
         {
         }
 
-        public function identityOfMultiplication()
+        public static function identityOfMultiplication()
         {
         }
 
-        public function identityOfAddition()
+        public static function identityOfAddition()
         {
         }
 
-        public function distributiveLaw2()
+        public static function distributiveLaw2()
         {
         }
 
-        public function distributiveLaw1()
+        public static function distributiveLaw1()
         {
         }
 
-        public function associativityOfMultiplication()
+        public static function associativityOfMultiplication()
         {
         }
 
-        public function associativityOfAddition()
+        public static function associativityOfAddition()
         {
         }
 
-        public function commutativityOfMultiplication()
+        public static function commutativityOfMultiplication()
         {
         }
 
-        public function commutativityOfAddition()
+        public static function commutativityOfAddition()
         {
         }
     }

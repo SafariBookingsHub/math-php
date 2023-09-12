@@ -21,6 +21,34 @@
          *  - Clear (cannot clear set)
          **************************************************************************/
 
+        public static function actsLikeASet()
+        {
+        }
+
+        public static function isASet()
+        {
+        }
+
+        public static function clearDoesNothing()
+        {
+        }
+
+        public static function removeMultiDoesNothing()
+        {
+        }
+
+        public static function removeDoesNothing()
+        {
+        }
+
+        public static function addMultiDoesNothing()
+        {
+        }
+
+        public static function addDoesNothing()
+        {
+        }
+
         /**
          * Cannot add members to an immutable set
          *
@@ -77,33 +105,5 @@
         public function clear(): Set
         {
             return $this;
-        }
-
-        public function actsLikeASet()
-        {
-        }
-
-        public function isASet()
-        {
-        }
-
-        public function clearDoesNothing()
-        {
-        }
-
-        public function removeMultiDoesNothing()
-        {
-        }
-
-        public function removeDoesNothing()
-        {
-        }
-
-        public function addMultiDoesNothing()
-        {
-        }
-
-        public function addDoesNothing()
-        {
         }
     }

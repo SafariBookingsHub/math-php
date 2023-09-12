@@ -37,7 +37,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '(-∞,∞)',
             ];
@@ -57,6 +57,10 @@
         public function __construct(float $μ, float $s)
         {
             parent::__construct($μ, $s);
+        }
+
+        public static function inverseOfCdf()
+        {
         }
 
         /**
@@ -79,11 +83,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -114,11 +114,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -146,20 +142,20 @@
             try
             {
                 Support::checkLimits(['p' => '[0,1]'], ['p' => $p]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
             $μ = $this->μ;
             $s = $this->s;
 
             if ($p == 1)
-                return INF;
+            {
+                {
+                    return INF;
+                }
+            }
 
-            return $μ + $s * log($p / (1 - $p));
+            return $μ + ($s * log($p / (1 - $p)));
         }
 
         /**
@@ -212,14 +208,10 @@
             $s² = $this->s ** 2;
             $π² = M_PI ** 2;
 
-            return $s² * $π² / 3;
+            return ($s² * $π²) / 3;
         }
 
-        public function rand()
-        {
-        }
-
-        public function inverseOfCdf()
+        public function rand(): float|int
         {
         }
     }

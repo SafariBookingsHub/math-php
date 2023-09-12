@@ -33,7 +33,7 @@
                     [ // Technically, the order of the diagonal elements can be in any order
                       'S' => [
                           [3, 0, 0, 0, 0],
-                          [0, sqrt(num: 5), 0, 0, 0],
+                          [0, sqrt(5), 0, 0, 0],
                           [0, 0, 2, 0, 0],
                           [0, 0, 0, 0, 0],
                       ],
@@ -264,8 +264,8 @@
         public function testSVD(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::createNumeric(A: $A);
-            $expected_S = MatrixFactory::createNumeric(A: $expected['S']);
+            $A = MatrixFactory::createNumeric($A);
+            $expected_S = MatrixFactory::createNumeric($expected['S']);
 
             // When
             $svd = $A->svd();
@@ -277,7 +277,7 @@
 
             // Then A = USVᵀ
             $this->assertEqualsWithDelta($A->getMatrix(),
-                $U->multiply(B: $S)->multiply(B: $V->transpose())->getMatrix(),
+                $U->multiply($S)->multiply($V->transpose())->getMatrix(),
                 0.00001);
 
             // And S is expected solution to SVD
@@ -296,7 +296,7 @@
         public function testSVDProperties(array $A)
         {
             // Given
-            $A = MatrixFactory::createNumeric(A: $A);
+            $A = MatrixFactory::createNumeric($A);
 
             // When
             $svd = $A->svd();
@@ -314,28 +314,38 @@
             // And S is rectangular diagonal with non-negative real numbers on the diagonal
             $this->assertTrue($S->isRectangularDiagonal());
             foreach ($S->getDiagonalElements() as $diagonalElement)
-                $this->assertTrue($diagonalElement >= 0);
+            {
+                {
+                    $this->assertTrue($diagonalElement >= 0);
+                }
+            }
 
             // And D contains the diagonal elements of S
             $this->assertEqualsWithDelta($D->getVector(),
                 $S->getDiagonalElements(), 0.00001, '');
 
             // And the number of non-zero singular values is equal to the rank of M
-            $array_filter = array_filter($D->getVector(),
-                function ($singularValue) {
-                    return Support::isNotZero($singularValue);
-                });
+            $array_filter1 = [];
+            foreach ($D->getVector() as $key => $singularValue)
+            {
+                if (Support::isNotZero($singularValue))
+                {
+                    $array_filter1[$key] = $singularValue;
+                }
+            }
+            $array_filter = $array_filter1;
             $nonZeroSingularValues = $array_filter;
-            $this->assertEquals($A->rank(), count(value: $nonZeroSingularValues));
+            $this->assertEquals($A->rank(),
+                count($nonZeroSingularValues));
 
             // And UUᵀ = I
-            $this->assertEqualsWithDelta(MatrixFactory::identity(n: $U->getM())
-                ->getMatrix(), $U->multiply(B: $U->transpose())->getMatrix(),
+            $this->assertEqualsWithDelta(MatrixFactory::identity($U->getM())
+                ->getMatrix(), $U->multiply($U->transpose())->getMatrix(),
                 0.00001);
 
             // And VVᵀ = I
-            $this->assertEqualsWithDelta(MatrixFactory::identity(n: $V->getM())
-                ->getMatrix(), $V->multiply(B: $V->transpose())->getMatrix(),
+            $this->assertEqualsWithDelta(MatrixFactory::identity($V->getM())
+                ->getMatrix(), $V->multiply($V->transpose())->getMatrix(),
                 0.00001);
         }
 
@@ -350,7 +360,7 @@
         public function testLesserRankSVDProperties(array $A)
         {
             // Given
-            $A = MatrixFactory::createNumeric(A: $A);
+            $A = MatrixFactory::createNumeric($A);
 
             // When
             $svd = $A->svd();
@@ -370,22 +380,15 @@
             // Given
             try
             {
-                $A = MatrixFactory::createNumeric([
+                $A = MatrixFactory::createNumeric(A: [
                     [4, 1, -1],
                     [1, 2, 1],
                     [-1, 1, 2],
                 ]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException $e)
             {
             }
-            try
-            {
-                $svd = $A->svd();
-            } catch (Exception\MathException $e)
-            {
-            }
+            $svd = $A->svd();
 
             // When
             $S = $svd->S;
@@ -414,22 +417,15 @@
             // Given
             try
             {
-                $A = MatrixFactory::createNumeric([
+                $A = MatrixFactory::createNumeric(A: [
                     [4, 1, -1],
                     [1, 2, 1],
                     [-1, 1, 2],
                 ]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException $e)
             {
             }
-            try
-            {
-                $svd = $A->svd();
-            } catch (Exception\MathException $e)
-            {
-            }
+            $svd = $A->svd();
 
             // Then
             $this->expectException(Exception\MathException::class);

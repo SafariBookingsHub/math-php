@@ -24,8 +24,12 @@
         private function limitTest($limits): void
         {
             foreach ($limits as $parameter => $limit)
-                $this->assertRegExp('/^ ([[(]) (.+) , (.+?) ([])]) $/x',
-                    $limit);
+            {
+                {
+                    $this->assertRegExp('/^ ([[(]) (.+) , (.+?) ([])]) $/x',
+                        $limit);
+                }
+            }
         }
 
         /**

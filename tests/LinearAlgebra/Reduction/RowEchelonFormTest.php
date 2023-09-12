@@ -406,7 +406,7 @@
         public function testRefIsRef(array $A)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
+            $A = MatrixFactory::create($A);
 
             // When
             $ref = $A->ref();
@@ -422,7 +422,7 @@
         public function testRefAlreadyComputed()
         {
             // Given
-            $A = new NumericMatrix(A: [
+            $A = new NumericMatrix([
                 [4, 1, 2, -3],
                 [-3, 3, -1, 4],
                 [-1, 2, 5, 1],
@@ -449,13 +449,13 @@
         public function testRowReductionToEchelonForm(array $A, array $R)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $R = MatrixFactory::create(A: $R);
+            $A = MatrixFactory::create($A);
+            $R = MatrixFactory::create($R);
 
             // When
             [$ref, $swaps]
-                = Reduction\RowEchelonForm::rowReductionToEchelonForm(A: $A);
-            $ref = MatrixFactory::create(A: $ref);
+                = Reduction\RowEchelonForm::rowReductionToEchelonForm($A);
+            $ref = MatrixFactory::create($ref);
 
             // Then
             $this->assertEqualsWithDelta($R->getMatrix(), $ref->getMatrix(),

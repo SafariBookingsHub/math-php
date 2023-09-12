@@ -22,7 +22,7 @@
                         $x = $params['x'];
                         $y = $params['y'];
 
-                        return $x ** 2 * $y;
+                        return ($x ** 2) * $y;
                     },
                 ],
                 [
@@ -30,14 +30,14 @@
                         $x = $params['x'];
                         $y = $params['y'];
 
-                        return 5 * $x + sin($y);
+                        return (5 * $x) + sin(num: $y);
                     },
                 ],
             ];
-            $M = new FunctionMatrix($A);
+            $M = new FunctionMatrix(A: $A);
 
             // When
-            $ME = $M->evaluate(['x' => 1, 'y' => 2]);
+            $ME = $M->evaluate(params: ['x' => 1, 'y' => 2]);
 
             // Then
             $this->assertEqualsWithDelta(2, $ME->get(0, 0), 0.000001);
@@ -82,10 +82,10 @@
                     },
                 ],
             ];
-            $M = new FunctionMatrix($A);
+            $M = new FunctionMatrix(A: $A);
 
             // When
-            $ME = $M->evaluate(['x' => 1, 'y' => 2]);
+            $ME = $M->evaluate(params: ['x' => 1, 'y' => 2]);
 
             // Then
             $this->assertEqualsWithDelta(3, $ME[0][0], 0.000001);
@@ -107,13 +107,13 @@
                         $x = $params['x'];
                         $y = $params['y'];
 
-                        return $x ** 2 * $y;
+                        return ($x ** 2) * $y;
                     },
                     function ($params) {
                         $x = $params['x'];
                         $y = $params['y'];
 
-                        return $x ** 2 * $y;
+                        return ($x ** 2) * $y;
                     },
                 ],
                 [
@@ -121,7 +121,7 @@
                         $x = $params['x'];
                         $y = $params['y'];
 
-                        return 5 * $x + sin($y);
+                        return (5 * $x) + sin(num: $y);
                     },
                 ],
             ];
@@ -130,6 +130,6 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $M = new FunctionMatrix($A);
+            $M = new FunctionMatrix(A: $A);
         }
     }

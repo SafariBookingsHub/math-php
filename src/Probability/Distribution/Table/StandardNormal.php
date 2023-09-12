@@ -38,7 +38,7 @@
          *
          * @var array<numeric|string, array<int<0, 9>, float>>
          */
-        public const Z_SCORES
+        public final const Z_SCORES
             = [
                 '-3.4' => [
                     9 => 0.0002,
@@ -873,7 +873,9 @@
             if ( ! preg_match('/^ (\-? \d [.] \d) (\d) $/x',
                 sprintf('%1.2f', $Z), $matches)
             )
+            {
                 throw new Exception\BadParameterException("Z does not match format X.XX: $Z");
+            }
             /**
              * @var string    $z
              * @var int|float $＋0．0x
@@ -897,7 +899,9 @@
             if ( ! array_key_exists($cl,
                 self::Z_SCORES_FOR_CONFIDENCE_INTERVALS)
             )
+            {
                 throw new Exception\BadDataException('Not a valid confidence level');
+            }
 
             return self::Z_SCORES_FOR_CONFIDENCE_INTERVALS[$cl];
         }

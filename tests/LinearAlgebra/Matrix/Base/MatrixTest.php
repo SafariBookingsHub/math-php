@@ -11,7 +11,6 @@
 
     class MatrixTest extends TestCase {
 
-        /** @var NumericMatrix */
         private NumericMatrix $matrix;
 
         public static function dataProviderForJsonSerialize(): array
@@ -44,7 +43,7 @@
                 [2, 3, 4],
                 [4, 5, 6],
             ];
-            $this->matrix = new NumericMatrix($A);
+            $this->matrix = new NumericMatrix(A: $A);
         }
 
         /**
@@ -74,7 +73,7 @@
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $matrix = MatrixFactory::create($A);
+            $matrix = MatrixFactory::create(A: $A);
         }
 
         /**
@@ -94,7 +93,7 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $matrix = new NumericMatrix($A);
+            $matrix = new NumericMatrix(A: $A);
         }
 
         /**
@@ -109,7 +108,7 @@
                 [2, 3, 4],
                 [4, 5, 6],
             ];
-            $matrix = MatrixFactory::create($A);
+            $matrix = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertInstanceOf(ArrayAccess::class, $matrix);
@@ -197,9 +196,9 @@
         public function testJsonSerialize(array $A, string $json)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
-            $this->assertEquals($json, json_encode($A));
+            $this->assertEquals($json, json_encode(value: $A));
         }
     }

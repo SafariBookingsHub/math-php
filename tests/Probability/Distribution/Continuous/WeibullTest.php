@@ -340,7 +340,7 @@
         public function testMode(float $k, float $λ, float $μ)
         {
             // Given
-            $weibull = new Weibull($k, $λ);
+            $weibull = new Weibull($k, λ: $λ);
 
             // When
             $mode = $weibull->mode();
@@ -354,19 +354,23 @@
          */
         public function testRand()
         {
-            foreach (range(1, 10) as $k)
-                foreach (range(1, 10) as $λ)
+            foreach (range(start: 1, end: 10) as $k)
+            {
                 {
-                    // Given
-                    $weibull = new Weibull($k, $λ);
-                    foreach (range(1, 3) as $ignored)
+                    foreach (range(1, 10) as $λ)
                     {
-                        // When
-                        $random = $weibull->rand();
+                        // Given
+                        $weibull = new Weibull($k, $λ);
+                        foreach (range(1, 3) as $ignored)
+                        {
+                            // When
+                            $random = $weibull->rand();
 
-                        // Then
-                        $this->assertTrue(is_numeric($random));
+                            // Then
+                            $this->assertTrue(is_numeric($random));
+                        }
                     }
                 }
+            }
         }
     }

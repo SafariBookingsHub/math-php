@@ -218,13 +218,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
@@ -235,7 +235,7 @@
             //When
             try
             {
-                $A->minkowskiDistance($B, 2);
+                $A->minkowskiDistance(B: $B, p: 2);
             } catch (BadDataException $e)
             {
             }
@@ -254,13 +254,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
@@ -268,13 +268,13 @@
             // When
             try
             {
-                $distance1 = $A->l1Distance($B);
+                $distance1 = $A->l1Distance(B: $B);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $distance2 = $B->l1Distance($A);
+                $distance2 = $B->l1Distance(B: $A);
             } catch (BadDataException $e)
             {
             }
@@ -297,13 +297,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
@@ -311,13 +311,13 @@
             // When
             try
             {
-                $distance1 = $A->l2Distance($B);
+                $distance1 = $A->l2Distance(B: $B);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $distance2 = $B->l2Distance($A);
+                $distance2 = $B->l2Distance(B: $A);
             } catch (BadDataException $e)
             {
             }
@@ -345,13 +345,13 @@
             // Given
             try
             {
-                $A = new Vector($A);
+                $A = new Vector(A: $A);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (BadDataException $e)
             {
             }
@@ -359,13 +359,13 @@
             // When
             try
             {
-                $distance1 = $A->minkowskiDistance($B, $p);
+                $distance1 = $A->minkowskiDistance(B: $B, p: $p);
             } catch (BadDataException $e)
             {
             }
             try
             {
-                $distance2 = $B->minkowskiDistance($A, $p);
+                $distance2 = $B->minkowskiDistance(B: $A, p: $p);
             } catch (BadDataException $e)
             {
             }

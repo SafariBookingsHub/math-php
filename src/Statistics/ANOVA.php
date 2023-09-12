@@ -121,21 +121,28 @@
          * @throws Exception\BadDataException if less than three samples, or if all samples don't have the same number of values
          * @throws Exception\OutOfBoundsException
          */
-        #[ArrayShape(['ANOVA'         => "array[]",
-                      'total_summary' => "array",
-                      'data_summary'  => "array"
+        #[ArrayShape([
+            'ANOVA'         => "array[]",
+            'total_summary' => "array",
+            'data_summary'  => "array",
         ])] public static function oneWay(array ...$samples): array
         {
             // Must have at least three samples
             $m = count($samples);
             if ($m < 3)
+            {
                 throw new Exception\BadDataException('Must have at least three samples');
+            }
 
             // All samples must have the same number of items
             $n = count($samples[0]);
             for ($i = 1; $i < $m; $i++)
+            {
                 if (count($samples[$i]) !== $n)
+                {
                     throw new Exception\BadDataException('All samples must have the same number of values');
+                }
+            }
 
             // Summary data for each sample
             $summary_data = [];
@@ -172,18 +179,20 @@
 
             // ANOVA sum of squares
             $SST = RandomVariable::sumOfSquaresDeviations($all_elements);
-            $array_map1 = array_map(function ($sample) use ($μ, $n) {
-                return $n * (Average::mean($sample) - $μ) ** 2;
-            }, $samples);
+            $array_map2 = [];
+            foreach ($samples as $key => $sample)
+            {
+                $array_map2[$key] = $n * (Average::mean($sample) - $μ) ** 2;
+            }
+            $array_map1 = $array_map2;
             $SSB = array_sum($array_map1);
-            $array_map = [];
-            foreach ($samples as $key => $value)
-                $array_map[$key]
-                    = MathPHP\Statistics\RandomVariable::sumOfSquaresDeviations($value);
+            $array_map = array_map(function ($value) {
+                return MathPHP\Statistics\RandomVariable::sumOfSquaresDeviations($value);
+            }, $samples);
             $SSW = array_sum($array_map);
 
             // ANOVA degrees of freedom
-            $dfT = $m * $n - 1;
+            $dfT = ($m * $n) - 1;
             $dfB = $m - 1;
             $dfW = $m * ($n - 1);
 
@@ -388,30 +397,43 @@
          * @throws Exception\BadDataException if less than two A factors, or if B factors or values have different number elements
          * @throws Exception\OutOfBoundsException
          */
-        #[ArrayShape(['ANOVA'               => "array[]",
-                      'total_summary'       => "array",
-                      'summary_factorA'     => "array",
-                      'summary_factorB'     => "array",
-                      'summary_interaction' => "array"
+        #[ArrayShape([
+            'ANOVA'               => "array[]",
+            'total_summary'       => "array",
+            'summary_factorA'     => "array",
+            'summary_factorB'     => "array",
+            'summary_interaction' => "array",
         ])] public static function twoWay(array ...$data): array
         {
             // Must have at least two rows (two types of factor A)
             $r = count($data);
             if ($r < 2)
+            {
                 throw new Exception\BadDataException('Must have at least two rows (two types of factor A)');
+            }
 
             // All samples must have the same number the second factor B
             $c = count($data[0]);
             for ($i = 1; $i < $r; $i++)
+            {
                 if (count($data[$i]) !== $c)
+                {
                     throw new Exception\BadDataException('All samples must have the same number of the second factor B');
+                }
+            }
 
             // Each AB factor interaction must have the same number of values
             $v = count($data[0][0]);
             for ($i = 0; $i < $r; $i++)
+            {
                 for ($j = 0; $j < $c; $j++)
+                {
                     if (count($data[$i][$j]) !== $v)
+                    {
                         throw new Exception\BadDataException('Each AB factor interaction must have the same number of values');
+                    }
+                }
+            }
 
             // Aggregates for all elements, rows (factor A), and columns (factor B)
             $all_elements = [];
@@ -454,8 +476,10 @@
             {
                 $B_elements[$B] = [];
                 foreach ($data as $factor1s)
+                {
                     $B_elements[$B] = array_merge($B_elements[$B],
                         $factor1s[$B]);
+                }
             }
 
             // Factor A summary
@@ -501,30 +525,48 @@
             ];
 
             // Sum of squares factor A
-            $array_map1 = array_map(function ($f1) use ($μ) {
-                return $f1['n'] * ($f1['mean'] - $μ) ** 2;
-            }, $summary_A);
+            $array_map3 = [];
+            foreach ($summary_A as $key => $f1)
+            {
+                $array_map3[$key] = $f1['n'] * ($f1['mean'] - $μ) ** 2;
+            }
+            $array_map1 = $array_map3;
             $SSA = array_sum($array_map1);
 
             // Sum of squares factor B
-            $array_map = array_map(function ($B) use ($μ) {
-                return $B['n'] * ($B['mean'] - $μ) ** 2;
-            }, $summary_B);
+            $array_map2 = [];
+            foreach ($summary_B as $key => $B)
+            {
+                $array_map2[$key] = $B['n'] * ($B['mean'] - $μ) ** 2;
+            }
+            $array_map = $array_map2;
             $SSB = array_sum($array_map);
 
             // Sum of squares within (error)
             $SSW = 0;
             foreach ($data as $A => $Bs)
+            {
                 foreach ($Bs as $B => $values)
+                {
                     foreach ($values as $value)
+                    {
                         $SSW += ($value - $summary_AB[$A][$B]['mean']) ** 2;
+                    }
+                }
+            }
 
             // Sum of squares total
             $SST = 0;
             foreach ($data as $A => $Bs)
+            {
                 foreach ($Bs as $B => $values)
+                {
                     foreach ($values as $value)
+                    {
                         $SST += ($value - $μ) ** 2;
+                    }
+                }
+            }
 
             // Sum of squares AB interaction
             $SSAB = $SST - $SSA - $SSB - $SSW;
@@ -533,7 +575,7 @@
             $dfA = $r - 1;
             $dfB = $c - 1;
             $dfAB = ($r - 1) * ($c - 1);
-            $dfW = $summary_total['n'] - $r * $c;
+            $dfW = $summary_total['n'] - ($r * $c);
             $dfT = $summary_total['n'] - 1;
 
             // Mean squares
@@ -596,47 +638,47 @@
             ];
         }
 
-        public function twoWAyExceptionDifferentNumbersOfFactorElements()
+        public static function twoWAyExceptionDifferentNumbersOfFactorElements()
         {
         }
 
-        public function twoWAyExceptionDifferentNumbersOfFactorBs()
+        public static function twoWAyExceptionDifferentNumbersOfFactorBs()
         {
         }
 
-        public function twoWayExceptionLessThanTwoAs()
+        public static function twoWayExceptionLessThanTwoAs()
         {
         }
 
-        public function twoWayThreeAs()
+        public static function twoWayThreeAs()
         {
         }
 
-        public function twoWayTwoAs()
+        public static function twoWayTwoAs()
         {
         }
 
-        public function oneWayAxiomsFiveSamples()
+        public static function oneWayAxiomsFiveSamples()
         {
         }
 
-        public function oneWayAxiomsThreeSamples()
+        public static function oneWayAxiomsThreeSamples()
         {
         }
 
-        public function oneWayExceptionDifferentSampleSizes()
+        public static function oneWayExceptionDifferentSampleSizes()
         {
         }
 
-        public function oneWayExceptionLessThanThreeSamples()
+        public static function oneWayExceptionLessThanThreeSamples()
         {
         }
 
-        public function oneWayWithFourSamples()
+        public static function oneWayWithFourSamples()
         {
         }
 
-        public function oneWayWithThreeSamples()
+        public static function oneWayWithThreeSamples()
         {
         }
     }

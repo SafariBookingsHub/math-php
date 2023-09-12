@@ -9,12 +9,6 @@
      * Base class for regressions.
      */
     abstract class Regression {
-        /**
-         * Array of x and y points: [ [x, y], [x, y], ... ]
-         *
-         * @var array<array{float, float}>
-         */
-        protected array $points;
 
         /**
          * X values of the original points
@@ -42,22 +36,68 @@
          *
          * @param array<array{float, float}> $points [ [x, y], [x, y], ... ]
          */
-        public function __construct(array $points)
+        public function __construct(protected array $points)
         {
-            $this->points = $points;
             $this->n = count($points);
 
             // Get list of x points and y points.
             // This will be fine for linear or polynomial regression, where there is only one x,
             // but if expanding to multiple linear, the format will have to change.
-            $array_map1 = array_map(function ($point) {
-                return $point[0];
-            }, $points);
+            $array_map3 = [];
+            foreach ($points as $key => $point)
+            {
+                $array_map3[$key] = $point[0];
+            }
+            $array_map1 = $array_map3;
             $this->xs = $array_map1;
-            $array_map = array_map(function ($point) {
-                return $point[1];
-            }, $points);
+            $array_map2 = [];
+            foreach ($points as $key => $point)
+            {
+                $array_map2[$key] = $point[1];
+            }
+            $array_map = $array_map2;
             $this->ys = $array_map;
+        }
+
+        public static function bugCenterFalseScaleFalseLoadings()
+        {
+        }
+
+        public static function sumOfSquaresEqualsSumOfSQuaresRegressionPlusSumOfSquaresResidual(
+        )
+        {
+        }
+
+        public static function sumOfSquareResidual()
+        {
+        }
+
+        public static function sumOfSquaresRegression()
+        {
+        }
+
+        public static function sumOfSquaresTotal()
+        {
+        }
+
+        public static function toString()
+        {
+        }
+
+        public static function r2()
+        {
+        }
+
+        public static function coefficientOfDetermination()
+        {
+        }
+
+        public static function r()
+        {
+        }
+
+        public static function correlationCoefficient()
+        {
         }
 
         /**
@@ -118,46 +158,5 @@
         public function yHat(): array
         {
             return array_map([$this, 'evaluate'], $this->xs);
-        }
-
-        public function bugCenterFalseScaleFalseLoadings()
-        {
-        }
-
-        public function sumOfSquaresEqualsSumOfSQuaresRegressionPlusSumOfSquaresResidual(
-        )
-        {
-        }
-
-        public function sumOfSquareResidual()
-        {
-        }
-
-        public function sumOfSquaresRegression()
-        {
-        }
-
-        public function sumOfSquaresTotal()
-        {
-        }
-
-        public function toString()
-        {
-        }
-
-        public function r2()
-        {
-        }
-
-        public function coefficientOfDetermination()
-        {
-        }
-
-        public function r()
-        {
-        }
-
-        public function correlationCoefficient()
-        {
         }
     }

@@ -4,83 +4,83 @@
 
     class MatrixArithmeticOperations {
 
-        public function kroneckerProduct()
+        public static function kroneckerProduct()
         {
         }
 
-        public function hadamardProductDimensionsDoNotMatch()
+        public static function hadamardProductDimensionsDoNotMatch()
         {
         }
 
-        public function hadamardProduct()
+        public static function hadamardProduct()
         {
         }
 
-        public function scalarDivideByZero()
+        public static function scalarDivideByZero()
         {
         }
 
-        public function scalarDivide()
+        public static function scalarDivide()
         {
         }
 
-        public function negate()
+        public static function negate()
         {
         }
 
-        public function scalarMultiply()
+        public static function scalarMultiply()
         {
         }
 
-        public function multiplyExceptionNotMatrixOrVector()
+        public static function multiplyExceptionNotMatrixOrVector()
         {
         }
 
-        public function multiplyExceptionDimensionsDoNotMatch()
+        public static function multiplyExceptionDimensionsDoNotMatch()
         {
         }
 
-        public function multiplyVector()
+        public static function multiplyVector()
         {
         }
 
-        public function multiply()
+        public static function multiply()
         {
         }
 
-        public function subtractExceptionColumns()
+        public static function subtractExceptionColumns()
         {
         }
 
-        public function subtractExceptionRows()
+        public static function subtractExceptionRows()
         {
         }
 
-        public function subtract()
+        public static function subtract()
         {
         }
 
-        public function kroneckerSumSquareMatrixException()
+        public static function kroneckerSumSquareMatrixException()
         {
         }
 
-        public function kroneckerSum()
+        public static function kroneckerSum()
         {
         }
 
-        public function directSum()
+        public static function directSum()
         {
         }
 
-        public function addExceptionColumns()
+        public static function addExceptionColumns()
         {
         }
 
-        public function addExceptionRows()
+        public static function addExceptionRows()
         {
         }
 
-        public function add()
+        public static function add()
         {
         }
     }

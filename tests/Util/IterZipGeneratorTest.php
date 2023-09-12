@@ -66,7 +66,11 @@
 
             // When
             foreach (Iter::zip($generator1, $generator2) as [$value1, $value2])
-                $result[] = [$value1, $value2];
+            {
+                {
+                    $result[] = [$value1, $value2];
+                }
+            }
 
             // Then
             $this->assertEquals($expected, $result);

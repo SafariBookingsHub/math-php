@@ -4,59 +4,59 @@
 
     class MatrixAugmentation {
 
-        public function augmentBelowExceptionTypeMismatch()
+        public static function augmentBelowExceptionTypeMismatch()
         {
         }
 
-        public function augmentAboveExceptionTypeMismatch()
+        public static function augmentAboveExceptionTypeMismatch()
         {
         }
 
-        public function augmentLeftExceptionTypeMismatch()
+        public static function augmentLeftExceptionTypeMismatch()
         {
         }
 
-        public function augmentExceptionTypeMismatch()
+        public static function augmentExceptionTypeMismatch()
         {
         }
 
-        public function augmentLeftExceptionRowsDoNotMatch()
+        public static function augmentLeftExceptionRowsDoNotMatch()
         {
         }
 
-        public function augmentLeft()
+        public static function augmentLeft()
         {
         }
 
-        public function augmentAboveExceptionColumnsDoNotMatch()
+        public static function augmentAboveExceptionColumnsDoNotMatch()
         {
         }
 
-        public function augmentAbove()
+        public static function augmentAbove()
         {
         }
 
-        public function augmentBelowExceptionColumnsDoNotMatch()
+        public static function augmentBelowExceptionColumnsDoNotMatch()
         {
         }
 
-        public function augmentBelow()
+        public static function augmentBelow()
         {
         }
 
-        public function augmentIdentityExceptionNotSquare()
+        public static function augmentIdentityExceptionNotSquare()
         {
         }
 
-        public function augmentIdentity()
+        public static function augmentIdentity()
         {
         }
 
-        public function augmentExceptionRowsDoNotMatch()
+        public static function augmentExceptionRowsDoNotMatch()
         {
         }
 
-        public function augment()
+        public static function augment()
         {
         }
     }

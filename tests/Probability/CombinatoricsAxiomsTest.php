@@ -196,7 +196,7 @@
         public function testLahNumberIdentityKEqualsTwo(int $n)
         {
             $L⟮n、1⟯ = Combinatorics::lahNumber($n, 2);
-            $⟮n−1⟯n！／2 = ($n - 1) * Combinatorics::factorial($n) / 2;
+            $⟮n−1⟯n！／2 = (($n - 1) * Combinatorics::factorial($n)) / 2;
 
             $this->assertEquals($L⟮n、1⟯, $⟮n−1⟯n！／2);
         }

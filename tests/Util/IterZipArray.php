@@ -4,23 +4,23 @@
 
     class IterZipArray {
 
-        public function zipThreeArraysDifferentSize()
+        public static function zipThreeArraysDifferentSize()
         {
         }
 
-        public function zipThreeArraysSameSizeUsingUnpacking()
+        public static function zipThreeArraysSameSizeUsingUnpacking()
         {
         }
 
-        public function zipThreeArraysSameSize()
+        public static function zipThreeArraysSameSize()
         {
         }
 
-        public function zipTwoArraysDifferentSize()
+        public static function zipTwoArraysDifferentSize()
         {
         }
 
-        public function zipTwoArraysSameSize()
+        public static function zipTwoArraysSameSize()
         {
         }
     }

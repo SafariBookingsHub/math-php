@@ -4,11 +4,11 @@
 
     class IterZipTraversable {
 
-        public function zipTwoTraversableDifferentSize()
+        public static function zipTwoTraversableDifferentSize()
         {
         }
 
-        public function zipTwoIteratorSameSize()
+        public static function zipTwoIteratorSameSize()
         {
         }
     }

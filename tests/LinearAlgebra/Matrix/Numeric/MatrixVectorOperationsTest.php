@@ -270,25 +270,19 @@
             // Given
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
             try
             {
-                $B = new Vector($B);
+                $B = new Vector(A: $B);
             } catch (Exception\BadDataException $e)
             {
             }
             try
             {
-                $R = new Vector($R);
+                $R = new Vector(A: $R);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -296,7 +290,7 @@
             // When
             try
             {
-                $R2 = $A->vectorMultiply($B);
+                $R2 = $A->vectorMultiply(B: $B);
             } catch (Exception\MatrixException $e)
             {
             }
@@ -310,22 +304,16 @@
             // Given
             try
             {
-                $A = MatrixFactory::create([
+                $A = MatrixFactory::create(A: [
                     [1, 2, 3],
                     [2, 3, 4],
                 ]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
             try
             {
-                $B = new Vector([1, 2, 3, 4, 5]);
+                $B = new Vector(A: [1, 2, 3, 4, 5]);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -336,7 +324,7 @@
             // When
             try
             {
-                $A->vectorMultiply($B);
+                $A->vectorMultiply(B: $B);
             } catch (Exception\MatrixException $e)
             {
             }
@@ -354,8 +342,8 @@
         public function testRowSums(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $expected = new Vector(A: $expected);
+            $A = MatrixFactory::create($A);
+            $expected = new Vector($expected);
 
             // When
             $R = $A->rowSums();
@@ -376,8 +364,8 @@
         public function testRowMeans(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $expected = new Vector(A: $expected);
+            $A = MatrixFactory::create($A);
+            $expected = new Vector($expected);
 
             // When
             $R = $A->rowMeans();
@@ -398,8 +386,8 @@
         public function testColumnSums(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $expected = new Vector(A: $expected);
+            $A = MatrixFactory::create($A);
+            $expected = new Vector($expected);
 
             // When
             $R = $A->columnSums();
@@ -420,8 +408,8 @@
         public function testColumnMeans(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $expected = new Vector(A: $expected);
+            $A = MatrixFactory::create($A);
+            $expected = new Vector($expected);
 
             // When
             $R = $A->columnMeans();

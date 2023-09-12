@@ -4,63 +4,63 @@
 
     class MatrixGetters {
 
-        public function getSubdiagonalElements()
+        public static function getSubdiagonalElements()
         {
         }
 
-        public function getSuperdiagonalElements()
+        public static function getSuperdiagonalElements()
         {
         }
 
-        public function getDiagonalElements()
+        public static function getDiagonalElements()
         {
         }
 
-        public function asRowVectors()
+        public static function asRowVectors()
         {
         }
 
-        public function asVectors()
+        public static function asVectors()
         {
         }
 
-        public function getExceptionColumn()
+        public static function getExceptionColumn()
         {
         }
 
-        public function getExceptionRow()
+        public static function getExceptionRow()
         {
         }
 
-        public function get()
+        public static function get()
         {
         }
 
-        public function getColumnException()
+        public static function getColumnException()
         {
         }
 
-        public function getColumn()
+        public static function getColumn()
         {
         }
 
-        public function getRowException()
+        public static function getRowException()
         {
         }
 
-        public function getRow()
+        public static function getRow()
         {
         }
 
-        public function getN()
+        public static function getN()
         {
         }
 
-        public function getM()
+        public static function getM()
         {
         }
 
-        public function getMatrix()
+        public static function getMatrix()
         {
         }
     }

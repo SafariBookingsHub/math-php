@@ -10,11 +10,12 @@
     use TypeError;
 
     class IterZipErrorTest extends TestCase {
-        #[Pure] #[ArrayShape(['int'    => "int[]",
-                              'float'  => "float[]",
-                              'string' => "string[]",
-                              'bool'   => "true[]",
-                              'object' => "\stdClass[]"
+        #[Pure] #[ArrayShape([
+            'int'    => "int[]",
+            'float'  => "float[]",
+            'string' => "string[]",
+            'bool'   => "true[]",
+            'object' => "\stdClass[]",
         ])] public static function dataProviderForNonIterables(): array
         {
             return [
@@ -52,7 +53,11 @@
 
             // When
             foreach (Iter::zip($nothing) as $_)
-                $result[] = $_;
+            {
+                {
+                    $result[] = $_;
+                }
+            }
 
             // Then
             $this->assertEmpty($result);

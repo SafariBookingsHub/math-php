@@ -144,7 +144,7 @@
 
             // And
             $h = ($b - $a) / ($n - 1);
-            $tol = 5 / 384 * $h ** 4 * $f⁽⁴⁾(0);
+            $tol = (5 / 384 * $h ** 4) * $f⁽⁴⁾(0);
             $roundoff = 0.000001; // round off error
 
             // And
@@ -168,7 +168,7 @@
         {
             // Given
             $x = 10;
-            $incorrectFunction = $x ** 2 + 2 * $x + 1;
+            $incorrectFunction = ($x ** 2) + (2 * $x) + 1;
 
             // Then
             $this->expectException(Exception\BadDataException::class);

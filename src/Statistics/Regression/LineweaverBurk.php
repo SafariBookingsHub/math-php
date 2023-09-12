@@ -56,11 +56,11 @@
             return $this->evaluateModel($x, $this->parameters);
         }
 
-        public function getParameters()
+        public function getParameters(): array
         {
         }
 
-        public function getEquation()
+        public function getEquation(): string
         {
         }
     }

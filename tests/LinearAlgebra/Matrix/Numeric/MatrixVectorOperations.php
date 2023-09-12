@@ -4,27 +4,27 @@
 
     class MatrixVectorOperations {
 
-        public function columnMeans()
+        public static function columnMeans()
         {
         }
 
-        public function columnSums()
+        public static function columnSums()
         {
         }
 
-        public function rowMeans()
+        public static function rowMeans()
         {
         }
 
-        public function rowSums()
+        public static function rowSums()
         {
         }
 
-        public function vectorMultiplyExceptionDimensionsDoNotMatch()
+        public static function vectorMultiplyExceptionDimensionsDoNotMatch()
         {
         }
 
-        public function vectorMultiply()
+        public static function vectorMultiply()
         {
         }
     }

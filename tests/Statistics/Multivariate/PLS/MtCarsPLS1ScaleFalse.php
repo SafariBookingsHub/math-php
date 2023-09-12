@@ -4,11 +4,11 @@
 
     class MtCarsPLS1ScaleFalse {
 
-        public function b()
+        public static function b()
         {
         }
 
-        public function construction()
+        public static function construction()
         {
         }
     }

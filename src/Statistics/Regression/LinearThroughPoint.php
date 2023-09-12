@@ -52,6 +52,22 @@
             parent::__construct($points);
         }
 
+        public static function sumSquares()
+        {
+        }
+
+        public static function PI()
+        {
+        }
+
+        public static function CI()
+        {
+        }
+
+        public static function constructor()
+        {
+        }
+
         /**
          * Calculates the regression parameters.
          *
@@ -71,7 +87,7 @@
             $parameters = $this->leastSquares($y’, $x’, 1, 0)->getColumn(0);
 
             $m = $parameters[0];
-            $b = $this->w - $m * $this->v;
+            $b = $this->w - ($m * $this->v);
 
             $this->parameters = [$b, $m];
         }
@@ -89,43 +105,27 @@
             return $this->evaluateModel($x, $this->parameters);
         }
 
-        public function sumSquares()
+        public function getSampleSize(): int
         {
         }
 
-        public function PI()
+        public function getParameters(): array
         {
         }
 
-        public function CI()
+        public function getEquation(): string
         {
         }
 
-        public function getSampleSize()
+        public function getYs(): array
         {
         }
 
-        public function getParameters()
+        public function getXs(): array
         {
         }
 
-        public function getEquation()
-        {
-        }
-
-        public function getYs()
-        {
-        }
-
-        public function getXs()
-        {
-        }
-
-        public function getPoints()
-        {
-        }
-
-        public function constructor()
+        public function getPoints(): array
         {
         }
     }

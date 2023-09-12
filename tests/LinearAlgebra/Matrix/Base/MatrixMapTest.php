@@ -25,9 +25,10 @@
         /**
          * @return array (input, func, output)
          */
-        #[ArrayShape(['abs'   => "array",
-                      'round' => "array",
-                      'sqrt'  => "array"
+        #[ArrayShape(shape: [
+            'abs'   => "array",
+            'round' => "array",
+            'sqrt'  => "array",
         ])] public static function dataProviderForMapCallable(): array
         {
             return [
@@ -76,7 +77,10 @@
         /**
          * @return array (input, func, output)
          */
-        #[ArrayShape(['doubler' => "array", 'add one' => "array"])] public static function dataProviderForMapClosure(): array
+        #[ArrayShape(shape: [
+            'doubler' => "array",
+            'add one' => "array",
+        ])] public static function dataProviderForMapClosure(): array
         {
             return [
                 'doubler' => [
@@ -265,13 +269,14 @@
          * @return array (input, func, output)
          * @throws \Exception
          */
-        #[ArrayShape(['add one'                       => "array",
-                      'sort'                          => "array",
-                      'remove first and last'         => "array",
-                      'something strange with reduce' => "array",
-                      'merge'                         => "array",
-                      'chunk'                         => "array",
-                      'vectors'                       => "array"
+        #[ArrayShape(shape: [
+            'add one'                       => "array",
+            'sort'                          => "array",
+            'remove first and last'         => "array",
+            'something strange with reduce' => "array",
+            'merge'                         => "array",
+            'chunk'                         => "array",
+            'vectors'                       => "array",
         ])] public static function dataProviderForApplyRowsClosure(): array
         {
             return [
@@ -281,7 +286,7 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    fn(array $row) => array_sum($row) + 1,
+                    fn(array $row) => array_sum(array: $row) + 1,
                     [
                         7,
                         16,
@@ -295,7 +300,7 @@
                         [7, 8, 9],
                     ],
                     function (array $row) {
-                        sort($row);
+                        sort(array: $row);
 
                         return $row;
                     },
@@ -312,8 +317,8 @@
                         [7, 8, 9],
                     ],
                     function (array $row) {
-                        array_shift($row);
-                        array_pop($row);
+                        array_shift(array: $row);
+                        array_pop(array: $row);
 
                         return $row;
                     },
@@ -330,9 +335,10 @@
                         [7, 8, 9],
                     ],
                     fn(array $row) => array_reduce(
-                        $row,
-                        fn($carry, $item) => ($carry * $carry) + $item,
-                        1
+                        array: $row,
+                        callback: fn($carry, $item) => ($carry * $carry)
+                            + $item,
+                        initial: 1
                     ),
                     [
                         39,
@@ -359,7 +365,7 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    fn(array $row) => array_chunk($row, 1),
+                    fn(array $row) => array_chunk(array: $row, length: 1),
                     [
                         [[1], [2], [3]],
                         [[4], [5], [6]],
@@ -372,11 +378,11 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    fn(array $row) => new Vector($row),
+                    fn(array $row) => new Vector(A: $row),
                     [
-                        new Vector([1, 2, 3]),
-                        new Vector([4, 5, 6]),
-                        new Vector([7, 8, 9]),
+                        new Vector(A: [1, 2, 3]),
+                        new Vector(A: [4, 5, 6]),
+                        new Vector(A: [7, 8, 9]),
                     ],
                 ],
             ];
@@ -398,8 +404,8 @@
             array $expected
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expected = MatrixFactory::create($expected);
+            $A = MatrixFactory::create(A: $A);
+            $expected = MatrixFactory::create(A: $expected);
 
             // When
             $R = $A->map($func);
@@ -424,8 +430,8 @@
             array $expected
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expected = MatrixFactory::create($expected);
+            $A = MatrixFactory::create(A: $A);
+            $expected = MatrixFactory::create(A: $expected);
 
             // When
             $R = $A->map($func);
@@ -450,7 +456,7 @@
             array $expected
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $R = $A->mapRows($func);
@@ -475,7 +481,7 @@
             array $expected
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $R = $A->mapRows($func);
@@ -491,13 +497,13 @@
         public function testApplyRowsClosureShuffle()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [4, 5, 6],
                 [7, 8, 9],
             ]);
             $func = function (array $row) {
-                shuffle($row);
+                shuffle(array: $row);
 
                 return $row;
             };
@@ -506,15 +512,15 @@
             $R = $A->mapRows($func);
 
             // Then
-            $this->assertTrue(in_array(1, $R[0]));
-            $this->assertTrue(in_array(2, $R[0]));
-            $this->assertTrue(in_array(3, $R[0]));
-            $this->assertTrue(in_array(4, $R[1]));
-            $this->assertTrue(in_array(5, $R[1]));
-            $this->assertTrue(in_array(6, $R[1]));
-            $this->assertTrue(in_array(7, $R[2]));
-            $this->assertTrue(in_array(8, $R[2]));
-            $this->assertTrue(in_array(9, $R[2]));
+            $this->assertTrue(in_array(needle: 1, haystack: $R[0]));
+            $this->assertTrue(in_array(needle: 2, haystack: $R[0]));
+            $this->assertTrue(in_array(needle: 3, haystack: $R[0]));
+            $this->assertTrue(in_array(needle: 4, haystack: $R[1]));
+            $this->assertTrue(in_array(needle: 5, haystack: $R[1]));
+            $this->assertTrue(in_array(needle: 6, haystack: $R[1]));
+            $this->assertTrue(in_array(needle: 7, haystack: $R[2]));
+            $this->assertTrue(in_array(needle: 8, haystack: $R[2]));
+            $this->assertTrue(in_array(needle: 9, haystack: $R[2]));
         }
 
         /**
@@ -525,25 +531,19 @@
             // Given
             try
             {
-                $A = MatrixFactory::create([
+                $A = MatrixFactory::create(A: [
                     [1, 2, 3],
                     [4, 5, 6],
                     [7, 8, 9],
                 ]);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+            } catch (BadDataException|MathException|MatrixException|IncorrectTypeException $e)
             {
             }
 
             // Then
             $func = function ($item) {
-                $this->assertTrue(is_int($item));
-                $this->assertFalse(is_float($item));
+                $this->assertTrue(is_int(value: $item));
+                $this->assertFalse(is_float(value: $item));
             };
 
             // When

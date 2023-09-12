@@ -4,187 +4,187 @@
 
     class Limits {
 
-        public function hypergeometricParameterLimits()
+        public static function hypergeometricParameterLimits()
         {
         }
 
-        public function dirichletSupportLimits()
+        public static function dirichletSupportLimits()
         {
         }
 
-        public function dirichletParameterLimits()
+        public static function dirichletParameterLimits()
         {
         }
 
-        public function weibullSupportLimits()
+        public static function weibullSupportLimits()
         {
         }
 
-        public function weibullParameterLimits()
+        public static function weibullParameterLimits()
         {
         }
 
-        public function uniformSupportLimits()
+        public static function uniformSupportLimits()
         {
         }
 
-        public function uniformParameterLimits()
+        public static function uniformParameterLimits()
         {
         }
 
-        public function studentTSupportLimits()
+        public static function studentTSupportLimits()
         {
         }
 
-        public function studentTParameterLimits()
+        public static function studentTParameterLimits()
         {
         }
 
-        public function standardNormalSupportLimits()
+        public static function standardNormalSupportLimits()
         {
         }
 
-        public function paretoSupportLimits()
+        public static function paretoSupportLimits()
         {
         }
 
-        public function paretoParameterLimits()
+        public static function paretoParameterLimits()
         {
         }
 
-        public function normalSupportLimits()
+        public static function normalSupportLimits()
         {
         }
 
-        public function normalParameterLimits()
+        public static function normalParameterLimits()
         {
         }
 
-        public function noncentralTSupportLimits()
+        public static function noncentralTSupportLimits()
         {
         }
 
-        public function noncentralTParameterLimits()
+        public static function noncentralTParameterLimits()
         {
         }
 
-        public function logNormalSupportLimits()
+        public static function logNormalSupportLimits()
         {
         }
 
-        public function logNormalParameterLimits()
+        public static function logNormalParameterLimits()
         {
         }
 
-        public function logLogisticSupportLimits()
+        public static function logLogisticSupportLimits()
         {
         }
 
-        public function logLogisticParameterLimits()
+        public static function logLogisticParameterLimits()
         {
         }
 
-        public function logisticSupportLimits()
+        public static function logisticSupportLimits()
         {
         }
 
-        public function logisticParameterLimits()
+        public static function logisticParameterLimits()
         {
         }
 
-        public function laplaceSupportLimits()
+        public static function laplaceSupportLimits()
         {
         }
 
-        public function laplaceParameterLimits()
+        public static function laplaceParameterLimits()
         {
         }
 
-        public function gammaSupportLimits()
+        public static function gammaSupportLimits()
         {
         }
 
-        public function gammaParameterLimits()
+        public static function gammaParameterLimits()
         {
         }
 
-        public function FSupportLimits()
+        public static function FSupportLimits()
         {
         }
 
-        public function FParameterLimits()
+        public static function FParameterLimits()
         {
         }
 
-        public function exponentialSupportLimits()
+        public static function exponentialSupportLimits()
         {
         }
 
-        public function exponentialParameterLimits()
+        public static function exponentialParameterLimits()
         {
         }
 
-        public function diracDeltaSupportLimits()
+        public static function diracDeltaSupportLimits()
         {
         }
 
-        public function chiSquaredSupportLimits()
+        public static function chiSquaredSupportLimits()
         {
         }
 
-        public function chiSquaredParameterLimits()
+        public static function chiSquaredParameterLimits()
         {
         }
 
-        public function cauchySupportLimits()
+        public static function cauchySupportLimits()
         {
         }
 
-        public function cauchyParameterLimits()
+        public static function cauchyParameterLimits()
         {
         }
 
-        public function betaSupportLimits()
+        public static function betaSupportLimits()
         {
         }
 
-        public function betaParameterLimits()
+        public static function betaParameterLimits()
         {
         }
 
-        public function poissonLimits()
+        public static function poissonLimits()
         {
         }
 
-        public function negativeBinomialLimits()
+        public static function negativeBinomialLimits()
         {
         }
 
-        public function shiftedGeometricLimits()
+        public static function shiftedGeometricLimits()
         {
         }
 
-        public function geometricSupportLimits()
+        public static function geometricSupportLimits()
         {
         }
 
-        public function geometricParameterLimits()
+        public static function geometricParameterLimits()
         {
         }
 
-        public function binomialSupportLimits()
+        public static function binomialSupportLimits()
         {
         }
 
-        public function binomialParameterLimits()
+        public static function binomialParameterLimits()
         {
         }
 
-        public function bernoulliSupportLimits()
+        public static function bernoulliSupportLimits()
         {
         }
 
-        public function bernoulliParameterLimits()
+        public static function bernoulliParameterLimits()
         {
         }
     }

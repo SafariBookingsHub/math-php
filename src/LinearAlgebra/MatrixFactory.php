@@ -53,13 +53,19 @@
             $m = $A[0]->getN();
             $n = count($A);
             for ($j = 1; $j < $n; $j++)
+            {
                 if ($A[$j]->getN() !== $m)
+                {
                     throw new Exception\MatrixException('Vectors being combined into matrix have different lengths');
+                }
+            }
 
             // Concatenate all the vectors
             $R = [];
             foreach ($A as $V)
+            {
                 $R[] = $V->getVector();
+            }
 
             // Transpose to create matrix from the vector columns
             return self::createNumeric($R, $ε)->transpose();
@@ -114,23 +120,23 @@
         public static function createFromColumnVector(array $A): Matrix
         {
             foreach ($A as $item)
+            {
                 if (is_array($item))
+                {
                     throw new Exception\BadDataException('Column vector data must be a one-dimensional array');
+                }
+            }
 
             $R = [];
             foreach ($A as $value)
+            {
                 $R[] = [$value];
+            }
 
             try
             {
                 return self::create($R);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -190,15 +196,23 @@
         private static function checkParams(array $A): void
         {
             if (empty($A))
+            {
                 throw new Exception\BadDataException('Array data not provided for Matrix creation');
+            }
             if ( ! isset($A[0]) || ! is_array($A[0]))
+            {
                 throw new Exception\BadDataException('Array of array data not provided for Matrix creation');
+            }
 
             $column_count = count($A[0]);
             foreach ($A as $i => $row)
+            {
                 if (count($row) !== $column_count)
+                {
                     throw new Exception\MatrixException("Row $i has a different column count: "
                         .count($row)."; was expecting $column_count.");
+                }
+            }
         }
 
         /**
@@ -217,18 +231,22 @@
             if (is_object($A[0][0]))
             {
                 if ($A[0][0] instanceof Complex)
+                {
                     return 'complex';
+                }
 
-                return $m === $n
+                return ($m === $n)
                     ? 'object_square'
                     : 'object';
             }
 
             // Numeric matrix
             if (is_numeric($A[0][0]))
+            {
                 return ($m === $n)
                     ? 'numeric_square'
                     : 'numeric';
+            }
 
             // Unknown or bad data
             return 'unknown';
@@ -265,21 +283,19 @@
         public static function createFromRowVector(array $A): Matrix
         {
             foreach ($A as $item)
+            {
                 if (is_array($item))
+                {
                     throw new Exception\BadDataException('Row vector data must be a one-dimensional array');
+                }
+            }
 
             $R = [$A];
 
             try
             {
                 return self::create($R);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -297,14 +313,14 @@
             try
             {
                 self::checkParams($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\MatrixException $e)
+            } catch (Exception\BadDataException|Exception\MatrixException $e)
             {
             }
             if ( ! is_callable($A[0][0]))
+            {
                 throw new Exception\BadDataException('FunctionMatrix must be made of functions - got '
                     .gettype($A[0][0]));
+            }
 
             try
             {
@@ -339,14 +355,18 @@
         public static function exchange(int $n): NumericSquareMatrix
         {
             if ($n < 0)
+            {
                 throw new Exception\OutOfBoundsException("n must be ≥ 0. n = $n");
+            }
             $R = [];
 
             $one = $n - 1;
             for ($i = 0; $i < $n; $i++)
             {
                 for ($j = 0; $j < $n; $j++)
+                {
                     $R[$i][$j] = ($j == $one) ? 1 : 0;
+                }
                 $one--;
             }
 
@@ -422,12 +442,18 @@
         public static function identity(int $n): NumericSquareMatrix
         {
             if ($n < 0)
+            {
                 throw new Exception\OutOfBoundsException("n must be ≥ 0. n = $n");
+            }
             $R = [];
 
             for ($i = 0; $i < $n; $i++)
+            {
                 for ($j = 0; $j < $n; $j++)
+                {
                     $R[$i][$j] = ($i == $j) ? 1 : 0;
+                }
+            }
 
             return new NumericSquareMatrix($R);
         }
@@ -453,14 +479,20 @@
          */
         public static function one(int $m, int $n): NumericMatrix
         {
-            if ($m < 1 || $n < 1)
+            if (($m < 1) || ($n < 1))
+            {
                 throw new Exception\OutOfBoundsException("m and n must be > 0. m = $m, n = $n");
+            }
 
             $R = [];
 
             for ($i = 0; $i < $m; $i++)
+            {
                 for ($j = 0; $j < $n; $j++)
+                {
                     $R[$i][$j] = 1;
+                }
+            }
 
             return self::createNumeric($R);
         }
@@ -494,17 +526,25 @@
             int $k,
             float $x = NULL
         ): NumericMatrix {
-            if ($n < 0 || $m < 0 || $k < 0)
+            if (($n < 0) || ($m < 0) || ($k < 0))
+            {
                 throw new Exception\OutOfBoundsException("m, n and k must be ≥ 0. m = $m, n = $n, k = $k");
+            }
             if ($k >= $n)
+            {
                 throw new Exception\OutOfBoundsException("k must be < n. k = $k, n = $n");
+            }
             $x ??= 1;
 
             $R = self::zero($m, $n)->getMatrix();
 
             for ($i = 0; $i < $m; $i++)
+            {
                 if (($k + $i) < $n)
+                {
                     $R[$i][$k + $i] = $x;
+                }
+            }
 
             return self::createNumeric($R);
         }
@@ -530,14 +570,20 @@
          */
         public static function zero(int $m, int $n): NumericMatrix
         {
-            if ($m < 1 || $n < 1)
+            if (($m < 1) || ($n < 1))
+            {
                 throw new Exception\OutOfBoundsException("m and n must be > 0. m = $m, n = $n");
+            }
 
             $R = [];
 
             for ($i = 0; $i < $m; $i++)
+            {
                 for ($j = 0; $j < $n; $j++)
+                {
                     $R[$i][$j] = 0;
+                }
+            }
 
             return self::createNumeric($R);
         }
@@ -565,12 +611,20 @@
 
             $A = [];
             for ($i = 0; $i < $m; $i++)
+            {
                 for ($j = 0; $j < $m; $j++)
+                {
                     if ($i == $j)
-                        $A[$i][$j] = $D[$i]; else
+                    {
+                        {
+                            $A[$i][$j] = $D[$i];
+                        }
+                    } else
                     {
                         $A[$i][$j] = 0;
                     }
+                }
+            }
 
             return new NumericDiagonalMatrix($A);
         }
@@ -602,12 +656,18 @@
         public static function hilbert(int $n): NumericMatrix
         {
             if ($n < 1)
+            {
                 throw new Exception\OutOfBoundsException("n must be > 0. m = $n");
+            }
 
             $H = [];
             for ($i = 1; $i <= $n; $i++)
+            {
                 for ($j = 1; $j <= $n; $j++)
+                {
                     $H[$i - 1][$j - 1] = 1 / (($i + $j) - 1);
+                }
+            }
 
             return new NumericSquareMatrix($H);
         }
@@ -629,8 +689,12 @@
         {
             $A = [];
             foreach ($M as $row => $α)
+            {
                 for ($i = 0; $i < $n; $i++)
+                {
                     $A[$row][$i] = $α ** $i;
+                }
+            }
 
             return self::createNumeric($A);
         }
@@ -669,8 +733,10 @@
             float $angle,
             int $size
         ): NumericMatrix {
-            if ($m >= $size || $n >= $size || $m < 0 || $n < 0)
+            if (($m >= $size) || ($n >= $size) || ($m < 0) || ($n < 0))
+            {
                 throw new Exception\OutOfBoundsException("m and n must be within the matrix");
+            }
 
             $G = MatrixFactory::identity($size)->getMatrix();
             $G[$m][$m] = cos($angle);
@@ -702,114 +768,118 @@
         ): NumericMatrix {
             $A = [];
             for ($i = 0; $i < $m; $i++)
+            {
                 for ($j = 0; $j < $n; $j++)
+                {
                     $A[$i][$j] = rand($min, $max);
+                }
+            }
 
             return self::createNumeric($A);
         }
 
-        public function createComplexObjectMatrix()
+        public static function createComplexObjectMatrix()
         {
         }
 
-        public function createFromRowVectorFailure()
+        public static function createFromRowVectorFailure()
         {
         }
 
-        public function constructionFailure()
+        public static function constructionFailure()
         {
         }
 
-        public function constructor()
+        public static function constructor()
         {
         }
 
-        public function createObjectSquareMatrix()
+        public static function createObjectSquareMatrix()
         {
         }
 
-        public function createObjectMatrix()
+        public static function createObjectMatrix()
         {
         }
 
-        public function randomMatrix()
+        public static function randomMatrix()
         {
         }
 
-        public function hilbertExceptionNLessThanZero()
+        public static function hilbertExceptionNLessThanZero()
         {
         }
 
-        public function hilbertMatrix()
+        public static function hilbertMatrix()
         {
         }
 
-        public function eyeExceptions()
+        public static function eyeExceptions()
         {
         }
 
-        public function oneExceptionRowsLessThanOne()
+        public static function oneExceptionRowsLessThanOne()
         {
         }
 
-        public function zeroExceptionRowsLessThanOne()
+        public static function zeroExceptionRowsLessThanOne()
         {
         }
 
-        public function exchangeExceptionNLessThanZero()
+        public static function exchangeExceptionNLessThanZero()
         {
         }
 
-        public function identityExceptionNLessThanZero()
+        public static function identityExceptionNLessThanZero()
         {
         }
 
-        public function matrixUnknownTypeException()
+        public static function matrixUnknownTypeException()
         {
         }
 
-        public function checkParamsExceptionSingleDimensionalArray()
+        public static function checkParamsExceptionSingleDimensionalArray()
         {
         }
 
-        public function checkParamsExceptionEmptyArray()
+        public static function checkParamsExceptionEmptyArray()
         {
         }
 
-        public function createMatrix()
+        public static function createMatrix()
         {
         }
 
-        public function createFunctionMatrixErrorNotMadeOfFunctions()
+        public static function createFunctionMatrixErrorNotMadeOfFunctions()
         {
         }
 
-        public function createFunctionSquareMatrix()
+        public static function createFunctionSquareMatrix()
         {
         }
 
-        public function createFromArrayOfVectorsExceptionVectorsDifferentLengths(
+        public static function createFromArrayOfVectorsExceptionVectorsDifferentLengths(
         )
         {
         }
 
-        public function createArrayOfVectors()
+        public static function createArrayOfVectors()
         {
         }
 
-        public function createSquareMatrix()
+        public static function createSquareMatrix()
         {
         }
 
-        public function createDiagonalMatrix()
+        public static function createDiagonalMatrix()
         {
         }
 
-        public function specificallyCreateNumericMatrix()
+        public static function specificallyCreateNumericMatrix()
         {
         }
 
-        public function createNumericMatrix()
+        public static function createNumericMatrix()
         {
         }
     }

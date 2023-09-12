@@ -4,51 +4,55 @@
 
     class TDistributionTable {
 
-        public function getTwoSidedTValueFromAlphaExceptionBadAlpha()
+        public static function getTwoSidedTValueFromAlphaExceptionBadAlpha()
         {
         }
 
-        public function getOneSidedTValueFromAlphaExceptionBadAlpha()
+        public static function getOneSidedTValueFromAlphaExceptionBadAlpha()
         {
         }
 
-        public function getTwoSidedTValueFromConfidenceLevelExceptionBadCL()
+        public static function getTwoSidedTValueFromConfidenceLevelExceptionBadCL(
+        )
         {
         }
 
-        public function getOneSidedTValueFromConfidenceLevelExceptionBadCL()
+        public static function getOneSidedTValueFromConfidenceLevelExceptionBadCL(
+        )
         {
         }
 
-        public function getTwoSidedTValueFromAlphaExceptionBadDF()
+        public static function getTwoSidedTValueFromAlphaExceptionBadDF()
         {
         }
 
-        public function getOneSidedTValueFromAlphaExceptionBadDF()
+        public static function getOneSidedTValueFromAlphaExceptionBadDF()
         {
         }
 
-        public function getTwoSidedTValueFromConfidenceLevelExceptionBadDF()
+        public static function getTwoSidedTValueFromConfidenceLevelExceptionBadDF(
+        )
         {
         }
 
-        public function getOneSidedTValueFromConfidenceLevelExceptionBadDF()
+        public static function getOneSidedTValueFromConfidenceLevelExceptionBadDF(
+        )
         {
         }
 
-        public function getTwoSidedTValueFromAlpha()
+        public static function getTwoSidedTValueFromAlpha()
         {
         }
 
-        public function getOneSidedTValueFromAlpha()
+        public static function getOneSidedTValueFromAlpha()
         {
         }
 
-        public function getTwoSidedTValueFromConfidenceLevel()
+        public static function getTwoSidedTValueFromConfidenceLevel()
         {
         }
 
-        public function getOneSidedTValueFromConfidenceLevel()
+        public static function getOneSidedTValueFromConfidenceLevel()
         {
         }
     }

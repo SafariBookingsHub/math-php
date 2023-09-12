@@ -45,14 +45,14 @@
         public function testConstructor(array $M, int $n, array $V)
         {
             // Given
-            $V = MatrixFactory::create($V);
+            $V = MatrixFactory::create(A: $V);
 
             // When
-            $M = MatrixFactory::vandermonde($M, $n);
+            $M = MatrixFactory::vandermonde(M: $M, n: $n);
 
             // Then
             $this->assertTrue($V->isEqual($M));
-            $this->assertTrue($M->isEqual($V));
+            $this->assertTrue($M->isEqual(B: $V));
 
             // And
             $this->assertTrue($M->isSquare());

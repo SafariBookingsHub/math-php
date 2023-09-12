@@ -4,11 +4,11 @@
 
     class IterZipMixed {
 
-        public function zipThreeIterablesDifferentSize()
+        public static function zipThreeIterablesDifferentSize()
         {
         }
 
-        public function zipThreeIterablesSameSize()
+        public static function zipThreeIterablesSameSize()
         {
         }
     }

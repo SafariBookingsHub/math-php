@@ -31,7 +31,7 @@
          *
          * @var string[]
          */
-        const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'k' => '[1,∞)',
             ];
@@ -65,6 +65,14 @@
             return 1;
         }
 
+        public static function badCdfK()
+        {
+        }
+
+        public static function badPmfK()
+        {
+        }
+
         /**
          * Probability mass function
          *
@@ -83,21 +91,19 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
             if ($k > $this->N)
+            {
                 throw new Exception\OutOfBoundsException('Support parameter k cannot be greater than N');
+            }
             $s = $this->s;
             $N = $this->N;
             $series = NonInteger::generalizedHarmonic($N, $s);
             $denominator = array_pop($series);
 
-            return 1 / $k ** $s / $denominator;
+            return (1 / $k ** $s) / $denominator;
         }
 
         /**
@@ -119,15 +125,13 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\BadParameterException $e)
             {
             }
             if ($k > $this->N)
+            {
                 throw new Exception\OutOfBoundsException('Support parameter k cannot be greater than N');
+            }
             $s = $this->s;
             $N = $this->N;
             $num_series = NonInteger::generalizedHarmonic($k, $s);
@@ -158,13 +162,5 @@
             $denominator = array_pop($den_series);
 
             return $numerator / $denominator;
-        }
-
-        public function badCdfK()
-        {
-        }
-
-        public function badPmfK()
-        {
         }
     }

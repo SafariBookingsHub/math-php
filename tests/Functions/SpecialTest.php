@@ -5,6 +5,7 @@
     use MathPHP\Exception;
     use MathPHP\Functions\Special;
     use PHPUnit\Framework\TestCase;
+    use ReflectionException;
     use ReflectionMethod;
 
     use function array_sum;
@@ -880,9 +881,7 @@
             try
             {
                 Special::gamma($x);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -975,9 +974,7 @@
             try
             {
                 $nan = Special::logGamma($nan);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -997,9 +994,7 @@
             try
             {
                 $nan = Special::gamma($nan);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -1036,9 +1031,7 @@
                 $this->assertEqualsWithDelta($log_beta,
                     Special::logBeta($x, $y),
                     0.001);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -1058,9 +1051,7 @@
             try
             {
                 $beta = Special::beta($nan, 2);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -1080,9 +1071,7 @@
             try
             {
                 $lbeta = Special::logBeta($nan, 2);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -1102,9 +1091,7 @@
             try
             {
                 $lbeta = Special::logBeta($p, 2);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -1124,9 +1111,7 @@
             try
             {
                 $beta = Special::beta($p, 2);
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\NanException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -1402,15 +1387,7 @@
             try
             {
                 Special::regularizedIncompleteBeta(0.4, $a, 4);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\FunctionFailedToConvergeException $e)
-            {
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\NanException|Exception\FunctionFailedToConvergeException|Exception\BadParameterException $e)
             {
             }
         }
@@ -1430,15 +1407,7 @@
             try
             {
                 Special::regularizedIncompleteBeta($x, 4, 4);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\FunctionFailedToConvergeException $e)
-            {
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\NanException|Exception\FunctionFailedToConvergeException|Exception\BadParameterException $e)
             {
             }
         }
@@ -1466,15 +1435,7 @@
             try
             {
                 $betainc = Special::regularizedIncompleteBeta($x, $a, $b);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\FunctionFailedToConvergeException $e)
-            {
-            } catch (Exception\NanException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException|Exception\NanException|Exception\FunctionFailedToConvergeException|Exception\BadParameterException $e)
             {
             }
 
@@ -1609,9 +1570,7 @@
             try
             {
                 Special::hypergeometric(1, 1, 1, 1);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadParameterException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -1657,7 +1616,7 @@
             try
             {
                 $chebyshevEval->invokeArgs(NULL, [$x, $a, $n]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
         }
@@ -1686,7 +1645,7 @@
             try
             {
                 $chebyshevEval->invokeArgs(NULL, [$x, $a, $n]);
-            } catch (\ReflectionException $e)
+            } catch (ReflectionException $e)
             {
             }
         }
@@ -1725,7 +1684,14 @@
             // When
             try
             {
-                $stirlingError = Special::stirlingError($n);
+                try
+                {
+                    $stirlingError = Special::stirlingError($n);
+                } catch (Exception\NanException $e)
+                {
+                } catch (Exception\OutOfBoundsException $e)
+                {
+                }
             } catch (Exception\NanException $e)
             {
             }
@@ -1739,6 +1705,7 @@
          * @dataProvider dataProviderForSterlingErrorNan
          *
          * @param float $n
+         *
          * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testStirlingErrorNan(float $n): void

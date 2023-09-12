@@ -4,19 +4,19 @@
 
     class VectorNorms {
 
-        public function maxNorm()
+        public static function maxNorm()
         {
         }
 
-        public function PNorm()
+        public static function PNorm()
         {
         }
 
-        public function l2Norm()
+        public static function l2Norm()
         {
         }
 
-        public function l1Norm()
+        public static function l1Norm()
         {
         }
     }

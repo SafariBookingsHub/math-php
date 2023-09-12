@@ -23,7 +23,7 @@
         public function testIsEqual(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isEqual($A));
@@ -42,8 +42,8 @@
         public function testIsNotEqual(array $A, array $B)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // Then
             $this->assertFalse($A->isEqual($B));
@@ -57,17 +57,17 @@
         public function testIsEqualBecauseWithinErrorTolerance()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1.0001, 2.0002],
                 [3.0003, 4.0004],
             ]);
-            $B = MatrixFactory::create([
+            $B = MatrixFactory::create(A: [
                 [1.0002, 2.0003],
                 [3.0004, 4.0005],
             ]);
 
             // When
-            $A->setError(0.001);
+            $A->setError(ε: 0.001);
 
             // Then
             $this->assertTrue($A->isEqual($B));
@@ -80,17 +80,17 @@
         public function testIsNotEqualBecauseOutsideOfErrorTolerance()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1.0001, 2.0002],
                 [3.0003, 4.0004],
             ]);
-            $B = MatrixFactory::create([
+            $B = MatrixFactory::create(A: [
                 [1.0002, 2.0003],
                 [3.0004, 4.0005],
             ]);
 
             // When
-            $A->setError(0.00001);
+            $A->setError(ε: 0.00001);
 
             // Then
             $this->assertFalse($A->isEqual($B));
@@ -103,11 +103,11 @@
         public function testIsEqualNotEqualBecauseDifferentDimmensions()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
             ]);
-            $B = MatrixFactory::create([
+            $B = MatrixFactory::create(A: [
                 [1, 2],
                 [2, 3],
             ]);

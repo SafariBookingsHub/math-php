@@ -14,11 +14,12 @@
         /**
          * @return array (p₀, p₁, expected)
          */
-        #[ArrayShape(['solving for f(x) = 0 where x is -4'                                                         => "int[]",
-                      'solving for f(x) = 0 where x is -8'                                                         => "int[]",
-                      'solving for f(x) = 0 where x is 3'                                                          => "int[]",
-                      'solving for f(x) = 0 where x is 1'                                                          => "int[]",
-                      'Solve for f(x) = 0 where x is 1: Switch p₀ and p₁ and test that they get reversed properly' => "int[]"
+        #[ArrayShape([
+            'solving for f(x) = 0 where x is -4'                                                         => "int[]",
+            'solving for f(x) = 0 where x is -8'                                                         => "int[]",
+            'solving for f(x) = 0 where x is 3'                                                          => "int[]",
+            'solving for f(x) = 0 where x is 1'                                                          => "int[]",
+            'Solve for f(x) = 0 where x is 1: Switch p₀ and p₁ and test that they get reversed properly' => "int[]",
         ])] public static function dataProviderForPolynomial(): array
         {
             return [
@@ -68,7 +69,9 @@
             int $expected
         ) {
             // Given
-            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
+            $func = fn($x) => (($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2) - (92
+                        * $x))
+                + 96;
             $tol = 0.00001;
 
             // When solving for f(x) = 0 where x $expected
@@ -114,7 +117,7 @@
         public function testXCubedSubtractXPlusOne()
         {
             // Given
-            $func = fn($x) => ($x ** 3 - $x) + 1;
+            $func = fn($x) => (($x ** 3) - $x) + 1;
 
             // And
             $expected = -1.324717;
@@ -182,7 +185,9 @@
         public function testExceptionNegativeTolerance()
         {
             // Given
-            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - 92 * $x) + 96;
+            $func = fn($x) => (($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2) - (92
+                        * $x))
+                + 96;
 
             // And
             $tol = -0.00001;
@@ -203,7 +208,9 @@
         public function testExceptionZeroInterval()
         {
             // Given
-            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
+            $func = fn($x) => (($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2) - (92
+                        * $x))
+                + 96;
 
             // And
             $tol = 0.00001;

@@ -22,7 +22,11 @@
             parent::__construct($A);
 
             if ($this->m !== $this->n)
-                throw new Exception\MatrixException('Not a square matrix; row count and column count differ');
+            {
+                {
+                    throw new Exception\MatrixException('Not a square matrix; row count and column count differ');
+                }
+            }
         }
 
         /**

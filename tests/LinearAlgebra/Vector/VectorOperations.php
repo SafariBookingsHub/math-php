@@ -4,119 +4,119 @@
 
     class VectorOperations {
 
-        public function min()
+        public static function min()
         {
         }
 
-        public function max()
+        public static function max()
         {
         }
 
-        public function kroneckerProduct()
+        public static function kroneckerProduct()
         {
         }
 
-        public function directProduct()
+        public static function directProduct()
         {
         }
 
-        public function perp()
+        public static function perp()
         {
         }
 
-        public function projection()
+        public static function projection()
         {
         }
 
-        public function perpDotProductExceptionNNotBothTwo()
+        public static function perpDotProductExceptionNNotBothTwo()
         {
         }
 
-        public function perpDotProduct()
+        public static function perpDotProduct()
         {
         }
 
-        public function perpendicularExceptionNGreaterThanTwo()
+        public static function perpendicularExceptionNGreaterThanTwo()
         {
         }
 
-        public function perpendicular()
+        public static function perpendicular()
         {
         }
 
-        public function normalize()
+        public static function normalize()
         {
         }
 
-        public function length()
+        public static function length()
         {
         }
 
-        public function divideExceptionSizeMismatch()
+        public static function divideExceptionSizeMismatch()
         {
         }
 
-        public function divide()
+        public static function divide()
         {
         }
 
-        public function multiplyExceptionSizeMismatch()
+        public static function multiplyExceptionSizeMismatch()
         {
         }
 
-        public function multiply()
+        public static function multiply()
         {
         }
 
-        public function subtractExceptionSizeMismatch()
+        public static function subtractExceptionSizeMismatch()
         {
         }
 
-        public function subtract()
+        public static function subtract()
         {
         }
 
-        public function addExceptionSizeMismatch()
+        public static function addExceptionSizeMismatch()
         {
         }
 
-        public function add()
+        public static function add()
         {
         }
 
-        public function scalarDivide()
+        public static function scalarDivide()
         {
         }
 
-        public function scalarMultiply()
+        public static function scalarMultiply()
         {
         }
 
-        public function sum()
+        public static function sum()
         {
         }
 
-        public function outerProduct()
+        public static function outerProduct()
         {
         }
 
-        public function crossProductExceptionWrongSize()
+        public static function crossProductExceptionWrongSize()
         {
         }
 
-        public function crossProduct()
+        public static function crossProduct()
         {
         }
 
-        public function dotProductExceptionSizeDifference()
+        public static function dotProductExceptionSizeDifference()
         {
         }
 
-        public function innerProduct()
+        public static function innerProduct()
         {
         }
 
-        public function dotProduct()
+        public static function dotProduct()
         {
         }
     }

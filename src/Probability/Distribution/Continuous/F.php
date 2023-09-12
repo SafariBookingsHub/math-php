@@ -39,7 +39,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '[0,∞)',
             ];
@@ -59,6 +59,22 @@
         public function __construct(float $d₁, float $d₂)
         {
             parent::__construct($d₁, $d₂);
+        }
+
+        public static function medianTemporaryVersion()
+        {
+        }
+
+        public static function varianceNan()
+        {
+        }
+
+        public static function modeNan()
+        {
+        }
+
+        public static function meanNAN()
+        {
         }
 
         /**
@@ -83,11 +99,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -95,17 +107,15 @@
             $d₂ = $this->d₂;
 
             // Numerator
-            $⟮d₁x⟯ᵈ¹d₂ᵈ² = ($d₁ * $x) ** $d₁ * $d₂ ** $d₂;
-            $⟮d₁x＋d₂⟯ᵈ¹⁺ᵈ² = ($d₁ * $x + $d₂) ** ($d₁ + $d₂);
+            $⟮d₁x⟯ᵈ¹d₂ᵈ² = (($d₁ * $x) ** $d₁) * $d₂ ** $d₂;
+            $⟮d₁x＋d₂⟯ᵈ¹⁺ᵈ² = (($d₁ * $x) + $d₂) ** ($d₁ + $d₂);
             $√⟮d₁x⟯ᵈ¹d₂ᵈ²／⟮d₁x＋d₂⟯ᵈ¹⁺ᵈ² = sqrt($⟮d₁x⟯ᵈ¹d₂ᵈ² / $⟮d₁x＋d₂⟯ᵈ¹⁺ᵈ²);
 
             // Denominator
             try
             {
                 $xB⟮d₁／2、d₂／2⟯ = $x * Special::beta($d₁ / 2, $d₂ / 2);
-            } catch (NanException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (NanException|OutOfBoundsException $e)
             {
             }
 
@@ -132,32 +142,20 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             $d₁ = $this->d₁;
             $d₂ = $this->d₂;
 
-            $ᵈ¹ˣ／d₁x＋d₂ = $d₁ * $x / ($d₁ * $x + $d₂);
+            $ᵈ¹ˣ／d₁x＋d₂ = ($d₁ * $x) / (($d₁ * $x) + $d₂);
 
             try
             {
                 return Special::regularizedIncompleteBeta($ᵈ¹ˣ／d₁x＋d₂, $d₁ / 2,
                     $d₂ / 2);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (FunctionFailedToConvergeException $e)
-            {
-            } catch (NanException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|NanException|FunctionFailedToConvergeException|BadParameterException $e)
             {
             }
         }
@@ -177,9 +175,11 @@
             $d₂ = $this->d₂;
 
             if ($d₁ <= 2)
+            {
                 return NAN;
+            }
 
-            return ($d₁ - 2) / $d₁ * ($d₂ / ($d₂ + 2));
+            return (($d₁ - 2) / $d₁) * ($d₂ / ($d₂ + 2));
         }
 
         /**
@@ -197,10 +197,12 @@
             $d₂ = $this->d₂;
 
             if ($d₂ <= 4)
+            {
                 return NAN;
+            }
 
-            $２d₂²⟮d₁ ＋ d₂ − 2⟯ = 2 * $d₂ ** 2 * ($d₁ + $d₂ - 2);
-            $d₁⟮d₂ − 2⟯²⟮d₂ − 4⟯ = $d₁ * ($d₂ - 2) ** 2 * ($d₂ - 4);
+            $２d₂²⟮d₁ ＋ d₂ − 2⟯ = (2 * $d₂ ** 2) * (($d₁ + $d₂) - 2);
+            $d₁⟮d₂ − 2⟯²⟮d₂ − 4⟯ = ($d₁ * ($d₂ - 2) ** 2) * ($d₂ - 4);
 
             return $２d₂²⟮d₁ ＋ d₂ − 2⟯ / $d₁⟮d₂ − 2⟯²⟮d₂ − 4⟯;
         }
@@ -232,24 +234,10 @@
             $d₂ = $this->d₂;
 
             if ($d₂ > 2)
+            {
                 return $d₂ / ($d₂ - 2);
+            }
 
             return NAN;
-        }
-
-        public function medianTemporaryVersion()
-        {
-        }
-
-        public function varianceNan()
-        {
-        }
-
-        public function modeNan()
-        {
-        }
-
-        public function meanNAN()
-        {
         }
     }

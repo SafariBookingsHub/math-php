@@ -4,135 +4,135 @@
 
     class MatrixFactoryErrorPropagation {
 
-        public function meanDeviationOfColumnVariables()
+        public static function meanDeviationOfColumnVariables()
         {
         }
 
-        public function meanDeviationOfRowVariables()
+        public static function meanDeviationOfRowVariables()
         {
         }
 
-        public function leadingPrincipalMinor()
+        public static function leadingPrincipalMinor()
         {
         }
 
-        public function columnExclude()
+        public static function columnExclude()
         {
         }
 
-        public function columnInterchange()
+        public static function columnInterchange()
         {
         }
 
-        public function rowExclude()
+        public static function rowExclude()
         {
         }
 
-        public function rowInterchange()
+        public static function rowInterchange()
         {
         }
 
-        public function map()
+        public static function map()
         {
         }
 
-        public function submatrix()
+        public static function submatrix()
         {
         }
 
-        public function transpose()
+        public static function transpose()
         {
         }
 
-        public function augmentAbove()
+        public static function augmentAbove()
         {
         }
 
-        public function augmentBelow()
+        public static function augmentBelow()
         {
         }
 
-        public function augmentLeft()
+        public static function augmentLeft()
         {
         }
 
-        public function augment()
+        public static function augment()
         {
         }
 
-        public function adjugate()
+        public static function adjugate()
         {
         }
 
-        public function columnMultiply()
+        public static function columnMultiply()
         {
         }
 
-        public function columnAdd()
+        public static function columnAdd()
         {
         }
 
-        public function rowSubtractScalar()
+        public static function rowSubtractScalar()
         {
         }
 
-        public function rowSubtract()
+        public static function rowSubtract()
         {
         }
 
-        public function rowAddScalar()
+        public static function rowAddScalar()
         {
         }
 
-        public function rowAdd()
+        public static function rowAdd()
         {
         }
 
-        public function rowDivide()
+        public static function rowDivide()
         {
         }
 
-        public function rowMultiply()
+        public static function rowMultiply()
         {
         }
 
-        public function cofactorMatrix()
+        public static function cofactorMatrix()
         {
         }
 
-        public function inverse()
+        public static function inverse()
         {
         }
 
-        public function diagonal()
+        public static function diagonal()
         {
         }
 
-        public function hadamardProduct()
+        public static function hadamardProduct()
         {
         }
 
-        public function scalarDivide()
+        public static function scalarDivide()
         {
         }
 
-        public function scalarMultiply()
+        public static function scalarMultiply()
         {
         }
 
-        public function multiply()
+        public static function multiply()
         {
         }
 
-        public function subtract()
+        public static function subtract()
         {
         }
 
-        public function directSum()
+        public static function directSum()
         {
         }
 
-        public function add()
+        public static function add()
         {
         }
     }

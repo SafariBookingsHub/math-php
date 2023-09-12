@@ -22,19 +22,11 @@
         use Methods\WeightedLeastSquares;
 
         /**
-         * Array of weights
-         *
-         * @var array<float>
-         */
-        private array $ws;
-
-        /**
          * @param array<array{float, float}> $points
          * @param array<float>               $ws Weights
          */
-        public function __construct(array $points, array $ws)
+        public function __construct(array $points, private array $ws)
         {
-            $this->ws = $ws;
             parent::__construct($points);
         }
 
@@ -64,7 +56,7 @@
             return $this->evaluateModel($x, $this->parameters);
         }
 
-        public function getParameters()
+        public function getParameters(): array
         {
         }
     }

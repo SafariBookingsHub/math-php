@@ -4,103 +4,106 @@
 
     class VectorAxioms {
 
-        public function projPerpPerpDotProductEqualsProductOfLengths()
+        public static function projPerpPerpDotProductEqualsProductOfLengths()
         {
         }
 
-        public function projPerpDotProductEqualsZero()
+        public static function projPerpDotProductEqualsZero()
         {
         }
 
-        public function projPerpSumOfSquares()
+        public static function projPerpSumOfSquares()
         {
         }
 
-        public function projPerpSumEqualsA()
+        public static function projPerpSumEqualsA()
         {
         }
 
-        public function perpDotProdcutSwapOperandsChangeSign()
+        public static function perpDotProdcutSwapOperandsChangeSign()
         {
         }
 
-        public function perpDotProductZero()
+        public static function perpDotProductZero()
         {
         }
 
-        public function perpendicularDotProduct()
+        public static function perpendicularDotProduct()
         {
         }
 
-        public function scalarMultiplyNegativeOneIdentity()
+        public static function scalarMultiplyNegativeOneIdentity()
         {
         }
 
-        public function scalarMultiplyZeroIdentity()
+        public static function scalarMultiplyZeroIdentity()
         {
         }
 
-        public function scalarMultiplyOneIdentity()
+        public static function scalarMultiplyOneIdentity()
         {
         }
 
-        public function additivityInTheVectorForScalarMultiplication()
+        public static function additivityInTheVectorForScalarMultiplication()
         {
         }
 
-        public function additivityInTheScalarForScalarMultiplication()
+        public static function additivityInTheScalarForScalarMultiplication()
         {
         }
 
-        public function outerProductIsDirectProduct()
+        public static function outerProductIsDirectProduct()
         {
         }
 
-        public function outerProductIsMatrixMultiplicationOfAAndBTranspose()
+        public static function outerProductIsMatrixMultiplicationOfAAndBTranspose(
+        )
         {
         }
 
-        public function crossProductLagrangeFormula()
+        public static function crossProductLagrangeFormula()
         {
         }
 
-        public function crossProductVolumeProperty()
+        public static function crossProductVolumeProperty()
         {
         }
 
-        public function crossProductInnerProductWithEitherVectorIsZero()
+        public static function crossProductInnerProductWithEitherVectorIsZero()
         {
         }
 
-        public function crossProductDistributivity()
+        public static function crossProductDistributivity()
         {
         }
 
-        public function crossProductPropertyOfZero()
+        public static function crossProductPropertyOfZero()
         {
         }
 
-        public function reverseCrossProduct()
+        public static function reverseCrossProduct()
         {
         }
 
-        public function dotProductZero()
+        public static function dotProductZero()
         {
         }
 
-        public function dotProductCommutative()
+        public static function dotProductCommutative()
         {
         }
 
-        public function maxNormLessThanEqualL1NormLessThanEqualSqrtNMaxNorm()
+        public static function maxNormLessThanEqualL1NormLessThanEqualSqrtNMaxNorm(
+        )
         {
         }
 
-        public function maxNormLessThtanEQualL2NormLessThanEqualSqrtNMaxNorm()
+        public static function maxNormLessThtanEQualL2NormLessThanEqualSqrtNMaxNorm(
+        )
         {
         }
 
-        public function l2NormLessThanL1NormLessThanSqrtNL2Norm()
+        public static function l2NormLessThanL1NormLessThanSqrtNL2Norm()
         {
         }
     }

@@ -66,7 +66,7 @@
         public function testDifferentiateZeroError(int $x)
         {
             // Given f(x) = 13x² -92x + 96
-            $f = fn($x) => (13 * $x ** 2 - 92 * $x) + 96;
+            $f = fn($x) => ((13 * $x ** 2) - (92 * $x)) + 96;
 
             // And f’(x) = 26x - 92
             $f’ = fn($x) => (26 * $x) - 92;
@@ -117,7 +117,7 @@
         public function testDifferentiateNonZeroError(int $x, int $tol)
         {
             // Given f(x) = x³ - 13x² -92x + 96
-            $f = fn($x) => ($x ** 3 - 13 * $x ** 2 - 92 * $x) + 96;
+            $f = fn($x) => (($x ** 3) - (13 * $x ** 2) - (92 * $x)) + 96;
 
             // And
             $f’ = fn($x) => (3 * $x ** 2) - (26 * $x) - 92;
@@ -166,7 +166,7 @@
         public function testDifferentiateZeroErrorUsingPoints(int $x)
         {
             // Given f(x) = 13x² -92x + 96
-            $f = fn($x) => (13 * $x ** 2 - 92 * $x) + 96;
+            $f = fn($x) => ((13 * $x ** 2) - (92 * $x)) + 96;
             $points = [[0, $f(0)], [2, $f(2)], [4, $f(4)]];
 
             // And f’(x) = 26x - 92

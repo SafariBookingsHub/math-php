@@ -7,7 +7,6 @@
 
     use function chr;
     use function floatval;
-    use function get_class;
     use function gettype;
     use function intdiv;
     use function is_int;
@@ -61,6 +60,7 @@
             $this->isPositive = TRUE;
 
             if (is_int($number))
+            {
                 if ($number < 0)
                 {
                     // Since abs(PHP_INT_MIN) is PHP_INT_MAX + 1, we cannot just change the sign.
@@ -78,10 +78,13 @@
                         $int_part = intdiv($int_part, 256);
                     }
                     $this->base256 = $string;
-                } elseif (is_string($number))
+                }
+            } elseif (is_string($number))
             {
                 if ($number == '')
+                {
                     throw new Exception\BadParameterException("String cannot be empty.");
+                }
                 if ($number[0] == '-')
                 {
                     $this->isPositive = FALSE;
@@ -90,8 +93,13 @@
                 $number = strtolower($number);
                 $base = 10;
                 if ($number[0] == '0')
+                {
                     if ($number == '0')
-                        $base = 10; elseif ($number[1] == 'x')
+                    {
+                        {
+                            $base = 10;
+                        }
+                    } elseif ($number[1] == 'x')
                     {
                         $base = 16;
                         $number = substr($number, 2);
@@ -104,12 +112,15 @@
                         $base = 8;
                         $number = substr($number, 1);
                     }
+                }
                 $base256 = BaseEncoderDecoder::createArbitraryInteger($number,
                     $base);
                 $this->base256 = $base256->toBinary();
             } else
+            {
                 throw new Exception\IncorrectTypeException("Number can only be an int or a string: type '"
                     .gettype($number)."' provided");
+            }
         }
 
         /**
@@ -136,9 +147,13 @@
         {
             $object_or_scalar = self::create($object_or_scalar);
             if ( ! $object_or_scalar->isPositive())
+            {
                 return $this->subtract($object_or_scalar->negate());
+            }
             if ( ! $this->isPositive)
+            {
                 return $object_or_scalar->subtract($this->negate());
+            }
 
             $object_or_scalar = $object_or_scalar->toBinary();
             $carry = 0;
@@ -147,7 +162,8 @@
             $max_len = max($len, $num_len);
             $base_256 = str_pad($this->base256, $max_len, chr(0),
                 STR_PAD_LEFT);
-            $object_or_scalar = str_pad($object_or_scalar, $max_len, chr(0), STR_PAD_LEFT);
+            $object_or_scalar = str_pad($object_or_scalar, $max_len, chr(0),
+                STR_PAD_LEFT);
             $result = '';
 
             for ($i = 0; $i < $max_len; $i++)
@@ -159,7 +175,9 @@
                 $result = chr($sum % 256).$result;
             }
             if ($carry > 0)
+            {
                 $result = chr($carry).$result;
+            }
 
             return self::fromBinary($result, TRUE);
         }
@@ -174,14 +192,18 @@
          * @throws Exception\BadParameterException
          * @throws Exception\IncorrectTypeException
          */
-        public static function create(int|string|ArbitraryInteger $number): ArbitraryInteger
-        {
+        public static function create(int|string|ArbitraryInteger $number
+        ): ArbitraryInteger {
             if ( ! is_object($number))
+            {
                 return new ArbitraryInteger($number);
+            }
 
             $class = $number::class;
             if ($class == self::class)
+            {
                 return $number;
+            }
 
             throw new Exception\IncorrectTypeException("Class of type $class is not supported.");
         }
@@ -220,11 +242,17 @@
             $object_or_scalar = self::create($object_or_scalar);
 
             if ( ! $object_or_scalar->isPositive())
+            {
                 return $this->add($object_or_scalar->negate());
+            }
             if ( ! $this->isPositive)
+            {
                 return $this->negate()->add($object_or_scalar)->negate();
+            }
             if ($this->lessThan($object_or_scalar))
+            {
                 return $object_or_scalar->subtract($this)->negate();
+            }
 
             $object_or_scalar = $object_or_scalar->toBinary();
             $carry = 0;
@@ -233,7 +261,8 @@
             $max_len = max($len, $num_len);
             $base_256 = str_pad($this->base256, $max_len, chr(0),
                 STR_PAD_LEFT);
-            $object_or_scalar = str_pad($object_or_scalar, $max_len, chr(0), STR_PAD_LEFT);
+            $object_or_scalar = str_pad($object_or_scalar, $max_len, chr(0),
+                STR_PAD_LEFT);
             $result = '';
 
             for ($i = 0; $i < $max_len; $i++)
@@ -268,7 +297,7 @@
         public function negate(): ArbitraryInteger
         {
             return self::fromBinary($this->base256,
-                $this->base256 == chr(0) || ! $this->isPositive);
+                ($this->base256 == chr(0)) || ! $this->isPositive);
         }
 
         /**
@@ -302,7 +331,9 @@
         {
             $value = ltrim($value, chr(0));
             if ($value == '')
+            {
                 $value = chr(0);
+            }
             $this->base256 = $value;
             $this->isPositive = $positive;
         }
@@ -336,24 +367,35 @@
 
             // Check if signs differ
             if ($my_positive && ! $int_positive)
+            {
                 return FALSE;
+            }
             if ($int_positive && ! $my_positive)
+            {
                 return TRUE;
+            }
 
             // If one number has more digits, its absolute value is larger.
             if ($my_len > $int_len)
-                return ! $my_positive; elseif ($int_len > $my_len)
+            {
+                {
+                    return ! $my_positive;
+                }
+            } elseif ($int_len > $my_len)
+            {
                 return $my_positive;
-            else
+            } else
             {
                 // Test each digit from most significant to least.
                 for ($i = 0; $i < $my_len; $i++)
+                {
                     if ($base_256[$i] !== $int_256[$i])
                     {
                         $test = ord($base_256[$i]) < ord($int_256[$i]);
 
                         return $my_positive ? $test : ! $test;
                     }
+                }
 
                 // Must be equal
                 return FALSE;
@@ -378,11 +420,114 @@
             try
             {
                 return new ArbitraryInteger(0);
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
+        }
+
+        public static function badRandParameter()
+        {
+        }
+
+        public static function incorrectTypeExceptionPrepareParameter()
+        {
+        }
+
+        public static function powException()
+        {
+        }
+
+        /**************************************************************************
+         * BINARY FUNCTIONS
+         *  - add
+         *  - subtract
+         *  - multiply
+         *  - intdiv
+         *  - mod
+         *  - fullIntdiv
+         **************************************************************************/
+
+        public static function incorrectTypeException()
+        {
+        }
+
+        public static function emptyStringException()
+        {
+        }
+
+        public static function notEquals()
+        {
+        }
+
+        public static function notLessThan()
+        {
+        }
+
+        public static function notGreaterThan()
+        {
+        }
+
+        public static function isqrtOutOfBoundsError()
+        {
+        }
+
+        public static function powRational()
+        {
+        }
+
+        /**************************************************************************
+         * BITWISE OPERATIONS
+         **************************************************************************/
+
+        public static function fullIntDivLargeDivisor()
+        {
+        }
+
+        /**************************************************************************
+         * COMPARISON FUNCTIONS
+         *  - equals
+         *  - greaterThan
+         *  - lessThan
+         **************************************************************************/
+
+        public static function intDivLargeDivisor()
+        {
+        }
+
+        public static function fullIntDivSmallDivisor()
+        {
+        }
+
+        public static function intDivAndModSmallDivisor()
+        {
+        }
+
+        public static function multiplication()
+        {
+        }
+
+        public static function addition()
+        {
+        }
+
+        public static function isNotPositive()
+        {
+        }
+
+        public static function intToBinary()
+        {
+        }
+
+        public static function intToFloat()
+        {
+        }
+
+        public static function intToInt()
+        {
+        }
+
+        public static function stringToString()
+        {
         }
 
         /**
@@ -435,11 +580,15 @@
         public function isqrt(): ArbitraryInteger
         {
             if ($this->lessThan(0))
+            {
                 throw new Exception\OutOfBoundsException('isqrt only works on numbers ≥ 0');
+            }
 
             // √0 = 0 edge case
             if ($this->equals(0))
+            {
                 return new ArbitraryInteger(0);
+            }
 
             $length = strlen($this->base256);
 
@@ -453,22 +602,16 @@
                 $NX = $this->intdiv($X);
                 $X = $X->add($NX)->intdiv(2);
                 if ($X->equals($lastX) || $X->equals($lastX->add(1)))
-                    $converge = TRUE; else
+                {
+                    $converge = TRUE;
+                } else
+                {
                     $lastX = $X;
+                }
             }
 
             return $lastX;
         }
-
-        /**************************************************************************
-         * BINARY FUNCTIONS
-         *  - add
-         *  - subtract
-         *  - multiply
-         *  - intdiv
-         *  - mod
-         *  - fullIntdiv
-         **************************************************************************/
 
         /**
          * Test for equality
@@ -487,8 +630,8 @@
         {
             $int = self::create($int);
 
-            return $this->base256 == $int->toBinary()
-                && $this->isPositive == $int->isPositive();
+            return ($this->base256 == $int->toBinary())
+                && ($this->isPositive == $int->isPositive());
         }
 
         /**
@@ -501,8 +644,8 @@
          * @throws Exception\BadParameterException
          * @throws Exception\IncorrectTypeException
          */
-        public function intdiv(int|string|ArbitraryInteger $divisor): ArbitraryInteger
-        {
+        public function intdiv(int|string|ArbitraryInteger $divisor
+        ): ArbitraryInteger {
             [$int, $mod] = $this->fullIntdiv($divisor);
 
             return $int;
@@ -543,7 +686,9 @@
                 return [$int, $mod];
             }
             if ($this->lessThan($divisor))
+            {
                 return [new ArbitraryInteger(0), $this];
+            }
 
             // If the divisor is less than Int_max / 256 then
             // the native php intdiv and mod functions can be used.
@@ -562,11 +707,13 @@
                     $chr_obj = self::fromBinary(substr($base_256, $i, 1),
                         $this->isPositive);  // Grab same number of chars from $this
                     $chr = $chr_obj->toInt();
-                    $int_chr = intdiv($chr + $carry * 256,
+                    $int_chr = intdiv($chr + ($carry * 256),
                         $divisor);  // Calculate $int and $mod
-                    $carry = ($chr + $carry * 256) % $divisor;
-                    if ($int !== '' || $int_chr !== 0)
+                    $carry = ($chr + ($carry * 256)) % $divisor;
+                    if (($int !== '') || ($int_chr !== 0))
+                    {
                         $int .= chr($int_chr);
+                    }
                 }
 
                 $int = self::fromBinary($int, $this->isPositive);
@@ -586,11 +733,13 @@
                     $new_int = new ArbitraryInteger(0);
 
                     if ($mod->greaterThan($divisor))
+                    {
                         while ( ! $mod->lessThan($divisor))
                         {
                             $new_int = $new_int->add(1);
                             $mod = $mod->subtract($divisor);
                         }
+                    }
                     $int = $int->leftShift(8)->add($new_int);
                 }
             }
@@ -650,8 +799,8 @@
          * @throws Exception\BadParameterException
          * @throws Exception\IncorrectTypeException
          */
-        public function leftShift(int|string|ArbitraryInteger $bits): ArbitraryInteger
-        {
+        public function leftShift(int|string|ArbitraryInteger $bits
+        ): ArbitraryInteger {
             $bits = self::create($bits);
             $shifted_string = '';
             $length = strlen($this->base256);
@@ -664,8 +813,10 @@
                 $chr = ord($this->base256[$i]);
                 // If $shifted string is empty, don’t add 0x00.
                 $new_value = chr($carry + intdiv($chr << $bits, 256));
-                if ($shifted_string !== "" || $new_value !== chr(0))
+                if (($shifted_string !== "") || ($new_value !== chr(0)))
+                {
                     $shifted_string .= $new_value;
+                }
                 $carry = ($chr << $bits) % 256;
             }
             $shifted_string .= chr($carry);
@@ -696,10 +847,6 @@
             return $int->lessThan($this);
         }
 
-        /**************************************************************************
-         * BITWISE OPERATIONS
-         **************************************************************************/
-
         /**
          * Factorial
          *
@@ -723,13 +870,6 @@
 
             return $result;
         }
-
-        /**************************************************************************
-         * COMPARISON FUNCTIONS
-         *  - equals
-         *  - greaterThan
-         *  - lessThan
-         **************************************************************************/
 
         /**
          * Multiply
@@ -761,20 +901,22 @@
                 for ($j = 1; $j <= $this_len; $j++)
                 {
                     $digit = ord(substr($this->base256, -1 * $j, 1));
-                    $step_product = $digit * $base_digit + $carry;
+                    $step_product = ($digit * $base_digit) + $carry;
                     $mod = $step_product % 256;
                     $carry = intdiv($step_product, 256);
                     $inner_product = chr($mod).$inner_product;
                 }
                 if ($carry > 0)
+                {
                     $inner_product = chr($carry).$inner_product;
+                }
 
                 $inner_product .= str_repeat(chr(0), $i - 1);
                 $inner_obj = self::fromBinary($inner_product, TRUE);
                 $product = $product->add($inner_obj);
             }
 
-            return $this->isPositive ^ $number_obj->isPositive()
+            return ($this->isPositive ^ $number_obj->isPositive())
                 ? $product->negate() : $product;
         }
 
@@ -788,8 +930,8 @@
          * @throws Exception\BadParameterException
          * @throws Exception\IncorrectTypeException
          */
-        public function mod(int|string|ArbitraryInteger $divisor): ArbitraryInteger
-        {
+        public function mod(int|string|ArbitraryInteger $divisor
+        ): ArbitraryInteger {
             [$int, $mod] = $this->fullIntdiv($divisor);
 
             return $mod;
@@ -817,104 +959,28 @@
                 if ($tmp->lessThan(PHP_INT_MAX)
                     && $tmp->greaterThan(PHP_INT_MIN)
                 )
+                {
                     return new Rational(0, 1, $tmp->toInt());
+                }
                 throw new Exception\OutOfBoundsException('Integer is too large to be expressed as a Rational object.');
             }
             if ($exp->equals(0) || $this->equals(1))
+            {
                 return new ArbitraryInteger(1);
+            }
             if ($exp->abs()->equals(1))
+            {
                 return $this;
+            }
 
             [$int, $mod] = $exp->fullIntdiv(2);
             $square = $this->multiply($this)->pow($int);
 
             if ($mod->equals(1))
+            {
                 return $square->multiply($this);
+            }
 
             return $square;
-        }
-
-        public function badRandParameter()
-        {
-        }
-
-        public function incorrectTypeExceptionPrepareParameter()
-        {
-        }
-
-        public function powException()
-        {
-        }
-
-        public function incorrectTypeException()
-        {
-        }
-
-        public function emptyStringException()
-        {
-        }
-
-        public function notEquals()
-        {
-        }
-
-        public function notLessThan()
-        {
-        }
-
-        public function notGreaterThan()
-        {
-        }
-
-        public function isqrtOutOfBoundsError()
-        {
-        }
-
-        public function powRational()
-        {
-        }
-
-        public function fullIntDivLargeDivisor()
-        {
-        }
-
-        public function intDivLargeDivisor()
-        {
-        }
-
-        public function fullIntDivSmallDivisor()
-        {
-        }
-
-        public function intDivAndModSmallDivisor()
-        {
-        }
-
-        public function multiplication()
-        {
-        }
-
-        public function addition()
-        {
-        }
-
-        public function isNotPositive()
-        {
-        }
-
-        public function intToBinary()
-        {
-        }
-
-        public function intToFloat()
-        {
-        }
-
-        public function intToInt()
-        {
-        }
-
-        public function stringToString()
-        {
         }
     }

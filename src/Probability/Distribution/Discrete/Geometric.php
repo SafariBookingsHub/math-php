@@ -33,7 +33,7 @@
          *
          * @var array{"k": string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'k' => '[1,∞)',
             ];
@@ -82,11 +82,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
             $p = $this->p;
@@ -115,11 +111,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
             $p = $this->p;

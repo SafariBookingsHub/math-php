@@ -18,7 +18,9 @@
         public static function tolerance(float|int $tol): void
         {
             if ($tol < 0)
+            {
                 throw new Exception\OutOfBoundsException('Tolerance must be greater than zero.');
+            }
         }
 
         /**
@@ -32,30 +34,32 @@
         public static function interval(float|int $a, float|int $b): void
         {
             if ($a === $b)
+            {
                 throw new Exception\BadDataException('Start point and end point of interval cannot be the same.');
+            }
         }
 
-        public function isSubintervalsMultipleNotMultiple()
+        public static function isSubintervalsMultipleNotMultiple()
         {
         }
 
-        public function isSpacingConstantWhenNotConstant()
+        public static function isSpacingConstantWhenNotConstant()
         {
         }
 
-        public function intervalSamePoints()
+        public static function intervalSamePoints()
         {
         }
 
-        public function intervalNotTheSame()
+        public static function intervalNotTheSame()
         {
         }
 
-        public function toleranceNegative()
+        public static function toleranceNegative()
         {
         }
 
-        public function toleranceNotNegative()
+        public static function toleranceNotNegative()
         {
         }
     }

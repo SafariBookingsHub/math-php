@@ -173,9 +173,7 @@
             try
             {
                 $categorical = new Categorical($k, $probabilities);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
+            } catch (Exception\BadDataException|Exception\BadParameterException $e)
             {
             }
 
@@ -201,8 +199,11 @@
          *
          * @throws       \Exception
          */
-        public function testMode(int $k, array $probabilities, mixed $expectedMode)
-        {
+        public function testMode(
+            int $k,
+            array $probabilities,
+            mixed $expectedMode
+        ) {
             // Given
             $categorical = new Categorical($k, $probabilities);
 

@@ -120,8 +120,8 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
             $R = $A->columnInterchange($nᵢ, $nⱼ);
@@ -137,7 +137,7 @@
         public function testColumnInterchangeExceptionColumnGreaterThanN()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [3, 4, 5],
@@ -166,8 +166,8 @@
             array $expectedMatrix
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expectedMatrix = MatrixFactory::create($expectedMatrix);
+            $A = MatrixFactory::create(A: $A);
+            $expectedMatrix = MatrixFactory::create(A: $expectedMatrix);
 
             // When
             $R = $A->columnExclude($nᵢ);
@@ -183,7 +183,7 @@
         public function testColumnExcludeExceptionColumnDoesNotExist()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
                 [4, 5, 6],

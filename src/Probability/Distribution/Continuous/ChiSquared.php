@@ -33,7 +33,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '[0,∞)',
             ];
@@ -69,30 +69,21 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             $k = $this->k;
 
             // Numerator
-            $x⁽ᵏ／²⁾⁻¹ = $x ** ($k / 2 - 1);
+            $x⁽ᵏ／²⁾⁻¹ = $x ** (($k / 2) - 1);
             $ℯ⁻⁽ˣ／²⁾ = exp(-($x / 2));
 
             // Denominator
             $２ᵏ／² = 2 ** ($k / 2);
-            try
-            {
-                $Γ⟮k／2⟯ = Special::Γ($k / 2);
-            } catch (OutOfBoundsException $e)
-            {
-            }
+            $Γ⟮k／2⟯ = Special::Γ($k / 2);
 
-            return $x⁽ᵏ／²⁾⁻¹ * $ℯ⁻⁽ˣ／²⁾ / ($２ᵏ／² * $Γ⟮k／2⟯);
+            return ($x⁽ᵏ／²⁾⁻¹ * $ℯ⁻⁽ˣ／²⁾) / ($２ᵏ／² * $Γ⟮k／2⟯);
         }
 
         /**
@@ -117,31 +108,17 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             $k = $this->k;
 
             // Numerator
-            try
-            {
-                $γ⟮k／2、x／2⟯ = Special::γ($k / 2, $x / 2);
-            } catch (OutOfBoundsException $e)
-            {
-            }
+            $γ⟮k／2、x／2⟯ = Special::γ($k / 2, $x / 2);
 
             // Denominator
-            try
-            {
-                $Γ⟮k／2⟯ = Special::Γ($k / 2);
-            } catch (OutOfBoundsException $e)
-            {
-            }
+            $Γ⟮k／2⟯ = Special::Γ($k / 2);
 
             return $γ⟮k／2、x／2⟯ / $Γ⟮k／2⟯;
         }
@@ -170,7 +147,7 @@
         public function median(): float
         {
             $k = $this->k;
-            $⟮1 − 2／9k⟯ = 1 - 2 / (9 * $k);
+            $⟮1 − 2／9k⟯ = 1 - (2 / (9 * $k));
 
             return $k * $⟮1 − 2／9k⟯ ** 3;
         }

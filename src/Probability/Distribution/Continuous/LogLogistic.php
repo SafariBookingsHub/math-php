@@ -37,7 +37,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '[0,∞)',
             ];
@@ -59,6 +59,14 @@
             parent::__construct($α, $β);
         }
 
+        public static function varianceNan()
+        {
+        }
+
+        public static function meanNan()
+        {
+        }
+
         /**
          * Probability density function
          *
@@ -76,18 +84,14 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
             $α = $this->α;
             $β = $this->β;
 
-            $⟮β／α⟯⟮x／α⟯ᵝ⁻¹ = $β / $α * ($x / $α) ** ($β - 1);
+            $⟮β／α⟯⟮x／α⟯ᵝ⁻¹ = ($β / $α) * ($x / $α) ** ($β - 1);
             $⟮1 ＋ ⟮x／α⟯ᵝ⟯² = (1 + (($x / $α) ** $β)) ** 2;
 
             return $⟮β／α⟯⟮x／α⟯ᵝ⁻¹ / $⟮1 ＋ ⟮x／α⟯ᵝ⟯²;
@@ -109,11 +113,7 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -141,11 +141,7 @@
             try
             {
                 Support::checkLimits(['p' => '[0,1]'], ['p' => $p]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
 
@@ -171,7 +167,9 @@
             $π = M_PI;
 
             if ($β > 1)
+            {
                 return (($α * $π) / $β) / sin($π / $β);
+            }
 
             return NAN;
         }
@@ -205,7 +203,9 @@
             $β = $this->β;
 
             if ($β <= 1)
+            {
                 return 0;
+            }
 
             return $α * (($β - 1) / ($β + 1)) ** (1 / $β);
         }
@@ -225,7 +225,9 @@
             $β = $this->β;
 
             if ($β <= 2)
+            {
                 return NAN;
+            }
 
             $α² = $α ** 2;
             $β² = $β ** 2;
@@ -233,14 +235,6 @@
             $sin2β = sin($２β);
             $sin²β = sin($β) ** 2;
 
-            return $α² * ($２β / $sin2β - $β² / $sin²β);
-        }
-
-        public function varianceNan()
-        {
-        }
-
-        public function meanNan()
-        {
+            return $α² * (($２β / $sin2β) - ($β² / $sin²β));
         }
     }

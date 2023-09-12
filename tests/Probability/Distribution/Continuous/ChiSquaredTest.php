@@ -163,10 +163,10 @@
         public function testPdf(float $x, int $k, float $expectedPdf)
         {
             // Given
-            $chiSquared = new ChiSquared($k);
+            $chiSquared = new ChiSquared(k: $k);
 
             // When
-            $pdf = $chiSquared->pdf($x);
+            $pdf = $chiSquared->pdf(x: $x);
 
             // Then
             $this->assertEqualsWithDelta($expectedPdf, $pdf, 0.00000001);
@@ -183,10 +183,10 @@
         public function testCdf(float $x, int $k, float $expectedCdf)
         {
             // Given
-            $chiSquared = new ChiSquared($k);
+            $chiSquared = new ChiSquared(k: $k);
 
             // When
-            $cdf = $chiSquared->cdf($x);
+            $cdf = $chiSquared->cdf(x: $x);
 
             // Then
             $this->assertEqualsWithDelta($expectedCdf, $cdf, 0.000001);
@@ -199,7 +199,7 @@
         {
             // Given
             $k = 5;
-            $chiSquared = new ChiSquared($k);
+            $chiSquared = new ChiSquared(k: $k);
 
             // When
             $mean = $chiSquared->mean();
@@ -218,7 +218,7 @@
         public function testMedian(float $k, float $expected)
         {
             // Given
-            $chiSquared = new ChiSquared($k);
+            $chiSquared = new ChiSquared(k: $k);
 
             // When
             $median = $chiSquared->median();
@@ -237,7 +237,7 @@
         public function testMode(float $k, float $expected)
         {
             // Given
-            $chiSquared = new ChiSquared($k);
+            $chiSquared = new ChiSquared(k: $k);
 
             // When
             $mode = $chiSquared->mode();
@@ -256,7 +256,7 @@
         public function testVariance(float $k, float $expected)
         {
             // Given
-            $chiSquared = new ChiSquared($k);
+            $chiSquared = new ChiSquared(k: $k);
 
             // When
             $variance = $chiSquared->variance();

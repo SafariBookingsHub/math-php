@@ -649,14 +649,8 @@
             // When
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -678,10 +672,8 @@
             // When
             try
             {
-                $A = MatrixFactory::createNumeric($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::createNumeric(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException $e)
             {
             }
 
@@ -699,7 +691,7 @@
             // When
             try
             {
-                $A = MatrixFactory::diagonal($A);
+                $A = MatrixFactory::diagonal(D: $A);
             } catch (Exception\MatrixException $e)
             {
             }
@@ -719,14 +711,8 @@
             // When
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -745,20 +731,30 @@
             array $expected
         ) {
             // Given
-            $array_map = array_map(function ($vector) {
-                return new Vector($vector);
-            }, $vectors);
+            $array_map1 = [];
+            foreach ($vectors as $key => $vector)
+            {
+                $array_map1[$key] = new Vector($vector);
+            }
+            $array_map = $array_map1;
             $vectors = $array_map;
 
             // When
             try
             {
-                $A = MatrixFactory::createFromVectors($vectors);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
+                try
+                {
+                    $A = MatrixFactory::createFromVectors(A: $vectors);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
+            } catch (Exception\BadDataException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -776,15 +772,15 @@
         {
             // Given
             $A = [
-                new Vector([1, 2]),
-                new Vector([4, 5, 6]),
+                new Vector(A: [1, 2]),
+                new Vector(A: [4, 5, 6]),
             ];
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A = MatrixFactory::createFromVectors($A);
+            $A = MatrixFactory::createFromVectors(A: $A);
         }
 
         /**
@@ -796,7 +792,7 @@
             // When
             try
             {
-                $A = MatrixFactory::createFunctionMatrix($A);
+                $A = MatrixFactory::createFunctionMatrix(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -815,7 +811,7 @@
             // When
             try
             {
-                $A = MatrixFactory::createFunctionMatrix($A);
+                $A = MatrixFactory::createFunctionMatrix(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -843,7 +839,7 @@
             // When
             try
             {
-                $A = MatrixFactory::createFunctionMatrix($A);
+                $A = MatrixFactory::createFunctionMatrix(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -858,14 +854,8 @@
             // When
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -895,7 +885,7 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $M = MatrixFactory::create($A);
+            $M = MatrixFactory::create(A: $A);
         }
 
         /**
@@ -911,7 +901,7 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $M = MatrixFactory::create($A);
+            $M = MatrixFactory::create(A: $A);
         }
 
         /**
@@ -930,7 +920,7 @@
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            MatrixFactory::create($A);
+            MatrixFactory::create(A: $A);
         }
 
         /**
@@ -945,10 +935,10 @@
         public function testIdentity(int $n, array $R)
         {
             // Given
-            $R = new NumericSquareMatrix($R);
+            $R = new NumericSquareMatrix(A: $R);
 
             // When
-            $I = MatrixFactory::identity($n);
+            $I = MatrixFactory::identity(n: $n);
 
             // Then
             $this->assertEquals($R, $I);
@@ -965,8 +955,8 @@
          */
         public function testDownshiftPermutation(int $n, array $R)
         {
-            $R = new NumericSquareMatrix($R);
-            $this->assertEquals($R, MatrixFactory::downshiftPermutation($n));
+            $R = new NumericSquareMatrix(A: $R);
+            $this->assertEquals($R, MatrixFactory::downshiftPermutation(n: $n));
         }
 
         /**
@@ -980,8 +970,8 @@
          */
         public function testUpshiftPermutation(int $n, array $R)
         {
-            $R = new NumericSquareMatrix($R);
-            $this->assertEquals($R, MatrixFactory::upshiftPermutation($n));
+            $R = new NumericSquareMatrix(A: $R);
+            $this->assertEquals($R, MatrixFactory::upshiftPermutation(n: $n));
         }
 
         /**
@@ -997,7 +987,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            MatrixFactory::identity($n);
+            MatrixFactory::identity(n: $n);
         }
 
         /**
@@ -1012,10 +1002,10 @@
         public function testExchange(int $n, array $R)
         {
             // Given
-            $R = new NumericSquareMatrix($R);
+            $R = new NumericSquareMatrix(A: $R);
 
             // When
-            $E = MatrixFactory::exchange($n);
+            $E = MatrixFactory::exchange(n: $n);
 
             // Then
             $this->assertEquals($R, $E);
@@ -1034,7 +1024,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            MatrixFactory::exchange($n);
+            MatrixFactory::exchange(n: $n);
         }
 
         /**
@@ -1050,10 +1040,10 @@
         public function testZero(int $m, int $n, array $R)
         {
             // Given
-            $R = MatrixFactory::create($R);
+            $R = MatrixFactory::create(A: $R);
 
             // When
-            $Z = MatrixFactory::zero($m, $n);
+            $Z = MatrixFactory::zero(m: $m, n: $n);
 
             // Then
             $this->assertEquals($R, $Z);
@@ -1073,7 +1063,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            MatrixFactory::zero($m, $n);
+            MatrixFactory::zero(m: $m, n: $n);
         }
 
         /**
@@ -1085,26 +1075,16 @@
             // Given
             try
             {
-                $R = MatrixFactory::create($R);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $R = MatrixFactory::create(A: $R);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
             // When
             try
             {
-                $M = MatrixFactory::one($m, $n);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            } catch (Exception\MathException $e)
+                $M = MatrixFactory::one(m: $m, n: $n);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -1119,7 +1099,7 @@
         public function testOneExceptionRowsLessThanOne()
         {
             $this->expectException(Exception\OutOfBoundsException::class);
-            MatrixFactory::one(0, 2);
+            MatrixFactory::one(m: 0, n: 2);
         }
 
         /**
@@ -1131,26 +1111,16 @@
             // Given
             try
             {
-                $R = MatrixFactory::create($R);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $R = MatrixFactory::create(A: $R);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
             // When
             try
             {
-                $A = MatrixFactory::eye($m, $n, $k, $x);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::eye(m: $m, n: $n, k: $k, x: $x);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -1172,12 +1142,8 @@
             $this->expectException(Exception\OutOfBoundsException::class);
             try
             {
-                $A = MatrixFactory::eye($m, $n, $k, $x);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::eye(m: $m, n: $n, k: $k, x: $x);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -1194,10 +1160,10 @@
         public function testHilbertMatrix(int $n, array $H)
         {
             // Given
-            $H = MatrixFactory::create($H);
+            $H = MatrixFactory::create(A: $H);
 
             // When
-            $sut = MatrixFactory::hilbert($n);
+            $sut = MatrixFactory::hilbert(n: $n);
 
             // Then
             $this->assertEquals($H, $sut);
@@ -1216,7 +1182,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            MatrixFactory::hilbert(-1);
+            MatrixFactory::hilbert(n: -1);
         }
 
         /**
@@ -1227,20 +1193,24 @@
         {
             // Given
             for ($m = 1; $m < 5; $m++)
-                for ($n = 1; $n < 5; $n++)
+            {
                 {
-                    // When
-                    $A = MatrixFactory::random($m, $n);
+                    for ($n = 1; $n < 5; $n++)
+                    {
+                        // When
+                        $A = MatrixFactory::random($m, $n);
 
-                    // Then
-                    $this->assertEquals($m, $A->getM());
-                    $this->assertEquals($n, $A->getN());
+                        // Then
+                        $this->assertEquals($m, $A->getM());
+                        $this->assertEquals($n, $A->getN());
 
-                    // And
-                    $A->walk(function ($element) {
-                        $this->assertTrue(is_int($element));
-                    });
+                        // And
+                        $A->walk(function ($element) {
+                            $this->assertTrue(is_int($element));
+                        });
+                    }
                 }
+            }
         }
 
         /**
@@ -1254,14 +1224,8 @@
             // When
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -1281,14 +1245,8 @@
             // When
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -1310,7 +1268,7 @@
             // Given
             try
             {
-                $expected = new NumericMatrix($expected);
+                $expected = new NumericMatrix(A: $expected);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -1318,7 +1276,7 @@
             // When
             try
             {
-                $A = MatrixFactory::createFromColumnVector($V);
+                $A = MatrixFactory::createFromColumnVector(A: $V);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -1347,7 +1305,7 @@
             // When
             try
             {
-                $R = MatrixFactory::createFromColumnVector($A);
+                $R = MatrixFactory::createFromColumnVector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -1365,9 +1323,9 @@
         public function testCreateFromRowVector(array $V, array $expected)
         {
             // Given
-            $expected = new NumericMatrix($expected);
+            $expected = new NumericMatrix(A: $expected);
 
-            $A = MatrixFactory::createFromRowVector($V);
+            $A = MatrixFactory::createFromRowVector(A: $V);
 
             // Then
             $this->assertInstanceOf(NumericMatrix::class, $A);
@@ -1393,7 +1351,7 @@
             // When
             try
             {
-                $R = MatrixFactory::createFromRowVector($A);
+                $R = MatrixFactory::createFromRowVector(A: $A);
             } catch (Exception\BadDataException $e)
             {
             }
@@ -1410,14 +1368,8 @@
             // When
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 

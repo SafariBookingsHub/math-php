@@ -4,11 +4,11 @@
 
     class GivensMatrix {
 
-        public function givensMatrix()
+        public static function givensMatrix()
         {
         }
 
-        public function exception()
+        public static function exception()
         {
         }
     }

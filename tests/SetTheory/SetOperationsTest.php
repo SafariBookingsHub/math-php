@@ -9,7 +9,6 @@
     use PHPUnit\Framework\TestCase;
     use StdClass;
 
-    use function get_class;
     use function is_array;
     use function is_resource;
 
@@ -1470,6 +1469,7 @@
 
             $objects = 0;
             foreach ($set as $key => $value)
+            {
                 if ($value instanceof Vector)
                 {
                     $objects++;
@@ -1478,6 +1478,7 @@
                     $this->assertEquals($vector_key, $key);
                     $this->assertEquals($vector, $value);
                 }
+            }
 
             // There should have only been one vector object.
             $this->assertEquals(1, $objects);
@@ -1503,6 +1504,7 @@
 
             $arrays = 0;
             foreach ($set as $key => $value)
+            {
                 if (is_array($value))
                 {
                     $arrays++;
@@ -1512,6 +1514,7 @@
                     $this->assertEquals(1, $value[0]);
                     $this->assertEquals(1, $value[0]);
                 }
+            }
 
             // There should have only been one array.
             $this->assertEquals(1, $arrays);
@@ -1538,11 +1541,13 @@
 
             $arrays = 0;
             foreach ($set as $key => $value)
+            {
                 if (is_array($value))
                 {
                     $arrays++;
                     $this->assertEquals(3, count($value));
                 }
+            }
 
             // There should have been 2 arrays.
             $this->assertEquals(2, $arrays);
@@ -1568,6 +1573,7 @@
 
             $resources = 0;
             foreach ($set as $key => $value)
+            {
                 if (is_resource($value))
                 {
                     $resources++;
@@ -1575,6 +1581,7 @@
                     $this->assertEquals($vector_key, $key);
                     $this->assertEquals($fh, $value);
                 }
+            }
 
             // There should have been one resource
             $this->assertEquals(1, $resources);
@@ -1750,13 +1757,21 @@
             $this->assertEquals($expected, $union);
             $this->assertEquals(count($A∪B), count($union));
             foreach ($A∪B as $member)
+            {
                 $this->assertArrayHasKey("$member", $union_array);
+            }
             foreach ($A∪B as $_ => $value)
+            {
                 if ($value instanceof Set)
-                    $this->assertEquals($value, $union_array["$value"]); else
+                {
+                    {
+                        $this->assertEquals($value, $union_array["$value"]);
+                    }
+                } else
                 {
                     $this->assertArrayHasKey((string)$value, $union_array);
                 }
+            }
         }
 
         /**
@@ -1785,13 +1800,21 @@
             $this->assertEquals($expected, $union);
             $this->assertEquals(count($A∪B∪C), count($union));
             foreach ($A∪B∪C as $member)
+            {
                 $this->assertArrayHasKey("$member", $union_array);
+            }
             foreach ($A∪B∪C as $_ => $value)
+            {
                 if ($value instanceof Set)
-                    $this->assertEquals($value, $union_array["$value"]); else
+                {
+                    {
+                        $this->assertEquals($value, $union_array["$value"]);
+                    }
+                } else
                 {
                     $this->assertArrayHasKey((string)$value, $union_array);
                 }
+            }
         }
 
         public function testUnionWithArrays()
@@ -1906,11 +1929,18 @@
                 $this->assertContains($member, $B);
             }
             foreach ($A∩B as $_ => $value)
+            {
                 if ($value instanceof Set)
-                    $this->assertEquals($value, $intersection_array["$value"]); else
+                {
+                    {
+                        $this->assertEquals($value,
+                            $intersection_array["$value"]);
+                    }
+                } else
                 {
                     $this->assertContains($value, $intersection_array);
                 }
+            }
         }
 
         /**
@@ -1949,11 +1979,18 @@
                 $this->assertContains($member, $C);
             }
             foreach ($A∩B∩C as $_ => $value)
+            {
                 if ($value instanceof Set)
-                    $this->assertEquals($value, $intersection_array["$value"]); else
+                {
+                    {
+                        $this->assertEquals($value,
+                            $intersection_array["$value"]);
+                    }
+                } else
                 {
                     $this->assertContains($value, $intersection_array);
                 }
+            }
         }
 
         public function testIntersectWithArrays()
@@ -2070,11 +2107,18 @@
                 $this->assertNotContains("$member", $B);
             }
             foreach ($diff as $_ => $value)
+            {
                 if ($value instanceof Set)
-                    $this->assertEquals($value, $difference_array["$value"]); else
+                {
+                    {
+                        $this->assertEquals($value,
+                            $difference_array["$value"]);
+                    }
+                } else
                 {
                     $this->assertContains($value, $difference_array);
                 }
+            }
         }
 
         /**
@@ -2113,11 +2157,18 @@
                 $this->assertNotContains("$member", $C);
             }
             foreach ($diff as $_ => $value)
+            {
                 if ($value instanceof Set)
-                    $this->assertEquals($value, $difference_array["$value"]); else
+                {
+                    {
+                        $this->assertEquals($value,
+                            $difference_array["$value"]);
+                    }
+                } else
                 {
                     $this->assertContains($value, $difference_array);
                 }
+            }
         }
 
         public function testDifferenceWithArrays()
@@ -2230,13 +2281,22 @@
             $this->assertEquals($expected, $difference);
             $this->assertEquals(count($diff), count($difference));
             foreach ($diff as $member)
+            {
                 $this->assertArrayHasKey("$member", $difference_array);
+            }
             foreach ($diff as $_ => $value)
+            {
                 if ($value instanceof Set)
-                    $this->assertEquals($value, $difference_array["$value"]); else
+                {
+                    {
+                        $this->assertEquals($value,
+                            $difference_array["$value"]);
+                    }
+                } else
                 {
                     $this->assertArrayHasKey((string)$value, $difference_array);
                 }
+            }
         }
 
         public function testSymmetricDifferenceWithArrays()

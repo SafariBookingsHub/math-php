@@ -882,15 +882,19 @@
         {
             // Given
             foreach (range(0, 20) as $a)
-                foreach (range(1, 20) as $n)
+            {
                 {
-                    // When
-                    $remainder = $a % $n;
-                    $modulo = Arithmetic::modulo($a, $n);
+                    foreach (range(1, 20) as $n)
+                    {
+                        // When
+                        $remainder = $a % $n;
+                        $modulo = Arithmetic::modulo($a, $n);
 
-                    // Then
-                    $this->assertEquals($remainder, $modulo);
+                        // Then
+                        $this->assertEquals($remainder, $modulo);
+                    }
                 }
+            }
         }
 
         /**

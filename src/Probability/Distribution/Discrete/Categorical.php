@@ -45,21 +45,51 @@
         {
             // Must have at least one category
             if ($k <= 0)
+            {
                 throw new Exception\BadParameterException("k (number of categories) must be > 0. Given $k");
+            }
 
             // Must have k number of probabilities
             if (count($probabilities) != $k)
+            {
                 throw new Exception\BadDataException("Must have $k probabilities. Given "
                     .count($probabilities));
+            }
 
             // Probabilities must add up to 1
             if (round(array_sum($probabilities), 1) != 1)
+            {
                 throw new Exception\BadDataException('Probabilities do not add up to 1.');
+            }
 
             $this->k = $k;
             $this->probabilities = $probabilities;
 
             parent::__construct();
+        }
+
+        public static function getException()
+        {
+        }
+
+        public static function get()
+        {
+        }
+
+        public static function pmfException()
+        {
+        }
+
+        public static function badProbabilities()
+        {
+        }
+
+        public static function badCount()
+        {
+        }
+
+        public static function badK()
+        {
         }
 
         /**
@@ -76,7 +106,9 @@
         public function pmf(float|int $x): float
         {
             if ( ! isset($this->probabilities[$x]))
+            {
                 throw new Exception\BadDataException("$x is not a valid category");
+            }
 
             return $this->probabilities[$x];
         }
@@ -94,11 +126,13 @@
             $pmax = 0;
 
             foreach ($this->probabilities as $i => $pᵢ)
+            {
                 if ($pᵢ > $pmax)
                 {
                     $pmax = $pᵢ;
                     $category = $i;
                 }
+            }
 
             return $category;
         }
@@ -114,34 +148,13 @@
          */
         public function __get(string $name)
         {
-            return match ($name)
+            switch ($name)
             {
-                'k', 'probabilities' => $this->{$name},
-                default => throw new Exception\BadDataException("$name is not a valid gettable parameter"),
-            };
-        }
-
-        public function getException()
-        {
-        }
-
-        public function get()
-        {
-        }
-
-        public function pmfException()
-        {
-        }
-
-        public function badProbabilities()
-        {
-        }
-
-        public function badCount()
-        {
-        }
-
-        public function badK()
-        {
+                case 'k':
+                case 'probabilities':
+                    return $this->{$name};
+                default:
+                    return throw new Exception\BadDataException("$name is not a valid gettable parameter");
+            }
         }
     }

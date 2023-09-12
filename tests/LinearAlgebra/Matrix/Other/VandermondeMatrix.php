@@ -4,7 +4,7 @@
 
     class VandermondeMatrix {
 
-        public function constructor()
+        public static function constructor()
         {
         }
     }

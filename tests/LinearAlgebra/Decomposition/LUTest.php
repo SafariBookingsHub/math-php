@@ -382,10 +382,10 @@
             array $P
         ) {
             // Given
-            $A = MatrixFactory::create(A: $A);
-            $L = MatrixFactory::create(A: $L);
-            $U = MatrixFactory::create(A: $U);
-            $P = MatrixFactory::create(A: $P);
+            $A = MatrixFactory::create($A);
+            $L = MatrixFactory::create($L);
+            $U = MatrixFactory::create($U);
+            $P = MatrixFactory::create($P);
 
             // When
             $LU = $A->luDecomposition();
@@ -407,7 +407,7 @@
         public function testLUDecompositionPaEqualsLu(array $A)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
+            $A = MatrixFactory::create($A);
 
             // When
             $LU = $A->luDecomposition();
@@ -430,7 +430,7 @@
         public function testLUDecompositionLAndUProperties(array $A)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
+            $A = MatrixFactory::create($A);
 
             // When
             $LU = $A->luDecomposition();
@@ -453,11 +453,11 @@
         public function testSolve(array $A, array $b, array $expected)
         {
             // Given
-            $A = MatrixFactory::create(A: $A);
+            $A = MatrixFactory::create($A);
             $LU = $A->luDecomposition();
 
             // And
-            $expected = new Vector(A: $expected);
+            $expected = new Vector($expected);
 
             // When
             $x = $LU->solve(b: $b);
@@ -475,21 +475,21 @@
         public function testLuDecompositionSmallPivots()
         {
             // Given
-            $A = MatrixFactory::create(A: [
+            $A = MatrixFactory::create([
                 [10e-20, 1],
                 [1, 2],
             ]);
 
             // And
-            $L = MatrixFactory::create(A: [
+            $L = MatrixFactory::create([
                 [1, 0],
                 [1e-19, 1],
             ]);
-            $U = MatrixFactory::create(A: [
+            $U = MatrixFactory::create([
                 [1, 2],
                 [0, 1],
             ]);
-            $P = MatrixFactory::create(A: [
+            $P = MatrixFactory::create([
                 [0, 1],
                 [1, 0],
             ]);
@@ -520,7 +520,7 @@
         public function testLUDecompositionExceptionNotSquare()
         {
             // Given
-            $A = MatrixFactory::create(A: [
+            $A = MatrixFactory::create([
                 [1, 2, 3],
                 [2, 3, 4],
             ]);
@@ -539,7 +539,7 @@
         public function testLUDecompositionInvalidProperty()
         {
             // Given
-            $A = MatrixFactory::create(A: [
+            $A = MatrixFactory::create([
                 [5, 3, 4, 1],
                 [5, 6, 4, 3],
                 [7, 6, 5, 3],
@@ -561,7 +561,7 @@
         public function testLUDecompositionSolveIncorrectTypeError()
         {
             // Given
-            $A = MatrixFactory::create(A: [
+            $A = MatrixFactory::create([
                 [5, 3, 4, 1],
                 [5, 6, 4, 3],
                 [7, 6, 5, 3],

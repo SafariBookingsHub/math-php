@@ -2,8 +2,6 @@
 
     namespace MathPHP\NumericalAnalysis\RootFinding;
 
-    use MathPHP\Exception;
-
     use function abs;
 
     use const NAN;
@@ -28,9 +26,9 @@
          * @param int       $position        Which element in the $args array will be changed; also serves as initial guess
          * @param int       $iterations
          *
-         * @return float
+         * @return float|int
          *
-         * @throws Exception\OutOfBoundsException if the tolerance is not valid
+         * @throws \MathPHP\Exception\OutOfBoundsException if the tolerance is not valid
          */
         public static function solve(
             callable $function,
@@ -58,55 +56,63 @@
                 $slope = ($y_at_xplusdelx - $y) / $tol;
                 $del_y = $target - $y;
                 if (abs($slope) < $tol)
-                    return NAN;
+                {
+                    {
+                        return NAN;
+                    }
+                }
                 $guess += $del_y / $slope;
                 $dif = abs($del_y);
                 $i++;
-            } while ($dif > $tol && $i < $iterations);
+            } while (($dif > $tol) && ($i < $iterations));
 
             if ($dif > $tol)
-                return NAN;
+            {
+                {
+                    return NAN;
+                }
+            }
 
             return $guess;
         }
 
-        public function noSolutionCubeRootX()
+        public static function noSolutionCubeRootX()
         {
         }
 
-        public function newtonsMethodNoRealSolutionsNAN()
+        public static function newtonsMethodNoRealSolutionsNAN()
         {
         }
 
-        public function newtonsMethodNearZeroSlopeNAN()
+        public static function newtonsMethodNearZeroSlopeNAN()
         {
         }
 
-        public function newtonsMethodExceptionNegativeTolerance()
+        public static function newtonsMethodExceptionNegativeTolerance()
         {
         }
 
-        public function cosXEqualsX()
+        public static function cosXEqualsX()
         {
         }
 
-        public function cosXSubtractTwoX()
+        public static function cosXSubtractTwoX()
         {
         }
 
-        public function XSquaredSubtractFive()
+        public static function XSquaredSubtractFive()
         {
         }
 
-        public function XCubedSubtractXPlusOne()
+        public static function XCubedSubtractXPlusOne()
         {
         }
 
-        public function solvePolynomialWithFourRootsUsingPolynomial()
+        public static function solvePolynomialWithFourRootsUsingPolynomial()
         {
         }
 
-        public function solvePolynomialWithFourRootsUsingClosure()
+        public static function solvePolynomialWithFourRootsUsingClosure()
         {
         }
     }

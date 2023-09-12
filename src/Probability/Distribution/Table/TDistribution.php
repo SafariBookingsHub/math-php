@@ -2145,9 +2145,13 @@
             string $cl
         ): float {
             if ( ! isset(self::ONE_SIDED_CONFIDENCE_LEVEL[$ν]))
+            {
                 throw new Exception\BadDataException("Degrees of freedom $ν is not in the t table.");
+            }
             if ( ! isset(self::ONE_SIDED_CONFIDENCE_LEVEL[$ν][$cl]))
+            {
                 throw new Exception\BadDataException("Confidence level percentage $cl is not in the t table.");
+            }
 
             return self::ONE_SIDED_CONFIDENCE_LEVEL[$ν][$cl];
         }
@@ -2167,9 +2171,13 @@
             string $cl
         ): float {
             if ( ! isset(self::TWO_SIDED_CONFIDENCE_LEVEL[$ν]))
+            {
                 throw new Exception\BadDataException("Degrees of freedom $ν is not in the t table.");
+            }
             if ( ! isset(self::TWO_SIDED_CONFIDENCE_LEVEL[$ν][$cl]))
+            {
                 throw new Exception\BadDataException("Confidence level percentage $cl is not in the t table.");
+            }
 
             return self::TWO_SIDED_CONFIDENCE_LEVEL[$ν][$cl];
         }
@@ -2189,9 +2197,13 @@
             string $α
         ): float {
             if ( ! isset(self::ONE_SIDED_ALPHA[$ν]))
+            {
                 throw new Exception\BadDataException("Degrees of freedom $ν is not in the t table.");
+            }
             if ( ! isset(self::ONE_SIDED_ALPHA[$ν][$α]))
+            {
                 throw new Exception\BadDataException("Alpha $α is not in the t table.");
+            }
 
             return self::ONE_SIDED_ALPHA[$ν][$α];
         }
@@ -2211,9 +2223,13 @@
             string $α
         ): float {
             if ( ! isset(self::TWO_SIDED_ALPHA[$ν]))
+            {
                 throw new Exception\BadDataException("Degrees of freedom $ν is not in the t table.");
+            }
             if ( ! isset(self::TWO_SIDED_ALPHA[$ν][$α]))
+            {
                 throw new Exception\BadDataException("Alpha $α is not in the t table.");
+            }
 
             return self::TWO_SIDED_ALPHA[$ν][$α];
         }

@@ -477,8 +477,7 @@
         {
             /** @var array<string, array<string, int|float>> $array_map */
             $array_map = [];
-            foreach (self::DATA as $ignored => {
-                array $data)}
+            foreach (self::DATA as $ignored => array $data)
 
             return $array_map;
         }
@@ -630,67 +629,67 @@
             return array_keys(self::DATA);
         }
 
-        public function numberOfCarbs()
+        public static function numberOfCarbs()
         {
         }
 
-        public function numberOfgears()
+        public static function numberOfgears()
         {
         }
 
-        public function numberOfAms()
+        public static function numberOfAms()
         {
         }
 
-        public function numberOfVss()
+        public static function numberOfVss()
         {
         }
 
-        public function numberOfQsecs()
+        public static function numberOfQsecs()
         {
         }
 
-        public function numberOfWts()
+        public static function numberOfWts()
         {
         }
 
-        public function numberOfDrats()
+        public static function numberOfDrats()
         {
         }
 
-        public function numberOfHps()
+        public static function numberOfHps()
         {
         }
 
-        public function numberOfDisps()
+        public static function numberOfDisps()
         {
         }
 
-        public function numberOfCyl()
+        public static function numberOfCyl()
         {
         }
 
-        public function numberOfMpgs()
+        public static function numberOfMpgs()
         {
         }
 
-        public function labeledData()
+        public static function labeledData()
         {
         }
 
-        public function modelNames()
+        public static function modelNames()
         {
         }
 
-        public function numberOfModels()
+        public static function numberOfModels()
         {
         }
 
-        public function dataHas11Variables()
+        public static function dataHas11Variables()
         {
         }
 
-        public function dataHas32Observations()
+        public static function dataHas32Observations()
         {
         }
     }

@@ -19,11 +19,13 @@
     class TheilSen extends ParametricRegression {
         use Models\LinearModel;
 
-        /** @var float */
         protected float $m;
 
-        /** @var float */
         protected float $b;
+
+        public static function constructor()
+        {
+        }
 
         /**
          * Calculate the regression parameters using the Theil-Sen method
@@ -42,18 +44,24 @@
             $slopes = [];
             $n = count($this->points);
             for ($i = 0; $i < $n; $i++)
-                for ($j = $i + 1; $j < $n; $j++)
+            {
                 {
-                    $pointi = $this->points[$i];
-                    $pointj = $this->points[$j];
-                    if ($pointj[0] != $pointi[0])
-                        $slopes[] = ($pointj[1] - $pointi[1]) / ($pointj[0]
-                                - $pointi[0]);
+                    for ($j = $i + 1; $j < $n; $j++)
+                    {
+                        $pointi = $this->points[$i];
+                        $pointj = $this->points[$j];
+                        if ($pointj[0] != $pointi[0])
+                        {
+                            $slopes[] = ($pointj[1] - $pointi[1]) / ($pointj[0]
+                                    - $pointi[0]);
+                        }
+                    }
                 }
+            }
 
             $this->m = Average::median($slopes);
-            $this->b = Average::median($this->ys) - $this->m
-                    * Average::median($this->xs);
+            $this->b = Average::median($this->ys) - ($this->m
+                    * Average::median($this->xs));
 
             $this->parameters = [$this->b, $this->m];
         }
@@ -71,31 +79,27 @@
             return $this->evaluateModel($x, $this->parameters);
         }
 
-        public function getSampleSize()
+        public function getSampleSize(): int
         {
         }
 
-        public function getParameters()
+        public function getParameters(): array
         {
         }
 
-        public function getEquation()
+        public function getEquation(): string
         {
         }
 
-        public function getYs()
+        public function getYs(): array
         {
         }
 
-        public function getXs()
+        public function getXs(): array
         {
         }
 
-        public function getPoints()
-        {
-        }
-
-        public function constructor()
+        public function getPoints(): array
         {
         }
     }

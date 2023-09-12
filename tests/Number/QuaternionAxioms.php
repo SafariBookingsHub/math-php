@@ -4,15 +4,15 @@
 
     class QuaternionAxioms {
 
-        public function additiveInverse()
+        public static function additiveInverse()
         {
         }
 
-        public function multiplicativeIdentity()
+        public static function multiplicativeIdentity()
         {
         }
 
-        public function additiveIdentity()
+        public static function additiveIdentity()
         {
         }
     }

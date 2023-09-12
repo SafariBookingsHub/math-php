@@ -32,9 +32,24 @@
         {
             // Probabilities must add up to 1
             if (round(array_sum($probabilities), 1) != 1)
+            {
                 throw new Exception\BadDataException('Probabilities do not add up to 1.');
+            }
 
             $this->probabilities = $probabilities;
+        }
+
+        public static function PMFExceptionProbabilitiesDoNotAddUpToOne()
+        {
+        }
+
+        public static function pmfExceptionFrequenciesAreNotAllIntegers()
+        {
+        }
+
+        public static function pmfExceptionCountFrequenciesAndProbabilitiesDoNotMatch(
+        )
+        {
         }
 
         /**
@@ -56,10 +71,16 @@
         {
             // Must have a probability for each frequency
             if (count($frequencies) !== count($this->probabilities))
+            {
                 throw new Exception\BadDataException('Number of frequencies does not match number of probabilities.');
+            }
             foreach ($frequencies as $frequency)
+            {
                 if ( ! is_int($frequency))
+                {
                     throw new Exception\BadDataException("Frequencies must be integers. $frequency is not an int.");
+                }
+            }
 
             /** @var int $n */
             $n = array_sum($frequencies);
@@ -70,10 +91,9 @@
             {
             }
 
-            $array_map = [];
-            foreach ($frequencies as $key => $value)
-                $array_map[$key]
-                    = MathPHP\Probability\Combinatorics::factorial($value);
+            $array_map = array_map(function ($value) {
+                return MathPHP\Probability\Combinatorics::factorial($value);
+            }, $frequencies);
             $x₁！⋯xk！ = array_product($array_map);
 
             $p₁ˣ¹⋯pkˣᵏ = array_product(array_map(
@@ -82,18 +102,6 @@
                 $this->probabilities
             ));
 
-            return $n！ / $x₁！⋯xk！ * $p₁ˣ¹⋯pkˣᵏ;
-        }
-
-        public function PMFExceptionProbabilitiesDoNotAddUpToOne()
-        {
-        }
-
-        public function pmfExceptionFrequenciesAreNotAllIntegers()
-        {
-        }
-
-        public function pmfExceptionCountFrequenciesAndProbabilitiesDoNotMatch()
-        {
+            return ($n！ / $x₁！⋯xk！) * $p₁ˣ¹⋯pkˣᵏ;
         }
     }

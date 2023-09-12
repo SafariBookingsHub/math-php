@@ -4,19 +4,21 @@
 
     use MathPHP\Exception;
     use MathPHP\Functions\Map\Multi;
+    use MathPHP\LinearAlgebra\ComplexMatrix;
+    use MathPHP\LinearAlgebra\Matrix;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\LinearAlgebra\NumericMatrix;
+    use MathPHP\LinearAlgebra\ObjectMatrix;
+    use MathPHP\LinearAlgebra\ObjectSquareMatrix;
     use MathPHP\SampleData;
     use MathPHP\SampleData\MtCars;
     use MathPHP\Statistics\Multivariate\PCA;
     use PHPUnit\Framework\TestCase;
 
     class CenterTrueScaleFalseTest extends TestCase {
-        /** @var PCA */
         private static PCA $pca;
 
-        /** @var NumericMatrix */
-        private static \MathPHP\LinearAlgebra\ComplexMatrix|NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|\MathPHP\LinearAlgebra\Matrix $matrix;
+        private static ComplexMatrix|NumericMatrix|ObjectSquareMatrix|ObjectMatrix|Matrix $matrix;
 
         /**
          * R code for expected values:
@@ -213,9 +215,12 @@
             $quotiant = Multi::divide($expected[1], $load_array[1]);
 
             // Convert to exactly one or negative one. Cannot be zero.
-            $array_map = array_map(function ($x) {
-                return $x <=> 0;
-            }, $quotiant);
+            $array_map1 = [];
+            foreach ($quotiant as $key => $x)
+            {
+                $array_map1[$key] = $x <=> 0;
+            }
+            $array_map = $array_map1;
             $signum = $array_map;
             $sign_change = MatrixFactory::diagonal($signum);
 
@@ -604,9 +609,12 @@
             $quotiant = Multi::divide($expected[1], $score_array[1]);
 
             // Convert to exactly one or negative one. Cannot be zero.
-            $array_map = array_map(function ($x) {
-                return $x <=> 0;
-            }, $quotiant);
+            $array_map1 = [];
+            foreach ($quotiant as $key => $x)
+            {
+                $array_map1[$key] = $x <=> 0;
+            }
+            $array_map = $array_map1;
             $signum = $array_map;
             $signature = MatrixFactory::diagonal($signum);
 

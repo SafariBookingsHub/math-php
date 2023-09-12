@@ -9,7 +9,8 @@
     use Traversable;
 
     class IterZipMixedTest extends TestCase {
-        #[Pure] public static function dataProviderForZipThreeIterablesSameSize(): array
+        #[Pure] public static function dataProviderForZipThreeIterablesSameSize(
+        ): array
         {
             return [
                 [
@@ -124,7 +125,9 @@
                 Iter::zip($array, $iter, $traversable) as [$value1, $value2,
                 $value3]
             )
+            {
                 $result[] = [$value1, $value2, $value3];
+            }
 
             // Then
             $this->assertEquals($expected, $result);
@@ -153,7 +156,9 @@
                 Iter::zip($array, $iter, $traversable) as [$value1, $value2,
                 $value3]
             )
+            {
                 $result[] = [$value1, $value2, $value3];
+            }
 
             // Then
             $this->assertEquals($expected, $result);

@@ -32,7 +32,7 @@
          *
          * @var array{x: string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '(-∞,∞)',
             ];
@@ -52,6 +52,10 @@
         public function __construct(float $k, float $λ)
         {
             parent::__construct($k, $λ);
+        }
+
+        public static function inverseOfCdf()
+        {
         }
 
         /**
@@ -74,15 +78,13 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
             if ($x < 0)
+            {
                 return 0;
+            }
 
             $k = $this->k;
             $λ = $this->λ;
@@ -111,15 +113,13 @@
             try
             {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
             if ($x < 0)
+            {
                 return 0;
+            }
 
             $k = $this->k;
             $λ = $this->λ;
@@ -143,11 +143,7 @@
             try
             {
                 Support::checkLimits(['p' => '[0,1]'], ['p' => $p]);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
             $k = $this->k;
@@ -170,10 +166,8 @@
 
             try
             {
-                return $λ * Special::gamma(1 + 1 / $k);
-            } catch (NanException $e)
-            {
-            } catch (OutOfBoundsException $e)
+                return $λ * Special::gamma(1 + (1 / $k));
+            } catch (NanException|OutOfBoundsException $e)
             {
             }
         }
@@ -212,18 +206,16 @@
             $λ = $this->λ;
 
             if ($k <= 1)
+            {
                 return 0;
+            }
 
             $⟮⟮k − 1⟯／k⟯¹ᐟᵏ = (($k - 1) / $k) ** (1 / $k);
 
             return $λ * $⟮⟮k − 1⟯／k⟯¹ᐟᵏ;
         }
 
-        public function rand()
-        {
-        }
-
-        public function inverseOfCdf()
+        public function rand(): float|int
         {
         }
     }

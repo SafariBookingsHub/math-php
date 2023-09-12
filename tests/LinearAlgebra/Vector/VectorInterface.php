@@ -4,39 +4,39 @@
 
     class VectorInterface {
 
-        public function iteratorKeys()
+        public static function iteratorKeys()
         {
         }
 
-        public function iteration()
+        public static function iteration()
         {
         }
 
-        public function jsonSerializable()
+        public static function jsonSerializable()
         {
         }
 
-        public function countableInterface()
+        public static function countableInterface()
         {
         }
 
-        public function arrayAccessOffsetUnsetException()
+        public static function arrayAccessOffsetUnsetException()
         {
         }
 
-        public function arrayAccessOffsetExists()
+        public static function arrayAccessOffsetExists()
         {
         }
 
-        public function arrayAccessInterfaceOffsetSet()
+        public static function arrayAccessInterfaceOffsetSet()
         {
         }
 
-        public function arrayAccessInterfaceOffsetGet()
+        public static function arrayAccessInterfaceOffsetGet()
         {
         }
 
-        public function interfaces()
+        public static function interfaces()
         {
         }
     }

@@ -269,14 +269,8 @@
             // Given
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (BadDataException|MathException|MatrixException|IncorrectTypeException $e)
             {
             }
 
@@ -296,14 +290,8 @@
             // Given
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (BadDataException|MathException|MatrixException|IncorrectTypeException $e)
             {
             }
 
@@ -323,14 +311,8 @@
             // Given
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (BadDataException|MathException|MatrixException|IncorrectTypeException $e)
             {
             }
 
@@ -350,14 +332,8 @@
             // Given
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (BadDataException $e)
-            {
-            } catch (IncorrectTypeException $e)
-            {
-            } catch (MatrixException $e)
-            {
-            } catch (MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (BadDataException|MathException|MatrixException|IncorrectTypeException $e)
             {
             }
 

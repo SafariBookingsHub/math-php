@@ -16,11 +16,12 @@
         /**
          * @return array (a, b, expected)
          */
-        #[ArrayShape(['f(x) = 0 where x is -4'                                                          => "int[]",
-                      'f(x) = 0 where x is -8'                                                          => "int[]",
-                      'f(x) = 0 where x is 3'                                                           => "int[]",
-                      'f(x) = 0 where x is 1'                                                           => "int[]",
-                      'f(x) = 0 where x is 1 (Switch a and b and test that they get reversed properly)' => "int[]"
+        #[ArrayShape([
+            'f(x) = 0 where x is -4'                                                          => "int[]",
+            'f(x) = 0 where x is -8'                                                          => "int[]",
+            'f(x) = 0 where x is 3'                                                           => "int[]",
+            'f(x) = 0 where x is 1'                                                           => "int[]",
+            'f(x) = 0 where x is 1 (Switch a and b and test that they get reversed properly)' => "int[]",
         ])] public static function dataProviderForPolynomial(): array
         {
             return [
@@ -71,7 +72,9 @@
         ) {
             // Given f(x) = x⁴ + 8x³ -13x² -92x + 96
             // This polynomial has 4 roots: 3, 1 ,-8 and -4
-            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
+            $func = fn($x) => (($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2) - (92
+                        * $x))
+                + 96;
             $tol = 0.00001;
 
             // When
@@ -186,7 +189,9 @@
         public function testBisectionMethodExceptionNegativeTolerance()
         {
             // Given
-            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - 92 * $x) + 96;
+            $func = fn($x) => (($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2) - (92
+                        * $x))
+                + 96;
 
             // And
             $tol = -0.00001;
@@ -207,7 +212,9 @@
         public function testBisectionMethodExceptionZeroInterval()
         {
             // Given
-            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
+            $func = fn($x) => (($x ** 4 + 8 * $x ** 3) - (13 * $x ** 2) - (92
+                        * $x))
+                + 96;
 
             // And
             $tol = 0.00001;

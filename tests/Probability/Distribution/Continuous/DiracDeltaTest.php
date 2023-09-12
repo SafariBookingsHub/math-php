@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\Probability\Distribution\Continuous;
 
+    use Exception;
     use MathPHP\Probability\Distribution\Continuous\DiracDelta;
     use PHPUnit\Framework\TestCase;
 
@@ -120,7 +121,7 @@
                 try
                 {
                     $rand = $diracDelta->rand();
-                } catch (\Exception $e)
+                } catch (Exception $e)
                 {
                 }
 

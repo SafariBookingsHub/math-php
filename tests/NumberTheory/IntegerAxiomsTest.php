@@ -105,7 +105,7 @@
             $ab = $a * $b;
 
             // When
-            $lcm⟮a、b⟯ = Algebra::lcm($a, $b);
+            $lcm⟮a、b⟯ = Algebra::lcm(a: $a, b: $b);
 
             // Then
             $this->assertEquals($lcm⟮a、b⟯, $ab);

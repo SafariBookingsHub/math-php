@@ -8,7 +8,6 @@
     use function in_array;
 
     class UsArrestsTest extends TestCase {
-        /** @var SampleData\UsArrests */
         private SampleData\UsArrests $usArrests;
 
         /**
@@ -74,7 +73,9 @@
 
             // Then
             foreach ($data as $observation)
+            {
                 $this->assertCount(4, $observation);
+            }
         }
 
         /**
@@ -100,7 +101,9 @@
 
             // When
             foreach ($sampleOfStateNames as $state)
+            {
                 $this->assertTrue(in_array($state, $states));
+            }
         }
 
         /**

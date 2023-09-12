@@ -1,4 +1,5 @@
-<?php /** @noinspection ALL */
+<?php
+    /** @noinspection ALL */
 
     /** @noinspection ALL */
 
@@ -914,7 +915,9 @@
             $this->assertNotEmpty($roots);
             $this->assertEquals(2, count($roots));
             foreach ($roots as $root)
+            {
                 $this->assertTrue(is_nan($root));
+            }
         }
 
         /**
@@ -1197,8 +1200,14 @@
          *
          * @throws       \Exception
          */
-        public function testQuarticTwoComplex(int $a, int $b, int $c, int $d, int $e, array $quartic)
-        {
+        public function testQuarticTwoComplex(
+            int $a,
+            int $b,
+            int $c,
+            int $d,
+            int $e,
+            array $quartic
+        ) {
             // Given
             $complex0 = new Number\Complex($quartic[2]['r'], $quartic[2]['i']);
             $complex1 = new Number\Complex($quartic[3]['r'], $quartic[3]['i']);

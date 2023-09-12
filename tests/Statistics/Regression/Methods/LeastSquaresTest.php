@@ -14,7 +14,7 @@
         #[ArrayShape([
             'zero_points' => "array[]",
             'one_point'   => "array[]",
-            'two_points'  => "array[]"
+            'two_points'  => "array[]",
         ])] public static function dataProviderForLeastSquaresDegreesOfFreedomBadDataException(
         ): array
         {

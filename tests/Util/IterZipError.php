@@ -4,11 +4,11 @@
 
     class IterZipError {
 
-        public function nothingToIterate()
+        public static function nothingToIterate()
         {
         }
 
-        public function nonIterableTypeError()
+        public static function nonIterableTypeError()
         {
         }
     }

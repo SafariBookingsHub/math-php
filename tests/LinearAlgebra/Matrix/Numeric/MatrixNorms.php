@@ -4,19 +4,19 @@
 
     class MatrixNorms {
 
-        public function frobeniusNorm()
+        public static function frobeniusNorm()
         {
         }
 
-        public function maxNorm()
+        public static function maxNorm()
         {
         }
 
-        public function infinityNorm()
+        public static function infinityNorm()
         {
         }
 
-        public function oneNorm()
+        public static function oneNorm()
         {
         }
     }

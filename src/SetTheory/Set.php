@@ -15,7 +15,6 @@
     use function array_values;
     use function count;
     use function current;
-    use function get_class;
     use function implode;
     use function is_array;
     use function is_float;
@@ -137,7 +136,9 @@
         public function __construct(array $members = [])
         {
             foreach ($members as $member)
+            {
                 $this->A[$this->getKey($member)] = $member;
+            }
         }
 
         /**
@@ -159,14 +160,20 @@
         protected function getKey(mixed $x): ?string
         {
             if (is_int($x) || is_float($x) || is_string($x)
-                || $x instanceof Set
+                || ($x instanceof Set)
             )
-                return "$x"; elseif (is_object($x))
+            {
+                return "$x";
+            } elseif (is_object($x))
+            {
                 return $x::class.'('.spl_object_hash($x).')';
-            elseif (is_array($x))
+            } elseif (is_array($x))
+            {
                 return 'Array('.serialize($x).')';
-            elseif (is_resource($x))
+            } elseif (is_resource($x))
+            {
                 return 'Resource('.$x.')';
+            }
 
             return NULL;
         }
@@ -176,6 +183,38 @@
          *  - Is member
          *  - Is not member
          **************************************************************************/
+
+        public static function fluentInterface()
+        {
+        }
+
+        public static function iteratorInterface2()
+        {
+        }
+
+        /**************************************************************************
+         * MEMBER OPERATIONS
+         *  - Add
+         *  - Add multi
+         *  - Remove
+         *  - Remove multi
+         **************************************************************************/
+
+        public static function iteratorInterface()
+        {
+        }
+
+        public static function toString()
+        {
+        }
+
+        public static function asArrayAnotherWay()
+        {
+        }
+
+        public static function interfaces()
+        {
+        }
 
         /**
          * Set membership (x ∈ A)
@@ -191,6 +230,15 @@
             return array_key_exists($this->getKey($x), $this->A);
         }
 
+        /**************************************************************************
+         * SET PROPERTIES AGAINST OTHER SETS
+         *  - Disjoint
+         *  - Subset
+         *  - Proper subset
+         *  - Super set
+         *  - Proper superset
+         **************************************************************************/
+
         /**
          * Set non-membership (x ∉ A)
          * Is x not a member of the set?
@@ -205,14 +253,6 @@
             return ! array_key_exists($this->getKey($x), $this->A);
         }
 
-        /**************************************************************************
-         * MEMBER OPERATIONS
-         *  - Add
-         *  - Add multi
-         *  - Remove
-         *  - Remove multi
-         **************************************************************************/
-
         /**
          * Add an array of elements to the set
          * Does nothing if element already exists in the set.
@@ -224,7 +264,9 @@
         public function addMulti(array $members): Set
         {
             foreach ($members as $member)
+            {
                 $this->A[$this->getKey($member)] = $member;
+            }
 
             return $this;
         }
@@ -255,7 +297,9 @@
         public function removeMulti(array $x): Set
         {
             foreach ($x as $member)
+            {
                 unset($this->A[$this->getKey($member)]);
+            }
 
             return $this;
         }
@@ -277,6 +321,14 @@
             return empty(array_intersect_key($this->A, $other->asArray()));
         }
 
+        /**************************************************************************
+         * SET OPERATIONS ON OTHER SETS
+         *  - Union
+         *  - Intersection
+         *  - Difference
+         *  - Symmetric difference
+         **************************************************************************/
+
         /**
          * Get the set as an array
          *
@@ -286,15 +338,6 @@
         {
             return $this->A;
         }
-
-        /**************************************************************************
-         * SET PROPERTIES AGAINST OTHER SETS
-         *  - Disjoint
-         *  - Subset
-         *  - Proper subset
-         *  - Super set
-         *  - Proper superset
-         **************************************************************************/
 
         /**
          * Subset (A ⊆ B)
@@ -312,7 +355,7 @@
             $A∩B = array_intersect_key($this->A, $B_array);
             $A∖B = array_diff_key($this->A, $B_array);
 
-            return count($A∩B) === count($this->A) && empty($A∖B);
+            return (count($A∩B) === count($this->A)) && empty($A∖B);
         }
 
         /**
@@ -332,8 +375,8 @@
             $A∩B = array_intersect_key($this->A, $B_array);
             $A∖B = array_diff_key($this->A, $B_array);
 
-            return count($A∩B) === count($this->A) && empty($A∖B)
-                && count($this->A) === count($B);
+            return (count($A∩B) === count($this->A)) && empty($A∖B)
+                && (count($this->A) === count($B));
         }
 
         /**
@@ -352,7 +395,7 @@
             $A∩B = array_intersect_key($this->A, $B_array);
             $A∖B = array_diff_key($B_array, $this->A);
 
-            return count($A∩B) === $B->length() && empty($A∖B);
+            return (count($A∩B) === $B->length()) && empty($A∖B);
         }
 
         /**
@@ -364,6 +407,14 @@
         {
             return count($this->A);
         }
+
+        /**************************************************************************
+         * OTHER SET OPERATIONS
+         *  - Power set
+         *  - Copy
+         *  - Clear
+         *  - To string
+         **************************************************************************/
 
         /**
          * Superset (A ⊇ B & A ≠ B)
@@ -382,17 +433,9 @@
             $A∩B = array_intersect_key($this->A, $B_array);
             $A∖B = array_diff_key($B_array, $this->A);
 
-            return count($A∩B) === $B->length() && empty($A∖B)
-                && $this != $B;
+            return (count($A∩B) === $B->length()) && empty($A∖B)
+                && ($this != $B);
         }
-
-        /**************************************************************************
-         * SET OPERATIONS ON OTHER SETS
-         *  - Union
-         *  - Intersection
-         *  - Difference
-         *  - Symmetric difference
-         **************************************************************************/
 
         /**
          * Union (A ∪ B)
@@ -411,10 +454,14 @@
             $new_members = [];
 
             foreach ($Bs as $B)
+            {
                 $new_members += array_diff_key($B->asArray(), $union);
+            }
 
             foreach ($new_members as $member => $value)
+            {
                 $union[$member] = $value;
+            }
 
             return new Set($union);
         }
@@ -434,7 +481,9 @@
         {
             $B_members = [];
             foreach ($Bs as $B)
+            {
                 $B_members[] = $B->asArray();
+            }
 
             $intersection = array_intersect_key($this->A, ...$B_members);
 
@@ -453,12 +502,20 @@
         {
             $B_members = [];
             foreach ($Bs as $B)
+            {
                 $B_members += $B->asArray();
+            }
 
             $difference = array_diff_key($this->A, $B_members);
 
             return new Set($difference);
         }
+
+        /**************************************************************************
+         * PHP INTERFACES
+         *  - Countable
+         *  - Iterator (Traversable)
+         **************************************************************************/
 
         /**
          * Symmetric Difference (A Δ B) = (A ∖ B) ∪ (B ∖ A)
@@ -516,7 +573,9 @@
             {
                 $elements = [];
                 for ($i2 = 0; $i2 < $l; ++$i2)
+                {
                     $elements[] = current($sets[$i2]);
+                }
 
                 $A×B[] = new Set($elements);
 
@@ -526,21 +585,15 @@
                     next($sets[$i2]);
                     $key = key($sets[$i2]);
                     if ($key !== NULL)
+                    {
                         break;
+                    }
                     reset($sets[$i2]);
                 }
             }
 
             return new Set($A×B);
         }
-
-        /**************************************************************************
-         * OTHER SET OPERATIONS
-         *  - Power set
-         *  - Copy
-         *  - Clear
-         *  - To string
-         **************************************************************************/
 
         /**
          * Power set P(S)
@@ -583,8 +636,12 @@
             {
                 $member_set = new Set();
                 for ($j = 0; $j < $n; $j++)
+                {
                     if ($i & (1 << $j))
+                    {
                         $member_set->add($A[$j]);
+                    }
+                }
                 $P⟮S⟯->add($member_set);
             }
 
@@ -631,12 +688,6 @@
             return $this;
         }
 
-        /**************************************************************************
-         * PHP INTERFACES
-         *  - Countable
-         *  - Iterator (Traversable)
-         **************************************************************************/
-
         /**
          * Return the set as a string
          * Set{a, b, c, ...}
@@ -646,7 +697,9 @@
         #[Pure] public function __toString(): string
         {
             if ($this->isEmpty())
+            {
                 return 'Ø';
+            }
 
             return 'Set{'.implode(', ', array_keys($this->A)).'}';
         }
@@ -715,29 +768,5 @@
         public function next(): void
         {
             $this->iterator_position = array_shift($this->iterator_keys);
-        }
-
-        public function fluentInterface()
-        {
-        }
-
-        public function iteratorInterface2()
-        {
-        }
-
-        public function iteratorInterface()
-        {
-        }
-
-        public function toString()
-        {
-        }
-
-        public function asArrayAnotherWay()
-        {
-        }
-
-        public function interfaces()
-        {
         }
     }

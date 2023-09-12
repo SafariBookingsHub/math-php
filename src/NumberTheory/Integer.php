@@ -13,7 +13,6 @@
     use function count;
     use function intdiv;
     use function log;
-    use function pow;
     use function range;
     use function sqrt;
 
@@ -32,7 +31,9 @@
         public static function isPerfectNumber(int $n): bool
         {
             if ($n <= 1)
+            {
                 return FALSE;
+            }
 
             try
             {
@@ -90,7 +91,9 @@
             {
                 $sum = 1 + $factor;
                 for ($i = 2; $i <= $exponent; $i++)
+                {
                     $sum += ($factor ** $i);
+                }
                 $product *= $sum;
             }
 
@@ -117,17 +120,21 @@
         public static function primeFactorization(int $n): array
         {
             if ($n < 1)
+            {
                 throw new Exception\OutOfBoundsException("n must be ≥ 1. ($n provided)");
+            }
 
             $remainder = $n;
             $factors = [];
 
             foreach ([2, 3] as $divisor)
+            {
                 while ($remainder % $divisor === 0)
                 {
                     $factors[] = $divisor;
                     $remainder = intdiv($remainder, $divisor);
                 }
+            }
 
             $divisor = 5;
             $√n = sqrt($remainder);
@@ -151,7 +158,9 @@
             }
 
             if ($remainder > 1)
+            {
                 $factors[] = $remainder;
+            }
 
             return $factors;
         }
@@ -170,7 +179,9 @@
         public static function isDeficientNumber(int $n): bool
         {
             if ($n < 1)
+            {
                 return FALSE;
+            }
 
             try
             {
@@ -194,7 +205,9 @@
         public static function isAbundantNumber(int $n): bool
         {
             if ($n < 1)
+            {
                 return FALSE;
+            }
 
             try
             {
@@ -247,13 +260,17 @@
         public static function totient(int $n, int $k = 1): int
         {
             if ($k < 1)
+            {
                 throw new Exception\OutOfBoundsException("k must be ≥ 1. ($k provided)");
+            }
 
             $J = $n ** $k;
             $primes = array_unique(self::primeFactorization($n));
 
             foreach ($primes as $prime)
+            {
                 $J *= 1 - (1 / $prime ** $k);
+            }
 
             return (int)$J;
         }
@@ -277,11 +294,16 @@
         {
             $primes = array_count_values(self::primeFactorization($n));
             $λ = 1;
-            if (isset($primes[2]) && $primes[2] > 2)
+            if (isset($primes[2]) && ($primes[2] > 2))
+            {
                 --$primes[2];
+            }
 
             foreach ($primes as $prime => $exponent)
-                $λ = Algebra::lcm($λ, ($prime ** ($exponent - 1)) * ($prime - 1));
+            {
+                $λ = Algebra::lcm($λ,
+                    ($prime ** ($exponent - 1)) * ($prime - 1));
+            }
 
             return $λ;
         }
@@ -310,7 +332,9 @@
         {
             $factors = self::primeFactorization($n);
             if ($factors !== array_unique($factors))
+            {
                 return 0;
+            }
 
             return (-1) ** count($factors);
         }
@@ -330,7 +354,9 @@
         public static function isSquarefree(int $n): bool
         {
             if ($n < 1)
+            {
                 return FALSE;
+            }
 
             try
             {
@@ -372,7 +398,9 @@
         public static function isRefactorableNumber(int $n): bool
         {
             if ($n < 1)
+            {
                 return FALSE;
+            }
 
             try
             {
@@ -403,7 +431,9 @@
             $product = 1;
 
             foreach (array_count_values($factors) as $factor => $exponent)
+            {
                 $product *= $exponent + 1;
+            }
 
             return $product;
         }
@@ -425,8 +455,8 @@
         {
             $factors = self::primeFactorization($n);
 
-            return count($factors) === 3
-                && count(array_unique($factors)) === 3;
+            return (count($factors) === 3)
+                && (count(array_unique($factors)) === 3);
         }
 
         /**
@@ -443,11 +473,19 @@
          * @param int $n
          *
          * @return bool True if n is a perfect power; false otherwise.
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public static function isPerfectPower(int $n): bool
         {
-            if (empty(self::perfectPower($n)))
-                return FALSE;
+            try
+            {
+                if (empty(self::perfectPower($n)))
+                {
+                    return FALSE;
+                }
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             return TRUE;
         }
@@ -474,20 +512,29 @@
         public static function perfectPower(int $n): array
         {
             $√n = sqrt($n);
-            $array_filter = array_filter(Algebra::factors($n),
-                function ($m) use ($√n) {
-                    return (($m > 1) && ($m <= $√n));
-                });
+            $array_filter1 = [];
+            foreach (Algebra::factors($n) as $key => $m)
+            {
+                if ((($m > 1) && ($m <= $√n)))
+                {
+                    $array_filter1[$key] = $m;
+                }
+            }
+            $array_filter = $array_filter1;
             $ms = $array_filter;
             $max_k = ceil(log($n, 2));
 
             foreach ($ms as $m)
+            {
                 foreach (range(2, $max_k) as $k)
                 {
                     $mᵏ = $m ** $k;
                     if ($mᵏ == $n)
+                    {
                         return [$m, $k];
+                    }
                 }
+            }
 
             return [];
         }
@@ -533,87 +580,87 @@
             return abs($x) % 2 === 0;
         }
 
-        public function isNotEven()
+        public static function isNotEven()
         {
         }
 
-        public function isNotOdd()
+        public static function isNotOdd()
         {
         }
 
-        public function notCoprime()
+        public static function notCoprime()
         {
         }
 
-        public function primeFactorizationOutOfBoundsException()
+        public static function primeFactorizationOutOfBoundsException()
         {
         }
 
-        public function emptyPerfectPower()
+        public static function emptyPerfectPower()
         {
         }
 
-        public function perfectPowerArray()
+        public static function perfectPowerArray()
         {
         }
 
-        public function isNotPerfectPower()
+        public static function isNotPerfectPower()
         {
         }
 
-        public function numberOfDivisorsOutOfBoundsException()
+        public static function numberOfDivisorsOutOfBoundsException()
         {
         }
 
-        public function sumOfDivisorsOutOfBoundsException()
+        public static function sumOfDivisorsOutOfBoundsException()
         {
         }
 
-        public function isNotSquarefree()
+        public static function isNotSquarefree()
         {
         }
 
-        public function mobiusOutOfBoundsException()
+        public static function mobiusOutOfBoundsException()
         {
         }
 
-        public function reducedTotientOutOfBoundsException()
+        public static function reducedTotientOutOfBoundsException()
         {
         }
 
-        public function cototientOutOfBoundsException()
+        public static function cototientOutOfBoundsException()
         {
         }
 
-        public function totientOutOfBoundsException()
+        public static function totientOutOfBoundsException()
         {
         }
 
-        public function radicalOutOfBoundsException()
+        public static function radicalOutOfBoundsException()
         {
         }
 
-        public function aliquotSumOutOfBoundsException()
+        public static function aliquotSumOutOfBoundsException()
         {
         }
 
-        public function isNotSphenicNumber()
+        public static function isNotSphenicNumber()
         {
         }
 
-        public function isNotRefactorableNumber()
+        public static function isNotRefactorableNumber()
         {
         }
 
-        public function isNotDeficientNumber()
+        public static function isNotDeficientNumber()
         {
         }
 
-        public function isNotAbundantNumber()
+        public static function isNotAbundantNumber()
         {
         }
 
-        public function isNotPerfectNumber()
+        public static function isNotPerfectNumber()
         {
         }
     }

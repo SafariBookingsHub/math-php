@@ -8,6 +8,7 @@
     use function array_map;
     use function array_sum;
     use function count;
+    use function log;
 
     /**
      * Functions dealing with statistical divergence.
@@ -57,13 +58,17 @@
         {
             // Arrays must have the same number of elements
             if (count($p) !== count($q))
+            {
                 throw new Exception\BadDataException('p and q must have the same number of elements');
+            }
 
             // Probability distributions must add up to 1.0
-            if (abs(array_sum($p) - 1) > self::ONE_TOLERANCE
-                || abs(array_sum($q) - 1) > self::ONE_TOLERANCE
+            if ((abs(array_sum($p) - 1) > self::ONE_TOLERANCE)
+                || (abs(array_sum($q) - 1) > self::ONE_TOLERANCE)
             )
+            {
                 throw new Exception\BadDataException('Distributions p and q must add up to 1');
+            }
 
             $M = array_map(
                 fn($pᵢ, $qᵢ) => ($pᵢ + $qᵢ) / 2,
@@ -101,51 +106,62 @@
         {
             // Arrays must have the same number of elements
             if (count($p) !== count($q))
+            {
                 throw new Exception\BadDataException('p and q must have the same number of elements');
+            }
 
             // Probability distributions must add up to 1.0
-            if (abs(array_sum($p) - 1) > self::ONE_TOLERANCE
-                || abs(array_sum($q) - 1) > self::ONE_TOLERANCE
+            if ((abs(array_sum($p) - 1) > self::ONE_TOLERANCE)
+                || (abs(array_sum($q) - 1) > self::ONE_TOLERANCE)
             )
+            {
                 throw new Exception\BadDataException('Distributions p and q must add up to 1');
+            }
 
             // Defensive measures against taking the log of 0 which would be -∞ or dividing by 0
-            $array_map1 = array_map(function ($pᵢ) {
-                return ($pᵢ == 0) ? 1e-15 : $pᵢ;
-            }, $p);
+            $array_map3 = [];
+            foreach ($p as $key => $pᵢ)
+            {
+                $array_map3[$key] = ($pᵢ == 0) ? 1e-15 : $pᵢ;
+            }
+            $array_map1 = $array_map3;
             $p = $array_map1;
-            $array_map = array_map(function ($qᵢ) {
-                return ($qᵢ == 0) ? 1e-15 : $qᵢ;
-            }, $q);
+            $array_map2 = [];
+            foreach ($q as $key => $qᵢ)
+            {
+                $array_map2[$key] = ($qᵢ == 0) ? 1e-15 : $qᵢ;
+            }
+            $array_map = $array_map2;
             $q = $array_map;
 
             // ∑ P(i) log(P(i)/Q(i))
             return array_sum(array_map(
-                fn($P, $Q) => $P * \log($P / $Q),
+                fn($P, $Q) => $P * log($P / $Q),
                 $p,
                 $q
             ));
         }
 
-        public function jensenShannonDivergenceExceptionNotProbabilityDistributionThatAddsUpToOne(
+        public static function jensenShannonDivergenceExceptionNotProbabilityDistributionThatAddsUpToOne(
         )
         {
         }
 
-        public function jensenShannonDivergenceExceptionArraysDifferentLength()
-        {
-        }
-
-        public function jensenShannonDivergence()
-        {
-        }
-
-        public function kullbackLeiblerExceptionNotProbabilityDistributionThatAddsUpToOne(
+        public static function jensenShannonDivergenceExceptionArraysDifferentLength(
         )
         {
         }
 
-        public function kullbackLeiblerExceptionArraysDifferentLength()
+        public static function jensenShannonDivergence()
+        {
+        }
+
+        public static function kullbackLeiblerExceptionNotProbabilityDistributionThatAddsUpToOne(
+        )
+        {
+        }
+
+        public static function kullbackLeiblerExceptionArraysDifferentLength()
         {
         }
     }

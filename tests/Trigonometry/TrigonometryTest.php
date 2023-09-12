@@ -39,7 +39,7 @@
         public function testUnitCircle(int $points, array $expected)
         {
             // When
-            $unitCircle = Trigonometry::unitCircle($points);
+            $unitCircle = Trigonometry::unitCircle(points: $points);
 
             // Then
             $this->assertEqualsWithDelta($expected, $unitCircle, 0.00000001);

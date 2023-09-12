@@ -28,7 +28,7 @@
          *
          * @var array{"k": string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'k' => '(-∞,∞)',
             ];
@@ -50,9 +50,19 @@
         public function __construct(int $a, int $b)
         {
             if ($b <= $a)
+            {
                 throw new Exception\BadDataException("b must be > a (b:$b a:$a)");
+            }
 
             parent::__construct($a, $b);
+        }
+
+        public static function constructorExceptionBLessThanA()
+        {
+        }
+
+        public static function constructorException()
+        {
         }
 
         /**
@@ -71,7 +81,7 @@
             $a = $this->a;
             $b = $this->b;
 
-            $n = $b - $a + 1;
+            $n = ($b - $a) + 1;
 
             return 1 / $n;
         }
@@ -95,13 +105,17 @@
             $b = $this->b;
 
             if ($k < $a)
+            {
                 return 0;
+            }
             if ($k > $b)
+            {
                 return 1;
+            }
 
-            $n = $b - $a + 1;
+            $n = ($b - $a) + 1;
 
-            return ($k - $a + 1) / $n;
+            return (($k - $a) + 1) / $n;
         }
 
         /**
@@ -152,14 +166,6 @@
             $a = $this->a;
             $b = $this->b;
 
-            return (($b - $a + 1) ** 2 - 1) / 12;
-        }
-
-        public function constructorExceptionBLessThanA()
-        {
-        }
-
-        public function constructorException()
-        {
+            return (((($b - $a) + 1) ** 2) - 1) / 12;
         }
     }

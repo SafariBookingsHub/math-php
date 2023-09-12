@@ -6,15 +6,11 @@
     use ReturnTypeWillChange;
 
     class ArrayIteratorFixture implements Iterator {
-        /** @var array */
-        private array $values;
 
-        /** @var int */
         private int $i;
 
-        public function __construct(array $values)
+        public function __construct(private array $values)
         {
-            $this->values = $values;
             $this->i = 0;
         }
 
@@ -23,9 +19,6 @@
             $this->i = 0;
         }
 
-        /**
-         * @return mixed
-         */
         #[ReturnTypeWillChange]
         public function current(): mixed
         {

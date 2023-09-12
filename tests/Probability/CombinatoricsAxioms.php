@@ -4,23 +4,23 @@
 
     class CombinatoricsAxioms {
 
-        public function lahNumberIdentityNNEqualsOne()
+        public static function lahNumberIdentityNNEqualsOne()
         {
         }
 
-        public function lahNumberIdentityKEqualsTwo()
+        public static function lahNumberIdentityKEqualsTwo()
         {
         }
 
-        public function lahNumberIdentityKEqualsOne()
+        public static function lahNumberIdentityKEqualsOne()
         {
         }
 
-        public function fallingFactorialAsLahNumberAndRisingFactorial()
+        public static function fallingFactorialAsLahNumberAndRisingFactorial()
         {
         }
 
-        public function risingFactorialAsLahNumberAndFallingFactorial()
+        public static function risingFactorialAsLahNumberAndFallingFactorial()
         {
         }
     }

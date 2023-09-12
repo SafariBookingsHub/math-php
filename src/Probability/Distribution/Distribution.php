@@ -30,20 +30,16 @@
             try
             {
                 Support::checkLimits(static::PARAMETER_LIMITS, $new_params);
-            } catch (BadDataException $e)
-            {
-            } catch (BadParameterException $e)
-            {
-            } catch (OutOfBoundsException $e)
+            } catch (BadDataException|OutOfBoundsException|BadParameterException $e)
             {
             }
         }
 
-        public function stemAndLeafPlotPrint()
+        public static function stemAndLeafPlotPrint()
         {
         }
 
-        public function fractionalRankingDistributionSumOfAllRanks()
+        public static function fractionalRankingDistributionSumOfAllRanks()
         {
         }
     }

@@ -32,8 +32,12 @@
          * @throws Exception\OutOfBoundsException if $tol (the tolerance) is negative
          * @throws Exception\BadDataException if $p₀ = $p₁
          */
-        public static function solve(callable $function, float|int $p₀, float|int $p₁, float|int $tol): float|int
-        {
+        public static function solve(
+            callable $function,
+            float|int $p₀,
+            float|int $p₁,
+            float|int $tol
+        ): float|int {
             Validation::tolerance($tol);
             Validation::interval($p₀, $p₁);
 
@@ -42,7 +46,7 @@
                 $q₀ = $function($p₀);
                 $q₁ = $function($p₁);
                 $slope = ($q₁ - $q₀) / ($p₁ - $p₀);
-                $p = $p₁ - $q₁ / $slope;
+                $p = $p₁ - ($q₁ / $slope);
                 $dif = abs($p - $p₁);
                 $p₀ = $p₁;
                 $p₁ = $p;
@@ -51,31 +55,31 @@
             return $p;
         }
 
-        public function exceptionZeroInterval()
+        public static function exceptionZeroInterval()
         {
         }
 
-        public function exceptionNegativeTolerance()
+        public static function exceptionNegativeTolerance()
         {
         }
 
-        public function cosXSubtractTwoX()
+        public static function cosXSubtractTwoX()
         {
         }
 
-        public function XSquaredSubtractFive()
+        public static function XSquaredSubtractFive()
         {
         }
 
-        public function XCubedSubtractXPlusOne()
+        public static function XCubedSubtractXPlusOne()
         {
         }
 
-        public function solvePolynomialWithFourRootsUsingPolynomial()
+        public static function solvePolynomialWithFourRootsUsingPolynomial()
         {
         }
 
-        public function solvePolynomialWithFourRootsUsingClosure()
+        public static function solvePolynomialWithFourRootsUsingClosure()
         {
         }
     }

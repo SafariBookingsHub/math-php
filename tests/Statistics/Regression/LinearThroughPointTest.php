@@ -428,7 +428,7 @@
             $regression = new LinearThroughPoint($points);
 
             // Then
-            $this->assertEqualsWithDelta($ci, $regression->ci($x, $p),
+            $this->assertEqualsWithDelta($ci, LinearThroughPoint::ci($x, $p),
                 .0000001);
         }
 
@@ -455,7 +455,8 @@
             $regression = new LinearThroughPoint($points);
 
             // Then
-            $this->assertEqualsWithDelta($pi, $regression->pi($x, $p, $q),
+            $this->assertEqualsWithDelta($pi,
+                LinearThroughPoint::pi($x, $p, $q),
                 .0000001);
         }
 

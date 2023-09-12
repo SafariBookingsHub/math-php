@@ -525,8 +525,7 @@
         {
             /** @var array<string, array<string, int>> $array_map */
             $array_map = [];
-            foreach (self::DATA as $ignored => {
-                array $data)}
+            foreach (self::DATA as $ignored => array $data)
 
             return $array_map;
         }
@@ -676,71 +675,71 @@
                 array_column(self::DATA, 11));
         }
 
-        public function numberOfIq()
+        public static function numberOfIq()
         {
         }
 
-        public function numberOfRegion()
+        public static function numberOfRegion()
         {
         }
 
-        public function numberOfSwim()
+        public static function numberOfSwim()
         {
         }
 
-        public function numberOfSex()
+        public static function numberOfSex()
         {
         }
 
-        public function numberOfWine()
+        public static function numberOfWine()
         {
         }
 
-        public function numberOfBeer()
+        public static function numberOfBeer()
         {
         }
 
-        public function numberOfIncome()
+        public static function numberOfIncome()
         {
         }
 
-        public function numberOfAge()
+        public static function numberOfAge()
         {
         }
 
-        public function numberOfShowSize()
+        public static function numberOfShowSize()
         {
         }
 
-        public function numberOfHairLength()
+        public static function numberOfHairLength()
         {
         }
 
-        public function numberOfWeight()
+        public static function numberOfWeight()
         {
         }
 
-        public function numberOfHeight()
+        public static function numberOfHeight()
         {
         }
 
-        public function numberOfPersonData()
+        public static function numberOfPersonData()
         {
         }
 
-        public function labeledData()
+        public static function labeledData()
         {
         }
 
-        public function numberOfNames()
+        public static function numberOfNames()
         {
         }
 
-        public function dataHas12Variables()
+        public static function dataHas12Variables()
         {
         }
 
-        public function dataHas32Observations()
+        public static function dataHas32Observations()
         {
         }
     }

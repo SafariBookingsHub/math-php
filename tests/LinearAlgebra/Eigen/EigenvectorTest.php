@@ -22,8 +22,8 @@
                         [-2, -3],
                     ],
                     [
-                        [1 / sqrt(5), M_SQRT1_2],
-                        [-2 / sqrt(5), -M_SQRT1_2],
+                        [1 / sqrt(num: 5), M_SQRT1_2],
+                        [-2 / sqrt(num: 5), -M_SQRT1_2],
                     ],
                 ],
                 [
@@ -32,8 +32,8 @@
                         [2, 3],
                     ],
                     [
-                        [M_SQRT1_2, 1 / sqrt(5)],
-                        [M_SQRT1_2, 2 / sqrt(5)],
+                        [M_SQRT1_2, 1 / sqrt(num: 5)],
+                        [M_SQRT1_2, 2 / sqrt(num: 5)],
                     ],
                 ],
                 [
@@ -43,9 +43,21 @@
                         [4, 2, 5],
                     ],
                     [
-                        [1 / sqrt(293), 2 / sqrt(6), 2 / sqrt(14)],
-                        [6 / sqrt(293), 1 / sqrt(6), -3 / sqrt(14)],
-                        [16 / sqrt(293), -1 / sqrt(6), -1 / sqrt(14)],
+                        [
+                            1 / sqrt(num: 293),
+                            2 / sqrt(num: 6),
+                            2 / sqrt(num: 14),
+                        ],
+                        [
+                            6 / sqrt(num: 293),
+                            1 / sqrt(num: 6),
+                            -3 / sqrt(num: 14),
+                        ],
+                        [
+                            16 / sqrt(num: 293),
+                            -1 / sqrt(num: 6),
+                            -1 / sqrt(num: 14),
+                        ],
                     ],
                 ],
                 [ // RREF is a zero matrix
@@ -67,9 +79,9 @@
                       [3, 0, 4],
                   ],
                   [
-                      [1 / sqrt(14), 0, M_SQRT1_2],
-                      [2 / sqrt(14), 1, 0],
-                      [3 / sqrt(14), 0, -1 * M_SQRT1_2],
+                      [1 / sqrt(num: 14), 0, M_SQRT1_2],
+                      [2 / sqrt(num: 14), 1, 0],
+                      [3 / sqrt(num: 14), 0, -1 * M_SQRT1_2],
                   ],
                 ],
                 [ // Matrix has duplicate eigenvalues. no solution on the axis
@@ -79,9 +91,9 @@
                       [3, 6, -8],
                   ],
                   [
-                      [1 / sqrt(14), 1 / M_SQRT3, 5 / sqrt(42)],
-                      [2 / sqrt(14), 1 / M_SQRT3, -4 / sqrt(42)],
-                      [3 / sqrt(14), 1 / M_SQRT3, -1 / sqrt(42)],
+                      [1 / sqrt(num: 14), 1 / M_SQRT3, 5 / sqrt(num: 42)],
+                      [2 / sqrt(num: 14), 1 / M_SQRT3, -4 / sqrt(num: 42)],
+                      [3 / sqrt(num: 14), 1 / M_SQRT3, -1 / sqrt(num: 42)],
                   ],
                 ],
                 [ // The top row of the rref has a solitary 1 in position 0,0
@@ -91,9 +103,9 @@
                       [2, 2, 5],
                   ],
                   [
-                      [5 / sqrt(65), 1 / 3, 0],
-                      [-2 / sqrt(65), 2 / 3, -2 / sqrt(5)],
-                      [6 / sqrt(65), -2 / 3, 1 / sqrt(5),],
+                      [5 / sqrt(num: 65), 1 / 3, 0],
+                      [-2 / sqrt(num: 65), 2 / 3, -2 / sqrt(num: 5)],
+                      [6 / sqrt(num: 65), -2 / 3, 1 / sqrt(num: 5),],
                   ],
                 ],
             ];
@@ -140,6 +152,12 @@
          *
          * @param array $A
          * @param array $S
+         *
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testEigenvectorsUsingClosedFormPolynomialRootMethod(
             array $A,
@@ -148,21 +166,30 @@
             // Given
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
             // When
             try
             {
-                $eigenvectors = Eigenvector::eigenvectors($A);
+                try
+                {
+                    $eigenvectors = Eigenvector::eigenvectors(A: $A);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\OutOfBoundsException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
             } catch (Exception\BadDataException $e)
             {
             }
@@ -175,9 +202,7 @@
                 $this->assertEqualsWithDelta($S,
                     $A->eigenvectors()->getMatrix(),
                     0.0001);
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\MatrixException|Exception\MathException $e)
             {
             }
         }
@@ -196,14 +221,8 @@
             // Given
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -211,9 +230,7 @@
             try
             {
                 $eigenvectors = $A->eigenvectors();
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\MatrixException|Exception\MathException $e)
             {
             }
 
@@ -230,14 +247,8 @@
             // Given
             try
             {
-                $A = MatrixFactory::create([[1, 2]]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: [[1, 2]]);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -247,7 +258,22 @@
             // When
             try
             {
-                Eigenvector::eigenvectors($A, [0]);
+                try
+                {
+                    Eigenvector::eigenvectors(A: $A, eigenvalues: [0]);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\OutOfBoundsException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
             } catch (Exception\BadDataException $e)
             {
             }
@@ -259,20 +285,20 @@
          *
          * @param array $A
          * @param array $B
+         *
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testIncorrectNumberOfEigenvectors(array $A, array $B)
         {
             // Given
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -282,7 +308,22 @@
             // When
             try
             {
-                Eigenvector::eigenvectors($A, $B);
+                try
+                {
+                    Eigenvector::eigenvectors(A: $A, eigenvalues: $B);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\OutOfBoundsException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
             } catch (Exception\BadDataException $e)
             {
             }
@@ -294,20 +335,20 @@
          *
          * @param array $A
          * @param array $B
+         *
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testEigenvectorNotAnEigenvector(array $A, array $B)
         {
             // Given
             try
             {
-                $A = MatrixFactory::create($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = MatrixFactory::create(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -317,7 +358,22 @@
             // When
             try
             {
-                Eigenvector::eigenvectors($A, $B);
+                try
+                {
+                    Eigenvector::eigenvectors(A: $A, eigenvalues: $B);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\OutOfBoundsException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
             } catch (Exception\BadDataException $e)
             {
             }
@@ -331,18 +387,12 @@
             // Given
             try
             {
-                $A = MatrixFactory::create([
+                $A = MatrixFactory::create(A: [
                     [1, 2, 3],
                     [2, 3, 4],
                     [3, 4, 5],
                 ]);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
             $invalidMethod = 'SecretMethod';
@@ -353,10 +403,8 @@
             // When
             try
             {
-                $A->eigenvectors($invalidMethod);
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A->eigenvectors(method: $invalidMethod);
+            } catch (Exception\MatrixException|Exception\MathException $e)
             {
             }
         }

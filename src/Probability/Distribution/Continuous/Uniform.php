@@ -24,7 +24,7 @@
          *
          * @var array{"x": string}
          */
-        public const SUPPORT_LIMITS
+        public final const SUPPORT_LIMITS
             = [
                 'x' => '(-∞,∞)',
             ];
@@ -46,7 +46,9 @@
         public function __construct(float $a, float $b)
         {
             if ($b <= $a)
+            {
                 throw new OutOfBoundsException("b must be > a: Given a:$a and b:$b");
+            }
 
             parent::__construct($a, $b);
         }
@@ -70,8 +72,10 @@
             $a = $this->a;
             $b = $this->b;
 
-            if ($x < $a || $x > $b)
+            if (($x < $a) || ($x > $b))
+            {
                 return 0;
+            }
 
             return 1 / ($b - $a);
         }
@@ -98,9 +102,13 @@
             $b = $this->b;
 
             if ($x < $a)
+            {
                 return 0;
+            }
             if ($x >= $b)
+            {
                 return 1;
+            }
 
             return ($x - $a) / ($b - $a);
         }
@@ -158,6 +166,6 @@
          */
         public function variance(): float
         {
-            return ($this->b - $this->a) ** 2 / 12;
+            return (($this->b - $this->a) ** 2) / 12;
         }
     }

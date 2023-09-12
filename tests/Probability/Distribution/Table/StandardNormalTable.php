@@ -4,19 +4,20 @@
 
     class StandardNormalTable {
 
-        public function getZScoreForConfidenceIntervalInvalidConfidenceLevel()
+        public static function getZScoreForConfidenceIntervalInvalidConfidenceLevel(
+        )
         {
         }
 
-        public function getZScoreForConfidenceInterval()
+        public static function getZScoreForConfidenceInterval()
         {
         }
 
-        public function getZScoreProbabilityExceptionZBadFormat()
+        public static function getZScoreProbabilityExceptionZBadFormat()
         {
         }
 
-        public function getZScoreProbability()
+        public static function getZScoreProbability()
         {
         }
     }

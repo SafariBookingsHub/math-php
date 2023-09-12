@@ -2,7 +2,6 @@
 
     namespace MathPHP\Expression;
 
-    use JetBrains\PhpStorm\Pure;
     use MathPHP\Algebra;
     use MathPHP\Exception;
     use MathPHP\Functions\Arithmetic;
@@ -85,12 +84,9 @@
                 '⁸',
                 '⁹',
             ];
-        /** @var int */
         private int $degree;
         /** @var array<int|float> */
         private array $coefficients;
-        /** @var string */
-        private string $variable;
 
         /**
          * When a polynomial is instantiated, set the coefficients and degree of
@@ -101,24 +97,27 @@
          *                                       a polynomial that looks like x² + 2x + 3.
          * @param string           $variable
          */
-        public function __construct(array $coefficients, string $variable = "x")
-        {
+        public function __construct(
+            array $coefficients,
+            private string $variable = "x"
+        ) {
             // Remove coefficients that are leading zeros
             $initial_count = count($coefficients);
             for ($i = 0; $i < $initial_count; $i++)
             {
                 if ($coefficients[$i] != 0)
+                {
                     break;
+                }
                 unset($coefficients[$i]);
             }
 
             // If coefficients remain, re-index them. Otherwise return [0] for p(x) = 0
-            $coefficients = $coefficients != [] ? array_values($coefficients)
+            $coefficients = ($coefficients != []) ? array_values($coefficients)
                 : [0];
 
             $this->degree = count($coefficients) - 1;
             $this->coefficients = $coefficients;
-            $this->variable = $variable;
         }
 
         /**
@@ -129,6 +128,74 @@
         public static function createZeroValue(): ObjectArithmetic
         {
             return new Polynomial([0]);
+        }
+
+        public static function companionException()
+        {
+        }
+
+        public static function checkNumericOrPolynomialException()
+        {
+        }
+
+        public static function checkNumericOrPolynomialNumericInput()
+        {
+        }
+
+        public static function exception()
+        {
+        }
+
+        public static function rootsNAN()
+        {
+        }
+
+        public static function scalarMultiplication()
+        {
+        }
+
+        public static function scalarSubtraction()
+        {
+        }
+
+        public static function scalarAddition()
+        {
+        }
+
+        public static function multiplication()
+        {
+        }
+
+        public static function subtraction()
+        {
+        }
+
+        public static function addition()
+        {
+        }
+
+        public static function fundamentalTheoremOfCalculus()
+        {
+        }
+
+        public static function integration()
+        {
+        }
+
+        public static function differentiation()
+        {
+        }
+
+        public static function eval()
+        {
+        }
+
+        public static function variable()
+        {
+        }
+
+        public static function string()
+        {
         }
 
         /**
@@ -150,7 +217,9 @@
             foreach ($this->coefficients as $i => $coefficient)
             {
                 if ($coefficient == 0)
+                {
                     continue;
+                }
 
                 // Power of the current term
                 $power = $this->degree - $i;
@@ -165,19 +234,25 @@
                 }
 
                 // Get the sign for the term
-                $sign = $coefficient > 0 ? '+' : '-';
+                $sign = ($coefficient > 0) ? '+' : '-';
 
                 // Drop the sign from the coefficient, as it is handled by $sign
                 $coefficient = abs($coefficient);
 
                 // Drop coefficients that equal 1 (and -1) if they are not the 0th-degree term
-                if ($coefficient == 1 and $this->degree - $i != 0)
+                if (($coefficient == 1) and ($this->degree - $i != 0))
+                {
                     $coefficient = '';
+                }
 
                 // Generate the $term string. No $variable term if power = 0.
                 if ($power == 0)
-                    $term = "{$sign} {$coefficient}"; else
+                {
+                    $term = "{$sign} {$coefficient}";
+                } else
+                {
                     $term = "{$sign} {$coefficient}{$variable}{$exponent} ";
+                }
 
                 // Add the current term to the polynomial
                 $polynomial .= $term;
@@ -188,7 +263,7 @@
                 $variable.' ', $polynomial), '+ ');
             $polynomial = preg_replace('/^-\s/', '-', $polynomial);
 
-            $polynomial = $polynomial !== '' ? $polynomial : '0';
+            $polynomial = ($polynomial !== '') ? $polynomial : '0';
 
             return (string)$polynomial;
         }
@@ -204,7 +279,7 @@
          *
          * @return float The result of our polynomial evaluated at $x₀
          */
-        #[Pure] public function __invoke(float|int $x₀): float
+        public function __invoke(float|int $x₀): float
         {
             // Set object parameters as local variables so they can be used with the use function
             $degree = $this->degree;
@@ -241,19 +316,25 @@
          */
         public function add(mixed $object_or_scalar): Polynomial
         {
-            $object_or_scalar = Polynomial::checkNumericOrPolynomial($object_or_scalar);
+            $object_or_scalar
+                = Polynomial::checkNumericOrPolynomial($object_or_scalar);
 
             $coefficientsA = $this->coefficients;
             $coefficientsB = $object_or_scalar->coefficients;
 
             // If degrees are unequal, make coefficient array sizes equal so we can do component-wise addition
-            $degreeDifference = $this->getDegree() - $object_or_scalar->getDegree();
+            $degreeDifference = $this->getDegree()
+                - $object_or_scalar->getDegree();
             if ($degreeDifference !== 0)
             {
                 $zeroArray = array_fill(0, abs($degreeDifference), 0);
                 if ($degreeDifference < 0)
-                    $coefficientsA = array_merge($zeroArray, $coefficientsA); else
+                {
+                    $coefficientsA = array_merge($zeroArray, $coefficientsA);
+                } else
+                {
                     $coefficientsB = array_merge($zeroArray, $coefficientsB);
+                }
             }
 
             $coefficientsSum = Map\Multi::add($coefficientsA, $coefficientsB);
@@ -270,15 +351,19 @@
          * @return Polynomial
          * @throws Exception\IncorrectTypeException
          */
-        private static function checkNumericOrPolynomial(mixed $input): Polynomial
-        {
+        private static function checkNumericOrPolynomial(mixed $input
+        ): Polynomial {
             if ($input instanceof Polynomial)
-                return $input; elseif (is_numeric($input))
+            {
+                return $input;
+            } elseif (is_numeric($input))
             {
                 /** @var int|float $input */
                 return new Polynomial([$input]);
             } else
+            {
                 throw new Exception\IncorrectTypeException('Input must be a Polynomial or a number');
+            }
         }
 
         /**
@@ -325,11 +410,13 @@
 
             // Iterate over each coefficient (except the last), differentiating term-by-term
             for ($i = 0; $i < $this->degree; $i++)
+            {
                 $derivativeCoefficients[] = $this->coefficients[$i]
                     * ($this->degree - $i);
+            }
 
             // If the array of coefficients is empty, we are differentiating a constant. Return [0].
-            $derivativeCoefficients = $derivativeCoefficients !== []
+            $derivativeCoefficients = ($derivativeCoefficients !== [])
                 ? $derivativeCoefficients : [0];
 
             return new Polynomial($derivativeCoefficients);
@@ -350,8 +437,10 @@
 
             // Iterate over each coefficient, integrating term-by-term
             for ($i = 0; $i < $this->degree + 1; $i++)
+            {
                 $integralCoefficients[] = $this->coefficients[$i]
                     / (($this->degree - $i) + 1);
+            }
             $integralCoefficients[] = 0; // Make the constant of integration 0
 
             return new Polynomial($integralCoefficients);
@@ -373,7 +462,8 @@
          */
         public function subtract(mixed $object_or_scalar): Polynomial
         {
-            $object_or_scalar = Polynomial::checkNumericOrPolynomial($object_or_scalar);
+            $object_or_scalar
+                = Polynomial::checkNumericOrPolynomial($object_or_scalar);
             $additiveInverse = $object_or_scalar->negate();
 
             return $this->add($additiveInverse);
@@ -406,7 +496,8 @@
          */
         public function multiply(mixed $object_or_scalar): Polynomial
         {
-            $object_or_scalar = Polynomial::checkNumericOrPolynomial($object_or_scalar);
+            $object_or_scalar
+                = Polynomial::checkNumericOrPolynomial($object_or_scalar);
             // Calculate the degree of the product of the polynomials
             $productDegree = $this->degree + $object_or_scalar->degree;
 
@@ -420,6 +511,7 @@
 
             // Iterate through the product of terms component-wise
             for ($i = 0; $i < $this->degree + 1; $i++)
+            {
                 for ($j = 0; $j < $object_or_scalar->degree + 1; $j++)
                 {
                     // Calculate the degree of the current product
@@ -432,6 +524,7 @@
                     $productCoefficients[$degree]
                         = $productCoefficients[$degree] + $product;
                 }
+            }
 
             return new Polynomial($productCoefficients);
         }
@@ -447,20 +540,29 @@
          */
         public function roots(): array
         {
-            $array_map = array_map(function ($coefficient) {
-                return (float)$coefficient;
-            }, $this->coefficients);
+            $array_map1 = [];
+            foreach ($this->coefficients as $key => $coefficient)
+            {
+                $array_map1[$key] = (float)$coefficient;
+            }
+            $array_map = $array_map1;
             $floatCoefficients = $array_map;
 
-            return match ($this->degree)
+            switch ($this->degree)
             {
-                0 => [NULL],
-                1 => [Algebra::linear(...$floatCoefficients)],
-                2 => Algebra::quadratic(...$floatCoefficients),
-                3 => Algebra::cubic(...$floatCoefficients),
-                4 => Algebra::quartic(...$floatCoefficients),
-                default => [NAN],
-            };
+                case 0:
+                    return [NULL];
+                case 1:
+                    return [Algebra::linear(...$floatCoefficients)];
+                case 2:
+                    return Algebra::quadratic(...$floatCoefficients);
+                case 3:
+                    return Algebra::cubic(...$floatCoefficients);
+                case 4:
+                    return Algebra::quartic(...$floatCoefficients);
+                default:
+                    return [NAN];
+            }
         }
 
         /**
@@ -478,12 +580,15 @@
          *        | 0 0 ⋯ 1 -cᶰ₋₁ |
          *
          * @return NumericSquareMatrix
+         * @throws \MathPHP\Exception\MathException
          * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function companionMatrix(): NumericSquareMatrix
         {
             if ($this->degree === 0)
+            {
                 throw new Exception\OutOfBoundsException('Polynomial must be 1st degree or greater.');
+            }
 
             $coefficients = $this->getCoefficients();
             try
@@ -503,17 +608,24 @@
              */
             try
             {
-                $columnMatrix
-                    = Matrixfactory::createFromVectors([$reversedCoefficients])
-                    ->scalarDivide(-1 * $coefficients[0])
-                    ->rowExclude($this->getDegree());
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
+                try
+                {
+                    $columnMatrix
+                        = Matrixfactory::createFromVectors([$reversedCoefficients])
+                        ->scalarDivide(-1 * $coefficients[0])
+                        ->rowExclude($this->getDegree());
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
+            } catch (Exception\BadDataException|Exception\MatrixException|Exception\IncorrectTypeException|Exception\BadParameterException $e)
             {
             }
 
@@ -527,9 +639,7 @@
             {
                 $identityMatrix = MatrixFactory::identity($columnMatrix->getM()
                     - 1);
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\OutOfBoundsException|Exception\MathException $e)
             {
             }
 
@@ -537,11 +647,7 @@
             try
             {
                 $zero_row = MatrixFactory::zero(1, $columnMatrix->getM() - 1);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -559,13 +665,7 @@
                 $companion = $identityMatrix
                     ->augmentAbove($zero_row)
                     ->augment($columnMatrix);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MatrixException $e)
-            {
-            } catch (Exception\MathException $e)
+            } catch (Exception\BadDataException|Exception\MathException|Exception\MatrixException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -580,73 +680,5 @@
         public function getCoefficients(): array
         {
             return $this->coefficients;
-        }
-
-        public function companionException()
-        {
-        }
-
-        public function checkNumericOrPolynomialException()
-        {
-        }
-
-        public function checkNumericOrPolynomialNumericInput()
-        {
-        }
-
-        public function exception()
-        {
-        }
-
-        public function rootsNAN()
-        {
-        }
-
-        public function scalarMultiplication()
-        {
-        }
-
-        public function scalarSubtraction()
-        {
-        }
-
-        public function scalarAddition()
-        {
-        }
-
-        public function multiplication()
-        {
-        }
-
-        public function subtraction()
-        {
-        }
-
-        public function addition()
-        {
-        }
-
-        public function fundamentalTheoremOfCalculus()
-        {
-        }
-
-        public function integration()
-        {
-        }
-
-        public function differentiation()
-        {
-        }
-
-        public function eval()
-        {
-        }
-
-        public function variable()
-        {
-        }
-
-        public function string()
-        {
         }
     }

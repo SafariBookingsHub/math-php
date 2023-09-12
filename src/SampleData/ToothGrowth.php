@@ -103,8 +103,7 @@
         public static function getLabeledData(): array
         {
             $array_map = [];
-            foreach (self::DATA as $ignored => {
-                array $data)}
+            foreach (self::DATA as $ignored => array $data)
 
             return $array_map;
         }
@@ -139,27 +138,27 @@
             return array_column(self::DATA, 2);
         }
 
-        public function numberOfDoses()
+        public static function numberOfDoses()
         {
         }
 
-        public function numberOfSupplementTypes()
+        public static function numberOfSupplementTypes()
         {
         }
 
-        public function numberOfLength()
+        public static function numberOfLength()
         {
         }
 
-        public function labeledData()
+        public static function labeledData()
         {
         }
 
-        public function dataHas3Variables()
+        public static function dataHas3Variables()
         {
         }
 
-        public function dataHas60Observations()
+        public static function dataHas60Observations()
         {
         }
     }

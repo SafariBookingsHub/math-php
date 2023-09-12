@@ -4,187 +4,188 @@
 
     class SetOperations {
 
-        public function powerSet()
+        public static function powerSet()
         {
         }
 
-        public function naryCartesianProduct()
+        public static function naryCartesianProduct()
         {
         }
 
-        public function cartesianProduct()
+        public static function cartesianProduct()
         {
         }
 
-        public function clear()
+        public static function clear()
         {
         }
 
-        public function copy()
+        public static function copy()
         {
         }
 
-        public function symmetricDifferenceWithObjects2()
+        public static function symmetricDifferenceWithObjects2()
         {
         }
 
-        public function symmetricDifferenceWithObjects()
+        public static function symmetricDifferenceWithObjects()
         {
         }
 
-        public function symmetricDifferenceWithArrays2()
+        public static function symmetricDifferenceWithArrays2()
         {
         }
 
-        public function symmetricDifferenceWithArrays()
+        public static function symmetricDifferenceWithArrays()
         {
         }
 
-        public function symmetricDifference()
+        public static function symmetricDifference()
         {
         }
 
-        public function differenceWithObjects2()
+        public static function differenceWithObjects2()
         {
         }
 
-        public function differenceWithObjects()
+        public static function differenceWithObjects()
         {
         }
 
-        public function differenceWithArrays2()
+        public static function differenceWithArrays2()
         {
         }
 
-        public function differenceWithArrays()
+        public static function differenceWithArrays()
         {
         }
 
-        public function differenceMultiSet()
+        public static function differenceMultiSet()
         {
         }
 
-        public function difference()
+        public static function difference()
         {
         }
 
-        public function intersectWithObjects2()
+        public static function intersectWithObjects2()
         {
         }
 
-        public function intersectWithObjects()
+        public static function intersectWithObjects()
         {
         }
 
-        public function intersectWithArrays2()
+        public static function intersectWithArrays2()
         {
         }
 
-        public function intersectWithArrays()
+        public static function intersectWithArrays()
         {
         }
 
-        public function intersectMultipleSets()
+        public static function intersectMultipleSets()
         {
         }
 
-        public function intersect()
+        public static function intersect()
         {
         }
 
-        public function unionWithObjects2()
+        public static function unionWithObjects2()
         {
         }
 
-        public function unionWithObjects()
+        public static function unionWithObjects()
         {
         }
 
-        public function unionWithArrays2()
+        public static function unionWithArrays2()
         {
         }
 
-        public function unionWithArrays()
+        public static function unionWithArrays()
         {
         }
 
-        public function unionMultipleSets()
+        public static function unionMultipleSets()
         {
         }
 
-        public function union()
+        public static function union()
         {
         }
 
-        public function isSuperset()
+        public static function isSuperset()
         {
         }
 
-        public function isProperSuperset()
+        public static function isProperSuperset()
         {
         }
 
-        public function isProperSubset()
+        public static function isProperSubset()
         {
         }
 
-        public function isNotSubset()
+        public static function isNotSubset()
         {
         }
 
-        public function isSubset()
+        public static function isSubset()
         {
         }
 
-        public function notDisjoint()
+        public static function notDisjoint()
         {
         }
 
-        public function isDisjoint()
+        public static function isDisjoint()
         {
         }
 
-        public function removeMulti()
+        public static function removeMulti()
         {
         }
 
-        public function remove()
+        public static function remove()
         {
         }
 
-        public function addMulti()
+        public static function addMulti()
         {
         }
 
-        public function addWithResources()
+        public static function addWithResources()
         {
         }
 
-        public function addMultiWithArrayOfArraysMultipleArraysAndDuplicates()
+        public static function addMultiWithArrayOfArraysMultipleArraysAndDuplicates(
+        )
         {
         }
 
-        public function addMultiWithArrayOfArrays()
+        public static function addMultiWithArrayOfArrays()
         {
         }
 
-        public function addWithDuplicateObjects()
+        public static function addWithDuplicateObjects()
         {
         }
 
-        public function addWithMultipleObjects()
+        public static function addWithMultipleObjects()
         {
         }
 
-        public function addWithObjects()
+        public static function addWithObjects()
         {
         }
 
-        public function addTwiceDoesNothing()
+        public static function addTwiceDoesNothing()
         {
         }
 
-        public function add()
+        public static function add()
         {
         }
     }

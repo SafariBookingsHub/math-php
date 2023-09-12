@@ -2,6 +2,7 @@
 
     namespace MathPHP\LinearAlgebra;
 
+    use JetBrains\PhpStorm\Pure;
     use MathPHP\Exception\BadDataException;
     use MathPHP\Exception\MathException;
     use MathPHP\Exception\MatrixException;
@@ -32,8 +33,12 @@
             }
 
             if ( ! parent::isLowerTriangular() || ! parent::isUpperTriangular())
-                throw new MatrixException('Trying to construct DiagonalMatrix with non-diagonal elements: '
-                    .print_r($this->A, TRUE));
+            {
+                {
+                    throw new MatrixException('Trying to construct DiagonalMatrix with non-diagonal elements: '
+                        .print_r($this->A, TRUE));
+                }
+            }
         }
 
         /**
@@ -41,7 +46,7 @@
          *
          * @inheritDoc
          */
-        public function isLowerTriangular(): bool
+        #[Pure] public function isLowerTriangular(): bool
         {
             return TRUE;
         }
@@ -51,7 +56,7 @@
          *
          * @inheritDoc
          */
-        public function isUpperTriangular(): bool
+        #[Pure] public function isUpperTriangular(): bool
         {
             return TRUE;
         }
@@ -61,7 +66,7 @@
          *
          * @inheritDoc
          */
-        public function isSymmetric(): bool
+        #[Pure] public function isSymmetric(): bool
         {
             return TRUE;
         }
@@ -96,9 +101,7 @@
             try
             {
                 return MatrixFactory::diagonal(Single::reciprocal($this->getDiagonalElements()));
-            } catch (BadDataException $e)
-            {
-            } catch (MatrixException $e)
+            } catch (BadDataException|MatrixException $e)
             {
             }
         }

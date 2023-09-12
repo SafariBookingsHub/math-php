@@ -546,9 +546,7 @@
             try
             {
                 $anova = ANOVA::oneWay($sample1, $sample2, $sample3);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -577,9 +575,7 @@
             try
             {
                 $anova = ANOVA::oneWay($sample1, $sample2, $sample3, $sample4);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -603,9 +599,7 @@
             try
             {
                 ANOVA::oneWay($sample1, $sample2);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -627,9 +621,7 @@
             try
             {
                 ANOVA::oneWay($sample1, $sample2, $sample3);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -651,9 +643,7 @@
             try
             {
                 $anova = ANOVA::oneWay($sample1, $sample2, $sample3);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -692,9 +682,7 @@
             {
                 $anova = ANOVA::oneWay($sample1, $sample2, $sample3, $sample4,
                     $sample5);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -725,9 +713,7 @@
             try
             {
                 $anova = ANOVA::twoWay($A₁, $A₂);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -754,9 +740,7 @@
             try
             {
                 $anova = ANOVA::twoWay($A₁, $A₂, $A₃);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
 
@@ -779,9 +763,7 @@
             try
             {
                 ANOVA::twoWay($A₁);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -809,9 +791,7 @@
             try
             {
                 ANOVA::twoWay($A₁, $A₂);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
         }
@@ -838,9 +818,7 @@
             try
             {
                 ANOVA::twoWay($A₁, $A₂);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\OutOfBoundsException $e)
+            } catch (Exception\BadDataException|Exception\OutOfBoundsException $e)
             {
             }
         }

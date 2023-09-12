@@ -81,14 +81,16 @@
          * @throws Exception\BadDataException
          * @throws Exception\IncorrectTypeException
          */
-        public static function approximate(callable|array $source, ...$args): float
-        {
+        public static function approximate(
+            callable|array $source,
+            ...$args
+        ): float {
             // Get an array of points from our $source argument
             $points = self::getPoints($source, $args);
 
             // Validate input and sort points
-            self::validate($points, degree: 5);
-            Validation::isSubintervalsMultiple($points, m: 4);
+            self::validate($points, 5);
+            Validation::isSubintervalsMultiple($points, 4);
             $sorted = self::sort($points);
             Validation::isSpacingConstant($sorted);
 
@@ -110,17 +112,17 @@
              *   ⁱ⁼¹   45
              *  where h = (xn - x₁) / (n - 1)
              */
-            for ($i = 1; $i < $subIntervals / 4 + 1; $i++)
+            for ($i = 1; $i < ($subIntervals / 4) + 1; $i++)
             {
-                $x₄ᵢ₋₃ = $sorted[4 * $i - 4][$x];
-                $x₄ᵢ₋₂ = $sorted[4 * $i - 3][$x];
-                $x₄ᵢ₋₁ = $sorted[4 * $i - 2][$x];
-                $x₄ᵢ = $sorted[4 * $i - 1][$x];
+                $x₄ᵢ₋₃ = $sorted[(4 * $i) - 4][$x];
+                $x₄ᵢ₋₂ = $sorted[(4 * $i) - 3][$x];
+                $x₄ᵢ₋₁ = $sorted[(4 * $i) - 2][$x];
+                $x₄ᵢ = $sorted[(4 * $i) - 1][$x];
                 $x₄ᵢ₊₁ = $sorted[(4 * $i)][$x];
-                $f⟮x₄ᵢ₋₃⟯ = $sorted[4 * $i - 4][$y]; // y₄ᵢ₋₃
-                $f⟮x₄ᵢ₋₂⟯ = $sorted[4 * $i - 3][$y]; // y₄ᵢ₋₂
-                $f⟮x₄ᵢ₋₁⟯ = $sorted[4 * $i - 2][$y]; // y₄ᵢ₋₁
-                $f⟮x₄ᵢ⟯ = $sorted[4 * $i - 1][$y]; // y₄ᵢ
+                $f⟮x₄ᵢ₋₃⟯ = $sorted[(4 * $i) - 4][$y]; // y₄ᵢ₋₃
+                $f⟮x₄ᵢ₋₂⟯ = $sorted[(4 * $i) - 3][$y]; // y₄ᵢ₋₂
+                $f⟮x₄ᵢ₋₁⟯ = $sorted[(4 * $i) - 2][$y]; // y₄ᵢ₋₁
+                $f⟮x₄ᵢ⟯ = $sorted[(4 * $i) - 1][$y]; // y₄ᵢ
                 $f⟮x₄ᵢ₊₁⟯ = $sorted[(4 * $i)][$y];   // y₄ᵢ₊₁
                 $lagrange = LagrangePolynomial::interpolate([
                     [
@@ -146,35 +148,35 @@
             return $approximation;
         }
 
-        public function nonConstantSpacingException()
+        public static function nonConstantSpacingException()
         {
         }
 
-        public function subIntervalsNotFactorFour()
+        public static function subIntervalsNotFactorFour()
         {
         }
 
-        public function approximatePolynomialCallback3()
+        public static function approximatePolynomialCallback3()
         {
         }
 
-        public function approximatePolynomialCallback2()
+        public static function approximatePolynomialCallback2()
         {
         }
 
-        public function approximatePolynomialUsingPolynomial()
+        public static function approximatePolynomialUsingPolynomial()
         {
         }
 
-        public function approximatePolynomialCallback()
+        public static function approximatePolynomialCallback()
         {
         }
 
-        public function approximatePolynomialNonSortedPoints()
+        public static function approximatePolynomialNonSortedPoints()
         {
         }
 
-        public function approximatePolynomialSortedPoints()
+        public static function approximatePolynomialSortedPoints()
         {
         }
     }

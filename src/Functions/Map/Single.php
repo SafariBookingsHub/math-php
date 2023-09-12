@@ -23,11 +23,13 @@
          */
         public static function add(array $xs, float|int $k): array
         {
-            $array_map = array_map(function ($x) use ($k) {
-                return $x + $k;
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = $x + $k;
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
         /**
@@ -40,11 +42,13 @@
          */
         public static function subtract(array $xs, float|int $k): array
         {
-            $array_map = array_map(function ($x) use ($k) {
-                return $x - $k;
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = $x - $k;
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
         /**
@@ -57,11 +61,13 @@
          */
         public static function multiply(array $xs, float|int $k): array
         {
-            $array_map = array_map(function ($x) use ($k) {
-                return $x * $k;
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = $x * $k;
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
         /**
@@ -74,11 +80,13 @@
          */
         public static function divide(array $xs, float|int $k): array
         {
-            $array_map = array_map(function ($x) use ($k) {
-                return $x / $k;
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = $x / $k;
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
         /**
@@ -90,11 +98,13 @@
          */
         public static function square(array $xs): array
         {
-            $array_map = array_map(function ($x) {
-                return $x ** 2;
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = $x ** 2;
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
         /**
@@ -106,11 +116,13 @@
          */
         public static function cube(array $xs): array
         {
-            $array_map = array_map(function ($x) {
-                return $x ** 3;
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = $x ** 3;
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
         /**
@@ -125,18 +137,30 @@
          */
         public static function reciprocal(array $xs): array
         {
-            $array_filter = array_filter($xs, function ($x) {
-                return $x == 0;
-            });
+            $array_filter1 = [];
+            foreach ($xs as $key => $x)
+            {
+                if ($x == 0)
+                {
+                    $array_filter1[$key] = $x;
+                }
+            }
+            $array_filter = $array_filter1;
             $zeros = $array_filter;
             if ( ! empty($zeros))
-                throw new Exception\BadDataException('Cannot compute the reciprocal of 0');
+            {
+                {
+                    throw new Exception\BadDataException('Cannot compute the reciprocal of 0');
+                }
+            }
 
-            $array_map = array_map(function ($x) {
-                return 1 / $x;
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = 1 / $x;
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
         /**
@@ -149,11 +173,13 @@
          */
         public static function pow(array $xs, float|int $n): array
         {
-            $array_map = array_map(function ($x) use ($n) {
-                return $x ** $n;
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = $x ** $n;
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
         /**
@@ -165,11 +191,13 @@
          */
         public static function sqrt(array $xs): array
         {
-            $array_map = array_map(function ($x) {
-                return sqrt($x);
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = sqrt($x);
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
         /**
@@ -181,11 +209,13 @@
          */
         public static function abs(array $xs): array
         {
-            $array_map = array_map(function ($x) {
-                return abs($x);
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = abs($x);
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
         /**
@@ -200,11 +230,13 @@
          */
         public static function min(array $xs, float|int $value): array
         {
-            $array_map = array_map(function ($x) use ($value) {
-                return min($x, $value);
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = min($x, $value);
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
         /**
@@ -219,14 +251,16 @@
          */
         public static function max(array $xs, float|int $value): array
         {
-            $array_map = array_map(function ($x) use ($value) {
-                return max($x, $value);
-            }, $xs);
+            $array_map1 = [];
+            foreach ($xs as $key => $x)
+            {
+                $array_map1[$key] = max($x, $value);
+            }
 
-            return $array_map;
+            return $array_map1;
         }
 
-        public function reciprocalWithZeros()
+        public static function reciprocalWithZeros()
         {
         }
     }

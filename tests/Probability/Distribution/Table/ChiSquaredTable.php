@@ -4,15 +4,15 @@
 
     class ChiSquaredTable {
 
-        public function chiSquaredException()
+        public static function chiSquaredException()
         {
         }
 
-        public function chiSquaredValuesFromFunction()
+        public static function chiSquaredValuesFromFunction()
         {
         }
 
-        public function chiSquaredValuesFromConstant()
+        public static function chiSquaredValuesFromConstant()
         {
         }
     }

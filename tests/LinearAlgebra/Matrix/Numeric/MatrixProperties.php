@@ -4,263 +4,263 @@
 
     class MatrixProperties {
 
-        public function isHermitianWhenNotHermitian()
+        public static function isHermitianWhenNotHermitian()
         {
         }
 
-        public function isHermitian()
+        public static function isHermitian()
         {
         }
 
-        public function isUnitaryWhenNotUnitary()
+        public static function isUnitaryWhenNotUnitary()
         {
         }
 
-        public function isUnitary()
+        public static function isUnitary()
         {
         }
 
-        public function isNormalWhenNotNormal()
+        public static function isNormalWhenNotNormal()
         {
         }
 
-        public function isNormal()
+        public static function isNormal()
         {
         }
 
-        public function isOrthogonalWhenNotOrthogonal()
+        public static function isOrthogonalWhenNotOrthogonal()
         {
         }
 
-        public function isOrthogonal2()
+        public static function isOrthogonal2()
         {
         }
 
-        public function isNotLowerHessenberg()
+        public static function isNotLowerHessenberg()
         {
         }
 
-        public function isLowerHessenberg()
+        public static function isLowerHessenberg()
         {
         }
 
-        public function isNotUpperHessenberg()
+        public static function isNotUpperHessenberg()
         {
         }
 
-        public function isUpperHessenberg()
+        public static function isUpperHessenberg()
         {
         }
 
-        public function isNotTridiagonal()
+        public static function isNotTridiagonal()
         {
         }
 
-        public function isTridiagonal()
+        public static function isTridiagonal()
         {
         }
 
-        public function isNotBidiagonal()
+        public static function isNotBidiagonal()
         {
         }
 
-        public function upperBidiagonalIsBidiagonal()
+        public static function upperBidiagonalIsBidiagonal()
         {
         }
 
-        public function lowerBidiagonalIsBidiagonal()
+        public static function lowerBidiagonalIsBidiagonal()
         {
         }
 
-        public function isNotLowerBidiagonal()
+        public static function isNotLowerBidiagonal()
         {
         }
 
-        public function isLowerBidiagonal()
+        public static function isLowerBidiagonal()
         {
         }
 
-        public function isNotUpperBidiagonal()
+        public static function isNotUpperBidiagonal()
         {
         }
 
-        public function isUpperBidiagonal()
+        public static function isUpperBidiagonal()
         {
         }
 
-        public function isNotSignature()
+        public static function isNotSignature()
         {
         }
 
-        public function isSignature()
+        public static function isSignature()
         {
         }
 
-        public function isNotInvolutory()
+        public static function isNotInvolutory()
         {
         }
 
-        public function isInvolutory()
+        public static function isInvolutory()
         {
         }
 
-        public function isNotNilpotent()
+        public static function isNotNilpotent()
         {
         }
 
-        public function isNilpotent()
+        public static function isNilpotent()
         {
         }
 
-        public function isNotIdempotent()
+        public static function isNotIdempotent()
         {
         }
 
-        public function isIdempotent()
+        public static function isIdempotent()
         {
         }
 
-        public function isNotRrefForRefMatrix()
+        public static function isNotRrefForRefMatrix()
         {
         }
 
-        public function isNotRref()
+        public static function isNotRref()
         {
         }
 
-        public function isRref()
+        public static function isRref()
         {
         }
 
-        public function isNotRef()
+        public static function isNotRef()
         {
         }
 
-        public function isRef()
+        public static function isRef()
         {
         }
 
-        public function isNotRectangularDiagonal()
+        public static function isNotRectangularDiagonal()
         {
         }
 
-        public function isRectangularDiagonal()
+        public static function isRectangularDiagonal()
         {
         }
 
-        public function isDiagonalForLowerTriangular()
+        public static function isDiagonalForLowerTriangular()
         {
         }
 
-        public function isDiagonal()
+        public static function isDiagonal()
         {
         }
 
-        public function isNotTriangular()
+        public static function isNotTriangular()
         {
         }
 
-        public function isTriangularForUpperTriangular()
+        public static function isTriangularForUpperTriangular()
         {
         }
 
-        public function isTriangularForLowerTriangular()
+        public static function isTriangularForLowerTriangular()
         {
         }
 
-        public function isNotLowerTriangular()
+        public static function isNotLowerTriangular()
         {
         }
 
-        public function isLowerTriangular()
+        public static function isLowerTriangular()
         {
         }
 
-        public function isNotUpperTriangular()
+        public static function isNotUpperTriangular()
         {
         }
 
-        public function isUpperTriangular()
+        public static function isUpperTriangular()
         {
         }
 
-        public function nonSymmetricSquareMatrixIsNotAnyDefinite()
+        public static function nonSymmetricSquareMatrixIsNotAnyDefinite()
         {
         }
 
-        public function nonSquareMatrixIsNotAnyDefinite()
+        public static function nonSquareMatrixIsNotAnyDefinite()
         {
         }
 
-        public function isNotNegativeSemidefinite()
+        public static function isNotNegativeSemidefinite()
         {
         }
 
-        public function isNegativeSemidefinite()
+        public static function isNegativeSemidefinite()
         {
         }
 
-        public function isNotNegativeDefinite()
+        public static function isNotNegativeDefinite()
         {
         }
 
-        public function isNegativeDefinite()
+        public static function isNegativeDefinite()
         {
         }
 
-        public function isNotPositiveSemiDefinite()
+        public static function isNotPositiveSemiDefinite()
         {
         }
 
-        public function isPositiveSemidefinite()
+        public static function isPositiveSemidefinite()
         {
         }
 
-        public function isNotPositiveDefinite()
+        public static function isNotPositiveDefinite()
         {
         }
 
-        public function isPositiveDefinite()
+        public static function isPositiveDefinite()
         {
         }
 
-        public function isInvertibleFalseForNonInvertibleMatrix()
+        public static function isInvertibleFalseForNonInvertibleMatrix()
         {
         }
 
-        public function isNonsingularFalseForSingularMatrix()
+        public static function isNonsingularFalseForSingularMatrix()
         {
         }
 
-        public function isInvertible()
+        public static function isInvertible()
         {
         }
 
-        public function isNonsingular()
+        public static function isNonsingular()
         {
         }
 
-        public function isSingularFalseForNonsingularMatrix()
+        public static function isSingularFalseForNonsingularMatrix()
         {
         }
 
-        public function isSingular()
+        public static function isSingular()
         {
         }
 
-        public function isNotSkewSymmetric()
+        public static function isNotSkewSymmetric()
         {
         }
 
-        public function isSkewSymmetric()
+        public static function isSkewSymmetric()
         {
         }
 
-        public function isNotSymmetric()
+        public static function isNotSymmetric()
         {
         }
 
-        public function isSymmetric()
+        public static function isSymmetric()
         {
         }
     }

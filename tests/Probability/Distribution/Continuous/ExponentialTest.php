@@ -212,10 +212,10 @@
         public function testPdf(float $λ, float $x, float $expected_pdf)
         {
             // Given
-            $exponential = new Exponential($λ);
+            $exponential = new Exponential(λ: $λ);
 
             // When
-            $pdf = $exponential->pdf($x);
+            $pdf = $exponential->pdf(x: $x);
 
             // Then
             $this->assertEqualsWithDelta($expected_pdf, $pdf, 0.000001);
@@ -232,10 +232,10 @@
         public function testCdf($λ, $x, $expected_cdf)
         {
             // Given
-            $exponential = new Exponential($λ);
+            $exponential = new Exponential(λ: $λ);
 
             // When
-            $cdf = $exponential->cdf($x);
+            $cdf = $exponential->cdf(x: $x);
 
             // Then
             $this->assertEqualsWithDelta($expected_cdf, $cdf, 0.0000001);
@@ -251,7 +251,7 @@
         public function testMean($λ, $μ)
         {
             // Given
-            $exponential = new Exponential($λ);
+            $exponential = new Exponential(λ: $λ);
 
             // When
             $mean = $exponential->mean();
@@ -270,7 +270,7 @@
         public function testMedian($λ, $expectedMedian)
         {
             // Given
-            $exponential = new Exponential($λ);
+            $exponential = new Exponential(λ: $λ);
 
             // When
             $median = $exponential->median();
@@ -288,7 +288,7 @@
         public function testMode($λ)
         {
             // Given
-            $exponential = new Exponential($λ);
+            $exponential = new Exponential(λ: $λ);
 
             // When
             $mode = Exponential::mode();
@@ -307,7 +307,7 @@
         public function testVariance($λ, $expectedVariance)
         {
             // Given
-            $exponential = new Exponential($λ);
+            $exponential = new Exponential(λ: $λ);
 
             // When
             $variance = $exponential->variance();
@@ -330,10 +330,10 @@
         public function testInverse(float $λ, float $p, float $expectedInverse)
         {
             // Given
-            $exponential = new Exponential($λ);
+            $exponential = new Exponential(λ: $λ);
 
             // When
-            $inverse = $exponential->inverse($p);
+            $inverse = $exponential->inverse(p: $p);
 
             // Then
             $this->assertEqualsWithDelta($expectedInverse, $inverse, 0.00001);
@@ -351,11 +351,11 @@
         public function testInverseOfCdf(float $λ, float $p)
         {
             // Given
-            $exponential = new Exponential($λ);
-            $cdf = $exponential->cdf($p);
+            $exponential = new Exponential(λ: $λ);
+            $cdf = $exponential->cdf(x: $p);
 
             // When
-            $inverse_of_cdf = $exponential->inverse($cdf);
+            $inverse_of_cdf = $exponential->inverse(p: $cdf);
 
             // Then
             $this->assertEqualsWithDelta($p, $inverse_of_cdf, 0.000001);
@@ -373,13 +373,13 @@
         {
             // Given
             $λ = 1;
-            $exponential = new Exponential($λ);
+            $exponential = new Exponential(λ: $λ);
 
             // Then
             $this->expectException(OutOfBoundsException::class);
 
             // When
-            $exponential->inverse($p);
+            $exponential->inverse(p: $p);
         }
 
         /**
@@ -387,17 +387,21 @@
          */
         public function testRand()
         {
-            foreach (range(1, 4) as $λ)
-                foreach (range(1, 20) as $ignored)
+            foreach (range(start: 1, end: 4) as $λ)
+            {
                 {
-                    // Given
-                    $exponential = new Exponential($λ);
+                    foreach (range(1, 20) as $ignored)
+                    {
+                        // Given
+                        $exponential = new Exponential($λ);
 
-                    // When
-                    $random = $exponential->rand();
+                        // When
+                        $random = $exponential->rand();
 
-                    // Then
-                    $this->assertTrue(is_numeric($random));
+                        // Then
+                        $this->assertTrue(is_numeric($random));
+                    }
                 }
+            }
         }
     }

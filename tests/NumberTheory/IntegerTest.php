@@ -913,14 +913,18 @@
 
         public static function dataProviderForOddNumbers(): Generator
         {
-            foreach (range(-11, 101, 2) as $x)
+            foreach (range(start: -11, end: 101, step: 2) as $x)
+            {
                 yield [$x];
+            }
         }
 
         public static function dataProviderForEvenNumbers(): Generator
         {
-            foreach (range(-10, 100, 2) as $x)
+            foreach (range(start: -10, end: 100, step: 2) as $x)
+            {
                 yield [$x];
+            }
         }
 
         /**
@@ -932,7 +936,7 @@
         public function testIsPerfectNumber(int $n)
         {
             // When
-            $isPerfectNumber = Integer::isPerfectNumber($n);
+            $isPerfectNumber = Integer::isPerfectNumber(n: $n);
 
             // Then
             $this->assertTrue($isPerfectNumber);
@@ -950,7 +954,7 @@
         public function testIsNotPerfectNumber(int $n)
         {
             // When
-            $isPerfectNumber = Integer::isPerfectNumber($n);
+            $isPerfectNumber = Integer::isPerfectNumber(n: $n);
 
             // Then
             $this->assertFalse($isPerfectNumber);
@@ -967,7 +971,7 @@
         public function testIsAbundantNumber(int $n)
         {
             // When
-            $isAbundantNumber = Integer::isAbundantNumber($n);
+            $isAbundantNumber = Integer::isAbundantNumber(n: $n);
 
             // Then
             $this->assertTrue($isAbundantNumber);
@@ -986,7 +990,7 @@
         public function testIsNotAbundantNumber(int $n)
         {
             // When
-            $isAbundantNumber = Integer::isAbundantNumber($n);
+            $isAbundantNumber = Integer::isAbundantNumber(n: $n);
 
             // Then
             $this->assertFalse($isAbundantNumber);
@@ -1003,7 +1007,7 @@
         public function testIsDeficientNumber(int $n)
         {
             // When
-            $isDeficientNumber = Integer::isDeficientNumber($n);
+            $isDeficientNumber = Integer::isDeficientNumber(n: $n);
 
             // Then
             $this->assertTrue($isDeficientNumber);
@@ -1022,7 +1026,7 @@
         public function testIsNotDeficientNumber(int $n)
         {
             // When
-            $isDeficientNumber = Integer::isDeficientNumber($n);
+            $isDeficientNumber = Integer::isDeficientNumber(n: $n);
 
             // Then
             $this->assertFalse($isDeficientNumber);
@@ -1039,7 +1043,7 @@
         public function testIsRefactorableNumber(int $n)
         {
             // When
-            $isRefactorableNumber = Integer::isRefactorableNumber($n);
+            $isRefactorableNumber = Integer::isRefactorableNumber(n: $n);
 
             // Then
             $this->assertTrue($isRefactorableNumber);
@@ -1056,7 +1060,7 @@
         public function testIsNotRefactorableNumber(int $n)
         {
             // When
-            $isRefactorableNumber = Integer::isRefactorableNumber($n);
+            $isRefactorableNumber = Integer::isRefactorableNumber(n: $n);
 
             // Then
             $this->assertFalse($isRefactorableNumber);
@@ -1073,7 +1077,7 @@
         public function testIsSphenicNumber(int $n)
         {
             // When
-            $isSphenicNumber = Integer::isSphenicNumber($n);
+            $isSphenicNumber = Integer::isSphenicNumber(n: $n);
 
             // Then
             $this->assertTrue($isSphenicNumber);
@@ -1090,7 +1094,7 @@
         public function testIsNotSphenicNumber(int $n)
         {
             // When
-            $isSphenicNumber = Integer::isSphenicNumber($n);
+            $isSphenicNumber = Integer::isSphenicNumber(n: $n);
 
             // Then
             $this->assertFalse($isSphenicNumber);
@@ -1108,7 +1112,7 @@
         public function testAliquotSum(int $n, int $expected)
         {
             // When
-            $actual = Integer::aliquotSum($n);
+            $actual = Integer::aliquotSum(n: $n);
 
             // Then
             $this->assertEquals($expected, $actual);
@@ -1128,7 +1132,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // Then
-            Integer::aliquotSum($n);
+            Integer::aliquotSum(n: $n);
         }
 
         /**
@@ -1143,7 +1147,7 @@
         public function testRadical(int $n, int $expected)
         {
             // When
-            $radical = Integer::radical($n);
+            $radical = Integer::radical(n: $n);
 
             // Then
             $this->assertEquals($expected, $radical);
@@ -1163,7 +1167,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // Then
-            Integer::radical($n);
+            Integer::radical(n: $n);
         }
 
         /**
@@ -1179,7 +1183,7 @@
         public function testTotient(int $n, int $k, int $expected)
         {
             // When
-            $totient = Integer::totient($n, $k);
+            $totient = Integer::totient(n: $n, k: $k);
 
             // Then
             $this->assertEquals($expected, $totient);
@@ -1200,7 +1204,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // Then
-            Integer::totient($n, $k);
+            Integer::totient(n: $n, k: $k);
         }
 
         /**
@@ -1215,7 +1219,7 @@
         public function testCototient(int $n, int $expected)
         {
             // When
-            $cototient = Integer::cototient($n);
+            $cototient = Integer::cototient(n: $n);
 
             // Then
             $this->assertEquals($expected, $cototient);
@@ -1235,7 +1239,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // Then
-            Integer::cototient($n);
+            Integer::cototient(n: $n);
         }
 
         /**
@@ -1250,7 +1254,7 @@
         public function testReducedTotient(int $n, int $expected)
         {
             // When
-            $result = Integer::reducedTotient($n);
+            $result = Integer::reducedTotient(n: $n);
 
             // Then
             $this->assertEquals($expected, $result);
@@ -1270,7 +1274,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // Then
-            Integer::reducedTotient($n);
+            Integer::reducedTotient(n: $n);
         }
 
         /**
@@ -1285,7 +1289,7 @@
         public function testMobius(int $n, int $expected)
         {
             // When
-            $actual = Integer::mobius($n);
+            $actual = Integer::mobius(n: $n);
 
             // Then
             $this->assertEquals($expected, $actual);
@@ -1305,7 +1309,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // Then
-            Integer::mobius($n);
+            Integer::mobius(n: $n);
         }
 
         /**
@@ -1319,7 +1323,7 @@
         public function testIsSquarefree(int $n)
         {
             // When
-            $isSquarefree = Integer::isSquarefree($n);
+            $isSquarefree = Integer::isSquarefree(n: $n);
 
             // Then
             $this->assertTrue($isSquarefree);
@@ -1336,7 +1340,7 @@
         public function testIsNotSquarefree(int $n)
         {
             // When
-            $isSquarefree = Integer::isSquarefree($n);
+            $isSquarefree = Integer::isSquarefree(n: $n);
 
             // Then
             $this->assertFalse($isSquarefree);
@@ -1354,7 +1358,7 @@
         public function testSumOfDivisors(int $n, int $expected)
         {
             // When
-            $actual = Integer::sumOfDivisors($n);
+            $actual = Integer::sumOfDivisors(n: $n);
 
             // Then
             $this->assertEquals($expected, $actual);
@@ -1374,7 +1378,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // Then
-            Integer::sumOfDivisors($n);
+            Integer::sumOfDivisors(n: $n);
         }
 
         /**
@@ -1389,7 +1393,7 @@
         public function testNumberOfDivisors(int $n, int $expected)
         {
             // When
-            $actual = Integer::numberOfDivisors($n);
+            $actual = Integer::numberOfDivisors(n: $n);
 
             // Then
             $this->assertEquals($expected, $actual);
@@ -1409,7 +1413,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // Then
-            Integer::numberOfDivisors($n);
+            Integer::numberOfDivisors(n: $n);
         }
 
         /**
@@ -1421,7 +1425,7 @@
         public function testIsPerfectPower(int $n)
         {
             // When
-            $isPerfectPower = Integer::isPerfectPower($n);
+            $isPerfectPower = Integer::isPerfectPower(n: $n);
 
             // Then
             $this->assertTrue($isPerfectPower);
@@ -1436,7 +1440,7 @@
         public function testIsNotPerfectPower(int $n)
         {
             // When
-            $isPerfectPower = Integer::isPerfectPower($n);
+            $isPerfectPower = Integer::isPerfectPower(n: $n);
 
             // Then
             $this->assertFalse($isPerfectPower);
@@ -1449,6 +1453,8 @@
          * @param int $n
          * @param int $expected_m
          * @param int $expected_k
+         *
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testPerfectPower(
             int $n,
@@ -1456,7 +1462,12 @@
             int $expected_k
         ) {
             // When
-            [$m, $k] = Integer::perfectPower($n);
+            try
+            {
+                [$m, $k] = Integer::perfectPower(n: $n);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected_m, $m);
@@ -1468,20 +1479,27 @@
          * @dataProvider dataProviderForIsPerfectPower
          *
          * @param int $n
+         *
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testPerfectPowerArray(int $n)
         {
             // When
-            $perfect_power = Integer::perfectPower($n);
+            try
+            {
+                $perfect_power = Integer::perfectPower(n: $n);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertNotEmpty($perfect_power);
 
             // And
-            $m = array_shift($perfect_power);
-            $k = array_shift($perfect_power);
-            $this->assertTrue(is_numeric($m));
-            $this->assertTrue(is_numeric($k));
+            $m = array_shift(array: $perfect_power);
+            $k = array_shift(array: $perfect_power);
+            $this->assertTrue(is_numeric(value: $m));
+            $this->assertTrue(is_numeric(value: $k));
             $this->assertGreaterThan(1, $m);
             $this->assertGreaterThan(1, $k);
         }
@@ -1491,11 +1509,18 @@
          * @dataProvider dataProviderForIsNotPerfectPower
          *
          * @param int $n
+         *
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testEmptyPerfectPower(int $n)
         {
             // When
-            $empty = Integer::perfectPower($n);
+            try
+            {
+                $empty = Integer::perfectPower(n: $n);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEmpty($empty);
@@ -1513,7 +1538,7 @@
         public function testPrimeFactorization(int $n, array $expected_actors)
         {
             // When
-            $factors = Integer::primeFactorization($n);
+            $factors = Integer::primeFactorization(n: $n);
 
             // Then
             $this->assertEquals($expected_actors, $factors);
@@ -1533,7 +1558,7 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            Integer::primeFactorization($n);
+            Integer::primeFactorization(n: $n);
         }
 
         /**
@@ -1546,7 +1571,7 @@
         public function testCoprime(int $a, int $b)
         {
             // When
-            $coprime = Integer::coprime($a, $b);
+            $coprime = Integer::coprime(a: $a, b: $b);
 
             // Then
             $this->assertTrue($coprime);
@@ -1562,7 +1587,7 @@
         public function testNotCoprime(int $a, int $b)
         {
             // When
-            $coprime = Integer::coprime($a, $b);
+            $coprime = Integer::coprime(a: $a, b: $b);
 
             // Then
             $this->assertFalse($coprime);
@@ -1577,7 +1602,7 @@
         public function testIsOdd(int $x)
         {
             // When
-            $isOdd = Integer::isOdd($x);
+            $isOdd = Integer::isOdd(x: $x);
 
             // Then
             $this->assertTrue($isOdd);
@@ -1592,7 +1617,7 @@
         public function testIsNotOdd(int $x)
         {
             // When
-            $isOdd = Integer::isOdd($x);
+            $isOdd = Integer::isOdd(x: $x);
 
             // Then
             $this->assertFalse($isOdd);
@@ -1607,7 +1632,7 @@
         public function testIsEven(int $x)
         {
             // When
-            $isEven = Integer::isEven($x);
+            $isEven = Integer::isEven(x: $x);
 
             // Then
             $this->assertTrue($isEven);
@@ -1622,7 +1647,7 @@
         public function testIsNotEven(int $x)
         {
             // When
-            $isEven = Integer::isEven($x);
+            $isEven = Integer::isEven(x: $x);
 
             // Then
             $this->assertFalse($isEven);

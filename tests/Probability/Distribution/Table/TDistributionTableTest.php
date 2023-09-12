@@ -151,8 +151,11 @@
          *
          * @throws        \Exception
          */
-        public function testGetOneSidedTValueFromAlpha(mixed $ν, mixed $α, float $t)
-        {
+        public function testGetOneSidedTValueFromAlpha(
+            mixed $ν,
+            mixed $α,
+            float $t
+        ) {
             // When
             $value = TDistribution::getOneSidedTValueFromAlpha($ν, $α);
 
@@ -170,8 +173,11 @@
          *
          * @throws       \Exception
          */
-        public function testGetTwoSidedTValueFromAlpha(mixed $ν, mixed $α, float $t)
-        {
+        public function testGetTwoSidedTValueFromAlpha(
+            mixed $ν,
+            mixed $α,
+            float $t
+        ) {
             // When
             $value = TDistribution::getTwoSidedTValueFromAlpha($ν, $α);
 

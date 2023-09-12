@@ -73,8 +73,7 @@
         {
             /** @var array<int, array<string, float>> $array_map */
             $array_map = [];
-            foreach (self::DATA as $ignored => {
-                array $data)}
+            foreach (self::DATA as $ignored => array $data)
 
             return $array_map;
         }
@@ -99,23 +98,23 @@
             return array_column(self::DATA, 1);
         }
 
-        public function numberOfGroups()
+        public static function numberOfGroups()
         {
         }
 
-        public function numberOfWeights()
+        public static function numberOfWeights()
         {
         }
 
-        public function labeledData()
+        public static function labeledData()
         {
         }
 
-        public function dataHas2Variables()
+        public static function dataHas2Variables()
         {
         }
 
-        public function dataHas30Observations()
+        public static function dataHas30Observations()
         {
         }
     }

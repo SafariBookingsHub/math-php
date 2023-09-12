@@ -155,7 +155,11 @@
 
             $i = 0;
             foreach ($A as $ignored)
-                $i++;
+            {
+                {
+                    $i++;
+                }
+            }
             $this->assertEquals(3, $i);
         }
     }

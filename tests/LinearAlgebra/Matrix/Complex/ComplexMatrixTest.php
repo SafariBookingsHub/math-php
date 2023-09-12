@@ -16,19 +16,15 @@
          * @test         Construction
          * @dataProvider dataProviderForComplexObjectMatrix
          *
-         * @param Complex[][]
+         * @param Complex[][] $A
          */
         public function testConstruction(array $A)
         {
             // When
             try
             {
-                $A = new ComplexMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ComplexMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -45,12 +41,10 @@
             try
             {
                 $A = [
-                    [new Complex(2, 1), new Complex(2, 1)],
-                    [new Complex(2, 1), new ArbitraryInteger(4)],
+                    [new Complex(r: 2, i: 1), new Complex(r: 2, i: 1)],
+                    [new Complex(r: 2, i: 1), new ArbitraryInteger(number: 4)],
                 ];
-            } catch (Exception\BadParameterException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
+            } catch (Exception\BadParameterException|Exception\IncorrectTypeException $e)
             {
             }
 
@@ -60,12 +54,8 @@
             // When
             try
             {
-                $A = new ComplexMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ComplexMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
         }
@@ -80,7 +70,7 @@
 
             // And
             $expected = [
-                [new Complex(0, 0)],
+                [new Complex(r: 0, i: 0)],
             ];
 
             // Then
@@ -94,25 +84,31 @@
         {
             // Given
             $A = [
-                [new Complex(1, 0), new Complex(-2, -1), new Complex(5, 0)],
-                [new Complex(1, 1), new Complex(0, 1), new Complex(4, -2)],
+                [
+                    new Complex(r: 1, i: 0),
+                    new Complex(r: -2, i: -1),
+                    new Complex(r: 5,
+                        i: 0),
+                ],
+                [
+                    new Complex(r: 1, i: 1),
+                    new Complex(r: 0, i: 1),
+                    new Complex(r: 4,
+                        i: -2),
+                ],
             ];
             try
             {
-                $A = new ComplexMatrix($A);
-            } catch (Exception\BadDataException $e)
-            {
-            } catch (Exception\IncorrectTypeException $e)
-            {
-            } catch (Exception\MathException $e)
+                $A = new ComplexMatrix(A: $A);
+            } catch (Exception\BadDataException|Exception\MathException|Exception\IncorrectTypeException $e)
             {
             }
 
             // And
             $expected = [
-                [new Complex(1, 0), new Complex(1, -1)],
-                [new Complex(-2, 1), new Complex(0, -1)],
-                [new Complex(5, 0), new Complex(4, 2)],
+                [new Complex(r: 1, i: 0), new Complex(r: 1, i: -1)],
+                [new Complex(r: -2, i: 1), new Complex(r: 0, i: -1)],
+                [new Complex(r: 5, i: 0), new Complex(r: 4, i: 2)],
             ];
 
             // When

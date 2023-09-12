@@ -175,10 +175,10 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $H = Householder::transform($A);
+            $H = Householder::transform(A: $A);
 
             // Then
             $this->assertTrue($H->isInvolutory());
@@ -195,10 +195,10 @@
         public function testHouseholderTransformMatrixDeterminant(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $H = Householder::transform($A);
+            $H = Householder::transform(A: $A);
 
             // Then
             $this->assertEqualsWithDelta(-1, $H->det(), 0.000001);
@@ -215,17 +215,23 @@
         public function testHouseholderTransformMatrixEigenvalues(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $H = Householder::transform($A);
+            $H = Householder::transform(A: $A);
 
             // Then
-            $array_filter = array_filter($H->eigenvalues(), function ($x) {
-                return ! is_nan($x);
-            });
+            $array_filter1 = [];
+            foreach ($H->eigenvalues() as $key => $x)
+            {
+                if ( ! is_nan($x))
+                {
+                    $array_filter1[$key] = $x;
+                }
+            }
+            $array_filter = $array_filter1;
             $eigenvalues = $array_filter;
-            $this->assertEqualsWithDelta(1, max($eigenvalues), 0.00001);
-            $this->assertEqualsWithDelta(-1, min($eigenvalues), 0.00001);
+            $this->assertEqualsWithDelta(1, max(value: $eigenvalues), 0.00001);
+            $this->assertEqualsWithDelta(-1, min(value: $eigenvalues), 0.00001);
         }
     }

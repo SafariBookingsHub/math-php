@@ -39,8 +39,13 @@
          * @throws Exception\OutOfBoundsException
          * @throws Exception\BadDataException
          */
-        public static function solve(callable $function, float|int $a, float|int $b, float|int $p, float|int $tol): float|int
-        {
+        public static function solve(
+            callable $function,
+            float|int $a,
+            float|int $b,
+            float|int $p,
+            float|int $tol
+        ): float|int {
             self::validate($a, $b, $p, $tol);
 
             do
@@ -69,35 +74,47 @@
          * @throws Exception\BadDataException if $a = $b
          * @throws Exception\OutOfBoundsException if either $p > $a or $p < $b return false
          */
-        private static function validate(float|int $a, float|int $b, float|int $p, float|int $tol): void
-        {
+        private static function validate(
+            float|int $a,
+            float|int $b,
+            float|int $p,
+            float|int $tol
+        ): void {
             Validation::tolerance($tol);
             Validation::interval($a, $b);
 
             if ($a > $b)
-                [$a, $b] = [$b, $a];
+            {
+                {
+                    [$a, $b] = [$b, $a];
+                }
+            }
 
-            if ($p < $a || $p > $b)
-                throw new Exception\OutOfBoundsException("Initial guess $p must be in [$a, $b].");
+            if (($p < $a) || ($p > $b))
+            {
+                {
+                    throw new Exception\OutOfBoundsException("Initial guess $p must be in [$a, $b].");
+                }
+            }
         }
 
-        public function fixedPointIterationExceptionGuessNotInInterval()
+        public static function fixedPointIterationExceptionGuessNotInInterval()
         {
         }
 
-        public function fixedPointIterationExceptionZeroInterval()
+        public static function fixedPointIterationExceptionZeroInterval()
         {
         }
 
-        public function fixedPointIterationExceptionNegativeTolerance()
+        public static function fixedPointIterationExceptionNegativeTolerance()
         {
         }
 
-        public function solvePolynomialWithFourRootsUsingPolynomial()
+        public static function solvePolynomialWithFourRootsUsingPolynomial()
         {
         }
 
-        public function solvePolynomialWithFourRootsUsingClosure()
+        public static function solvePolynomialWithFourRootsUsingClosure()
         {
         }
     }

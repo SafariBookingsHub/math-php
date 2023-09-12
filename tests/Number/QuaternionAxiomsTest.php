@@ -86,6 +86,7 @@
          * @param int $i
          * @param int $j
          * @param int $k
+         *
          * @throws \MathPHP\Exception\BadDataException
          * @throws \MathPHP\Exception\IncorrectTypeException
          */
@@ -118,6 +119,7 @@
          * @param int $i
          * @param int $j
          * @param int $k
+         *
          * @throws \MathPHP\Exception\BadDataException
          * @throws \MathPHP\Exception\IncorrectTypeException
          */
