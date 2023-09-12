@@ -2,6 +2,7 @@
 
     namespace MathPHP\Statistics;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Exception;
 
     use function abs;
@@ -72,23 +73,27 @@
          *     p:               float,
          * }
          */
-        public static function riskRatio(int $a, int $b, int $c, int $d): array
+        #[ArrayShape(['RR'             => "float|int",
+                      'ci_lower_bound' => "float",
+                      'ci_upper_bound' => "float",
+                      'p'              => "float"
+        ])] public static function riskRatio(int $a, int $b, int $c, int $d): array
         {
             // Risk ratio
-            $RR = ($a / ($a + $b)) / ($c / ($c + $d));
+            $RR = $a / ($a + $b) / ($c / ($c + $d));
 
             // Standard error of the log relative risk
             $ln⟮RR⟯ = log($RR);
-            $SS｛ln⟮RR⟯｝ = sqrt(((1 / $a) + (1 / $c)) - (1 / ($a + $b)) - (1
+            $SS｛ln⟮RR⟯｝ = sqrt(1 / $a + 1 / $c - 1 / ($a + $b) - 1
                     / ($c
-                        + $d)));
+                        + $d));
 
             // Z score for 95% confidence interval
             $z = 1.96;
 
             // Confidence interval
-            $ci_lower_bound = exp($ln⟮RR⟯ - ($z * $SS｛ln⟮RR⟯｝));
-            $ci_upper_bound = exp($ln⟮RR⟯ + ($z * $SS｛ln⟮RR⟯｝));
+            $ci_lower_bound = exp($ln⟮RR⟯ - $z * $SS｛ln⟮RR⟯｝);
+            $ci_upper_bound = exp($ln⟮RR⟯ + $z * $SS｛ln⟮RR⟯｝);
 
             // P-value (significance level)
             $est = log($RR);                   // estimate of effect
@@ -96,8 +101,8 @@
             $u = log($ci_upper_bound);       // ln CI upper bound
             $SE = ($u - $l) / (2 * self::Z);  // standard error
             $z = abs($est / $SE);            // test statistic z
-            $p = exp((self::NORMAL_LOWER_TAIL_PROBABILITY * $z)
-                - (self::NORMAL_UPPER_TAIL_PROBABILITY * $z ** 2));
+            $p = exp(self::NORMAL_LOWER_TAIL_PROBABILITY * $z
+                - self::NORMAL_UPPER_TAIL_PROBABILITY * $z ** 2);
 
             return [
                 'RR'             => $RR,
@@ -142,18 +147,22 @@
          *     p:               float,
          * }
          */
-        public static function oddsRatio(int $a, int $b, int $c, int $d): array
+        #[ArrayShape(['OR'             => "float|int",
+                      'ci_lower_bound' => "float",
+                      'ci_upper_bound' => "float",
+                      'p'              => "float"
+        ])] public static function oddsRatio(int $a, int $b, int $c, int $d): array
         {
             // Odds ratio
-            $OR = ($a / $b) / ($c / $d);
+            $OR = $a / $b / ($c / $d);
 
             // Standard error of the log odds ratio
             $ln⟮OR⟯ = log($OR);
-            $SS｛ln⟮OR⟯｝ = sqrt((1 / $a) + (1 / $b) + (1 / $c) + (1 / $d));
+            $SS｛ln⟮OR⟯｝ = sqrt(1 / $a + 1 / $b + 1 / $c + 1 / $d);
 
             // Confidence interval
-            $ci_lower_bound = exp($ln⟮OR⟯ - (self::Z * $SS｛ln⟮OR⟯｝));
-            $ci_upper_bound = exp($ln⟮OR⟯ + (self::Z * $SS｛ln⟮OR⟯｝));
+            $ci_lower_bound = exp($ln⟮OR⟯ - self::Z * $SS｛ln⟮OR⟯｝);
+            $ci_upper_bound = exp($ln⟮OR⟯ + self::Z * $SS｛ln⟮OR⟯｝);
 
             // P-value (significance level)
             $est = log($OR);                   // estimate of effect
@@ -161,8 +170,8 @@
             $u = log($ci_upper_bound);       // ln CI upper bound
             $SE = ($u - $l) / (2 * self::Z);  // standard error
             $z = abs($est / $SE);            // test statistic z
-            $p = exp((self::NORMAL_LOWER_TAIL_PROBABILITY * $z)
-                - (self::NORMAL_UPPER_TAIL_PROBABILITY * $z ** 2));
+            $p = exp(self::NORMAL_LOWER_TAIL_PROBABILITY * $z
+                - self::NORMAL_UPPER_TAIL_PROBABILITY * $z ** 2);
 
             return [
                 'OR'             => $OR,
@@ -197,17 +206,17 @@
          *     "LL-": float,
          * }
          */
-        public static function likelihoodRatio(
+        #[ArrayShape(['LL+' => "float|int", 'LL-' => "float|int"])] public static function likelihoodRatio(
             int $a,
             int $b,
             int $c,
             int $d
         ): array {
             // LL+ Positive likelihood ratio
-            $LL＋ = ($a / ($a + $c)) / ($b / ($b + $d));
+            $LL＋ = $a / ($a + $c) / ($b / ($b + $d));
 
             // LL- Negative likelihood ratio
-            $LL− = ($c / ($a + $c)) / ($d / ($b + $d));
+            $LL− = $c / ($a + $c) / ($d / ($b + $d));
 
             return [
                 'LL+' => $LL＋,
@@ -240,14 +249,12 @@
          *
          * @throws Exception\OutOfBoundsException if sensitivity or specificity are > 1.0
          */
-        public static function likelihoodRatioSS(
+        #[ArrayShape(['LL+' => "float", 'LL-' => "float"])] public static function likelihoodRatioSS(
             float $sensitivity,
             float $specificity
         ): array {
-            if (($sensitivity > 1.0) || ($specificity > 1.0))
-            {
+            if ($sensitivity > 1.0 || $specificity > 1.0)
                 throw new Exception\OutOfBoundsException('Sensitivity and specificity must be <= 1.0');
-            }
 
             // LL+ Positive likelihood ratio
             $LL＋ = $sensitivity / (1 - $specificity);
@@ -259,5 +266,9 @@
                 'LL+' => $LL＋,
                 'LL-' => $LL−,
             ];
+        }
+
+        public function likelihoodRatioSSException()
+        {
         }
     }

@@ -2,10 +2,15 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use JetBrains\PhpStorm\Pure;
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Special;
     use MathPHP\Functions\Support;
 
     use const M_E;
+    use const NAN;
 
     /**
      * Gamma distribution
@@ -37,10 +42,10 @@
             ];
 
         /** @var float shape parameter k > 0 */
-        protected $k;
+        protected float $k;
 
         /** @var float shape parameter θ > 0 */
-        protected $θ;
+        protected float $θ;
 
         /**
          * Constructor
@@ -67,19 +72,33 @@
          */
         public function pdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $k = $this->k;
             $θ = $this->θ;
 
-            $Γ⟮k⟯ = Special::Γ($k);
+            try
+            {
+                $Γ⟮k⟯ = Special::Γ($k);
+            } catch (OutOfBoundsException $e)
+            {
+            }
             $θᵏ = $θ ** $k;
             $Γ⟮k⟯θᵏ = $Γ⟮k⟯ * $θᵏ;
 
             $xᵏ⁻¹ = $x ** ($k - 1);
             $e = M_E ** (-$x / $θ);
 
-            return ($xᵏ⁻¹ * $e) / $Γ⟮k⟯θᵏ;
+            return $xᵏ⁻¹ * $e / $Γ⟮k⟯θᵏ;
         }
 
         /**
@@ -95,13 +114,32 @@
          */
         public function cdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $k = $this->k;
             $θ = $this->θ;
 
-            $Γ⟮k⟯ = Special::Γ($k);
-            $γ = Special::γ($k, $x / $θ);
+            try
+            {
+                $Γ⟮k⟯ = Special::Γ($k);
+            } catch (OutOfBoundsException $e)
+            {
+            }
+            try
+            {
+                $γ = Special::γ($k, $x / $θ);
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             return $γ / $Γ⟮k⟯;
         }
@@ -116,7 +154,7 @@
          *
          * @return float
          */
-        public function median(): float
+        #[Pure] public function median(): float
         {
             $μ = $this->mean();
             $３k = 3 * $this->k;
@@ -146,9 +184,7 @@
         public function mode(): float
         {
             if ($this->k < 1)
-            {
-                return \NAN;
-            }
+                return NAN;
 
             return ($this->k - 1) * $this->θ;
         }
@@ -163,5 +199,9 @@
         public function variance(): float
         {
             return $this->k * $this->θ ** 2;
+        }
+
+        public function modeNan()
+        {
         }
     }

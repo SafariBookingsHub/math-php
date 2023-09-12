@@ -4,6 +4,7 @@
 
     use Countable;
     use Iterator;
+    use JetBrains\PhpStorm\Pure;
     use ReturnTypeWillChange;
 
     use function array_diff_key;
@@ -13,6 +14,8 @@
     use function array_shift;
     use function array_values;
     use function count;
+    use function current;
+    use function get_class;
     use function implode;
     use function is_array;
     use function is_float;
@@ -22,6 +25,7 @@
     use function is_string;
     use function next;
     use function reset;
+    use function spl_object_hash;
 
     /**
      * Set (Set Theory)
@@ -105,13 +109,13 @@
          *
          * @var array
          */
-        protected $A = [];
+        protected array $A = [];
         /**
          * Iterator interface array to iterate over
          *
          * @var array
          */
-        protected $iterator_keys;
+        protected array $iterator_keys;
 
         /**************************************************************************
          * GET SET CONTENTS
@@ -123,7 +127,7 @@
          *
          * @var mixed
          */
-        protected $iterator_position;
+        protected mixed $iterator_position;
 
         /**
          * Constructor - Initialize set members
@@ -133,9 +137,7 @@
         public function __construct(array $members = [])
         {
             foreach ($members as $member)
-            {
                 $this->A[$this->getKey($member)] = $member;
-            }
         }
 
         /**
@@ -154,23 +156,17 @@
          *
          * @return string|null
          */
-        protected function getKey($x): ?string
+        protected function getKey(mixed $x): ?string
         {
             if (is_int($x) || is_float($x) || is_string($x)
-                || ($x instanceof Set)
+                || $x instanceof Set
             )
-            {
-                return "$x";
-            } elseif (is_object($x))
-            {
-                return \get_class($x).'('.\spl_object_hash($x).')';
-            } elseif (is_array($x))
-            {
+                return "$x"; elseif (is_object($x))
+                return $x::class.'('.spl_object_hash($x).')';
+            elseif (is_array($x))
                 return 'Array('.serialize($x).')';
-            } elseif (is_resource($x))
-            {
+            elseif (is_resource($x))
                 return 'Resource('.$x.')';
-            }
 
             return NULL;
         }
@@ -189,7 +185,7 @@
          *
          * @return boolean
          */
-        public function isMember($x): bool
+        public function isMember(mixed $x): bool
         {
             // @phpstan-ignore-next-line ($this->getKey() may return null, int|string required)
             return array_key_exists($this->getKey($x), $this->A);
@@ -203,7 +199,7 @@
          *
          * @return boolean
          */
-        public function isNotMember($x): bool
+        public function isNotMember(mixed $x): bool
         {
             // @phpstan-ignore-next-line ($this->getKey() may return null, int|string required)
             return ! array_key_exists($this->getKey($x), $this->A);
@@ -228,9 +224,7 @@
         public function addMulti(array $members): Set
         {
             foreach ($members as $member)
-            {
                 $this->A[$this->getKey($member)] = $member;
-            }
 
             return $this;
         }
@@ -243,7 +237,7 @@
          *
          * @return Set (this set)
          */
-        public function remove($x): Set
+        public function remove(mixed $x): Set
         {
             unset($this->A[$this->getKey($x)]);
 
@@ -261,9 +255,7 @@
         public function removeMulti(array $x): Set
         {
             foreach ($x as $member)
-            {
                 unset($this->A[$this->getKey($member)]);
-            }
 
             return $this;
         }
@@ -280,7 +272,7 @@
          *
          * @return boolean
          */
-        public function isDisjoint(Set $other): bool
+        #[Pure] public function isDisjoint(Set $other): bool
         {
             return empty(array_intersect_key($this->A, $other->asArray()));
         }
@@ -313,14 +305,14 @@
          *
          * @return boolean
          */
-        public function isSubset(Set $B): bool
+        #[Pure] public function isSubset(Set $B): bool
         {
             $B_array = $B->asArray();
 
             $A∩B = array_intersect_key($this->A, $B_array);
             $A∖B = array_diff_key($this->A, $B_array);
 
-            return (count($A∩B) === count($this->A)) && (empty($A∖B));
+            return count($A∩B) === count($this->A) && empty($A∖B);
         }
 
         /**
@@ -333,15 +325,15 @@
          *
          * @return boolean
          */
-        public function isProperSubset(Set $B): bool
+        #[Pure] public function isProperSubset(Set $B): bool
         {
             $B_array = $B->asArray();
 
             $A∩B = array_intersect_key($this->A, $B_array);
             $A∖B = array_diff_key($this->A, $B_array);
 
-            return (count($A∩B) === count($this->A)) && (empty($A∖B))
-                && (count($this->A) === count($B));
+            return count($A∩B) === count($this->A) && empty($A∖B)
+                && count($this->A) === count($B);
         }
 
         /**
@@ -353,14 +345,14 @@
          *
          * @return boolean
          */
-        public function isSuperset(Set $B): bool
+        #[Pure] public function isSuperset(Set $B): bool
         {
             $B_array = $B->asArray();
 
             $A∩B = array_intersect_key($this->A, $B_array);
             $A∖B = array_diff_key($B_array, $this->A);
 
-            return (count($A∩B) === $B->length()) && (empty($A∖B));
+            return count($A∩B) === $B->length() && empty($A∖B);
         }
 
         /**
@@ -383,15 +375,15 @@
          *
          * @return boolean
          */
-        public function isProperSuperset(Set $B): bool
+        #[Pure] public function isProperSuperset(Set $B): bool
         {
             $B_array = $B->asArray();
 
             $A∩B = array_intersect_key($this->A, $B_array);
             $A∖B = array_diff_key($B_array, $this->A);
 
-            return (count($A∩B) === $B->length()) && (empty($A∖B))
-                && ($this != $B);
+            return count($A∩B) === $B->length() && empty($A∖B)
+                && $this != $B;
         }
 
         /**************************************************************************
@@ -419,14 +411,10 @@
             $new_members = [];
 
             foreach ($Bs as $B)
-            {
                 $new_members += array_diff_key($B->asArray(), $union);
-            }
 
             foreach ($new_members as $member => $value)
-            {
                 $union[$member] = $value;
-            }
 
             return new Set($union);
         }
@@ -446,9 +434,7 @@
         {
             $B_members = [];
             foreach ($Bs as $B)
-            {
                 $B_members[] = $B->asArray();
-            }
 
             $intersection = array_intersect_key($this->A, ...$B_members);
 
@@ -467,9 +453,7 @@
         {
             $B_members = [];
             foreach ($Bs as $B)
-            {
                 $B_members += $B->asArray();
-            }
 
             $difference = array_diff_key($this->A, $B_members);
 
@@ -532,9 +516,7 @@
             {
                 $elements = [];
                 for ($i2 = 0; $i2 < $l; ++$i2)
-                {
-                    $elements[] = \current($sets[$i2]);
-                }
+                    $elements[] = current($sets[$i2]);
 
                 $A×B[] = new Set($elements);
 
@@ -544,9 +526,7 @@
                     next($sets[$i2]);
                     $key = key($sets[$i2]);
                     if ($key !== NULL)
-                    {
                         break;
-                    }
                     reset($sets[$i2]);
                 }
             }
@@ -603,12 +583,8 @@
             {
                 $member_set = new Set();
                 for ($j = 0; $j < $n; $j++)
-                {
                     if ($i & (1 << $j))
-                    {
                         $member_set->add($A[$j]);
-                    }
-                }
                 $P⟮S⟯->add($member_set);
             }
 
@@ -623,7 +599,7 @@
          *
          * @return Set (this set)
          */
-        public function add($x): Set
+        public function add(mixed $x): Set
         {
             $this->A[$this->getKey($x)] = $x;
 
@@ -667,12 +643,10 @@
          *
          * @return string
          */
-        public function __toString(): string
+        #[Pure] public function __toString(): string
         {
             if ($this->isEmpty())
-            {
                 return 'Ø';
-            }
 
             return 'Set{'.implode(', ', array_keys($this->A)).'}';
         }
@@ -741,5 +715,29 @@
         public function next(): void
         {
             $this->iterator_position = array_shift($this->iterator_keys);
+        }
+
+        public function fluentInterface()
+        {
+        }
+
+        public function iteratorInterface2()
+        {
+        }
+
+        public function iteratorInterface()
+        {
+        }
+
+        public function toString()
+        {
+        }
+
+        public function asArrayAnotherWay()
+        {
+        }
+
+        public function interfaces()
+        {
         }
     }

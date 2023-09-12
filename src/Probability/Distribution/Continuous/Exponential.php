@@ -7,6 +7,8 @@
     use function exp;
     use function log;
 
+    use const INF;
+
     /**
      * Exponential distribution
      * https://en.wikipedia.org/wiki/Exponential_distribution
@@ -35,7 +37,7 @@
             ];
 
         /** @var float rate parameter */
-        protected $λ;
+        protected float $λ;
 
         /**
          * Constructor
@@ -72,9 +74,7 @@
         public function pdf(float $x): float
         {
             if ($x < 0)
-            {
                 return 0;
-            }
 
             $λ = $this->λ;
 
@@ -94,9 +94,7 @@
         public function cdf(float $x): float
         {
             if ($x < 0)
-            {
                 return 0;
-            }
 
             $λ = $this->λ;
 
@@ -118,14 +116,10 @@
          */
         public function inverse(float $p): float
         {
-            if (($p < 0) || ($p > 1))
-            {
+            if ($p < 0 || $p > 1)
                 throw new OutOfBoundsException("p must be between 0 and 1; given a p of $p");
-            }
             if ($p == 1)
-            {
-                return \INF;
-            }
+                return INF;
 
             return -log(1 - $p) / $this->λ;
         }
@@ -167,6 +161,18 @@
          */
         public function variance(): float
         {
-            return 1 / ($this->λ ** 2);
+            return 1 / $this->λ ** 2;
+        }
+
+        public function rand()
+        {
+        }
+
+        public function inverseOutOfBoundsException()
+        {
+        }
+
+        public function inverseOfCdf()
+        {
         }
     }

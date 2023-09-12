@@ -6,6 +6,8 @@
 
     use function abs;
 
+    use const NAN;
+
     /**
      * Newton's Method (also known as the Newton–Raphson method)
      *
@@ -21,23 +23,23 @@
          * @param callable  $function        f(x) callback function
          * @param array     $args            Parameters to pass to callback function. The initial value for the
          *                                   parameter of interest must be in this array.
-         * @param int|float $target          Value of f(x) we a trying to solve for
+         * @param float|int $target          Value of f(x) we a trying to solve for
          * @param float     $tol             Tolerance; How close to the actual solution we would like.
          * @param int       $position        Which element in the $args array will be changed; also serves as initial guess
          * @param int       $iterations
          *
-         * @return int|float
+         * @return float
          *
          * @throws Exception\OutOfBoundsException if the tolerance is not valid
          */
         public static function solve(
             callable $function,
             array $args,
-            $target,
+            float|int $target,
             float $tol,
             int $position = 0,
             int $iterations = 100
-        ) {
+        ): float|int {
             Validation::tolerance($tol);
 
             // Initialize
@@ -56,19 +58,55 @@
                 $slope = ($y_at_xplusdelx - $y) / $tol;
                 $del_y = $target - $y;
                 if (abs($slope) < $tol)
-                {
-                    return \NAN;
-                }
-                $guess = ($del_y / $slope) + $guess;
+                    return NAN;
+                $guess += $del_y / $slope;
                 $dif = abs($del_y);
                 $i++;
-            } while (($dif > $tol) && ($i < $iterations));
+            } while ($dif > $tol && $i < $iterations);
 
             if ($dif > $tol)
-            {
-                return \NAN;
-            }
+                return NAN;
 
             return $guess;
+        }
+
+        public function noSolutionCubeRootX()
+        {
+        }
+
+        public function newtonsMethodNoRealSolutionsNAN()
+        {
+        }
+
+        public function newtonsMethodNearZeroSlopeNAN()
+        {
+        }
+
+        public function newtonsMethodExceptionNegativeTolerance()
+        {
+        }
+
+        public function cosXEqualsX()
+        {
+        }
+
+        public function cosXSubtractTwoX()
+        {
+        }
+
+        public function XSquaredSubtractFive()
+        {
+        }
+
+        public function XCubedSubtractXPlusOne()
+        {
+        }
+
+        public function solvePolynomialWithFourRootsUsingPolynomial()
+        {
+        }
+
+        public function solvePolynomialWithFourRootsUsingClosure()
+        {
         }
     }

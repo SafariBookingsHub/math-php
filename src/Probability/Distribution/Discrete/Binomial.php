@@ -2,6 +2,9 @@
 
     namespace MathPHP\Probability\Distribution\Discrete;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Support;
     use MathPHP\Probability\Combinatorics;
 
@@ -36,10 +39,10 @@
             ];
 
         /** @var int number of events */
-        protected $n;
+        protected int $n;
 
         /** @var float probability of success */
-        protected $p;
+        protected float $p;
 
         /**
          * Constructor
@@ -62,13 +65,20 @@
          */
         public function cdf(int $r): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['r' => $r]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['r' => $r]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $cdf = 0;
             for ($i = $r; $i >= 0; $i--)
-            {
                 $cdf += $this->pmf($i);
-            }
 
             return $cdf;
         }
@@ -87,11 +97,25 @@
          */
         public function pmf(int $r): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['r' => $r]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['r' => $r]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
-            return ($this->n < 150)
-                ? $this->combinatorialMethod($r)
-                : Binomial::multiplicationMethod($r, $this->n, $this->p);
+            try
+            {
+                return $this->n < 150
+                    ? $this->combinatorialMethod($r)
+                    : Binomial::multiplicationMethod($r, $this->n, $this->p);
+            } catch (OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -139,19 +163,16 @@
             float $p
         ): float {
             if (2 * $r > $n)
-            {
                 return Binomial::multiplicationMethod($n - $r, $n, 1 - $p);
-            }
 
             [$j₀, $j₁, $j₂] = [0, 0, 0];
             $f = 1;
 
-            while (($j₀ < $r) | ($j₁ < $r) | ($j₂ < $n - $r))
-            {
+            while ($j₀ < $r | $j₁ < $r | $j₂ < $n - $r)
                 if (($j₀ < $r) && ($f < 1))
                 {
                     $j₀++;
-                    $f *= ($n - $r + $j₀) / $j₀;
+                    $f *= (($n - $r) + $j₀) / $j₀;
                 } elseif ($j₁ < $r)
                 {
                     $j₁++;
@@ -161,7 +182,6 @@
                     $j₂++;
                     $f *= 1 - $p;
                 }
-            }
 
             return $f;
         }

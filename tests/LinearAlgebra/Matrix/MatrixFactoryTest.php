@@ -16,10 +16,12 @@
     use MathPHP\Tests\LinearAlgebra\Fixture\MatrixDataProvider;
     use PHPUnit\Framework\TestCase;
 
+    use function is_int;
+
     class MatrixFactoryTest extends TestCase {
         use MatrixDataProvider;
 
-        public static function dataProviderForDiagonalMatrix()
+        public static function dataProviderForDiagonalMatrix(): array
         {
             return [
                 [[1]],
@@ -79,9 +81,7 @@
 
         public static function dataProviderForFunctionSquareMatrix(): array
         {
-            $function = function ($x) {
-                return $x * 2;
-            };
+            $function = fn($x) => $x * 2;
 
             return [
                 [
@@ -107,9 +107,7 @@
 
         public static function dataProviderForFunctionMatrix(): array
         {
-            $function = function ($x) {
-                return $x * 2;
-            };
+            $function = fn($x) => $x * 2;
 
             return [
                 [
@@ -155,9 +153,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForIdentity(): array
         {
             return [
@@ -270,9 +265,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForExchange(): array
         {
             return [
@@ -307,9 +299,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForZero(): array
         {
             return [
@@ -601,9 +590,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForEyeExceptions(): array
         {
             return [
@@ -661,7 +647,18 @@
         public function testCreateNumericMatrix(array $A)
         {
             // When
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(NumericMatrix::class, $A);
@@ -679,7 +676,14 @@
         public function testSpecificallyCreateNumericMatrix(array $A)
         {
             // When
-            $A = MatrixFactory::createNumeric($A);
+            try
+            {
+                $A = MatrixFactory::createNumeric($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(NumericMatrix::class, $A);
@@ -693,7 +697,12 @@
         public function testCreateDiagonalMatrix(array $A)
         {
             // When
-            $A = MatrixFactory::diagonal($A);
+            try
+            {
+                $A = MatrixFactory::diagonal($A);
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(NumericDiagonalMatrix::class, $A);
@@ -708,7 +717,18 @@
         public function testCreateSquareMatrix(array $A)
         {
             // When
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(NumericSquareMatrix::class, $A);
@@ -725,15 +745,22 @@
             array $expected
         ) {
             // Given
-            $array_map = [];
-            foreach ($vectors as $key => $vector)
-            {
-                $array_map[$key] = new Vector($vector);
-            }
+            $array_map = array_map(function ($vector) {
+                return new Vector($vector);
+            }, $vectors);
             $vectors = $array_map;
 
             // When
-            $A = MatrixFactory::createFromVectors($vectors);
+            try
+            {
+                $A = MatrixFactory::createFromVectors($vectors);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(NumericMatrix::class, $A);
@@ -767,7 +794,12 @@
         public function testCreateFunctionSquareMatrix(array $A)
         {
             // When
-            $A = MatrixFactory::createFunctionMatrix($A);
+            try
+            {
+                $A = MatrixFactory::createFunctionMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(FunctionMatrix::class,
@@ -781,7 +813,12 @@
         public function testCreateFunctionMatrix(array $A)
         {
             // When
-            $A = MatrixFactory::createFunctionMatrix($A);
+            try
+            {
+                $A = MatrixFactory::createFunctionMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(FunctionMatrix::class,
@@ -804,7 +841,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $A = MatrixFactory::createFunctionMatrix($A);
+            try
+            {
+                $A = MatrixFactory::createFunctionMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -814,7 +856,18 @@
         public function testCreateMatrix(array $A)
         {
             // When
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(NumericMatrix::class,
@@ -1030,10 +1083,30 @@
         public function testOne($m, $n, array $R)
         {
             // Given
-            $R = MatrixFactory::create($R);
+            try
+            {
+                $R = MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $M = MatrixFactory::one($m, $n);
+            try
+            {
+                $M = MatrixFactory::one($m, $n);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $M);
@@ -1056,10 +1129,30 @@
         public function testEye(int $m, int $n, int $k, int $x, array $R)
         {
             // Given
-            $R = MatrixFactory::create($R);
+            try
+            {
+                $R = MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $A = MatrixFactory::eye($m, $n, $k, $x);
+            try
+            {
+                $A = MatrixFactory::eye($m, $n, $k, $x);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $A);
@@ -1077,7 +1170,16 @@
         public function testEyeExceptions(int $m, int $n, int $k, int $x)
         {
             $this->expectException(Exception\OutOfBoundsException::class);
-            $A = MatrixFactory::eye($m, $n, $k, $x);
+            try
+            {
+                $A = MatrixFactory::eye($m, $n, $k, $x);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -1089,7 +1191,7 @@
          *
          * @throws       \Exception
          */
-        public function testHilbertMatrix($n, $H)
+        public function testHilbertMatrix(int $n, array $H)
         {
             // Given
             $H = MatrixFactory::create($H);
@@ -1125,7 +1227,6 @@
         {
             // Given
             for ($m = 1; $m < 5; $m++)
-            {
                 for ($n = 1; $n < 5; $n++)
                 {
                     // When
@@ -1137,10 +1238,9 @@
 
                     // And
                     $A->walk(function ($element) {
-                        $this->assertTrue(\is_int($element));
+                        $this->assertTrue(is_int($element));
                     });
                 }
-            }
         }
 
         /**
@@ -1152,7 +1252,18 @@
         public function testCreateObjectMatrix(array $A)
         {
             // When
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(ObjectMatrix::class, $A);
@@ -1168,7 +1279,18 @@
         public function testCreateObjectSquareMatrix(array $A)
         {
             // When
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(ObjectSquareMatrix::class, $A);
@@ -1186,10 +1308,20 @@
         public function testConstructor(array $V, array $expected)
         {
             // Given
-            $expected = new NumericMatrix($expected);
+            try
+            {
+                $expected = new NumericMatrix($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $A = MatrixFactory::createFromColumnVector($V);
+            try
+            {
+                $A = MatrixFactory::createFromColumnVector($V);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(NumericMatrix::class, $A);
@@ -1213,7 +1345,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $R = MatrixFactory::createFromColumnVector($A);
+            try
+            {
+                $R = MatrixFactory::createFromColumnVector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -1254,7 +1391,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $R = MatrixFactory::createFromRowVector($A);
+            try
+            {
+                $R = MatrixFactory::createFromRowVector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -1266,7 +1408,18 @@
         public function testCreateComplexObjectMatrix(array $A)
         {
             // When
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(ComplexMatrix::class, $A);

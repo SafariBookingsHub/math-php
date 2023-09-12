@@ -5,6 +5,7 @@
     use MathPHP\Probability\Distribution\Continuous\Normal;
     use PHPUnit\Framework\TestCase;
 
+    use function is_numeric;
     use function range;
 
     use const INF;
@@ -572,7 +573,7 @@
          * @test         mean
          * @dataProvider dataProviderForMean
          *
-         * @param float μ
+         * @param float $μ μ
          */
         public function testMean(float $μ)
         {
@@ -591,7 +592,7 @@
          * @test         median
          * @dataProvider dataProviderForMean
          *
-         * @param float μ
+         * @param float $μ μ
          */
         public function testMedian(float $μ)
         {
@@ -610,7 +611,7 @@
          * @test         mode
          * @dataProvider dataProviderForMean
          *
-         * @param float μ
+         * @param float $μ μ
          */
         public function testMode(float $μ)
         {
@@ -692,7 +693,6 @@
         public function testRand()
         {
             foreach (range(-3, 3) as $μ)
-            {
                 foreach (range(1, 3) as $σ)
                 {
                     // Given
@@ -702,8 +702,7 @@
                     $random = $normal->rand();
 
                     // Then
-                    $this->assertTrue(\is_numeric($random));
+                    $this->assertTrue(is_numeric($random));
                 }
-            }
         }
     }

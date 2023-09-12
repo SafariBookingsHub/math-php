@@ -5,6 +5,7 @@
     use MathPHP\Probability\Distribution\Continuous\Laplace;
     use PHPUnit\Framework\TestCase;
 
+    use function is_numeric;
     use function range;
 
     use const INF;
@@ -163,7 +164,6 @@
         public function testMean()
         {
             foreach (range(-5, 5) as $μ)
-            {
                 foreach (range(1, 3) as $b)
                 {
                     // Given
@@ -175,7 +175,6 @@
                     // Then
                     $this->assertEquals($μ, $mean);
                 }
-            }
         }
 
         /**
@@ -184,7 +183,6 @@
         public function testMedian()
         {
             foreach (range(-5, 5) as $μ)
-            {
                 foreach (range(1, 3) as $b)
                 {
                     // Given
@@ -196,7 +194,6 @@
                     // Then
                     $this->assertEquals($μ, $median);
                 }
-            }
         }
 
         /**
@@ -205,7 +202,6 @@
         public function testMode()
         {
             foreach (range(-5, 5) as $μ)
-            {
                 foreach (range(1, 3) as $b)
                 {
                     // Given
@@ -217,7 +213,6 @@
                     // Then
                     $this->assertEquals($μ, $mode);
                 }
-            }
         }
 
         /**
@@ -271,7 +266,6 @@
         public function testRand()
         {
             foreach (range(-3, 3) as $μ)
-            {
                 foreach (range(1, 3) as $b)
                 {
                     // Given
@@ -281,8 +275,7 @@
                     $random = $laplace->rand();
 
                     // Then
-                    $this->assertTrue(\is_numeric($random));
+                    $this->assertTrue(is_numeric($random));
                 }
-            }
         }
     }

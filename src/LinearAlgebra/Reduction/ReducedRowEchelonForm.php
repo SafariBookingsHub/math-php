@@ -86,10 +86,8 @@
                 if (Support::isZero($R[$row][$col], $ε))
                 {
                     $col++;
-                    if (($row >= $m) || ($col >= $n))
-                    {
+                    if ($row >= $m || $col >= $n)
                         $rref = TRUE;
-                    }
                     continue;
                 }
 
@@ -105,9 +103,7 @@
                 {
                     $factor = $R[$j][$col];
                     if (Support::isNotZero($factor, $ε))
-                    {
                         $R = $R->rowAdd($row, $j, -$factor);
-                    }
                 }
 
                 // Move on to next row and column
@@ -115,29 +111,37 @@
                 $col++;
 
                 // If no more rows or columns, rref achieved
-                if (($row >= $m) || ($col >= $n))
-                {
+                if ($row >= $m || $col >= $n)
                     $rref = TRUE;
-                }
             }
 
             $R = $R->getMatrix();
 
             // Floating point adjustment for zero values
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     if (Support::isZero($R[$i][$j], $ε))
-                    {
                         $R[$i][$j] = 0;
-                    }
-                }
-            }
 
             $rref = new ReducedRowEchelonForm($R);
             $rref->setError($ε);
 
             return $rref;
+        }
+
+        public function rrefAlreadyComputed()
+        {
+        }
+
+        public function rrefIsRref()
+        {
+        }
+
+        public function rrefDirectly()
+        {
+        }
+
+        public function rref()
+        {
         }
     }

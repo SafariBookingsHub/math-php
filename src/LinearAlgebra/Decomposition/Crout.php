@@ -22,10 +22,10 @@
      */
     class Crout extends Decomposition {
         /** @var NumericMatrix Lower triangular matrix LD */
-        private $L;
+        private NumericMatrix $L;
 
         /** @var NumericMatrix Normalized upper triangular matrix */
-        private $U;
+        private NumericMatrix $U;
 
         /**
          * Crout constructor
@@ -67,9 +67,7 @@
                 {
                     $sum = 0;
                     for ($k = 0; $k < $j; $k++)
-                    {
-                        $sum = $sum + $L[$i][$k] * $U[$k][$j];
-                    }
+                        $sum = $sum + ($L[$i][$k] * $U[$k][$j]);
                     $L[$i][$j] = $A[$i][$j] - $sum;
                 }
 
@@ -77,21 +75,17 @@
                 {
                     $sum = 0;
                     for ($k = 0; $k < $j; $k++)
-                    {
-                        $sum = $sum + $L[$j][$k] * $U[$k][$i];
-                    }
+                        $sum = $sum + ($L[$j][$k] * $U[$k][$i]);
                     if ($L[$j][$j] == 0)
-                    {
                         throw new Exception\MatrixException('Cannot do Crout decomposition. det(L) close to 0 - Cannot divide by 0');
-                    }
                     $U[$j][$i] = ($A[$j][$i] - $sum) / $L[$j][$j];
                 }
             }
 
             /** @var NumericMatrix $L */
-            $L = MatrixFactory::create($L);
+            $L = MatrixFactory::create((array)$L);
             /** @var NumericMatrix $U */
-            $U = MatrixFactory::create($U);
+            $U = MatrixFactory::create((array)$U);
 
             return new Crout($L, $U);
         }
@@ -107,14 +101,22 @@
          */
         public function __get(string $name): NumericMatrix
         {
-            switch ($name)
+            return match ($name)
             {
-                case 'L':
-                case 'U':
-                    return $this->$name;
+                'L', 'U' => $this->$name,
+                default => throw new Exception\MatrixException("Crout class does not have a gettable property: $name"),
+            };
+        }
 
-                default:
-                    throw new Exception\MatrixException("Crout class does not have a gettable property: $name");
-            }
+        public function countDecompositionInvalidProperty()
+        {
+        }
+
+        public function croutDecompositionException()
+        {
+        }
+
+        public function croutDecomposition()
+        {
         }
     }

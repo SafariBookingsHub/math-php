@@ -179,7 +179,12 @@
         public function testShannonEntropy(array $p, $expected)
         {
             // When
-            $H = Entropy::shannonEntropy($p);
+            try
+            {
+                $H = Entropy::shannonEntropy($p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $H, 0.001);
@@ -195,7 +200,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Entropy::shannonEntropy($p);
+            try
+            {
+                Entropy::shannonEntropy($p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -204,7 +214,12 @@
         public function testShannonNatEntropy(array $p, $expected)
         {
             // When
-            $H = Entropy::shannonNatEntropy($p);
+            try
+            {
+                $H = Entropy::shannonNatEntropy($p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $H, 0.000001);
@@ -220,7 +235,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Entropy::shannonNatEntropy($p);
+            try
+            {
+                Entropy::shannonNatEntropy($p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -229,7 +249,12 @@
         public function testShannonHartleyEntropy(array $p, $expected)
         {
             // When
-            $H = Entropy::shannonHartleyEntropy($p);
+            try
+            {
+                $H = Entropy::shannonHartleyEntropy($p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $H, 0.000001);
@@ -245,7 +270,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Entropy::shannonHartleyEntropy($p);
+            try
+            {
+                Entropy::shannonHartleyEntropy($p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -254,7 +284,12 @@
         public function testCrossEntropy(array $p, array $q, $expected)
         {
             // When
-            $BD = Entropy::crossEntropy($p, $q);
+            try
+            {
+                $BD = Entropy::crossEntropy($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $BD, 0.01);
@@ -270,7 +305,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Entropy::crossEntropy($p, $q);
+            try
+            {
+                Entropy::crossEntropy($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         public function testCrossEntropyExceptionNotProbabilityDistributionThatAddsUpToOne(
@@ -284,7 +324,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Entropy::crossEntropy($p, $q);
+            try
+            {
+                Entropy::crossEntropy($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -293,7 +338,12 @@
         public function testJointEntropy(array $p, $expected)
         {
             // When
-            $H = Entropy::jointEntropy($p);
+            try
+            {
+                $H = Entropy::jointEntropy($p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $H, 0.001);
@@ -309,7 +359,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Entropy::jointEntropy($p);
+            try
+            {
+                Entropy::jointEntropy($p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -318,7 +373,14 @@
         public function testRenyiEntropy(array $p, $α, $expected)
         {
             // When
-            $H = Entropy::renyiEntropy($p, $α);
+            try
+            {
+                $H = Entropy::renyiEntropy($p, $α);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $H, 0.001);
@@ -335,7 +397,14 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Entropy::renyiEntropy($p, $α);
+            try
+            {
+                Entropy::renyiEntropy($p, $α);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         public function testRenyiEntropyExceptionAlphaOutOfBounds()
@@ -348,7 +417,14 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            Entropy::renyiEntropy($p, $α);
+            try
+            {
+                Entropy::renyiEntropy($p, $α);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         public function testRenyiEntropyExceptionAlphaEqualsOne()
@@ -361,7 +437,14 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            Entropy::renyiEntropy($p, $α);
+            try
+            {
+                Entropy::renyiEntropy($p, $α);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -370,7 +453,12 @@
         public function testPerplexity(array $p, $expected)
         {
             // When
-            $H = Entropy::perplexity($p);
+            try
+            {
+                $H = Entropy::perplexity($p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $H, 0.001);
@@ -386,6 +474,11 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Entropy::perplexity($p);
+            try
+            {
+                Entropy::perplexity($p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
     }

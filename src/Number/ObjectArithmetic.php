@@ -17,7 +17,7 @@
          *
          * @return ObjectArithmetic sum.
          */
-        public function add($object_or_scalar);
+        public function add(mixed $object_or_scalar): ObjectArithmetic;
 
         /**
          * Subtract one objects from another
@@ -26,7 +26,7 @@
          *
          * @return ObjectArithmetic result.
          */
-        public function subtract($object_or_scalar);
+        public function subtract(mixed $object_or_scalar): ObjectArithmetic;
 
         /**
          * Multiply two objects together
@@ -35,5 +35,5 @@
          *
          * @return ObjectArithmetic product.
          */
-        public function multiply($object_or_scalar);
+        public function multiply(mixed $object_or_scalar): ObjectArithmetic;
     }

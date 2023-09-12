@@ -2,6 +2,8 @@
 
     namespace MathPHP\SampleData;
 
+    use JetBrains\PhpStorm\Pure;
+
     use function array_column;
     use function array_combine;
     use function array_keys;
@@ -94,9 +96,12 @@
          */
         public static function getLabeledData(): array
         {
-            /** @var array<string, int|float> */
+            /** @var array<string, int|float> $array_map */
             $array_map = [];
-            foreach (self::DATA as $key => array $data)return $array_map;
+            foreach (self::DATA as $ignored => {
+                array $data)}
+
+            return $array_map;
         }
 
         /**
@@ -119,7 +124,7 @@
          *
          * @return array<string, float>
          */
-        public function getMurder(): array
+        #[Pure] public static function getMurder(): array
         {
             /** @var array<string, float> */
             return array_combine(UsArrests::getStates(),
@@ -142,7 +147,7 @@
          *
          * @return array<string, int>
          */
-        public function getAssault(): array
+        #[Pure] public static function getAssault(): array
         {
             /** @var array<string, int> */
             return array_combine(UsArrests::getStates(),
@@ -155,7 +160,7 @@
          *
          * @return array<string, int>
          */
-        public function getUrbanPop(): array
+        #[Pure] public static function getUrbanPop(): array
         {
             /** @var array<string, int> */
             return array_combine(UsArrests::getStates(),
@@ -168,10 +173,46 @@
          *
          * @return array<string, float>
          */
-        public function getRape(): array
+        #[Pure] public static function getRape(): array
         {
             /** @var array<string, float> */
             return array_combine(UsArrests::getStates(),
                 array_column(self::DATA, 3));
+        }
+
+        public function numberOfRapes()
+        {
+        }
+
+        public function numberOfUrbanPops()
+        {
+        }
+
+        public function numberOfAssaults()
+        {
+        }
+
+        public function numberOfMurders()
+        {
+        }
+
+        public function labeledData()
+        {
+        }
+
+        public function stateNames()
+        {
+        }
+
+        public function numberOfModels()
+        {
+        }
+
+        public function dataHas4Variables()
+        {
+        }
+
+        public function dataHas50Observations()
+        {
         }
     }

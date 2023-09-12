@@ -29,10 +29,10 @@
         use Models\LinearModel;
 
         /** @var float */
-        private $v;
+        private mixed $v;
 
         /** @var float */
-        private $w;
+        private mixed $w;
 
         /**
          * Given a set of data ($points) and a point($force), perform a least squares
@@ -71,7 +71,7 @@
             $parameters = $this->leastSquares($y’, $x’, 1, 0)->getColumn(0);
 
             $m = $parameters[0];
-            $b = $this->w - ($m * $this->v);
+            $b = $this->w - $m * $this->v;
 
             $this->parameters = [$b, $m];
         }
@@ -87,5 +87,45 @@
         public function evaluate(float $x): float
         {
             return $this->evaluateModel($x, $this->parameters);
+        }
+
+        public function sumSquares()
+        {
+        }
+
+        public function PI()
+        {
+        }
+
+        public function CI()
+        {
+        }
+
+        public function getSampleSize()
+        {
+        }
+
+        public function getParameters()
+        {
+        }
+
+        public function getEquation()
+        {
+        }
+
+        public function getYs()
+        {
+        }
+
+        public function getXs()
+        {
+        }
+
+        public function getPoints()
+        {
+        }
+
+        public function constructor()
+        {
         }
     }

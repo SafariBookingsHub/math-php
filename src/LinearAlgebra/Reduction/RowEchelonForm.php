@@ -6,6 +6,7 @@
     use MathPHP\Functions\Support;
     use MathPHP\LinearAlgebra\NumericMatrix;
 
+    use function abs;
     use function min;
 
     /**
@@ -21,7 +22,7 @@
      */
     class RowEchelonForm extends NumericMatrix {
         /** @var int Number of row swaps when computing REF */
-        protected $swaps;
+        protected int $swaps;
 
         /**
          * RowEchelonForm constructor
@@ -111,17 +112,11 @@
                 // Find column max
                 $i_max = $k;
                 for ($i = $k; $i < $m; $i++)
-                {
-                    if (\abs($R[$i][$k]) > \abs($R[$i_max][$k]))
-                    {
+                    if (abs($R[$i][$k]) > abs($R[$i_max][$k]))
                         $i_max = $i;
-                    }
-                }
 
                 if (Support::isZero($R[$i_max][$k], $ε))
-                {
                     throw new Exception\SingularMatrixException('Guassian elimination fails for singular matrices');
-                }
 
                 // Swap rows k and i_max (column max)
                 if ($k != $i_max)
@@ -133,15 +128,13 @@
                 // Row operations
                 for ($i = $k + 1; $i < $m; $i++)
                 {
-                    $f = (Support::isNotZero($R[$k][$k], $ε)) ? ($R[$i][$k]
-                        / $R[$k][$k]) : 1;
+                    $f = Support::isNotZero($R[$k][$k], $ε) ? $R[$i][$k]
+                        / $R[$k][$k] : 1;
                     for ($j = $k + 1; $j < $n; $j++)
                     {
-                        $R[$i][$j] = $R[$i][$j] - ($R[$k][$j] * $f);
+                        $R[$i][$j] -= $R[$k][$j] * $f;
                         if (Support::isZero($R[$i][$j], $ε))
-                        {
                             $R[$i][$j] = 0;
-                        }
                     }
                     $R[$i][$k] = 0;
                 }
@@ -190,7 +183,6 @@
             {
                 // If pivot is 0, try to find a non-zero pivot in the column and swap rows
                 if (Support::isZero($R[$row][$col], $ε))
-                {
                     for ($j = $row + 1; $j < $m; $j++)
                     {
                         if (Support::isNotZero($R[$j][$col], $ε))
@@ -200,16 +192,13 @@
                             break;
                         }
                     }
-                }
 
                 // No non-zero pivot, go to next column of the same row
                 if (Support::isZero($R[$row][$col], $ε))
                 {
                     $col++;
-                    if (($row >= $m) || ($col >= $n))
-                    {
+                    if ($row >= $m || $col >= $n)
                         $ref = TRUE;
-                    }
                     continue;
                 }
 
@@ -225,12 +214,8 @@
                     {
                         $R = $R->rowAdd($row, $j, -$factor);
                         for ($k = 0; $k < $n; $k++)
-                        {
                             if (Support::isZero($R[$j][$k], $ε))
-                            {
                                 $R->A[$j][$k] = 0;
-                            }
-                        }
                     }
                 }
 
@@ -239,25 +224,17 @@
                 $col++;
 
                 // If no more rows or columns, ref achieved
-                if (($row >= $m) || ($col >= $n))
-                {
+                if ($row >= $m || $col >= $n)
                     $ref = TRUE;
-                }
             }
 
             $R = $R->getMatrix();
 
             // Floating point adjustment for zero values
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     if (Support::isZero($R[$i][$j], $ε))
-                    {
                         $R[$i][$j] = 0;
-                    }
-                }
-            }
 
             return [$R, $swaps];
         }
@@ -285,5 +262,13 @@
         public function rref(): ReducedRowEchelonForm
         {
             return ReducedRowEchelonForm::reduceFromRowEchelonForm($this);
+        }
+
+        public function refAlreadyComputed()
+        {
+        }
+
+        public function refIsRef()
+        {
         }
     }

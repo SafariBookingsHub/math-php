@@ -866,16 +866,14 @@
          *
          * @return float probability
          *
-         * @throws Exception\BadDataException
+         * @throws \MathPHP\Exception\BadParameterException
          */
         public static function getZScoreProbability(float $Z): float
         {
             if ( ! preg_match('/^ (\-? \d [.] \d) (\d) $/x',
                 sprintf('%1.2f', $Z), $matches)
             )
-            {
                 throw new Exception\BadParameterException("Z does not match format X.XX: $Z");
-            }
             /**
              * @var string    $z
              * @var int|float $＋0．0x
@@ -899,9 +897,7 @@
             if ( ! array_key_exists($cl,
                 self::Z_SCORES_FOR_CONFIDENCE_INTERVALS)
             )
-            {
                 throw new Exception\BadDataException('Not a valid confidence level');
-            }
 
             return self::Z_SCORES_FOR_CONFIDENCE_INTERVALS[$cl];
         }

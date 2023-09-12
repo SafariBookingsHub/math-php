@@ -120,9 +120,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRowMeans(): array
         {
             return [
@@ -271,12 +268,38 @@
         public function testVectorMultiply(array $A, array $B, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = new Vector($B);
-            $R = new Vector($R);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $R = new Vector($R);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $R2 = $A->vectorMultiply($B);
+            try
+            {
+                $R2 = $A->vectorMultiply($B);
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $R2);
@@ -285,17 +308,38 @@
         public function testVectorMultiplyExceptionDimensionsDoNotMatch()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [2, 3, 4],
-            ]);
-            $B = new Vector([1, 2, 3, 4, 5]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [2, 3, 4],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector([1, 2, 3, 4, 5]);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->vectorMultiply($B);
+            try
+            {
+                $A->vectorMultiply($B);
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -310,8 +354,8 @@
         public function testRowSums(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $expected = new Vector(A: $expected);
 
             // When
             $R = $A->rowSums();
@@ -332,8 +376,8 @@
         public function testRowMeans(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $expected = new Vector(A: $expected);
 
             // When
             $R = $A->rowMeans();
@@ -354,8 +398,8 @@
         public function testColumnSums(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $expected = new Vector(A: $expected);
 
             // When
             $R = $A->columnSums();
@@ -376,8 +420,8 @@
         public function testColumnMeans(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $expected = new Vector(A: $expected);
 
             // When
             $R = $A->columnMeans();

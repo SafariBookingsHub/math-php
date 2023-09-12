@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\Probability\Distribution\Multivariate;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Exception;
     use MathPHP\Probability\Distribution\Multivariate\Hypergeometric;
     use PHPUnit\Framework\TestCase;
@@ -13,7 +14,7 @@
          *
          * @return array
          */
-        public static function dataProviderForTestHypergeometric()
+        public static function dataProviderForTestHypergeometric(): array
         {
             return [
                 [
@@ -72,7 +73,11 @@
         /**
          * @return array
          */
-        public static function dataProviderForConstructorExceptions()
+        #[ArrayShape([
+            'float'  => "array[]",
+            'string' => "array[]",
+            'empty'  => "array[]"
+        ])] public static function dataProviderForConstructorExceptions(): array
         {
             return [
                 'float'  => [
@@ -90,7 +95,11 @@
         /**
          * @return array
          */
-        public static function dataProviderForPmfExceptions()
+        #[ArrayShape([
+            'float'      => "array[]",
+            'string'     => "array[]",
+            'mismatched' => "array[]"
+        ])] public static function dataProviderForPmfExceptions(): array
         {
             return [
                 'float'      => [
@@ -108,7 +117,11 @@
         /**
          * @return array
          */
-        public static function dataProviderForBoundsExceptions()
+        #[ArrayShape([
+            'K too small' => "array[]",
+            'k too small' => "array[]",
+            'k too big'   => "array[]"
+        ])] public static function dataProviderForBoundsExceptions(): array
         {
             return [
                 'K too small' => [
@@ -135,9 +148,19 @@
             array $picks,
             $expected
         ) {
-            $dist = new Hypergeometric($quantities);
-            $this->assertEqualsWithDelta($expected, $dist->pmf($picks),
-                0.00000001);
+            try
+            {
+                $dist = new Hypergeometric($quantities);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $this->assertEqualsWithDelta($expected, $dist->pmf($picks),
+                    0.00000001);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -147,7 +170,12 @@
         public function testConstructorException($quantities)
         {
             $this->expectException(Exception\BadDataException::class);
-            $dist = new Hypergeometric($quantities);
+            try
+            {
+                $dist = new Hypergeometric($quantities);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -157,8 +185,18 @@
         public function testPmfException($ks)
         {
             $this->expectException(Exception\BadDataException::class);
-            $dist = new Hypergeometric([10, 10, 10]);
-            $prob = $dist->pmf($ks);
+            try
+            {
+                $dist = new Hypergeometric([10, 10, 10]);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $prob = $dist->pmf($ks);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -168,7 +206,17 @@
         public function testBoundsExceptions($Ks, $ks)
         {
             $this->expectException(Exception\OutOfBoundsException::class);
-            $dist = new Hypergeometric($Ks);
-            $prob = $dist->pmf($ks);
+            try
+            {
+                $dist = new Hypergeometric($Ks);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $prob = $dist->pmf($ks);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
     }

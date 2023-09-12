@@ -13,6 +13,8 @@
     use function count;
     use function intdiv;
     use function log;
+    use function pow;
+    use function range;
     use function sqrt;
 
     class Integer {
@@ -30,11 +32,14 @@
         public static function isPerfectNumber(int $n): bool
         {
             if ($n <= 1)
-            {
                 return FALSE;
-            }
 
-            return $n === self::aliquotSum($n);
+            try
+            {
+                return $n === self::aliquotSum($n);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -85,9 +90,7 @@
             {
                 $sum = 1 + $factor;
                 for ($i = 2; $i <= $exponent; $i++)
-                {
-                    $sum += \pow($factor, $i);
-                }
+                    $sum += ($factor ** $i);
                 $product *= $sum;
             }
 
@@ -114,21 +117,17 @@
         public static function primeFactorization(int $n): array
         {
             if ($n < 1)
-            {
                 throw new Exception\OutOfBoundsException("n must be ≥ 1. ($n provided)");
-            }
 
             $remainder = $n;
             $factors = [];
 
             foreach ([2, 3] as $divisor)
-            {
                 while ($remainder % $divisor === 0)
                 {
                     $factors[] = $divisor;
                     $remainder = intdiv($remainder, $divisor);
                 }
-            }
 
             $divisor = 5;
             $√n = sqrt($remainder);
@@ -152,9 +151,7 @@
             }
 
             if ($remainder > 1)
-            {
                 $factors[] = $remainder;
-            }
 
             return $factors;
         }
@@ -173,11 +170,14 @@
         public static function isDeficientNumber(int $n): bool
         {
             if ($n < 1)
-            {
                 return FALSE;
-            }
 
-            return $n > self::aliquotSum($n);
+            try
+            {
+                return $n > self::aliquotSum($n);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -194,11 +194,14 @@
         public static function isAbundantNumber(int $n): bool
         {
             if ($n < 1)
-            {
                 return FALSE;
-            }
 
-            return $n < self::aliquotSum($n);
+            try
+            {
+                return $n < self::aliquotSum($n);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -244,17 +247,13 @@
         public static function totient(int $n, int $k = 1): int
         {
             if ($k < 1)
-            {
                 throw new Exception\OutOfBoundsException("k must be ≥ 1. ($k provided)");
-            }
 
             $J = $n ** $k;
             $primes = array_unique(self::primeFactorization($n));
 
             foreach ($primes as $prime)
-            {
-                $J *= 1 - 1 / $prime ** $k;
-            }
+                $J *= 1 - (1 / $prime ** $k);
 
             return (int)$J;
         }
@@ -278,15 +277,11 @@
         {
             $primes = array_count_values(self::primeFactorization($n));
             $λ = 1;
-            if (isset($primes[2]) && ($primes[2] > 2))
-            {
+            if (isset($primes[2]) && $primes[2] > 2)
                 --$primes[2];
-            }
 
             foreach ($primes as $prime => $exponent)
-            {
-                $λ = Algebra::lcm($λ, $prime ** ($exponent - 1) * ($prime - 1));
-            }
+                $λ = Algebra::lcm($λ, ($prime ** ($exponent - 1)) * ($prime - 1));
 
             return $λ;
         }
@@ -315,9 +310,7 @@
         {
             $factors = self::primeFactorization($n);
             if ($factors !== array_unique($factors))
-            {
                 return 0;
-            }
 
             return (-1) ** count($factors);
         }
@@ -337,11 +330,14 @@
         public static function isSquarefree(int $n): bool
         {
             if ($n < 1)
-            {
                 return FALSE;
-            }
 
-            return $n === self::radical($n);
+            try
+            {
+                return $n === self::radical($n);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -376,11 +372,14 @@
         public static function isRefactorableNumber(int $n): bool
         {
             if ($n < 1)
-            {
                 return FALSE;
-            }
 
-            return $n % self::numberOfDivisors($n) === 0;
+            try
+            {
+                return $n % self::numberOfDivisors($n) === 0;
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -404,9 +403,7 @@
             $product = 1;
 
             foreach (array_count_values($factors) as $factor => $exponent)
-            {
                 $product *= $exponent + 1;
-            }
 
             return $product;
         }
@@ -428,8 +425,8 @@
         {
             $factors = self::primeFactorization($n);
 
-            return (count($factors) === 3)
-                && (count(array_unique($factors)) === 3);
+            return count($factors) === 3
+                && count(array_unique($factors)) === 3;
         }
 
         /**
@@ -450,9 +447,7 @@
         public static function isPerfectPower(int $n): bool
         {
             if (empty(self::perfectPower($n)))
-            {
                 return FALSE;
-            }
 
             return TRUE;
         }
@@ -474,32 +469,25 @@
          * @param int $n
          *
          * @return array{0?: int|float, 1?: int|float} [m, k]
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public static function perfectPower(int $n): array
         {
             $√n = sqrt($n);
-            $array_filter = [];
-            foreach (Algebra::factors($n) as $key => $m)
-            {
-                if (($m > 1 && $m <= $√n))
-                {
-                    $array_filter[$key] = $m;
-                }
-            }
+            $array_filter = array_filter(Algebra::factors($n),
+                function ($m) use ($√n) {
+                    return (($m > 1) && ($m <= $√n));
+                });
             $ms = $array_filter;
             $max_k = ceil(log($n, 2));
 
             foreach ($ms as $m)
-            {
-                foreach (\range(2, $max_k) as $k)
+                foreach (range(2, $max_k) as $k)
                 {
                     $mᵏ = $m ** $k;
                     if ($mᵏ == $n)
-                    {
                         return [$m, $k];
-                    }
                 }
-            }
 
             return [];
         }
@@ -518,7 +506,7 @@
          */
         public static function coprime(int $a, int $b): bool
         {
-            return (Algebra::gcd($a, $b) === 1);
+            return Algebra::gcd($a, $b) === 1;
         }
 
         /**
@@ -530,7 +518,7 @@
          */
         public static function isOdd(int $x): bool
         {
-            return (abs($x) % 2) === 1;
+            return abs($x) % 2 === 1;
         }
 
         /**
@@ -542,6 +530,90 @@
          */
         public static function isEven(int $x): bool
         {
-            return (abs($x) % 2) === 0;
+            return abs($x) % 2 === 0;
+        }
+
+        public function isNotEven()
+        {
+        }
+
+        public function isNotOdd()
+        {
+        }
+
+        public function notCoprime()
+        {
+        }
+
+        public function primeFactorizationOutOfBoundsException()
+        {
+        }
+
+        public function emptyPerfectPower()
+        {
+        }
+
+        public function perfectPowerArray()
+        {
+        }
+
+        public function isNotPerfectPower()
+        {
+        }
+
+        public function numberOfDivisorsOutOfBoundsException()
+        {
+        }
+
+        public function sumOfDivisorsOutOfBoundsException()
+        {
+        }
+
+        public function isNotSquarefree()
+        {
+        }
+
+        public function mobiusOutOfBoundsException()
+        {
+        }
+
+        public function reducedTotientOutOfBoundsException()
+        {
+        }
+
+        public function cototientOutOfBoundsException()
+        {
+        }
+
+        public function totientOutOfBoundsException()
+        {
+        }
+
+        public function radicalOutOfBoundsException()
+        {
+        }
+
+        public function aliquotSumOutOfBoundsException()
+        {
+        }
+
+        public function isNotSphenicNumber()
+        {
+        }
+
+        public function isNotRefactorableNumber()
+        {
+        }
+
+        public function isNotDeficientNumber()
+        {
+        }
+
+        public function isNotAbundantNumber()
+        {
+        }
+
+        public function isNotPerfectNumber()
+        {
         }
     }

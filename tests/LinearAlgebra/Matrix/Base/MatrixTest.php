@@ -10,11 +10,9 @@
     use PHPUnit\Framework\TestCase;
 
     class MatrixTest extends TestCase {
-        /** @var array */
-        private $A;
 
         /** @var NumericMatrix */
-        private $matrix;
+        private NumericMatrix $matrix;
 
         public static function dataProviderForJsonSerialize(): array
         {
@@ -41,12 +39,12 @@
          */
         public function setUp(): void
         {
-            $this->A = [
+            $A = [
                 [1, 2, 3],
                 [2, 3, 4],
                 [4, 5, 6],
             ];
-            $this->matrix = new NumericMatrix($this->A);
+            $this->matrix = new NumericMatrix($A);
         }
 
         /**

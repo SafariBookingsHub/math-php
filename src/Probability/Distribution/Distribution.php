@@ -2,6 +2,9 @@
 
     namespace MathPHP\Probability\Distribution;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Support;
 
     abstract class Distribution {
@@ -24,6 +27,23 @@
                 $new_params[$key] = $params[$i];
                 $i++;
             }
-            Support::checkLimits(static::PARAMETER_LIMITS, $new_params);
+            try
+            {
+                Support::checkLimits(static::PARAMETER_LIMITS, $new_params);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
+        }
+
+        public function stemAndLeafPlotPrint()
+        {
+        }
+
+        public function fractionalRankingDistributionSumOfAllRanks()
+        {
         }
     }

@@ -7,11 +7,8 @@
 
     class IteratorAggregateFixture implements IteratorAggregate {
         /** @var array */
-        private $values;
+        private array $values;
 
-        /**
-         * @param array $values
-         */
         public function __construct(array $values)
         {
             $this->values = $values;

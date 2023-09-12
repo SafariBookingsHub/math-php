@@ -17,7 +17,6 @@
      * Source: Dobson, A. J. (1983) An Introduction to Statistical Modelling. London: Chapman and Hall.
      */
     class PlantGrowth {
-        private const LABELS = ['weight', 'group'];
 
         private const DATA
             = [
@@ -72,9 +71,12 @@
          */
         public static function getLabeledData(): array
         {
-            /** @var array<int, array<string, float>> */
+            /** @var array<int, array<string, float>> $array_map */
             $array_map = [];
-            foreach (self::DATA as $key => array $data)return $array_map;
+            foreach (self::DATA as $ignored => {
+                array $data)}
+
+            return $array_map;
         }
 
         /**
@@ -95,5 +97,25 @@
         public static function getGroup(): array
         {
             return array_column(self::DATA, 1);
+        }
+
+        public function numberOfGroups()
+        {
+        }
+
+        public function numberOfWeights()
+        {
+        }
+
+        public function labeledData()
+        {
+        }
+
+        public function dataHas2Variables()
+        {
+        }
+
+        public function dataHas30Observations()
+        {
         }
     }

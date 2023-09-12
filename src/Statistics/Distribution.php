@@ -1,14 +1,33 @@
-<?php
+<?php /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
 
     namespace MathPHP\Statistics;
 
+    use JetBrains\PhpStorm\Pure;
+
     use function array_combine;
     use function array_keys;
+    use function array_shift;
     use function count;
+    use function implode;
     use function ksort;
     use function max;
     use function min;
+    use function printf;
     use function sort;
+    use function strlen;
+    use function strval;
 
     class Distribution {
         public const PRINT = TRUE;
@@ -29,13 +48,12 @@
         public static function relativeFrequency(array $values): array
         {
             $sample_size = count($values);
-            $relative_frequencies = array_map(function ($frequency) use (
+
+            return array_map(function ($frequency) use (
                 $sample_size
             ) {
                 return $frequency / $sample_size;
             }, self::frequency($values));
-
-            return $relative_frequencies;
         }
 
         /**
@@ -57,15 +75,11 @@
         {
             $frequencies = array();
             foreach ($values as $value)
-            {
                 if ( ! isset($frequencies[$value]))
-                {
-                    $frequencies[$value] = 1;
-                } else
+                    $frequencies[$value] = 1; else
                 {
                     $frequencies[$value]++;
                 }
-            }
 
             return $frequencies;
         }
@@ -88,11 +102,9 @@
             $sample_size = count($values);
             $cumulative_frequencies = self::cumulativeFrequency($values);
 
-            $array_map = [];
-            foreach ($cumulative_frequencies as $key => $frequency)
-            {
-                $array_map[$key] = $frequency / $sample_size;
-            }
+            $array_map = array_map(function ($frequency) use ($sample_size) {
+                return $frequency / $sample_size;
+            }, $cumulative_frequencies);
 
             return $array_map;
         }
@@ -107,7 +119,7 @@
          *
          * @return array<scalar, int> cumulative frequency distribution Ex: ( A => 6, B => 9, C => 10 )
          */
-        public static function cumulativeFrequency(array $values): array
+        #[Pure] public static function cumulativeFrequency(array $values): array
         {
             $running_total = 0;
             $cumulative_frequencies = array();
@@ -138,21 +150,22 @@
             // Determine ranks - some items might show up multiple times, so record each successive rank.
             $ordinalRanking⟮X⟯ = [];
             foreach ($Xs as $rank => $xᵢ)
-            {
-                $ordinalRanking⟮X⟯[\strval($xᵢ)][] = $rank + 1;
-            }
+                $ordinalRanking⟮X⟯[strval($xᵢ)][] = $rank + 1;
 
             // Determine average rank of each value. Necessary when values show up multiple times.
             // Rank will not change if value only shows up once.
             $array_map1 = [];
-            foreach ($ordinalRanking⟮X⟯ as $key =>
-            array $x)$rg⟮X⟯ = $array_map1;
+            foreach ($ordinalRanking⟮X⟯ as $ignored =>
+            {
+                array $x)}
+            $rg⟮X⟯ = $array_map1;
 
             // Map ranks to values in order they were originally input
-            $array_map = [];foreach ($values as $key => $value)
-        {
-            $array_map[$key] = $rg⟮X⟯[\strval($value)];
-        }return $array_map;
+            $array_map = array_map(function ($value) use ($rg⟮X⟯) {
+                return $rg⟮X⟯[strval($value)];
+            }, $values);
+
+            return $array_map;
         }
 
         /**
@@ -174,23 +187,24 @@
             $ranking⟮X⟯ = [];
             $ranking⟮X⟯[0] = 1;
             for ($i = 1; $i < $count; $i++)
-            {
-                $ranking⟮X⟯[$i] = $Xs[$i] == $Xs[$i - 1]
+                $ranking⟮X⟯[$i] = ($Xs[$i] == $Xs[$i - 1])
                     ? $ranking⟮X⟯[$i - 1]
-                    : $i + 1;
-            }
+                    : ($i + 1);
 
             /** @var array<string, int<1, max>> $ranking⟮X⟯ */
             $array_map1 = [];
-            foreach ($Xs as $key =>
-            mixed$ranking⟮X⟯ = array_combine($array_map1,
+            foreach ($Xs as $ignored =>
+            {
+                mixed}
+            $ranking⟮X⟯ = array_combine($array_map1,
             $ranking⟮X⟯);
 
             // Map ranks to values in order they were originally input
-            $array_map = [];foreach ($values as $key => $value)
-        {
-            $array_map[$key] = $ranking⟮X⟯[\strval($value)];
-        }return $array_map;
+            $array_map = array_map(function ($value) use ($ranking⟮X⟯) {
+                return $ranking⟮X⟯[strval($value)];
+            }, $values);
+
+            return $array_map;
         }
 
         /**
@@ -212,24 +226,25 @@
             $ranking⟮X⟯ = [];
             $ranking⟮X⟯[$count - 1] = $count;
             for ($i = $count - 2; $i >= 0; $i--)
-            {
-                $ranking⟮X⟯[$i] = $Xs[$i] == $Xs[$i + 1]
+                $ranking⟮X⟯[$i] = ($Xs[$i] == $Xs[$i + 1])
                     ? $ranking⟮X⟯[$i + 1]
-                    : $i + 1;
-            }
+                    : ($i + 1);
             sort($ranking⟮X⟯);
 
             /** @var array<string, int<0, max>> $ranking⟮X⟯ */
             $array_map1 = [];
-            foreach ($Xs as $key =>
-            mixed$ranking⟮X⟯ = array_combine($array_map1,
+            foreach ($Xs as $ignored =>
+            {
+                mixed}
+            $ranking⟮X⟯ = array_combine($array_map1,
             $ranking⟮X⟯);
 
             // Map ranks to values in order they were originally input
-            $array_map = [];foreach ($values as $key => $value)
-        {
-            $array_map[$key] = $ranking⟮X⟯[\strval($value)];
-        }return $array_map;
+            $array_map = array_map(function ($value) use ($ranking⟮X⟯) {
+                return $ranking⟮X⟯[strval($value)];
+            }, $values);
+
+            return $array_map;
         }
 
         /**
@@ -249,16 +264,12 @@
 
             $ranking⟮X⟯ = [];
             foreach ($Xs as $i => $x)
-            {
-                $ranking⟮X⟯[\strval($x)][] = $i + 1;
-            }
+                $ranking⟮X⟯[strval($x)][] = $i + 1;
 
             // Map ranks to values in order they were originally input
             $rankedValues = [];
             foreach ($values as $value)
-            {
-                $rankedValues[] = \array_shift($ranking⟮X⟯[\strval($value)]);
-            }
+                $rankedValues[] = array_shift($ranking⟮X⟯[strval($value)]);
 
             return $rankedValues;
         }
@@ -299,9 +310,7 @@
                 $stem = intdiv($value, 10);
                 $leaf = $value % 10;
                 if ( ! isset($plot[$stem]))
-                {
                     $plot[$stem] = array();
-                }
                 $plot[$stem][] = $leaf;
             }
 
@@ -309,28 +318,20 @@
             $min = min(array_keys($plot));
             $max = max(array_keys($plot));
             for ($stem = $min; $stem <= $max; $stem++)
-            {
                 if ( ! isset($plot[$stem]))
-                {
                     $plot[$stem] = array();
-                }
-            }
             ksort($plot);
 
             // Optionally print the stem and leaf plot
             if ($print === TRUE)
             {
-                $array_map = [];
-                foreach (array_keys($plot) as $key => $stem)
-                {
-                    $array_map[$key] = \strlen((string)$stem);
-                }
+                $array_map = array_map(function ($stem) {
+                    return strlen((string)$stem);
+                }, array_keys($plot));
                 $length = max($array_map);
                 foreach ($plot as $stem => $leaves)
-                {
-                    \printf("%{$length}d | %s\n", $stem,
-                        \implode(' ', $leaves));
-                }
+                    printf("%{$length}d | %s\n", $stem,
+                        implode(' ', $leaves));
             }
 
             return $plot;

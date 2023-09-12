@@ -5,6 +5,7 @@
     use MathPHP\Probability\Distribution\Continuous\Logistic;
     use PHPUnit\Framework\TestCase;
 
+    use function is_numeric;
     use function range;
 
     use const INF;
@@ -95,9 +96,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForVariance(): array
         {
             return [
@@ -226,7 +224,6 @@
         public function testMean()
         {
             foreach (range(-3, 3) as $μ)
-            {
                 foreach (range(1, 3) as $s)
                 {
                     // Given
@@ -238,7 +235,6 @@
                     // Then
                     $this->assertEquals($μ, $mean);
                 }
-            }
         }
 
         /**
@@ -247,7 +243,6 @@
         public function testMedian()
         {
             foreach (range(-3, 3) as $μ)
-            {
                 foreach (range(1, 3) as $s)
                 {
                     // Given
@@ -259,7 +254,6 @@
                     // Then
                     $this->assertEquals($μ, $median);
                 }
-            }
         }
 
         /**
@@ -268,7 +262,6 @@
         public function testMode()
         {
             foreach (range(-3, 3) as $μ)
-            {
                 foreach (range(1, 3) as $s)
                 {
                     // Given
@@ -280,7 +273,6 @@
                     // Then
                     $this->assertEquals($μ, $mode);
                 }
-            }
         }
 
         /**
@@ -334,7 +326,6 @@
         public function testRand()
         {
             foreach (range(-3, 3) as $μ)
-            {
                 foreach (range(1, 3) as $s)
                 {
                     // Given
@@ -344,8 +335,7 @@
                     $rand = $logistic->rand();
 
                     // Then
-                    $this->assertTrue(\is_numeric($rand));
+                    $this->assertTrue(is_numeric($rand));
                 }
-            }
         }
     }

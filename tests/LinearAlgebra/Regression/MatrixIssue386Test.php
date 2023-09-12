@@ -2686,7 +2686,7 @@
         public function testLargeSingularMatrixWithLotsOfFloatingPointValues()
         {
             // Given
-            $A = MatrixFactory::create(self::MATRIX);
+            $A = MatrixFactory::create(A: self::MATRIX);
 
             // When
             $isSingular = $A->isSingular();
@@ -2711,11 +2711,11 @@
         )
         {
             // Given
-            $A = MatrixFactory::create(self::MATRIX);
+            $A = MatrixFactory::create(A: self::MATRIX);
 
             // And
             $ε = 1e-19;
-            $A->setError($ε);
+            $A->setError(ε: $ε);
 
             // When
             $isSingular = $A->isSingular();
@@ -2737,7 +2737,7 @@
         public function testDeterminantOfSingularMatrix()
         {
             // Given
-            $A = MatrixFactory::create(self::MATRIX);
+            $A = MatrixFactory::create(A: self::MATRIX);
 
             // When
             $det = $A->det();
@@ -2754,14 +2754,14 @@
         public function testSolveRref()
         {
             // Given
-            $A = MatrixFactory::create(self::MATRIX);
-            $b = new Vector(self::B);
+            $A = MatrixFactory::create(A: self::MATRIX);
+            $b = new Vector(A: self::B);
 
             // When
-            $Ab = $A->augment($b->asColumnMatrix());
+            $Ab = $A->augment(B: $b->asColumnMatrix());
             $rref = $Ab->rref();
-            $x = new Vector(array_column($rref->getMatrix(),
-                $rref->getN() - 1));
+            $x = new Vector(A: array_column(array: $rref->getMatrix(),
+                column_key: $rref->getN() - 1));
 
             // Then
             $this->assertEqualsWithDelta(self::X, $x->getVector(), 0.00000001);
@@ -2775,11 +2775,11 @@
         public function testSolve()
         {
             // Given
-            $A = MatrixFactory::create(self::MATRIX);
-            $b = new Vector(self::B);
+            $A = MatrixFactory::create(A: self::MATRIX);
+            $b = new Vector(A: self::B);
 
             // When
-            $x = $A->solve($b);
+            $x = $A->solve(b: $b);
 
             // Then
             $this->assertEqualsWithDelta(self::X, $x->getVector(), 0.00000001);

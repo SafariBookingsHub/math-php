@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class BernoulliTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForPMF(): array
         {
             return [
@@ -20,9 +17,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCDF(): array
         {
             return [
@@ -153,7 +147,7 @@
          * @param float $p
          * @param float $expectedCdf
          */
-        public function testCdf(int $k, float $p, $expectedCdf)
+        public function testCdf(int $k, float $p, float $expectedCdf)
         {
             // Given
             $bernoulli = new Bernoulli($p);

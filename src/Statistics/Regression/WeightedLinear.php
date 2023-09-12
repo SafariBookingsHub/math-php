@@ -26,7 +26,7 @@
          *
          * @var array<float>
          */
-        private $ws;
+        private array $ws;
 
         /**
          * @param array<array{float, float}> $points
@@ -62,5 +62,9 @@
         public function evaluate(float $x): float
         {
             return $this->evaluateModel($x, $this->parameters);
+        }
+
+        public function getParameters()
+        {
         }
     }

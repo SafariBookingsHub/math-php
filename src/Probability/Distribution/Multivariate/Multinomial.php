@@ -9,6 +9,7 @@
     use function array_product;
     use function array_sum;
     use function count;
+    use function is_int;
     use function round;
 
     /**
@@ -18,7 +19,7 @@
      */
     class Multinomial {
         /** @var array<int|float> */
-        protected $probabilities;
+        protected array $probabilities;
 
         /**
          * Multinomial constructor
@@ -31,9 +32,7 @@
         {
             // Probabilities must add up to 1
             if (round(array_sum($probabilities), 1) != 1)
-            {
                 throw new Exception\BadDataException('Probabilities do not add up to 1.');
-            }
 
             $this->probabilities = $probabilities;
         }
@@ -51,43 +50,50 @@
          *
          * @return float
          *
-         * @throws Exception\BadDataException if the number of frequencies does not match the number of probabilities
+         * @throws \MathPHP\Exception\BadDataException if the number of frequencies does not match the number of probabilities
          */
         public function pmf(array $frequencies): float
         {
             // Must have a probability for each frequency
             if (count($frequencies) !== count($this->probabilities))
-            {
                 throw new Exception\BadDataException('Number of frequencies does not match number of probabilities.');
-            }
             foreach ($frequencies as $frequency)
-            {
-                if ( ! \is_int($frequency))
-                {
+                if ( ! is_int($frequency))
                     throw new Exception\BadDataException("Frequencies must be integers. $frequency is not an int.");
-                }
-            }
 
             /** @var int $n */
             $n = array_sum($frequencies);
-            $n！ = Combinatorics::factorial($n);
+            try
+            {
+                $n！ = Combinatorics::factorial($n);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             $array_map = [];
             foreach ($frequencies as $key => $value)
-            {
                 $array_map[$key]
-                    = MathPHP\Probability\Combinatorics::factorial($frequencies[$key]);
-            }
+                    = MathPHP\Probability\Combinatorics::factorial($value);
             $x₁！⋯xk！ = array_product($array_map);
 
             $p₁ˣ¹⋯pkˣᵏ = array_product(array_map(
-                function ($x, $p) {
-                    return $p ** $x;
-                },
+                fn($x, $p) => $p ** $x,
                 $frequencies,
                 $this->probabilities
             ));
 
-            return ($n！ / $x₁！⋯xk！) * $p₁ˣ¹⋯pkˣᵏ;
+            return $n！ / $x₁！⋯xk！ * $p₁ˣ¹⋯pkˣᵏ;
+        }
+
+        public function PMFExceptionProbabilitiesDoNotAddUpToOne()
+        {
+        }
+
+        public function pmfExceptionFrequenciesAreNotAllIntegers()
+        {
+        }
+
+        public function pmfExceptionCountFrequenciesAndProbabilitiesDoNotMatch()
+        {
         }
     }

@@ -8,8 +8,6 @@
         public static function getGenerator(array $values): Generator
         {
             foreach ($values as $value)
-            {
                 yield $value;
-            }
         }
     }

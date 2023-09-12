@@ -7,7 +7,7 @@
 
     class IrisTest extends TestCase {
         /** @var SampleData\Iris */
-        private $iris;
+        private SampleData\Iris $iris;
 
         /**
          * @return array (model, data)
@@ -75,9 +75,7 @@
 
             // Then
             foreach ($data as $observation)
-            {
                 $this->assertCount(5, $observation);
-            }
         }
 
         /**

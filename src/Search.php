@@ -6,6 +6,8 @@
     use MathPHP\Exception;
 
     use function count;
+    use function is_float;
+    use function is_nan;
     use function is_scalar;
     use function max;
     use function min;
@@ -29,21 +31,15 @@
         public static function sorted(array $haystack, float $needle): int
         {
             if (empty($haystack))
-            {
                 return 0;
-            }
 
             $index = 0;
             foreach ($haystack as $i => $val)
-            {
                 if ($needle > $val)
-                {
-                    $index++;
-                } else
+                    $index++; else
                 {
                     return $index;
                 }
-            }
 
             return $index;
         }
@@ -66,30 +62,19 @@
         public static function argMax(array $values): int
         {
             if (empty($values))
-            {
                 throw new Exception\BadDataException('Cannot find the argMax of an empty array');
-            }
 
             // Special case: NAN wins if present
-            $array_filter = [];
-            foreach ($values as $key => $value)
-            {
-                if (\is_float($value) && \is_nan($value))
-                {
-                    $array_filter[$key] = $value;
-                }
-            }
+            $array_filter = array_filter($values, function ($value) {
+                return is_float($value) && is_nan($value);
+            });
             $nanPresent = $array_filter;
             if (count($nanPresent) > 0)
-            {
                 foreach ($values as $i => $v)
                 {
-                    if (\is_nan($v))
-                    {
+                    if (is_nan($v))
                         return $i;
-                    }
                 }
-            }
 
             // Standard case: Find max and return index
             return self::baseArgMax($values);
@@ -111,12 +96,8 @@
         {
             $max = max($values);
             foreach ($values as $i => $v)
-            {
                 if ($v === $max)
-                {
                     return $i;
-                }
-            }
 
             throw new LogicException('argMax values is empty--should not happen');
         }
@@ -139,23 +120,14 @@
         public static function nanArgMax(array $values): int
         {
             if (empty($values))
-            {
                 throw new Exception\BadDataException('Cannot find the argMax of an empty array');
-            }
 
-            $array_filter = [];
-            foreach ($values as $key => $value)
-            {
-                if ( ! \is_nan($value))
-                {
-                    $array_filter[$key] = $value;
-                }
-            }
+            $array_filter = array_filter($values, function ($value) {
+                return ! is_nan($value);
+            });
             $valuesWithoutNans = $array_filter;
             if (count($valuesWithoutNans) === 0)
-            {
                 throw new Exception\BadDataException('Array of all NANs has no nanArgMax');
-            }
 
             return self::baseArgMax($valuesWithoutNans);
         }
@@ -178,30 +150,19 @@
         public static function argMin(array $values): int
         {
             if (empty($values))
-            {
                 throw new Exception\BadDataException('Cannot find the argMin of an empty array');
-            }
 
             // Special case: NAN wins if present
-            $array_filter = [];
-            foreach ($values as $key => $value)
-            {
-                if (\is_float($value) && \is_nan($value))
-                {
-                    $array_filter[$key] = $value;
-                }
-            }
+            $array_filter = array_filter($values, function ($value) {
+                return is_float($value) && is_nan($value);
+            });
             $nanPresent = $array_filter;
             if (count($nanPresent) > 0)
-            {
                 foreach ($values as $i => $v)
                 {
-                    if (\is_nan($v))
-                    {
+                    if (is_nan($v))
                         return $i;
-                    }
                 }
-            }
 
             // Standard case: Find max and return index
             return self::baseArgMin($values);
@@ -223,12 +184,8 @@
         {
             $max = min($values);
             foreach ($values as $i => $v)
-            {
                 if ($v === $max)
-                {
                     return $i;
-                }
-            }
 
             throw new LogicException('argMin values is empty--should not happen');
         }
@@ -251,23 +208,14 @@
         public static function nanArgMin(array $values): int
         {
             if (empty($values))
-            {
                 throw new Exception\BadDataException('Cannot find the nanArgMin of an empty array');
-            }
 
-            $array_filter = [];
-            foreach ($values as $key => $value)
-            {
-                if ( ! \is_nan($value))
-                {
-                    $array_filter[$key] = $value;
-                }
-            }
+            $array_filter = array_filter($values, function ($value) {
+                return ! is_nan($value);
+            });
             $valuesWithoutNans = $array_filter;
             if (count($valuesWithoutNans) === 0)
-            {
                 throw new Exception\BadDataException('Array of all NANs has no nanArgMax');
-            }
 
             return self::baseArgMin($valuesWithoutNans);
         }
@@ -294,15 +242,43 @@
             foreach ($values as $i => $v)
             {
                 if ( ! is_scalar($v))
-                {
                     continue;
-                }
                 if ($v != 0)
-                {
                     $indices[] = $i;
-                }
             }
 
             return $indices;
+        }
+
+        public function nanArgMinErrorOnArrayOfAllNans()
+        {
+        }
+
+        public function nanArgMinErrorOnEmptyArray()
+        {
+        }
+
+        public function argMinErrorOnEmptyArray()
+        {
+        }
+
+        public function nanArgMaxErrorOnArrayOfAllNans()
+        {
+        }
+
+        public function nanArgMaxErrorOnEmptyArray()
+        {
+        }
+
+        public function argMaxErrorOnEmptyArray()
+        {
+        }
+
+        public function searchSortedEmptyList()
+        {
+        }
+
+        public function searchSorted()
+        {
         }
     }

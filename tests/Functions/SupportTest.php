@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class SupportTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForCheckLimitsLowerLimit(): array
         {
             return [
@@ -68,9 +65,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCheckLimitsLowerLimitException(
         ): array
         {
@@ -102,9 +96,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCheckLimitsUpperLimit(): array
         {
             return [
@@ -155,9 +146,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCheckLimitsUpperLimitException(
         ): array
         {
@@ -189,9 +177,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCheckLimitsUndefinedParameterException(
         ): array
         {
@@ -215,9 +200,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForZero(): array
         {
             return [
@@ -278,9 +260,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForEqualValues(): array
         {
             return [
@@ -322,9 +301,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForUnequalValues(): array
         {
             return [
@@ -624,10 +600,10 @@
          * @test         isEqual returns true for equal values
          * @dataProvider dataProviderForEqualValues
          *
-         * @param int|float $x
-         * @param int|float $y
+         * @param float|int $x
+         * @param float|int $y
          */
-        public function testIsEqual($x, $y)
+        public function testIsEqual(float|int $x, float|int $y)
         {
             // When
             $isEqual = Support::isEqual($x, $y);
@@ -640,10 +616,10 @@
          * @test         isEqual returns false for unequal values
          * @dataProvider dataProviderForUnequalValues
          *
-         * @param int|float $x
-         * @param int|float $y
+         * @param float|int $x
+         * @param float|int $y
          */
-        public function testIsEqualWhenNotEqual($x, $y)
+        public function testIsEqualWhenNotEqual(float|int $x, float|int $y)
         {
             // When
             $isEqual = Support::isEqual($x, $y);
@@ -656,10 +632,10 @@
          * @test         isNotEqual returns true for unequal values
          * @dataProvider dataProviderForUnequalValues
          *
-         * @param int|float $x
-         * @param int|float $y
+         * @param float|int $x
+         * @param float|int $y
          */
-        public function testIsNotEqual($x, $y)
+        public function testIsNotEqual(float|int $x, float|int $y)
         {
             // When
             $isNotEqual = Support::isNotEqual($x, $y);
@@ -672,10 +648,10 @@
          * @test         isNotEqual returns false for equal values
          * @dataProvider dataProviderForEqualValues
          *
-         * @param int|float $x
-         * @param int|float $y
+         * @param float|int $x
+         * @param float|int $y
          */
-        public function testIsNotEqualWhenEqual($x, $y)
+        public function testIsNotEqualWhenEqual(float|int $x, float|int $y)
         {
             // When
             $isNotEqual = Support::isNotEqual($x, $y);

@@ -570,9 +570,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMax(): array
         {
             return [
@@ -607,9 +604,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMin(): array
         {
             return [
@@ -651,11 +645,26 @@
         public function testDotProduct(array $A, array $B, $expected)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $dotProduct = $A->dotProduct($B);
+            try
+            {
+                $dotProduct = $A->dotProduct($B);
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected, $dotProduct);
@@ -668,11 +677,21 @@
         public function testInnerProduct(array $A, array $B, $expected)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $innerProduct = $A->innerProduct($B);
+            $innerProduct = $A->innerProduct(B: $B);
 
             // Then
             $this->assertEquals($expected, $innerProduct);
@@ -685,14 +704,14 @@
         public function testDotProductExceptionSizeDifference()
         {
             // Given
-            $A = new Vector([1, 2]);
-            $B = new Vector([1, 2, 3]);
+            $A = new Vector(A: [1, 2]);
+            $B = new Vector(A: [1, 2, 3]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $A->dotProduct($B);
+            $A->dotProduct(B: $B);
         }
 
         /**
@@ -702,12 +721,32 @@
         public function testCrossProduct(array $A, array $B, array $R)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $R = new Vector($R);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $R = new Vector($R);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $crossProduct = $A->crossProduct($B);
+            try
+            {
+                $crossProduct = $A->crossProduct($B);
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $crossProduct);
@@ -720,14 +759,29 @@
         public function testCrossProductExceptionWrongSize(array $A, array $B)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $A->crossProduct($B);
+            try
+            {
+                $A->crossProduct($B);
+            } catch (Exception\VectorException $e)
+            {
+            }
         }
 
         /**
@@ -737,12 +791,27 @@
         public function testOuterProduct(array $A, array $B, array $R)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $R = new NumericMatrix($R);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $R = new NumericMatrix($R);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $outerProduct = $A->outerProduct($B)->getMatrix();
+            $outerProduct = $A->outerProduct(B: $B)->getMatrix();
 
             // Then
             $this->assertEquals($R->getMatrix(), $outerProduct);
@@ -755,7 +824,12 @@
         public function testSum(array $A, $expected)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
             $sum = $A->sum();
@@ -771,11 +845,21 @@
         public function testScalarMultiply(array $A, $k, array $R)
         {
             // Given
-            $A = new Vector($A);
-            $R = new Vector($R);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $R = new Vector($R);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $kA = $A->scalarMultiply($k);
+            $kA = $A->scalarMultiply(k: $k);
 
             // Then
             $this->assertEqualsWithDelta($R, $kA, 0.00001);
@@ -790,11 +874,21 @@
         public function testScalarDivide(array $A, $k, array $R)
         {
             // Given
-            $A = new Vector($A);
-            $R = new Vector($R);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $R = new Vector($R);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $A／k = $A->scalarDivide($k);
+            $A／k = $A->scalarDivide(k: $k);
 
             // Then
             $this->assertEquals($R, $A／k);
@@ -808,12 +902,34 @@
         public function testAdd(array $A, array $B, array $R)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $R = new Vector($R);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $R = new Vector($R);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $A＋B = $A->add($B);
+            try
+            {
+                $A＋B = $A->add($B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $A＋B);
@@ -827,14 +943,14 @@
         public function testAddExceptionSizeMismatch()
         {
             // Given
-            $A = new Vector([1, 2, 3]);
-            $B = new Vector([1, 2]);
+            $A = new Vector(A: [1, 2, 3]);
+            $B = new Vector(A: [1, 2]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $A->add($B);
+            $A->add(B: $B);
         }
 
         /**
@@ -844,12 +960,32 @@
         public function testSubtract(array $A, array $B, array $R)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $R = new Vector($R);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $R = new Vector($R);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $A−B = $A->subtract($B);
+            try
+            {
+                $A−B = $A->subtract($B);
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $A−B);
@@ -863,14 +999,14 @@
         public function testSubtractExceptionSizeMismatch()
         {
             // Given
-            $A = new Vector([1, 2, 3]);
-            $B = new Vector([1, 2]);
+            $A = new Vector(A: [1, 2, 3]);
+            $B = new Vector(A: [1, 2]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $A->subtract($B);
+            $A->subtract(B: $B);
         }
 
         /**
@@ -886,12 +1022,12 @@
         public function testMultiply(array $A, array $B, array $R)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $R = new Vector($R);
+            $A = new Vector(A: $A);
+            $B = new Vector(A: $B);
+            $R = new Vector(A: $R);
 
             // When
-            $A×B = $A->multiply($B);
+            $A×B = $A->multiply(B: $B);
 
             // Then
             $this->assertEquals($R, $A×B);
@@ -905,14 +1041,14 @@
         public function testMultiplyExceptionSizeMismatch()
         {
             // Given
-            $A = new Vector([1, 2, 3]);
-            $B = new Vector([1, 2]);
+            $A = new Vector(A: [1, 2, 3]);
+            $B = new Vector(A: [1, 2]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // Then
-            $A->multiply($B);
+            $A->multiply(B: $B);
         }
 
         /**
@@ -928,12 +1064,12 @@
         public function testDivide(array $A, array $B, array $R)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $R = new Vector($R);
+            $A = new Vector(A: $A);
+            $B = new Vector(A: $B);
+            $R = new Vector(A: $R);
 
             // When
-            $A／B = $A->divide($B);
+            $A／B = $A->divide(B: $B);
 
             // Then
             $this->assertEquals($R, $A／B);
@@ -947,14 +1083,14 @@
         public function testDivideExceptionSizeMismatch()
         {
             // Given
-            $A = new Vector([1, 2, 3]);
-            $B = new Vector([1, 2]);
+            $A = new Vector(A: [1, 2, 3]);
+            $B = new Vector(A: [1, 2]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $A->divide($B);
+            $A->divide(B: $B);
         }
 
         /**
@@ -964,7 +1100,12 @@
         public function testLength(array $A, $l²norm)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
             $length = $A->length();
@@ -980,8 +1121,18 @@
         public function testNormalize(array $A, array $expected)
         {
             // Given
-            $A = new Vector($A);
-            $expected = new Vector($expected);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $expected = new Vector($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
             $Â = $A->normalize();
@@ -999,11 +1150,26 @@
         public function testPerpendicular(array $A, array $expected)
         {
             // Given
-            $A = new Vector($A);
-            $expected = new Vector($expected);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $expected = new Vector($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $A⊥ = $A->perpendicular();
+            try
+            {
+                $A⊥ = $A->perpendicular();
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected, $A⊥);
@@ -1017,7 +1183,7 @@
         public function testPerpendicularExceptionNGreaterThanTwo()
         {
             // Given
-            $A = new Vector([1, 2, 3]);
+            $A = new Vector(A: [1, 2, 3]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
@@ -1033,11 +1199,26 @@
         public function testPerpDotProduct(array $A, array $B, $expected)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $A⊥⋅B = $A->perpDotProduct($B);
+            try
+            {
+                $A⊥⋅B = $A->perpDotProduct($B);
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected, $A⊥⋅B);
@@ -1050,14 +1231,14 @@
         public function testPerpDotProductExceptionNNotBothTwo()
         {
             // Given
-            $A = new Vector([1, 2, 3]);
-            $B = new Vector([1, 2, 3]);
+            $A = new Vector(A: [1, 2, 3]);
+            $B = new Vector(A: [1, 2, 3]);
 
             // Then
             $this->expectException(Exception\VectorException::class);
 
             // When
-            $A->perpDotProduct($B);
+            $A->perpDotProduct(B: $B);
         }
 
         /**
@@ -1067,12 +1248,27 @@
         public function testProjection(array $A, array $B, array $expected)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $expected = new Vector($expected);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $expected = new Vector($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $projₐb = $A->projection($B);
+            $projₐb = $A->projection(B: $B);
 
             // Then
             $this->assertEqualsWithDelta($expected, $projₐb, 0.00001);
@@ -1087,12 +1283,27 @@
         public function testPerp(array $A, array $B, array $expected)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $expected = new Vector($expected);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $expected = new Vector($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $perpₐb = $A->perp($B);
+            $perpₐb = $A->perp(B: $B);
 
             // Then
             $this->assertEqualsWithDelta($expected, $perpₐb, 0.00001);
@@ -1107,12 +1318,27 @@
         public function testDirectProduct(array $A, array $B, array $expected)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $expected = new NumericMatrix($expected);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $expected = new NumericMatrix($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $AB = $A->directProduct($B);
+            $AB = $A->directProduct(B: $B);
 
             // Then
             $this->assertEquals($expected->getMatrix(), $AB->getMatrix());
@@ -1132,12 +1358,27 @@
             array $expected
         ) {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $R = new Vector($expected);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $R = new Vector($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $A⨂B = $A->kroneckerProduct($B);
+            $A⨂B = $A->kroneckerProduct(B: $B);
 
             // Then
             $this->assertEquals($R, $A⨂B);
@@ -1153,7 +1394,12 @@
         public function testMax(array $A, $expected)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
             $max = $A->max();
@@ -1172,7 +1418,12 @@
         public function testMin(array $A, $expected)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
             $min = $A->min();

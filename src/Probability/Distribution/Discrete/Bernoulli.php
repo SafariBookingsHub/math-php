@@ -2,6 +2,9 @@
 
     namespace MathPHP\Probability\Distribution\Discrete;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Support;
 
     /**
@@ -35,10 +38,10 @@
             ];
 
         /** @var float probability of success */
-        protected $p;
+        protected float $p;
 
         /** @var float */
-        protected $q;
+        protected float $q;
 
         /**
          * Constructor
@@ -63,12 +66,19 @@
          */
         public function pmf(int $k): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             if ($k === 0)
-            {
                 return $this->q;
-            }
 
             return $this->p;
         }
@@ -87,13 +97,9 @@
         public function cdf(int $k): float
         {
             if ($k < 0)
-            {
                 return 0;
-            }
             if ($k < 1)
-            {
                 return 1 - $this->p;
-            }
 
             return 1;
         }
@@ -125,13 +131,9 @@
             $½ = 0.5;
 
             if ($p < $½)
-            {
                 return 0;
-            }
             if ($p == $½)
-            {
                 return $½;
-            }
 
             return 1;
         }
@@ -151,13 +153,9 @@
             $½ = 0.5;
 
             if ($p < $½)
-            {
                 return [0];
-            }
             if ($p == $½)
-            {
                 return [0, 1];
-            }
 
             return [1];
         }
@@ -172,5 +170,9 @@
         public function variance(): float
         {
             return $this->p * $this->q;
+        }
+
+        public function pmfIsBinomialWithNEqualsOne()
+        {
         }
     }

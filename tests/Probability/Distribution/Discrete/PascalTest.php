@@ -45,9 +45,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMean(): array
         {
             return [
@@ -55,9 +52,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMode(): array
         {
             return [
@@ -71,9 +65,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForVariance(): array
         {
             return [
@@ -173,7 +164,7 @@
          *
          * @param int   $r
          * @param float $p
-         * @param float σ²
+         * @param float $σ² σ²
          */
         public function testVariance(int $r, float $p, float $σ²)
         {

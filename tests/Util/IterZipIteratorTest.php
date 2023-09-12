@@ -3,14 +3,12 @@
     namespace MathPHP\Tests\Util;
 
     use Iterator;
+    use JetBrains\PhpStorm\Pure;
     use MathPHP\Util\Iter;
     use PHPUnit\Framework\TestCase;
 
     class IterZipIteratorTest extends TestCase {
-        /**
-         * @return array
-         */
-        public static function dataProviderForZipTwoIteratorsSameSize(): array
+        #[Pure] public static function dataProviderForZipTwoIteratorsSameSize(): array
         {
             return [
                 [
@@ -51,10 +49,7 @@
             ];
         }
 
-        /**
-         * @return array
-         */
-        public static function dataProviderForZipTwoIteratorsDifferentSize(
+        #[Pure] public static function dataProviderForZipTwoIteratorsDifferentSize(
         ): array
         {
             return [
@@ -119,9 +114,7 @@
 
             // When
             foreach (Iter::zip($iter1, $iter2) as [$value1, $value2])
-            {
                 $result[] = [$value1, $value2];
-            }
 
             // Then
             $this->assertEquals($expected, $result);
@@ -144,9 +137,7 @@
             $result = [];
 
             foreach (Iter::zip($iter1, $iter2) as [$value1, $value2])
-            {
                 $result[] = [$value1, $value2];
-            }
 
             // Then
             $this->assertEquals($expected, $result);

@@ -2,8 +2,12 @@
 
     namespace MathPHP\LinearAlgebra;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\MathException;
     use MathPHP\Exception\MatrixException;
     use MathPHP\Functions\Map\Single;
+
+    use function print_r;
 
     /**
      * Diagonal matrix
@@ -15,16 +19,21 @@
          * Constructor
          *
          * @param array<array<int|float>> $A
+         *
+         * @throws \MathPHP\Exception\MatrixException
          */
         public function __construct(array $A)
         {
-            parent::__construct($A);
+            try
+            {
+                parent::__construct($A);
+            } catch (MathException $e)
+            {
+            }
 
             if ( ! parent::isLowerTriangular() || ! parent::isUpperTriangular())
-            {
                 throw new MatrixException('Trying to construct DiagonalMatrix with non-diagonal elements: '
-                    .\print_r($this->A, TRUE));
-            }
+                    .print_r($this->A, TRUE));
         }
 
         /**
@@ -84,6 +93,13 @@
          */
         public function inverse(): NumericMatrix
         {
-            return MatrixFactory::diagonal(Single::reciprocal($this->getDiagonalElements()));
+            try
+            {
+                return MatrixFactory::diagonal(Single::reciprocal($this->getDiagonalElements()));
+            } catch (BadDataException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
         }
     }

@@ -79,7 +79,7 @@
          *
          * p(x) agrees with f(x) at x = $_
          */
-        public function testSolveZeroError($x)
+        public function testSolveZeroError(float $x)
         {
             // Given f(x) = 8x³ -13x² -92x + 96
             $f = new Polynomial([8, -13, -92, 96]);
@@ -126,7 +126,7 @@
          *
          * p(x) agrees with f(x) at x = $_
          */
-        public function testSolveNonZeroError($x)
+        public function testSolveNonZeroError(float $x)
         {
             // Given f(x) = x⁴ + 8x³ -13x² -92x + 96
             $f = new Polynomial([1, 8, -13, -92, 96]);

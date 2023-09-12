@@ -25,21 +25,21 @@
          *
          * @var int|float
          */
-        protected $α;
+        protected int|float $α;
 
         /**
          * Order of the polynomial fit
          *
          * @var int
          */
-        protected $λ;
+        protected int $λ;
 
         /**
          * Number of points considered in the local regression
          *
          * @var int
          */
-        protected $number_of_points;
+        protected mixed $number_of_points;
 
         /**
          * @param array<array{float, float}> $points [ [x, y], [x, y], ... ]
@@ -58,11 +58,9 @@
             parent::__construct($points);
 
             // α ∈ ((λ + 1) / n, 1]
-            if (($α <= ($λ + 1) / $this->n) || ($α > 1))
-            {
+            if ($α <= ($λ + 1) / $this->n || $α > 1)
                 throw new Exception\OutOfBoundsException('Smoothness parameter α must be between '
-                    .($λ + 1) / $this->n." and 1; given $α");
-            }
+                    .(($λ + 1) / $this->n)." and 1; given $α");
 
             // Number of points considered in the local regression
             $this->number_of_points = min((int)ceil($this->α * $this->n),
@@ -107,5 +105,9 @@
             $X = MatrixFactory::vandermonde([$x], $λ + 1);
 
             return $X->multiply($parameters)[0][0];
+        }
+
+        public function smoothnessParameterOutOfBoundsException()
+        {
         }
     }

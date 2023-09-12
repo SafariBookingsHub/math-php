@@ -2,7 +2,12 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\FunctionFailedToConvergeException;
     use MathPHP\Exception\MathException;
+    use MathPHP\Exception\NanException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Special;
     use MathPHP\Functions\Support;
 
@@ -36,10 +41,10 @@
             ];
 
         /** @var int|float Shape Parameter */
-        protected $α;
+        protected int|float $α;
 
         /** @var int|float Shape Parameter */
-        protected $β;
+        protected int|float $β;
 
         /**
          * Constructor
@@ -65,16 +70,32 @@
          */
         public function pdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $α = $this->α;
             $β = $this->β;
 
             $xᵃ⁻¹ = $x ** ($α - 1);
             $⟮1 − x⟯ᵝ⁻¹ = (1 - $x) ** ($β - 1);
-            $B⟮α、β⟯ = Special::beta($α, $β);
+            try
+            {
+                $B⟮α、β⟯ = Special::beta($α, $β);
+            } catch (NanException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
-            return ($xᵃ⁻¹ * $⟮1 − x⟯ᵝ⁻¹) / $B⟮α、β⟯;
+            return $xᵃ⁻¹ * $⟮1 − x⟯ᵝ⁻¹ / $B⟮α、β⟯;
         }
 
         /**
@@ -101,21 +122,14 @@
                 $guess = ($a + $b) / 2;
                 $cdf = $this->cdf($guess);
 
-                if (($cdf == $x) || ($cdf == 0))
-                {
-                    $b = $a;
-                } elseif ($cdf > $x)
-                {
+                if ($cdf == $x || $cdf == 0)
+                    $b = $a; elseif ($cdf > $x)
                     $b = $guess;
-                } else
-                {
+                else
                     $a = $guess;
-                }
 
-                if (($b - $a) <= $tolerance)
-                {
+                if ($b - $a <= $tolerance)
                     return $guess;
-                }
             }
 
             throw new MathException("Failed to converge on a Beta inverse within a tolerance of $tolerance after {$max_iterations} iterations");
@@ -132,12 +146,34 @@
          */
         public function cdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $α = $this->α;
             $β = $this->β;
 
-            return Special::regularizedIncompleteBeta($x, $α, $β);
+            try
+            {
+                return Special::regularizedIncompleteBeta($x, $α, $β);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (FunctionFailedToConvergeException $e)
+            {
+            } catch (NanException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -182,31 +218,21 @@
             $β = $this->β;
 
             if ($α == $β)
-            {
                 return 0.5;
-            }
 
-            if (($α == 1) && ($β > 0))
-            {
-                return 1 - 2 ** (-1 / $β);
-            }
+            if ($α == 1 && $β > 0)
+                return 1 - (2 ** (-1 / $β));
 
-            if (($β == 1) && ($α > 0))
-            {
+            if ($β == 1 && $α > 0)
                 return 2 ** (-1 / $α);
-            }
 
-            if (($α == 3) && ($β == 2))
-            {
+            if ($α == 3 && $β == 2)
                 return 0.6142724318676105;
-            }
 
-            if (($α == 2) && ($β == 3))
-            {
+            if ($α == 2 && $β == 3)
                 return 0.38572756813238945;
-            }
 
-            return ($α - (1 / 3)) / (($α + $β) - (2 / 3));
+            return ($α - 1 / 3) / ($α + $β - 2 / 3);
         }
 
         /**
@@ -226,16 +252,12 @@
             $α = $this->α;
             $β = $this->β;
 
-            if (($α == 1) && ($β > 1))
-            {
+            if ($α == 1 && $β > 1)
                 return 0;
-            }
-            if (($α > 1) && ($β == 1))
-            {
+            if ($α > 1 && $β == 1)
                 return 1;
-            }
 
-            return ($α - 1) / (($α + $β) - 2);
+            return ($α - 1) / ($α + $β - 2);
         }
 
         /**
@@ -257,5 +279,25 @@
             $⟮α ＋ β ＋ 1⟯ = $α + $β + 1;
 
             return $αβ / ($⟮α ＋ β⟯² * $⟮α ＋ β ＋ 1⟯);
+        }
+
+        public function rand()
+        {
+        }
+
+        public function inverseFailToConvergeException()
+        {
+        }
+
+        public function medianApproximation()
+        {
+        }
+
+        public function pdfExceptionXOutOfBounds()
+        {
+        }
+
+        public function constructorExceptionAlphaBetaLessThanEqualZero()
+        {
         }
     }

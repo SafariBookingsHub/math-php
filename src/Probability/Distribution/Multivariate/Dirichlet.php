@@ -38,20 +38,22 @@
             ];
 
         /** @var float[] $αs */
-        protected $αs;
+        protected array $αs;
 
         /**
          * Constructor
          *
          * @param float[] $αs
+         *
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function __construct(array $αs)
         {
             $n = count($αs);
             for ($i = 0; $i < $n; $i++)
-            {
                 Support::checkLimits(self::PARAMETER_LIMITS, ['α' => $αs[$i]]);
-            }
             $this->αs = $αs;
         }
 
@@ -68,20 +70,18 @@
          *
          * @return float
          *
-         * @throws Exception\BadDataException if xs and αs don't have the same number of elements
+         * @throws \MathPHP\Exception\BadDataException if xs and αs don't have the same number of elements
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function pdf(array $xs): float
         {
             if (count($xs) !== count($this->αs))
-            {
                 throw new Exception\BadDataException('xs and αs must have the same number of elements');
-            }
 
             $n = count($xs);
             for ($i = 0; $i < $n; $i++)
-            {
                 Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $xs[$i]]);
-            }
 
             /*
              *  K   αᵢ-1
@@ -90,16 +90,23 @@
              */
             $∏xᵢ = array_product(
                 array_map(
-                    function ($xᵢ, $αᵢ) {
-                        return $xᵢ ** ($αᵢ - 1);
-                    },
+                    fn($xᵢ, $αᵢ) => $xᵢ ** ($αᵢ - 1),
                     $xs,
                     $this->αs
                 )
             );
 
-            $B⟮α⟯ = Special::multivariateBeta($this->αs);
+            try
+            {
+                $B⟮α⟯ = Special::multivariateBeta($this->αs);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             return $∏xᵢ / $B⟮α⟯;
+        }
+
+        public function pdfArraysNotSameLengthException()
+        {
         }
     }

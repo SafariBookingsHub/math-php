@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class CroutTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForCroutDecomposition(): array
         {
             return [
@@ -123,9 +120,9 @@
         public function testCroutDecomposition(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $L = MatrixFactory::create($expected['L']);
-            $U = MatrixFactory::create($expected['U']);
+            $A = MatrixFactory::create(A: $A);
+            $L = MatrixFactory::create(A: $expected['L']);
+            $U = MatrixFactory::create(A: $expected['U']);
 
             // When
             $lu = $A->croutDecomposition();
@@ -144,7 +141,7 @@
         public function testCroutDecompositionException()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [3, 4],
                 [6, 8],
             ]);
@@ -163,7 +160,7 @@
         public function testCountDecompositionInvalidProperty()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [4, 1, -1],
                 [1, 2, 1],
                 [-1, 1, 2],

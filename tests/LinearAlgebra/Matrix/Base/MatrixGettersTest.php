@@ -10,10 +10,10 @@
 
     class MatrixGettersTest extends TestCase {
         /** @var array */
-        private $A;
+        private array $A;
 
         /** @var NumericMatrix */
-        private $matrix;
+        private \MathPHP\LinearAlgebra\ComplexMatrix|NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|\MathPHP\LinearAlgebra\Matrix $matrix;
 
         public static function dataProviderForGetM(): array
         {

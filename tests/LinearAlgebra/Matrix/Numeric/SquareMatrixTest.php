@@ -29,14 +29,10 @@
 
             $m = $S->getM();
             for ($i = 0; $i < $m; $i++)
-            {
                 $this->assertEquals($M[$i], $S[$i]);
-            }
             $m = $M->getM();
             for ($i = 0; $i < $m; $i++)
-            {
                 $this->assertEquals($M[$i], $S[$i]);
-            }
         }
 
         /**
@@ -50,7 +46,12 @@
             ];
 
             $this->expectException(Exception\MatrixException::class);
-            $M = new NumericSquareMatrix($A);
+            try
+            {
+                $M = new NumericSquareMatrix($A);
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**

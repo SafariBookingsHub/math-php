@@ -2,6 +2,10 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\NanException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Special;
     use MathPHP\Functions\Support;
 
@@ -34,10 +38,10 @@
             ];
 
         /** @var float Shape Parameter */
-        protected $k;
+        protected float $k;
 
         /** @var float Scale Parameter */
-        protected $λ;
+        protected float $λ;
 
         /**
          * Constructor
@@ -67,11 +71,18 @@
          */
         public function pdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            if ($x < 0)
+            try
             {
-                return 0;
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
             }
+            if ($x < 0)
+                return 0;
 
             $k = $this->k;
             $λ = $this->λ;
@@ -97,11 +108,18 @@
          */
         public function cdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
-            if ($x < 0)
+            try
             {
-                return 0;
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
             }
+            if ($x < 0)
+                return 0;
 
             $k = $this->k;
             $λ = $this->λ;
@@ -122,7 +140,16 @@
          */
         public function inverse(float $p): float
         {
-            Support::checkLimits(['p' => '[0,1]'], ['p' => $p]);
+            try
+            {
+                Support::checkLimits(['p' => '[0,1]'], ['p' => $p]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
             $k = $this->k;
             $λ = $this->λ;
 
@@ -141,7 +168,14 @@
             $k = $this->k;
             $λ = $this->λ;
 
-            return $λ * Special::gamma(1 + (1 / $k));
+            try
+            {
+                return $λ * Special::gamma(1 + 1 / $k);
+            } catch (NanException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -178,12 +212,18 @@
             $λ = $this->λ;
 
             if ($k <= 1)
-            {
                 return 0;
-            }
 
             $⟮⟮k − 1⟯／k⟯¹ᐟᵏ = (($k - 1) / $k) ** (1 / $k);
 
             return $λ * $⟮⟮k − 1⟯／k⟯¹ᐟᵏ;
+        }
+
+        public function rand()
+        {
+        }
+
+        public function inverseOfCdf()
+        {
         }
     }

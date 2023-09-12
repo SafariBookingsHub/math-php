@@ -6,12 +6,14 @@
     use MathPHP\LinearAlgebra\Vector;
     use PHPUnit\Framework\TestCase;
 
+    use function is_int;
+
     class VectorInterfaceTest extends TestCase {
         /** @var array */
-        private $A;
+        private array $A;
 
         /** @var Vector */
-        private $V;
+        private Vector $V;
 
         public static function dataProviderForCountable(): array
         {
@@ -47,7 +49,12 @@
         {
             // Given
             $this->A = [1, 2, 3, 4, 5];
-            $this->V = new Vector($this->A);
+            try
+            {
+                $this->V = new Vector($this->A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -56,7 +63,7 @@
         public function testInterfaces()
         {
             // Given
-            $interfaces = class_implements('\MathPHP\LinearAlgebra\Vector');
+            $interfaces = class_implements(object_or_class: '\MathPHP\LinearAlgebra\Vector');
 
             // Then
             $this->assertContains('Countable', $interfaces);
@@ -95,7 +102,7 @@
         public function testArrayAccessOffsetExists()
         {
             // Then
-            $this->assertTrue($this->V->offsetExists(0));
+            $this->assertTrue($this->V->offsetExists(i: 0));
         }
 
         /**
@@ -120,10 +127,15 @@
         public function testCountableInterface(array $A, int $n)
         {
             // Given
-            $V = new Vector($A);
+            try
+            {
+                $V = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $count = count($V);
+            $count = count(value: $V);
 
             // Then
             $this->assertEquals($n, $count);
@@ -139,10 +151,15 @@
         public function testJsonSerializable(array $A, string $json)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $jsonString = json_encode($A);
+            $jsonString = json_encode(value: $A);
 
             // Then
             $this->assertEquals($json, $jsonString);
@@ -155,23 +172,17 @@
         {
             // When
             foreach ($this->V as $element)
-            {
-                $this->assertTrue(\is_int($element));
-            }
+                $this->assertTrue(is_int($element));
 
             // When Rewinding
             foreach ($this->V as $element)
-            {
-                $this->assertTrue(\is_int($element));
-            }
+                $this->assertTrue(is_int($element));
         }
 
         public function testIteratorKeys()
         {
             // When
             foreach ($this->V as $k => $v)
-            {
                 $this->assertSame($v, $this->A[$k]);
-            }
         }
     }

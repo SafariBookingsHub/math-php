@@ -33,7 +33,7 @@
          *
          * @return int|float
          */
-        abstract public static function approximate($source, ...$args);
+        abstract public static function approximate(callable|array $source, ...$args): float|int;
 
         /**
          * Determine where the input $source argument is a callback function, a set
@@ -58,19 +58,15 @@
          *        Verify $start and $end are numbers, $end > $start, and $points is an integer > 1
          *
          */
-        public static function getPoints($source, array $args = []): array
+        public static function getPoints(callable|array $source, array $args = []): array
         {
             // Guard clause - source must be callable or array of points
             if ( ! (is_callable($source) || is_array($source)))
-            {
                 throw new Exception\BadDataException('Input source is incorrect. You need to input either a callback function or a set of arrays');
-            }
 
             // Source is already an array: nothing to do
             if (is_array($source))
-            {
                 return $source;
-            }
 
             // Construct points from callable function
             $function = $source;
@@ -102,7 +98,7 @@
 
             for ($i = 0; $i < $n; $i++)
             {
-                $xᵢ = $start + ($i * $h);
+                $xᵢ = $start + $i * $h;
                 $f⟮xᵢ⟯ = $function($xᵢ);
                 $points[$i] = [$xᵢ, $f⟮xᵢ⟯];
             }
@@ -125,23 +121,17 @@
         public static function validate(array $points, int $degree = 2): void
         {
             if (count($points) < $degree)
-            {
                 throw new Exception\BadDataException("You need to have at least $degree sets of coordinates (arrays) for this technique");
-            }
 
             $x_coordinates = [];
             foreach ($points as $point)
             {
                 if (count($point) !== 2)
-                {
                     throw new Exception\BadDataException('Each array needs to have have precisely two numbers, an x- and y-component');
-                }
 
                 $x_component = $point[self::X];
                 if (in_array($x_component, $x_coordinates))
-                {
                     throw new Exception\BadDataException('Not a function. Your input array contains more than one coordinate with the same x-component.');
-                }
                 $x_coordinates[] = $x_component;
             }
         }
@@ -156,10 +146,24 @@
          */
         protected static function sort(array $points): array
         {
-            usort($points, function ($a, $b) {
-                return $a[self::X] <=> $b[self::X];
-            });
+            usort($points, fn($a, $b) => $a[self::X] <=> $b[self::X]);
 
             return $points;
+        }
+
+        public function notAFunctionException()
+        {
+        }
+
+        public function notEnoughArraysException()
+        {
+        }
+
+        public function notCoordinatesException()
+        {
+        }
+
+        public function incorrectInput()
+        {
         }
     }

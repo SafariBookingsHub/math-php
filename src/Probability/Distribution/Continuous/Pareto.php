@@ -2,7 +2,12 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Support;
+
+    use const INF;
 
     /**
      * Pareto distribution
@@ -36,10 +41,10 @@
             ];
 
         /** @var float Shape Parameter */
-        protected $a;
+        protected float $a;
 
         /** @var float Scale Parameter */
-        protected $b;
+        protected float $b;
 
         /**
          * Constructor
@@ -67,14 +72,21 @@
          */
         public function pdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $a = $this->a;
             $b = $this->b;
             if ($x < $b)
-            {
                 return 0;
-            }
 
             $abᵃ = $a * $b ** $a;
             $xᵃ⁺¹ = $x ** ($a + 1);
@@ -97,16 +109,23 @@
          */
         public function cdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $a = $this->a;
             $b = $this->b;
             if ($x < $b)
-            {
                 return 0;
-            }
 
-            return 1 - (($b / $x) ** $a);
+            return 1 - ($b / $x) ** $a;
         }
 
         /**
@@ -126,15 +145,11 @@
             $b = $this->b;
 
             if ($p == 0)
-            {
-                return -\INF;
-            }
+                return -INF;
             if ($p == 1)
-            {
-                return \INF;
-            }
+                return INF;
 
-            return $b / ((1 - $p) ** (1 / $a));
+            return $b / (1 - $p) ** (1 / $a);
         }
 
         /**
@@ -154,11 +169,9 @@
             $b = $this->b;
 
             if ($a <= 1)
-            {
-                return \INF;
-            }
+                return INF;
 
-            return ($a * $b) / ($a - 1);
+            return $a * $b / ($a - 1);
         }
 
         /**
@@ -173,7 +186,7 @@
             $a = $this->a;
             $b = $this->b;
 
-            return $a * (2 ** (1 / $b));
+            return $a * 2 ** (1 / $b);
         }
 
         /**
@@ -205,10 +218,12 @@
             $b = $this->b;
 
             if ($a <= 2)
-            {
-                return \INF;
-            }
+                return INF;
 
-            return ($a * $b ** 2) / ((($a - 1) ** 2) * ($a - 2));
+            return $a * $b ** 2 / (($a - 1) ** 2 * ($a - 2));
+        }
+
+        public function inverseOfCdf()
+        {
         }
     }

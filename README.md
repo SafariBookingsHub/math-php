@@ -1639,7 +1639,7 @@ $mtCars      = new SampleData\MtCars();
 $rawData     = MtCars::getData();                     // [[21, 6, 160, ... ], [30.4, 4, 71.1, ... ], ... ]
 $labeledData = MtCars::getLabeledData();              // ['Mazda RX4' => ['mpg' => 21, 'cyl' => 6, 'disp' => 160, ... ], 'Honda Civic' => [ ... ], ...]
 $modelData   = MtCars::getModelData('Ferrari Dino');  // ['mpg' => 19.7, 'cyl' => 6, 'disp' => 145, ... ]
-$mpgs        = $mtCars->getMpg();                      // ['Mazda RX4' => 21, 'Honda civic' => 30.4, ... ]
+$mpgs        = MtCars::getMpg();                      // ['Mazda RX4' => 21, 'Honda civic' => 30.4, ... ]
 // Getters for Mpg, Cyl, Disp, Hp, Drat, Wt, Qsec, Vs, Am, Gear, Carb
 
 // Edgar Anderson's Iris Data (iris)

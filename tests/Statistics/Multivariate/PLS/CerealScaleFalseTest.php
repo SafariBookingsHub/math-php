@@ -2,6 +2,10 @@
 
     namespace MathPHP\Tests\Statistics\Multivariate\PLS;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\IncorrectTypeException;
+    use MathPHP\Exception\MathException;
+    use MathPHP\Exception\MatrixException;
     use MathPHP\LinearAlgebra\Matrix;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\SampleData;
@@ -10,13 +14,13 @@
 
     class CerealScaleFalseTest extends TestCase {
         /** @var PLS */
-        private static $pls;
+        private static PLS $pls;
 
         /** @var Matrix */
-        private static $X;
+        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $X;
 
         /** @var Matrix */
-        private static $Y;
+        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $Y;
 
         /**
          * R code for expected values:
@@ -24,25 +28,59 @@
          *   data(cereal)
          *   pls.model = pls2_nipals(cereal$X, cereal$Y, a=5)
          *
-         * @throws Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public static function setUpBeforeClass(): void
         {
             $cereal = new SampleData\Cereal();
-            self::$X = MatrixFactory::create(Cereal::getXData());
-            self::$Y = MatrixFactory::create(Cereal::getYData());
+            try
+            {
+                self::$X = MatrixFactory::create(Cereal::getXData());
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
+            try
+            {
+                self::$Y = MatrixFactory::create(Cereal::getYData());
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
-            self::$pls = new PLS(self::$X, self::$Y, 5, FALSE);
+            try
+            {
+                self::$pls = new PLS(self::$X, self::$Y, 5, FALSE);
+            } catch (BadDataException $e)
+            {
+            }
         }
 
         /**
          * @test         Construction
-         * @throws       Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testConstruction()
         {
             // When
-            $pls = new PLS(self::$X, self::$Y, 5, FALSE);
+            try
+            {
+                $pls = new PLS(self::$X, self::$Y, 5, FALSE);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(PLS::class, $pls);

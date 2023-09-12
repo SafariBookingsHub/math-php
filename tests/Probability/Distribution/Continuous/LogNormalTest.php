@@ -5,6 +5,7 @@
     use MathPHP\Probability\Distribution\Continuous\LogNormal;
     use PHPUnit\Framework\TestCase;
 
+    use function is_numeric;
     use function range;
 
     use const INF;
@@ -52,9 +53,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMean(): array
         {
             return [
@@ -65,9 +63,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMedian(): array
         {
             return [
@@ -78,9 +73,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMode(): array
         {
             return [
@@ -93,9 +85,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForVariance(): array
         {
             return [
@@ -332,7 +321,6 @@
         public function testRand()
         {
             foreach (range(-3, 3) as $μ)
-            {
                 foreach (range(1, 3) as $σ)
                 {
                     // Given
@@ -342,8 +330,7 @@
                     $random = $log_normal->rand();
 
                     // Then
-                    $this->assertTrue(\is_numeric($random));
+                    $this->assertTrue(is_numeric($random));
                 }
-            }
         }
     }

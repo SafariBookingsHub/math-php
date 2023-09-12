@@ -73,13 +73,13 @@
          *
          * @throws Exception\BadDataException
          */
-        public static function approximate($source, ...$args): float
+        public static function approximate(callable|array $source, ...$args): float
         {
             // Get an array of points from our $source argument
             $points = self::getPoints($source, $args);
 
             // Validate input and sort points
-            self::validate($points, $degree = 2);
+            self::validate($points, degree: 2);
             $sorted = self::sort($points);
 
             // Descriptive constants
@@ -110,5 +110,29 @@
             }
 
             return $approximation;
+        }
+
+        public function approximateUsingPolynomial()
+        {
+        }
+
+        public function approximateUsingCallback()
+        {
+        }
+
+        public function approximateEndpointsTwoInteriorPointsNotSorted()
+        {
+        }
+
+        public function approximateEndpointsTwoInteriorPoints()
+        {
+        }
+
+        public function approximateEndpointsOneInteriorPoint()
+        {
+        }
+
+        public function approximateEndpoints()
+        {
         }
     }

@@ -7,7 +7,7 @@
 
     class PeopleTest extends TestCase {
         /** @var SampleData\People */
-        private $people;
+        private SampleData\People $people;
 
         /**
          * @return array (model, data)
@@ -96,9 +96,7 @@
 
             // Then
             foreach ($data as $observation)
-            {
                 $this->assertCount(12, $observation);
-            }
         }
 
         /**

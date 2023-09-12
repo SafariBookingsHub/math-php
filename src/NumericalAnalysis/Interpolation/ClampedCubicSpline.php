@@ -61,13 +61,13 @@
          *
          * @throws Exception\BadDataException
          */
-        public static function interpolate($source, ...$args): Piecewise
+        public static function interpolate(callable|array $source, ...$args): Piecewise
         {
             // Get an array of points from our $source argument @phpstan-ignore-next-line
             $points = self::getSplinePoints($source, $args);
 
             // Validate input and sort points
-            self::validateSpline($points, $degree = 1);
+            self::validateSpline($points, degree: 1);
             $sorted = self::sort($points);
 
             // Descriptive constants
@@ -84,10 +84,10 @@
             $f⟮x₁⟯ = $sorted[1][$y];  // y₁
             $y’₀ = $sorted[0][$y’]; // y₀-prime
             $h = [$x₁ - $x₀];
-            $a = [((3 / $h[0]) * ($f⟮x₁⟯ - $f⟮x₀⟯)) - (3 * $y’₀)];
+            $a = [3 / $h[0] * ($f⟮x₁⟯ - $f⟮x₀⟯) - 3 * $y’₀];
             $μ = [0.5];
             $z = [$a[0] / (2 * $h[0])];
-            $c[$k] = 0;
+            $c = [$k => 0];
             $poly = [];
             $int = [];
 
@@ -99,28 +99,26 @@
                 $h[$i] = $xᵢ₊₁ - $xᵢ;
 
                 if ($i == 0)
-                {
                     continue;
-                }
 
                 $xᵢ₋₁ = $sorted[$i - 1][$x];
                 $f⟮xᵢ⟯ = $sorted[$i][$y];   // yᵢ
                 $f⟮xᵢ₊₁⟯ = $sorted[$i + 1][$y]; // yᵢ₊₁
                 $f⟮xᵢ₋₁⟯ = $sorted[$i - 1][$y]; // yᵢ₋₁
 
-                $α = ((3 / $h[$i]) * ($f⟮xᵢ₊₁⟯ - $f⟮xᵢ⟯)) - ((3 / $h[$i - 1])
-                        * ($f⟮xᵢ⟯ - $f⟮xᵢ₋₁⟯));
-                $l = (2 * ($xᵢ₊₁ - $xᵢ₋₁)) - ($h[$i - 1] * $μ[$i - 1]);
+                $α = 3 / $h[$i] * ($f⟮xᵢ₊₁⟯ - $f⟮xᵢ⟯) - 3 / $h[$i - 1]
+                        * ($f⟮xᵢ⟯ - $f⟮xᵢ₋₁⟯);
+                $l = 2 * ($xᵢ₊₁ - $xᵢ₋₁) - $h[$i - 1] * $μ[$i - 1];
                 $μ[$i] = $h[$i] / $l;
-                $z[$i] = ($α - ($h[$i - 1] * $z[$i - 1])) / $l;
+                $z[$i] = ($α - $h[$i - 1] * $z[$i - 1]) / $l;
             }
 
             $f⟮xₙ⟯ = $sorted[$k][$y];   // yₙ
             $f⟮xₙ₋₁⟯ = $sorted[$k - 1][$y]; // yₙ₋₁
             $y’ₙ = $sorted[$k][$y’];  // yₙ-prime
-            $a[$k] = (3 * $y’ₙ) - ((3 * ($f⟮xₙ⟯ - $f⟮xₙ₋₁⟯)) / $h[$k - 1]);
+            $a[$k] = 3 * $y’ₙ - 3 * ($f⟮xₙ⟯ - $f⟮xₙ₋₁⟯) / $h[$k - 1];
             $l = $h[$k - 1] * (2 - $μ[$k - 1]);
-            $z[$k] = ($a[$k] - ($h[$k - 1] * $z[$k - 1])) / $l;
+            $z[$k] = ($a[$k] - $h[$k - 1] * $z[$k - 1]) / $l;
             $c[$n] = $z[$k];
 
             for ($i = $k - 1; $i >= 0; $i--)
@@ -130,28 +128,24 @@
                 $f⟮xᵢ⟯ = $sorted[$i][$y];    // yᵢ
                 $f⟮xᵢ₊₁⟯ = $sorted[$i + 1][$y];  // yᵢ₊₁
 
-                $c[$i] = $z[$i] - ($μ[$i] * $c[$i + 1]);
-                $b[$i] = (($f⟮xᵢ₊₁⟯ - $f⟮xᵢ⟯) / $h[$i]) - (($h[$i] * ($c[$i + 1]
-                                + (2
-                                    * $c[$i]))) / 3);
+                $c[$i] = $z[$i] - $μ[$i] * $c[$i + 1];
+                $b[$i] = ($f⟮xᵢ₊₁⟯ - $f⟮xᵢ⟯) / $h[$i] - $h[$i] * ($c[$i + 1]
+                                + 2
+                                    * $c[$i]) / 3;
                 $d[$i] = ($c[$i + 1] - $c[$i]) / (3 * $h[$i]);
 
                 $poly[$i] = new Polynomial([
                     $d[$i],
-                    $c[$i] - (3 * $d[$i] * $xᵢ),
-                    ($b[$i] - 2 * $c[$i] * $xᵢ) + (3 * $d[$i] * ($xᵢ ** 2)),
-                    ($a[$i] - $b[$i] * $xᵢ + $c[$i] * ($xᵢ ** 2)) - ($d[$i]
-                        * ($xᵢ
-                            ** 3)),
+                    $c[$i] - 3 * $d[$i] * $xᵢ,
+                    $b[$i] - (2 * $c[$i] * $xᵢ) + 3 * $d[$i] * $xᵢ ** 2,
+                    ($a[$i] - $b[$i] * $xᵢ) + $c[$i] * ($xᵢ ** 2) - $d[$i]
+                        * $xᵢ
+                            ** 3,
                 ]);
 
                 if ($i == 0)
-                {
-                    $int[$i] = [$xᵢ, $xᵢ₊₁];
-                } else
-                {
+                    $int[$i] = [$xᵢ, $xᵢ₊₁]; else
                     $int[$i] = [$xᵢ, $xᵢ₊₁, TRUE, FALSE];
-                }
             }
 
             return new Piecewise($int, $poly);
@@ -180,19 +174,15 @@
          *        Verify $start and $end are numbers, $end > $start, and $points is an integer > 1
          *
          */
-        public static function getSplinePoints($source, array $args): array
+        public static function getSplinePoints(callable|array $source, array $args): array
         {
             // Guard clause - source must be callable or array of points
             if ( ! (is_callable($source) || is_array($source)))
-            {
                 throw new Exception\BadDataException('Input source is incorrect. You need to input either a callback function or a set of arrays');
-            }
 
             // Source is already an array: nothing to do
             if (is_array($source))
-            {
                 return $source;
-            }
 
             // Construct points from callable function
             $function = $source;
@@ -230,7 +220,7 @@
 
             for ($i = 0; $i < $n; $i++)
             {
-                $xᵢ = $start + ($i * $h);
+                $xᵢ = $start + $i * $h;
                 $f⟮xᵢ⟯ = $function($xᵢ);
                 $f’⟮xᵢ⟯ = $derivative($xᵢ);
                 $points[$i] = [$xᵢ, $f⟮xᵢ⟯, $f’⟮xᵢ⟯];
@@ -256,24 +246,46 @@
             int $degree = 2
         ): void {
             if (count($points) < $degree)
-            {
                 throw new Exception\BadDataException('You need to have at least $degree sets of coordinates (arrays) for this technique');
-            }
 
             $x_coordinates = [];
             foreach ($points as $point)
             {
                 if (count($point) !== 3)
-                {
                     throw new Exception\BadDataException('Each array needs to have have precisely three numbers, representing x, y, and y-prime');
-                }
 
                 $x_component = $point[self::X];
                 if (in_array($x_component, $x_coordinates))
-                {
                     throw new Exception\BadDataException('Not a function. Your input array contains more than one coordinate with the same x-component.');
-                }
                 $x_coordinates[] = $x_component;
             }
+        }
+
+        public function notAFunctionException()
+        {
+        }
+
+        public function notEnoughArraysException()
+        {
+        }
+
+        public function notCoordinatesException()
+        {
+        }
+
+        public function incorrectInput()
+        {
+        }
+
+        public function solveNonZeroError()
+        {
+        }
+
+        public function solveZeroError()
+        {
+        }
+
+        public function polynomialAgrees()
+        {
         }
     }

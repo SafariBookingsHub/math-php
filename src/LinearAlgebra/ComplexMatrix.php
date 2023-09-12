@@ -6,9 +6,11 @@
     use MathPHP\Number\Complex;
     use MathPHP\Number\ObjectArithmetic;
 
+    use function get_class;
+
     class ComplexMatrix extends ObjectMatrix {
         /** @var Complex[][] Matrix array of arrays */
-        protected $A;
+        protected array $A;
 
         public function __construct(array $A)
         {
@@ -27,16 +29,10 @@
         protected function validateComplexData(array $A): void
         {
             foreach ($A as $i => $row)
-            {
                 foreach ($row as $object)
-                {
-                    if ( ! $object instanceof Complex)
-                    {
+                    if ( ! ($object instanceof Complex))
                         throw new Exception\IncorrectTypeException("All elements in the complex matrix must be complex. Got "
-                            .\get_class($object));
-                    }
-                }
-            }
+                            .$object::class);
         }
 
         /**
@@ -46,7 +42,16 @@
          */
         public static function createZeroValue(): ObjectArithmetic
         {
-            return new ComplexMatrix([[new Complex(0, 0)]]);
+            try
+            {
+                return new ComplexMatrix([[new Complex(0, 0)]]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -60,10 +65,23 @@
          */
         public function conjugateTranspose(): Matrix
         {
-            return $this->transpose()->map(
-                function (Complex $c) {
-                    return $c->complexConjugate();
-                }
-            );
+            try
+            {
+                return $this->transpose()->map(
+                    fn(Complex $c) => $c->complexConjugate()
+                );
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
+        }
+
+        public function constructorException()
+        {
+        }
+
+        public function construction()
+        {
         }
     }

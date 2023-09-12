@@ -55,8 +55,11 @@
          *
          * @param int $r
          * @param int $i
+         * @param int $j
+         * @param int $k
          *
-         * @throws       \Exception
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\IncorrectTypeException
          */
         public function testAdditiveIdentity(int $r, int $i, int $j, int $k)
         {
@@ -81,8 +84,10 @@
          *
          * @param int $r
          * @param int $i
-         *
-         * @throws       \Exception
+         * @param int $j
+         * @param int $k
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\IncorrectTypeException
          */
         public function testMultiplicativeIdentity(
             int $r,
@@ -111,8 +116,10 @@
          *
          * @param int $r
          * @param int $i
-         *
-         * @throws       \Exception
+         * @param int $j
+         * @param int $k
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\IncorrectTypeException
          */
         public function testAdditiveInverse(int $r, int $i, int $j, int $k)
         {

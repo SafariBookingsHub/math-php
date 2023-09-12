@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class MatrixColumnOperationsTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForColumnInterchange(): array
         {
             return [
@@ -60,9 +57,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForColumnExclude(): array
         {
             return [

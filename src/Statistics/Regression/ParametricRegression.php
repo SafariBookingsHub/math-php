@@ -8,7 +8,7 @@
          *
          * @var array<int, float>
          */
-        protected $parameters;
+        protected array $parameters;
 
         /**
          * Have the parent separate the points into xs and ys.

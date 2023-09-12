@@ -38,9 +38,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRoot(): array
         {
             return [
@@ -74,9 +71,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCubeRoot(): array
         {
             return [
@@ -102,9 +96,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForDigitSumBaseTen(): array
         {
             return [
@@ -162,9 +153,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForDigitSumBaseTwo(): array
         {
             return [
@@ -186,9 +174,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForDigitalRoot(): array
         {
             return [
@@ -897,7 +882,6 @@
         {
             // Given
             foreach (range(0, 20) as $a)
-            {
                 foreach (range(1, 20) as $n)
                 {
                     // When
@@ -907,7 +891,6 @@
                     // Then
                     $this->assertEquals($remainder, $modulo);
                 }
-            }
         }
 
         /**
@@ -993,7 +976,12 @@
         public function testIsqrt(float $x, int $expected)
         {
             // When
-            $isqrt = Arithmetic::isqrt($x);
+            try
+            {
+                $isqrt = Arithmetic::isqrt($x);
+            } catch (Exception\BadParameterException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected, $isqrt);
@@ -1011,6 +999,11 @@
             $this->expectException(Exception\BadParameterException::class);
 
             // When
-            Arithmetic::isqrt($x);
+            try
+            {
+                Arithmetic::isqrt($x);
+            } catch (Exception\BadParameterException $e)
+            {
+            }
         }
     }

@@ -2,21 +2,28 @@
 
     namespace MathPHP\Tests\LinearAlgebra\Matrix\Numeric;
 
+    use MathPHP\Exception\IncorrectTypeException;
+    use MathPHP\Exception\MatrixException;
     use MathPHP\LinearAlgebra\NumericDiagonalMatrix;
     use PHPUnit\Framework\TestCase;
 
     class NumericDiagonalMatrixTest extends TestCase {
         /** @var NumericDiagonalMatrix */
-        private $matrix;
+        private NumericDiagonalMatrix $matrix;
 
         public function setUp(): void
         {
             // Given
-            $this->matrix = new NumericDiagonalMatrix([
-                [2, 0, 0],
-                [0, 2, 0],
-                [0, 0, 2],
-            ]);
+            try
+            {
+                $this->matrix = new NumericDiagonalMatrix([
+                    [2, 0, 0],
+                    [0, 2, 0],
+                    [0, 0, 2],
+                ]);
+            } catch (MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -25,7 +32,14 @@
         public function testIsSymmetric(): void
         {
             // When
-            $isSymmetric = $this->matrix->isSymmetric();
+            try
+            {
+                $isSymmetric = $this->matrix->isSymmetric();
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertTrue($isSymmetric);

@@ -27,9 +27,7 @@
             parent::__construct($A);
 
             if ($this->m !== $this->n)
-            {
                 throw new Exception\MatrixException("Not a square matrix; row count and column count differ: {$this->m}x{$this->n}");
-            }
         }
 
         /**
@@ -40,5 +38,45 @@
         public function isSquare(): bool
         {
             return TRUE;
+        }
+
+        public function det()
+        {
+        }
+
+        public function multiplyVector()
+        {
+        }
+
+        public function mul()
+        {
+        }
+
+        public function subtract()
+        {
+        }
+
+        public function add()
+        {
+        }
+
+        public function isEqual()
+        {
+        }
+
+        public function matrixMultiplyException()
+        {
+        }
+
+        public function matrixSubtractException()
+        {
+        }
+
+        public function matrixAddException()
+        {
+        }
+
+        public function matrixConstructorException()
+        {
         }
     }

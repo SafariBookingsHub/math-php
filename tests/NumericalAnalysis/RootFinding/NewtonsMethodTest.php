@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\NumericalAnalysis\RootFinding;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Expression\Polynomial;
     use MathPHP\NumericalAnalysis\RootFinding\NewtonsMethod;
     use PHPUnit\Framework\TestCase;
@@ -13,7 +14,12 @@
         /**
          * @return array (args, expected)
          */
-        public static function dataProviderForPolynomial(): array
+        #[ArrayShape([
+            'solving for f(x) = 0 where x is -4' => "array",
+            'solving for f(x) = 0 where x is -8' => "array",
+            'solving for f(x) = 0 where x is 3'  => "array",
+            'When solving f(x) = 0 where x is 1' => "array"
+        ])] public static function dataProviderForPolynomial(): array
         {
             return [
                 'solving for f(x) = 0 where x is -4' => [[-4.1], -4],
@@ -39,9 +45,7 @@
             int $expected
         ) {
             // Given
-            $func = function ($x) {
-                return ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
-            };
+            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
 
             // And
             $target = 0;
@@ -94,9 +98,7 @@
         public function testXCubedSubtractXPlusOne()
         {
             // Given
-            $func = function ($x) {
-                return ($x ** 3 - $x) + 1;
-            };
+            $func = fn($x) => ($x ** 3 - $x) + 1;
 
             // And
             $expected = -1.324717;
@@ -121,9 +123,7 @@
         public function testXSquaredSubtractFive()
         {
             // Given
-            $func = function ($x) {
-                return ($x ** 2) - 5;
-            };
+            $func = fn($x) => ($x ** 2) - 5;
 
             // And
             $expected = sqrt(5);
@@ -148,9 +148,7 @@
         public function testCosXSubtractTwoX()
         {
             // Given
-            $func = function ($x) {
-                return cos($x) - (2 * $x);
-            };
+            $func = fn($x) => cos($x) - (2 * $x);
 
             // And
             $expected = 0.450183;
@@ -175,9 +173,7 @@
         public function testCosXEqualsX()
         {
             // Given
-            $func = function ($x) {
-                return cos($x);
-            };
+            $func = fn($x) => cos($x);
 
             // And
             $x = 0.7390851332;
@@ -201,9 +197,7 @@
         public function testNewtonsMethodExceptionNegativeTolerance()
         {
             // Given
-            $func = function ($x) {
-                return ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - 92 * $x) + 96;
-            };
+            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - 92 * $x) + 96;
 
             // And
             $args = [-4.1];
@@ -225,9 +219,7 @@
         public function testNewtonsMethodNearZeroSlopeNAN()
         {
             // Given
-            $func = function ($x) {
-                return $x / $x;
-            };
+            $func = fn($x) => $x / $x;
 
             // And
             $args = [0.1];
@@ -249,9 +241,7 @@
         public function testNewtonsMethodNoRealSolutionsNAN()
         {
             // Given
-            $func = function ($x) {
-                return ($x ** 2) + (3 * $x) + 3;
-            };
+            $func = fn($x) => ($x ** 2) + (3 * $x) + 3;
 
             // And
             $args = [0.1];
@@ -274,9 +264,7 @@
         public function testNoSolutionCubeRootX()
         {
             // Given
-            $func = function ($x) {
-                return $x ** (1 / 3);
-            };
+            $func = fn($x) => $x ** (1 / 3);
 
             // And
             $args = [1];

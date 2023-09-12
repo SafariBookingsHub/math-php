@@ -2,6 +2,10 @@
 
     namespace MathPHP\Tests\LinearAlgebra\Matrix\Numeric;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\IncorrectTypeException;
+    use MathPHP\Exception\MathException;
+    use MathPHP\Exception\MatrixException;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use PHPUnit\Framework\TestCase;
 
@@ -263,7 +267,18 @@
         public function testOneNorm(array $A, $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
             $norm = $A->oneNorm();
@@ -279,7 +294,18 @@
         public function testInfinityNorm(array $A, $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
             $norm = $A->infinityNorm();
@@ -295,7 +321,18 @@
         public function testMaxNorm(array $A, $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
             $norm = $A->maxNorm();
@@ -311,7 +348,18 @@
         public function testFrobeniusNorm(array $A, $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
             $norm = $A->frobeniusNorm();

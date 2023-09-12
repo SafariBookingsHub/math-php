@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\LinearAlgebra\Eigen;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Exception;
     use MathPHP\LinearAlgebra\Eigenvalue;
     use MathPHP\LinearAlgebra\MatrixFactory;
@@ -89,8 +90,8 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    [(3 * (5 + sqrt(33))) / 2, (-3 * (sqrt(33) - 5)) / 2, 0],
-                    (3 * (5 + sqrt(33))) / 2,
+                    [3 * (5 + sqrt(33)) / 2, -3 * (sqrt(33) - 5) / 2, 0],
+                    3 * (5 + sqrt(33)) / 2,
                 ],
                 [
                     [
@@ -134,10 +135,10 @@
             ];
         }
 
-        /**
-         * @return array
-         */
-        public static function dataProviderForEigenvalueException(): array
+        #[ArrayShape(['1x1'        => "array[]",
+                      '5x5'        => "array[]",
+                      'not_square' => "array[]"
+        ])] public static function dataProviderForEigenvalueException(): array
         {
             return [
                 '1x1'        => [
@@ -495,10 +496,10 @@
             ];
         }
 
-        /**
-         * @return array
-         */
-        public static function dataProviderForSymmetricException(): array
+        #[ArrayShape(['1x1'          => "array[]",
+                      'not_symetric' => "array[]",
+                      'not_square'   => "array[]"
+        ])] public static function dataProviderForSymmetricException(): array
         {
             return [
                 '1x1'          => [
@@ -524,9 +525,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForIterationFailure(): array
         {
             return [
@@ -541,9 +539,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForTriangularEigenvalues(): array
         {
             return [
@@ -576,9 +571,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForEigenvalueFailure(): array
         {
             return [
@@ -893,16 +885,30 @@
         public function testJocobiMethodBugIssue414Eigenvalues()
         {
             // Given
-            $A = MatrixFactory::createNumeric([
-                [11090.868109438, 2292930.5298083],
-                [2292930.5298083, 474044636.63249],
-            ]);
+            try
+            {
+                $A = MatrixFactory::createNumeric([
+                    [11090.868109438, 2292930.5298083],
+                    [2292930.5298083, 474044636.63249],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // And
             $expected = [4.74055727e+08, 7.62112141e-02];
 
             // When
-            $eigenvalues = Eigenvalue::jacobiMethod($A);
+            try
+            {
+                $eigenvalues = Eigenvalue::jacobiMethod($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected[0], $eigenvalues[0], 0.5);

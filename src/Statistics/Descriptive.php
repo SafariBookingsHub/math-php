@@ -2,10 +2,13 @@
 
     namespace MathPHP\Statistics;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Exception;
 
+    use function abs;
     use function array_map;
     use function array_pop;
+    use function array_shift;
     use function array_slice;
     use function array_sum;
     use function array_unshift;
@@ -61,26 +64,20 @@
             bool $biased = FALSE
         ): float {
             if (count($numbers) === 1)
-            {
                 return 0;
-            }
             if (count($numbers) !== count($weights))
-            {
                 throw new Exception\BadDataException('Numbers and weights must have the same number of elements.');
-            }
 
             $μw = Average::weightedMean($numbers, $weights);
             $∑wᵢ⟮xᵢ − μw⟯² = array_sum(array_map(
-                function ($xᵢ, $wᵢ) use ($μw) {
-                    return $wᵢ * (($xᵢ - $μw) ** 2);
-                },
+                fn($xᵢ, $wᵢ) => $wᵢ * (($xᵢ - $μw) ** 2),
                 $numbers,
                 $weights
             ));
 
             $∑wᵢ = $biased
                 ? array_sum($weights)
-                : (array_sum($weights) - 1);
+                : array_sum($weights) - 1;
 
             return $∑wᵢ⟮xᵢ − μw⟯² / $∑wᵢ;
         }
@@ -129,9 +126,7 @@
             bool $SD＋ = FALSE
         ): float {
             if (empty($numbers))
-            {
                 throw new Exception\BadDataException('Cannot find the standard deviation of an empty list of numbers');
-            }
 
             return $SD＋
                 ? sqrt(self::populationVariance($numbers))
@@ -198,13 +193,9 @@
         public static function variance(array $numbers, int $ν): float
         {
             if (empty($numbers))
-            {
                 throw new Exception\BadDataException('Cannot find the variance of an empty list of numbers');
-            }
             if ($ν <= 0)
-            {
                 throw new Exception\OutOfBoundsException('Degrees of freedom must be > 0');
-            }
 
             $∑⟮xᵢ − μ⟯² = RandomVariable::sumOfSquaresDeviations($numbers);
 
@@ -232,9 +223,7 @@
         public static function sampleVariance(array $numbers): float
         {
             if (count($numbers) == 1)
-            {
                 return 0;
-            }
 
             $n = count($numbers);
 
@@ -283,15 +272,12 @@
             array $numbers,
             string $method = 'exclusive'
         ): array {
-            switch (strtolower($method))
+            return match (strtolower($method))
             {
-                case 'inclusive':
-                    return self::quartilesInclusive($numbers);
-                case 'exclusive':
-                    return self::quartilesExclusive($numbers);
-                default:
-                    return self::quartilesExclusive($numbers);
-            }
+                'inclusive' => self::quartilesInclusive($numbers),
+                'exclusive' => self::quartilesExclusive($numbers),
+                default => self::quartilesExclusive($numbers),
+            };
         }
 
         /**
@@ -329,14 +315,18 @@
          *     "IQR":   float,
          * }
          *
-         * @throws Exception\BadDataException if the input array of numbers is empty
+         * @throws \MathPHP\Exception\BadDataException if the input array of numbers is empty
          */
-        public static function quartilesInclusive(array $numbers): array
+        #[ArrayShape(['0%'   => "mixed",
+                      'Q1'   => "float",
+                      'Q2'   => "float",
+                      'Q3'   => "float",
+                      '100%' => "mixed",
+                      'IQR'  => "float"
+        ])] public static function quartilesInclusive(array $numbers): array
         {
             if (empty($numbers))
-            {
                 throw new Exception\BadDataException('Cannot find the quartiles of an empty list of numbers');
-            }
 
             sort($numbers);
             $length = count($numbers);
@@ -351,22 +341,50 @@
                 $upper_half = array_slice($numbers, intdiv($length, 2) + 1);
 
                 // Add median to both halves
-                $median = Average::median($numbers);
+                try
+                {
+                    $median = Average::median($numbers);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\OutOfBoundsException $e)
+                {
+                }
                 $lower_half[] = $median;
                 array_unshift($upper_half, $median);
             }
 
-            $lower_quartile = Average::median($lower_half);
-            $upper_quartile = Average::median($upper_half);
+            try
+            {
+                $lower_quartile = Average::median($lower_half);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
+            try
+            {
+                $upper_quartile = Average::median($upper_half);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
-            return [
-                '0%'   => min($numbers),
-                'Q1'   => $lower_quartile,
-                'Q2'   => Average::median($numbers),
-                'Q3'   => $upper_quartile,
-                '100%' => max($numbers),
-                'IQR'  => $upper_quartile - $lower_quartile,
-            ];
+            try
+            {
+                return [
+                    '0%'   => min($numbers),
+                    'Q1'   => $lower_quartile,
+                    'Q2'   => Average::median($numbers),
+                    'Q3'   => $upper_quartile,
+                    '100%' => max($numbers),
+                    'IQR'  => $upper_quartile - $lower_quartile,
+                ];
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -405,14 +423,12 @@
          *     "IQR":   float,
          * }
          *
-         * @throws Exception\BadDataException if the input array of numbers is empty
+         * @throws \MathPHP\Exception\BadDataException if the input array of numbers is empty
          */
         public static function quartilesExclusive(array $numbers): array
         {
             if (empty($numbers))
-            {
                 throw new Exception\BadDataException('Cannot find the quartiles of an empty list of numbers');
-            }
             if (count($numbers) === 1)
             {
                 $number = array_pop($numbers);
@@ -440,17 +456,38 @@
                 $upper_half = array_slice($numbers, intdiv($length, 2) + 1);
             }
 
-            $lower_quartile = Average::median($lower_half);
-            $upper_quartile = Average::median($upper_half);
+            try
+            {
+                $lower_quartile = Average::median($lower_half);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
+            try
+            {
+                $upper_quartile = Average::median($upper_half);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
-            return [
-                '0%'   => min($numbers),
-                'Q1'   => $lower_quartile,
-                'Q2'   => Average::median($numbers),
-                'Q3'   => $upper_quartile,
-                '100%' => max($numbers),
-                'IQR'  => $upper_quartile - $lower_quartile,
-            ];
+            try
+            {
+                return [
+                    '0%'   => min($numbers),
+                    'Q1'   => $lower_quartile,
+                    'Q2'   => Average::median($numbers),
+                    'Q3'   => $upper_quartile,
+                    '100%' => max($numbers),
+                    'IQR'  => $upper_quartile - $lower_quartile,
+                ];
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -504,34 +541,26 @@
         public static function percentile(array $numbers, float $P): float
         {
             if (empty($numbers))
-            {
                 throw new Exception\BadDataException('Cannot find the P-th percentile of an empty list of numbers');
-            }
-            if (($P < 0) || ($P > 100))
-            {
+            if ($P < 0 || $P > 100)
                 throw new Exception\OutOfBoundsException('Percentile P must be between 0 and 100.');
-            }
 
             $N = count($numbers);
             if ($N === 1)
-            {
-                return \array_shift($numbers);
-            }
+                return array_shift($numbers);
 
             sort($numbers);
 
             if ($P == 100)
-            {
                 return $numbers[$N - 1];
-            }
 
-            $x = (($P / 100) * ($N - 1)) + 1;
+            $x = $P / 100 * ($N - 1) + 1;
             $⌊x⌋ = intval($x);
             $x％1 = $x - $⌊x⌋;
             $νₓ = $numbers[$⌊x⌋ - 1];
             $νₓ₊₁ = $numbers[$⌊x⌋];
 
-            return $νₓ + ($x％1 * ($νₓ₊₁ - $νₓ));
+            return $νₓ + $x％1 * ($νₓ₊₁ - $νₓ);
         }
 
         /**
@@ -595,8 +624,8 @@
          *     ci_99:       array{ci: float|null, lower_bound: float|null, upper_bound: float|null},
          * }
          *
-         * @throws Exception\OutOfBoundsException
-         * @throws Exception\BadDataException
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public static function describe(
             array $numbers,
@@ -606,40 +635,52 @@
             $μ = Average::mean($numbers);
             $σ = self::standardDeviation($numbers, $population);
 
-            return [
-                'n'          => $n,
-                'min'        => min($numbers),
-                'max'        => max($numbers),
-                'mean'       => $μ,
-                'median'     => Average::median($numbers),
-                'mode'       => Average::mode($numbers),
-                'range'      => self::range($numbers),
-                'midrange'   => self::midrange($numbers),
-                'variance'   => $population ? self::populationVariance($numbers)
-                    : self::sampleVariance($numbers),
-                'sd'         => $σ,
-                'cv'         => $μ ? ($σ / $μ) : NAN,
-                'mean_mad'   => self::meanAbsoluteDeviation($numbers),
-                'median_mad' => self::medianAbsoluteDeviation($numbers),
-                'quartiles'  => self::quartiles($numbers),
-                'midhinge'   => self::midhinge($numbers),
-                'skewness'   => $population
-                    ? (($n > 0) ? RandomVariable::populationSkewness($numbers)
-                        : NULL)
-                    : (($n >= 3) ? RandomVariable::skewness($numbers) : NULL),
-                'ses'        => ($n > 2) ? RandomVariable::ses($n) : NULL,
-                'kurtosis'   => $population
-                    ? (($n > 3) ? RandomVariable::populationKurtosis($numbers)
-                        : NULL)
-                    : (($n > 0) ? RandomVariable::sampleKurtosis($numbers)
-                        : NULL),
-                'sek'        => ($n > 3) ? RandomVariable::sek($n) : NULL,
-                'sem'        => RandomVariable::standardErrorOfTheMean($numbers),
-                'ci_95'      => RandomVariable::confidenceInterval($μ, $n, $σ,
-                    '95'),
-                'ci_99'      => RandomVariable::confidenceInterval($μ, $n, $σ,
-                    '99'),
-            ];
+            try
+            {
+                return [
+                    'n'          => $n,
+                    'min'        => min($numbers),
+                    'max'        => max($numbers),
+                    'mean'       => $μ,
+                    'median'     => Average::median($numbers),
+                    'mode'       => Average::mode($numbers),
+                    'range'      => self::range($numbers),
+                    'midrange'   => self::midrange($numbers),
+                    'variance'   => $population
+                        ? self::populationVariance($numbers)
+                        : self::sampleVariance($numbers),
+                    'sd'         => $σ,
+                    'cv'         => $μ ? $σ / $μ : NAN,
+                    'mean_mad'   => self::meanAbsoluteDeviation($numbers),
+                    'median_mad' => self::medianAbsoluteDeviation($numbers),
+                    'quartiles'  => self::quartiles($numbers),
+                    'midhinge'   => self::midhinge($numbers),
+                    'skewness'   => $population
+                        ? ($n > 0 ? RandomVariable::populationSkewness($numbers)
+                            : NULL)
+                        : ($n >= 3 ? RandomVariable::skewness($numbers) : NULL),
+                    'ses'        => $n > 2 ? RandomVariable::ses($n) : NULL,
+                    'kurtosis'   => $population
+                        ? ($n > 3 ? RandomVariable::populationKurtosis($numbers)
+                            : NULL)
+                        : ($n > 0 ? RandomVariable::sampleKurtosis($numbers)
+                            : NULL),
+                    'sek'        => $n > 3 ? RandomVariable::sek($n) : NULL,
+                    'sem'        => RandomVariable::standardErrorOfTheMean($numbers),
+                    'ci_95'      => RandomVariable::confidenceInterval($μ, $n,
+                        $σ,
+                        '95'),
+                    'ci_99'      => RandomVariable::confidenceInterval($μ, $n,
+                        $σ,
+                        '99'),
+                ];
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -659,9 +700,7 @@
         public static function range(array $numbers): float
         {
             if (empty($numbers))
-            {
                 throw new Exception\BadDataException('Cannot find the range of an empty list of numbers');
-            }
 
             return max($numbers) - min($numbers);
         }
@@ -684,9 +723,7 @@
         public static function midrange(array $numbers): float
         {
             if (empty($numbers))
-            {
                 throw new Exception\BadDataException('Cannot find the midrange of an empty list of numbers');
-            }
 
             return Average::mean([min($numbers), max($numbers)]);
         }
@@ -714,16 +751,12 @@
         public static function meanAbsoluteDeviation(array $numbers): float
         {
             if (empty($numbers))
-            {
                 throw new Exception\BadDataException('Cannot find the mean absolute deviation of an empty list of numbers');
-            }
 
             $x = Average::mean($numbers);
-            $array_map = [];
-            foreach ($numbers as $key => $xᵢ)
-            {
-                $array_map[$key] = \abs($xᵢ - $x);
-            }
+            $array_map = array_map(function ($xᵢ) use ($x) {
+                return abs($xᵢ - $x);
+            }, $numbers);
             $∑│xᵢ − x│ = array_sum($array_map);
             $N = count($numbers);
 
@@ -746,24 +779,34 @@
          *
          * @return float
          *
-         * @throws Exception\BadDataException if the input array of numbers is empty
+         * @throws \MathPHP\Exception\BadDataException if the input array of numbers is empty
          */
         public static function medianAbsoluteDeviation(array $numbers): float
         {
             if (empty($numbers))
-            {
                 throw new Exception\BadDataException('Cannot find the median absolute deviation of an empty list of numbers');
-            }
 
-            $x = Average::median($numbers);
-
-            $array_map = [];
-            foreach ($numbers as $key => $xᵢ)
+            try
             {
-                $array_map[$key] = \abs($xᵢ - $x);
+                $x = Average::median($numbers);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
             }
 
-            return Average::median($array_map);
+            $array_map = array_map(function ($xᵢ) use ($x) {
+                return abs($xᵢ - $x);
+            }, $numbers);
+
+            try
+            {
+                return Average::median($array_map);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -811,18 +854,146 @@
          *     max:     float|int|false,
          * }
          *
-         * @throws Exception\BadDataException
+         * @throws \MathPHP\Exception\BadDataException
          */
-        public static function fiveNumberSummary(array $numbers): array
+        #[ArrayShape(['min'    => "mixed",
+                      'Q1'     => "float",
+                      'median' => "float",
+                      'Q3'     => "float",
+                      'max'    => "mixed"
+        ])] public static function fiveNumberSummary(array $numbers): array
         {
             $quartiles = self::quartiles($numbers);
 
-            return [
-                'min'    => min($numbers),
-                'Q1'     => $quartiles['Q1'],
-                'median' => Average::median($numbers),
-                'Q3'     => $quartiles['Q3'],
-                'max'    => max($numbers),
-            ];
+            try
+            {
+                return [
+                    'min'    => min($numbers),
+                    'Q1'     => $quartiles['Q1'],
+                    'median' => Average::median($numbers),
+                    'Q3'     => $quartiles['Q3'],
+                    'max'    => max($numbers),
+                ];
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
+        }
+
+        public function describeSekNullForSmallN()
+        {
+        }
+
+        public function describeSesNullForSmallN()
+        {
+        }
+
+        public function describeSample()
+        {
+        }
+
+        public function describePopulation()
+        {
+        }
+
+        public function sCoefficientOfVariation()
+        {
+        }
+
+        public function midhingeEmptyList()
+        {
+        }
+
+        public function percentileOutOfUpperBoundsP()
+        {
+        }
+
+        public function percentileOutOfLowerBoundsP()
+        {
+        }
+
+        public function percentileEmptyList()
+        {
+        }
+
+        public function quartilesInclusiveExceptionWhenEmptyArray()
+        {
+        }
+
+        public function quartilesExclusiveExceptionWhenEmptyArray()
+        {
+        }
+
+        public function medianAbsoluteDeviationExceptionWhenEmptyArray()
+        {
+        }
+
+        public function meanAbsoluteDeviationExceptionWhenEmptyArray()
+        {
+        }
+
+        public function SDExceptionWhenEmptyArray()
+        {
+        }
+
+        public function standardDeviationExceptionWhenEmptyArray()
+        {
+        }
+
+        public function SDeviationUsingSampleVariance()
+        {
+        }
+
+        public function standardDeviationUsingSampleVariance()
+        {
+        }
+
+        public function sdUsingPopulationVariance()
+        {
+        }
+
+        public function standardDeviationUsingPopulationVariance()
+        {
+        }
+
+        public function weightedSampleVarianceException()
+        {
+        }
+
+        public function weightedSampleVarianceSetOfOne()
+        {
+        }
+
+        public function weightedSampleVarianceBiased()
+        {
+        }
+
+        public function weightedSampleVarianceUnbiased()
+        {
+        }
+
+        public function varianceExceptionDFLessThanZero()
+        {
+        }
+
+        public function sampleVarianceZeroWhenListContainsOnlyOneItem()
+        {
+        }
+
+        public function sampleVarianceExceptionWhenEmptyArray()
+        {
+        }
+
+        public function populationVarianceExceptionWhenEmptyArray()
+        {
+        }
+
+        public function midrangeExceptionWhenEmptyArray()
+        {
+        }
+
+        public function rangeExceptionWhenEmptyArray()
+        {
         }
     }

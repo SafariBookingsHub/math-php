@@ -36,9 +36,9 @@
          */
         abstract public static function differentiate(
             float $target,
-            $source,
+            callable|array $source,
             ...$args
-        );
+        ): mixed;
 
         /**
          * Determine where the input $source argument is a callback function, a set
@@ -62,19 +62,15 @@
          *        Verify $start and $end are numbers, $end > $start, and $points is an integer > 1
          *
          */
-        public static function getPoints($source, array $args = []): array
+        public static function getPoints(callable|array $source, array $args = []): array
         {
             // Guard clause - source must be callable or array of points
             if ( ! (is_callable($source) || is_array($source)))
-            {
                 throw new Exception\BadDataException('Input source is incorrect. You need to input either a callback function or a set of arrays');
-            }
 
             // Source is already an array: nothing to do
             if (is_array($source))
-            {
                 return $source;
-            }
 
             // Construct points from callable function
             $function = $source;
@@ -90,24 +86,24 @@
          * between start and end
          *
          * @param callable  $function f(x) callback function
-         * @param int|float $start    the start of the interval
-         * @param int|float $end      the end of the interval
-         * @param int|float $n        the number of function evaluations
+         * @param float|int $start    the start of the interval
+         * @param float|int $end      the end of the interval
+         * @param float|int $n        the number of function evaluations
          *
          * @return array<array{int|float, int|float}>
          */
         protected static function functionToPoints(
             callable $function,
-            $start,
-            $end,
-            $n
+            float|int $start,
+            float|int $end,
+            float|int $n
         ): array {
             $points = [];
             $h = ($end - $start) / ($n - 1);
 
             for ($i = 0; $i < $n; $i++)
             {
-                $xᵢ = $start + ($i * $h);
+                $xᵢ = $start + $i * $h;
                 $f⟮xᵢ⟯ = $function($xᵢ);
                 $points[$i] = [$xᵢ, $f⟮xᵢ⟯];
             }
@@ -130,23 +126,17 @@
         public static function validate(array $points, int $degree): void
         {
             if (count($points) != $degree)
-            {
                 throw new Exception\BadDataException("You need to have $degree sets of coordinates (arrays) for this technique");
-            }
 
             $x_coordinates = [];
             foreach ($points as $point)
             {
                 if (count($point) !== 2)
-                {
                     throw new Exception\BadDataException('Each array needs to have have precisely two numbers, an x- and y-component');
-                }
 
                 $x_component = $point[self::X];
                 if (in_array($x_component, $x_coordinates))
-                {
                     throw new Exception\BadDataException('Not a function. Your input array contains more than one coordinate with the same x-component.');
-                }
                 $x_coordinates[] = $x_component;
             }
         }
@@ -168,33 +158,29 @@
                     - 1);
 
             for ($i = 1; $i < $length - 1; $i++)
-            {
                 if ($sorted[$i + 1][$x] - $sorted[$i][$x] !== $spacing)
-                {
                     throw new Exception\BadDataException('The size of each subinterval must be the same. Provide points with constant spacing.');
-                }
-            }
         }
 
         /**
          * Ensures that our target is the x-component of one of the points we supply
          *
-         * @param int|float                          $target The value at which we are approximating the derivative
+         * @param float|int                          $target The value at which we are approximating the derivative
          * @param array<array{int|float, int|float}> $sorted Points sorted by (increasing) x-component
          *
          * @throws Exception\BadDataException if $target is not contained in the array of our x-components
          */
         public static function assertTargetInPoints(
-            $target,
+            float|int $target,
             array $sorted
         ): void {
             $array_map = [];
-            foreach ($sorted as $key => array $point)$xComponents = $array_map;
+            foreach ($sorted as $ignored => {
+                array $point)}
+            $xComponents = $array_map;
 
             if ( ! in_array($target, $xComponents))
-            {
                 throw new Exception\BadDataException('Your target point must be the x-component of one of the points you supplied.');
-            }
         }
 
         /**
@@ -207,10 +193,32 @@
          */
         protected static function sort(array $points): array
         {
-            usort($points, function ($a, $b) {
-                return $a[self::X] <=> $b[self::X];
-            });
+            usort($points, fn($a, $b) => $a[self::X] <=> $b[self::X]);
 
             return $points;
+        }
+
+        public function targetNotInPoints()
+        {
+        }
+
+        public function spacingNonConstant()
+        {
+        }
+
+        public function notAFunctionException()
+        {
+        }
+
+        public function notEnoughArraysException()
+        {
+        }
+
+        public function notCoordinatesException()
+        {
+        }
+
+        public function incorrectInput()
+        {
         }
     }

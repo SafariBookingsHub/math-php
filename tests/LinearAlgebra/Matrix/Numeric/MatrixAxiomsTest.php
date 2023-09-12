@@ -12,6 +12,7 @@
     use function abs;
     use function array_column;
     use function array_fill;
+    use function is_nan;
     use function min;
     use function range;
     use function round;
@@ -189,9 +190,6 @@
     class MatrixAxiomsTest extends TestCase {
         use Tests\LinearAlgebra\Fixture\MatrixDataProvider;
 
-        /**
-         * @return array
-         */
         public static function dataProviderForScalarMultiplicationOrderAddition(
         ): array
         {
@@ -302,9 +300,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMultiplicationIsAssociative(
         ): array
         {
@@ -346,9 +341,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMultiplicationIsDistributive(
         ): array
         {
@@ -404,9 +396,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForScalarMultiplicationOrder(): array
         {
             return [
@@ -465,9 +454,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForInverse(): array
         {
             return [
@@ -568,9 +554,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForInverseProductIsReverseProductOfInverses(
         ): array
         {
@@ -626,9 +609,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForKroneckerProductDeterminant(
         ): array
         {
@@ -732,9 +712,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCovarianceSymmetric(): array
         {
             return [
@@ -822,8 +799,8 @@
             $−A = $A->negate();
 
             // Then
-            $this->assertEquals($Z, $A->add($−A));
-            $this->assertEquals($Z, $−A->add($A));
+            $this->assertEquals($Z, $A->add(B: $−A));
+            $this->assertEquals($Z, $−A->add(B: $A));
         }
 
         /**
@@ -844,17 +821,17 @@
             array $C
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $C = MatrixFactory::create($C);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
+            $C = MatrixFactory::create(A: $C);
 
             // When
-            $⟮AB⟯ = $A->multiply($B);
-            $⟮AB⟯C = $⟮AB⟯->multiply($C);
+            $⟮AB⟯ = $A->multiply(B: $B);
+            $⟮AB⟯C = $⟮AB⟯->multiply(B: $C);
 
             // And
-            $⟮BC⟯ = $B->multiply($C);
-            $A⟮BC⟯ = $A->multiply($⟮BC⟯);
+            $⟮BC⟯ = $B->multiply(B: $C);
+            $A⟮BC⟯ = $A->multiply(B: $⟮BC⟯);
 
             // Then
             $this->assertEquals($⟮AB⟯C->getMatrix(), $A⟮BC⟯->getMatrix());
@@ -878,18 +855,18 @@
             array $C
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $C = MatrixFactory::create($C);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
+            $C = MatrixFactory::create(A: $C);
 
             // When A(B + C)
-            $⟮B＋C⟯ = $B->add($C);
-            $A⟮B＋C⟯ = $A->multiply($⟮B＋C⟯);
+            $⟮B＋C⟯ = $B->add(B: $C);
+            $A⟮B＋C⟯ = $A->multiply(B: $⟮B＋C⟯);
 
             // And AB + AC
-            $AB = $A->multiply($B);
-            $AC = $A->multiply($C);
-            $AB＋AC = $AB->add($AC);
+            $AB = $A->multiply(B: $B);
+            $AC = $A->multiply(B: $C);
+            $AB＋AC = $AB->add(B: $AC);
 
             // Then
             $this->assertEquals($A⟮B＋C⟯->getMatrix(), $AB＋AC->getMatrix());
@@ -910,20 +887,20 @@
         public function testScalarMultiplcationOrder(array $A, array $B, int $r)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When r(AB)
-            $AB = $A->multiply($B);
-            $r⟮AB⟯ = $AB->scalarMultiply($r);
+            $AB = $A->multiply(B: $B);
+            $r⟮AB⟯ = $AB->scalarMultiply(λ: $r);
 
             // And (rA)B
-            $rA = $A->scalarMultiply($r);
-            $⟮rA⟯B = $rA->multiply($B);
+            $rA = $A->scalarMultiply(λ: $r);
+            $⟮rA⟯B = $rA->multiply(B: $B);
 
             // And A(rB)
-            $rB = $B->scalarMultiply($r);
-            $A⟮rB⟯ = $A->multiply($rB);
+            $rB = $B->scalarMultiply(λ: $r);
+            $A⟮rB⟯ = $A->multiply(B: $rB);
 
             // Then
             $this->assertEquals($r⟮AB⟯->getMatrix(), $⟮rA⟯B->getMatrix());
@@ -944,12 +921,12 @@
         public function testMatrixTimesIdentityIsOriginalMatrix(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $I = MatrixFactory::identity($A->getN());
+            $A = MatrixFactory::create(A: $A);
+            $I = MatrixFactory::identity(n: $A->getN());
 
             // When
-            $AI = $A->multiply($I);
-            $IA = $I->multiply($A);
+            $AI = $A->multiply(B: $I);
+            $IA = $I->multiply(B: $A);
 
             // Then
             $this->assertEquals($A->getMatrix(), $AI->getMatrix());
@@ -964,10 +941,10 @@
         public function testIdentityMatrixIsInvolutory()
         {
             // Given
-            foreach (range(1, 20) as $n)
+            foreach (range(start: 1, end: 20) as $n)
             {
                 // When
-                $A = MatrixFactory::identity($n);
+                $A = MatrixFactory::identity(n: $n);
 
                 // Then
                 $this->assertTrue($A->isInvolutory());
@@ -987,13 +964,13 @@
         public function testMatrixTimesInverseIsIdentity(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $A⁻¹ = $A->inverse();
-            $AA⁻¹ = $A->multiply($A⁻¹);
-            $A⁻¹A = $A⁻¹->multiply($A);
-            $I = MatrixFactory::identity($A->getN());
+            $AA⁻¹ = $A->multiply(B: $A⁻¹);
+            $A⁻¹A = $A⁻¹->multiply(B: $A);
+            $I = MatrixFactory::identity(n: $A->getN());
 
             // Then
             $this->assertEqualsWithDelta($I->getMatrix(), $AA⁻¹->getMatrix(),
@@ -1017,7 +994,7 @@
         public function testInverseOfInverseIsOriginalMatrix(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $⟮A⁻¹⟯⁻¹ = $A->inverse()->inverse();
@@ -1043,16 +1020,16 @@
             array $B
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When
-            $⟮AB⟯⁻¹ = $A->multiply($B)->inverse();
+            $⟮AB⟯⁻¹ = $A->multiply(B: $B)->inverse();
 
             // And
             $B⁻¹ = $B->inverse();
             $A⁻¹ = $A->inverse();
-            $B⁻¹A⁻¹ = $B⁻¹->multiply($A⁻¹);
+            $B⁻¹A⁻¹ = $B⁻¹->multiply(B: $A⁻¹);
 
             // Then
             $this->assertEqualsWithDelta($⟮AB⟯⁻¹->getMatrix(),
@@ -1072,19 +1049,15 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $Aᵀ = $A->transpose();
 
             // Then
             if ($A->isInvertible())
-            {
-                $this->assertTrue($Aᵀ->isInvertible());
-            } else
-            {
+                $this->assertTrue($Aᵀ->isInvertible()); else
                 $this->assertFalse($Aᵀ->isInvertible());
-            }
         }
 
         /**
@@ -1100,20 +1073,16 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $Aᵀ = $A->transpose();
-            $AAᵀ = $A->multiply($Aᵀ);
+            $AAᵀ = $A->multiply(B: $Aᵀ);
 
             // then
             if ($A->isInvertible())
-            {
-                $this->assertTrue($AAᵀ->isInvertible());
-            } else
-            {
+                $this->assertTrue($AAᵀ->isInvertible()); else
                 $this->assertFalse($AAᵀ->isInvertible());
-            }
         }
 
         /**
@@ -1129,20 +1098,16 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $Aᵀ = $A->transpose();
-            $AᵀA = $Aᵀ->multiply($A);
+            $AᵀA = $Aᵀ->multiply(B: $A);
 
             // Then
             if ($A->isInvertible())
-            {
-                $this->assertTrue($AᵀA->isInvertible());
-            } else
-            {
+                $this->assertTrue($AᵀA->isInvertible()); else
                 $this->assertFalse($AᵀA->isInvertible());
-            }
         }
 
         /**
@@ -1158,7 +1123,7 @@
         public function testTransposeOfTransposeIsOriginalMatrix(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $⟮A⁻ᵀ⟯ᵀ = $A->transpose()->transpose();
@@ -1180,7 +1145,7 @@
         public function testTransposeOfInverseIsInverseOfTranspose(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $⟮A⁻¹⟯ᵀ = $A->inverse()->transpose();
@@ -1204,12 +1169,12 @@
         public function testScalarMultiplicationOfTransposeOrder(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
             $r = 4;
 
             // When
-            $⟮rA⟯ᵀ = $A->scalarMultiply($r)->transpose();
-            $rAᵀ = $A->transpose()->scalarMultiply($r);
+            $⟮rA⟯ᵀ = $A->scalarMultiply(λ: $r)->transpose();
+            $rAᵀ = $A->transpose()->scalarMultiply(λ: $r);
 
             // Then
             $this->assertEquals($⟮rA⟯ᵀ->getMatrix(), $rAᵀ->getMatrix());
@@ -1231,16 +1196,16 @@
             array $B
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When (AB)ᵀ
-            $⟮AB⟯ᵀ = $A->multiply($B)->transpose();
+            $⟮AB⟯ᵀ = $A->multiply(B: $B)->transpose();
 
             // And BᵀAᵀ
             $Bᵀ = $B->transpose();
             $Aᵀ = $A->transpose();
-            $BᵀAᵀ = $Bᵀ->multiply($Aᵀ);
+            $BᵀAᵀ = $Bᵀ->multiply(B: $Aᵀ);
 
             // Then
             $this->assertEquals($⟮AB⟯ᵀ->getMatrix(), $BᵀAᵀ->getMatrix());
@@ -1262,16 +1227,16 @@
             array $B
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When (A + B)ᵀ
-            $⟮A＋B⟯ᵀ = $A->add($B)->transpose();
+            $⟮A＋B⟯ᵀ = $A->add(B: $B)->transpose();
 
             // And Aᵀ + Bᵀ
             $Aᵀ = $A->transpose();
             $Bᵀ = $B->transpose();
-            $Aᵀ＋Bᵀ = $Aᵀ->add($Bᵀ);
+            $Aᵀ＋Bᵀ = $Aᵀ->add(B: $Bᵀ);
 
             // Then
             $this->assertEquals($⟮A＋B⟯ᵀ->getMatrix(), $Aᵀ＋Bᵀ->getMatrix());
@@ -1290,7 +1255,7 @@
         public function testTraceIsSameAsTraceOfTranspose(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $Aᵀ = $A->transpose();
@@ -1317,12 +1282,12 @@
             array $B
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When
-            $tr⟮AB⟯ = $A->multiply($B)->trace();
-            $tr⟮BA⟯ = $B->multiply($A)->trace();
+            $tr⟮AB⟯ = $A->multiply(B: $B)->trace();
+            $tr⟮BA⟯ = $B->multiply(B: $A)->trace();
 
             // Then
             $this->assertEquals($tr⟮AB⟯, $tr⟮BA⟯);
@@ -1341,7 +1306,7 @@
         public function testDeterminantSameAsDeterminantOfTranspose(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $det⟮A⟯ = $A->det();
@@ -1367,11 +1332,11 @@
             array $B
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When det(AB)
-            $det⟮AB⟯ = $A->multiply($B)->det();
+            $det⟮AB⟯ = $A->multiply(B: $B)->det();
 
             // And det(A)det(B)
             $det⟮A⟯ = $A->det();
@@ -1395,7 +1360,7 @@
         public function testLUDecompositionPAEqualsLU(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $LUP = $A->luDecomposition();
@@ -1404,8 +1369,8 @@
             $P = $LUP->P;
 
             // Then PA = LU;
-            $PA = $P->multiply($A);
-            $LU = $L->multiply($U);
+            $PA = $P->multiply(B: $A);
+            $LU = $L->multiply(B: $U);
             $this->assertEqualsWithDelta($PA->getMatrix(), $LU->getMatrix(),
                 0.00001);
         }
@@ -1422,7 +1387,7 @@
         public function testLUDecompositionAEqualsPInverseLU(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $LUP = $A->luDecomposition();
@@ -1431,7 +1396,7 @@
             $P = $LUP->P;
 
             // Then A = P⁻¹LU
-            $P⁻¹LU = $P->inverse()->multiply($L)->multiply($U);
+            $P⁻¹LU = $P->inverse()->multiply(B: $L)->multiply(B: $U);
             $this->assertEqualsWithDelta($A->getMatrix(), $P⁻¹LU->getMatrix(),
                 0.00001);
         }
@@ -1449,7 +1414,7 @@
         public function testLUDecompositionPPTransposeEqualsIdentity(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $LUP = $A->luDecomposition();
@@ -1457,10 +1422,10 @@
             $P = $LUP->P;
             $Pᵀ = $P->transpose();
 
-            $PPᵀ = $P->multiply($Pᵀ);
-            $PᵀP = $Pᵀ->multiply($P);
+            $PPᵀ = $P->multiply(B: $Pᵀ);
+            $PᵀP = $Pᵀ->multiply(B: $P);
 
-            $I = MatrixFactory::identity($A->getM());
+            $I = MatrixFactory::identity(n: $A->getM());
 
             // Then PPᵀ = I = PᵀP
             $this->assertEquals($PPᵀ->getMatrix(), $I->getMatrix());
@@ -1481,7 +1446,7 @@
         public function testInverseWithLUDecompositionInverse(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $LUP = $A->luDecomposition();
@@ -1489,12 +1454,12 @@
             $U = $LUP->U;
             $P = $LUP->P;
 
-            $⟮PA⟯⁻¹ = $P->multiply($A)->inverse();
-            $⟮LU⟯⁻¹ = $L->multiply($U)->inverse();
+            $⟮PA⟯⁻¹ = $P->multiply(B: $A)->inverse();
+            $⟮LU⟯⁻¹ = $L->multiply(B: $U)->inverse();
 
             $U⁻¹ = $U->inverse();
             $L⁻¹ = $L->inverse();
-            $U⁻¹L⁻¹ = $U⁻¹->multiply($L⁻¹);
+            $U⁻¹L⁻¹ = $U⁻¹->multiply(B: $L⁻¹);
 
             // Then (PA)⁻¹ = (LU)⁻¹ = U⁻¹L⁻¹
             $this->assertEqualsWithDelta($⟮PA⟯⁻¹->getMatrix(),
@@ -1520,7 +1485,7 @@
         public function testQRDecompositionAEqualsQR(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $qr = $A->qrDecomposition();
@@ -1529,7 +1494,7 @@
 
             // Then A = QR
             $this->assertEqualsWithDelta($A->getMatrix(),
-                $Q->multiply($R)->getMatrix(), 0.00001);
+                $Q->multiply(B: $R)->getMatrix(), 0.00001);
         }
 
         /**
@@ -1545,7 +1510,7 @@
         public function testQRDecompositionQOrthogonalRUpperTriangular(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $qr = $A->qrDecomposition();
@@ -1571,14 +1536,14 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $I = MatrixFactory::identity(min($A->getM(), $A->getN()));
+            $A = MatrixFactory::create(A: $A);
+            $I = MatrixFactory::identity(n: min($A->getM(), $A->getN()));
 
             // And
             $qr = $A->qrDecomposition();
 
             // When
-            $QᵀQ = $qr->Q->transpose()->multiply($qr->Q);
+            $QᵀQ = $qr->Q->transpose()->multiply(B: $qr->Q);
 
             // Then QᵀQ = I
             $this->assertEqualsWithDelta($I->getMatrix(), $QᵀQ->getMatrix(),
@@ -1600,13 +1565,13 @@
         public function testQrDecompositionPropertyREqualsQTransposeA(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // And
             $qrDecomposition = $A->qrDecomposition();
 
             // When
-            $QᵀA = $qrDecomposition->Q->transpose()->multiply($A);
+            $QᵀA = $qrDecomposition->Q->transpose()->multiply(B: $A);
 
             // Then R = QᵀA
             $this->assertEqualsWithDelta($qrDecomposition->R->getMatrix(),
@@ -1627,7 +1592,7 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // And
             $Q = $A->qrDecomposition()->Q;
@@ -1654,7 +1619,7 @@
         public function testCroutDecompositionAEqualsLDU(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $crout = $A->croutDecomposition();
@@ -1663,7 +1628,7 @@
 
             // Then A = LU
             $this->assertEqualsWithDelta($A->getMatrix(),
-                $L->multiply($U)->getMatrix(), 0.00001);
+                $L->multiply(B: $U)->getMatrix(), 0.00001);
         }
 
         /**
@@ -1678,7 +1643,7 @@
         public function testCholeskyDecompositionAEqualsLLᵀ(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $cholesky = $A->choleskyDecomposition();
@@ -1687,7 +1652,7 @@
 
             // Then A = LLᵀ
             $this->assertEqualsWithDelta($A->getMatrix(),
-                $L->multiply($Lᵀ)->getMatrix(), 0.00001);
+                $L->multiply(B: $Lᵀ)->getMatrix(), 0.00001);
         }
 
         /**
@@ -1703,7 +1668,7 @@
         public function testPInverseEqualsPTranspose(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $LUP = $A->luDecomposition();
@@ -1730,15 +1695,16 @@
         public function testSolveEquationForZero(array $A, array $b, array $x)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $x = new Vector($x);
-            $b = (new Vector($b))->asColumnMatrix();
+            $A = MatrixFactory::create(A: $A);
+            $x = new Vector(A: $x);
+            $b = (new Vector(A: $b))->asColumnMatrix();
 
             // And zeros
-            $z = (new Vector(array_fill(0, count($x), 0)))->asColumnMatrix();
+            $z = (new Vector(A: array_fill(start_index: 0,
+                count: count(value: $x), value: 0)))->asColumnMatrix();
 
             // When Ax - b
-            $R = $A->multiply($x)->subtract($b);
+            $R = $A->multiply(B: $x)->subtract(B: $b);
 
             // Then
             $this->assertEqualsWithDelta($z, $R, 0.01);
@@ -1759,13 +1725,13 @@
         public function testSolveInverseBEqualsX(array $A, array $b, array $x)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
             $A⁻¹ = $A->inverse();
-            $x = (new Vector($x))->asColumnMatrix();
-            $b = new Vector($b);
+            $x = (new Vector(A: $x))->asColumnMatrix();
+            $b = new Vector(A: $b);
 
             // When A⁻¹b
-            $A⁻¹b = $A⁻¹->multiply($b);
+            $A⁻¹b = $A⁻¹->multiply(B: $b);
 
             // Then
             $this->assertEqualsWithDelta($x, $A⁻¹b, 0.001);
@@ -1789,14 +1755,14 @@
             array $expected
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $expected = new Vector(A: $expected);
 
             // And
             $LU = $A->luDecomposition();
 
             // When Ly = Pb and Ux = y
-            $x = $LU->solve($b);
+            $x = $LU->solve(b: $b);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.001);
@@ -1820,14 +1786,14 @@
             array $expected
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $expected = new Vector(A: $expected);
 
             // And
             $QR = $A->qrDecomposition();
 
             // When x = R⁻¹Qᵀb
-            $x = $QR->solve($b);
+            $x = $QR->solve(b: $b);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.001);
@@ -1847,18 +1813,18 @@
         public function testSolveRref(array $A, array $b, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $b = new Vector($b);
-            $expected = new Vector($expected);
+            $A = MatrixFactory::create(A: $A);
+            $b = new Vector(A: $b);
+            $expected = new Vector(A: $expected);
 
             // And
             $QR = $A->qrDecomposition();
 
             // When RREF
-            $Ab = $A->augment($b->asColumnMatrix());
+            $Ab = $A->augment(B: $b->asColumnMatrix());
             $rref = $Ab->rref();
-            $x = new Vector(array_column($rref->getMatrix(),
-                $rref->getN() - 1));
+            $x = new Vector(A: array_column(array: $rref->getMatrix(),
+                column_key: $rref->getN() - 1));
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.001);
@@ -1875,7 +1841,7 @@
         public function testSymmetricMatrixIsSquare(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $isSquare = $A->isSquare();
@@ -1896,7 +1862,7 @@
         public function testSymmetricEqualsTranspose(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $Aᵀ = $A->transpose();
@@ -1917,15 +1883,15 @@
         public function testSymmetricInverseTransposeEqualsIdentity(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $A⁻¹ = $A->inverse();
             $Aᵀ = $A->transpose();
 
             // And
-            $A⁻¹Aᵀ = $A⁻¹->multiply($Aᵀ);
-            $I = MatrixFactory::identity($A->getM());
+            $A⁻¹Aᵀ = $A⁻¹->multiply(B: $Aᵀ);
+            $I = MatrixFactory::identity(n: $A->getM());
 
             // Then
             $this->assertEqualsWithDelta($I, $A⁻¹Aᵀ, 0.00001);
@@ -1945,11 +1911,11 @@
         public function testSymmetricMatricesSumIsSymmetric(array $M)
         {
             // Given
-            $A = MatrixFactory::create($M);
-            $B = MatrixFactory::create($M);
+            $A = MatrixFactory::create(A: $M);
+            $B = MatrixFactory::create(A: $M);
 
             // When
-            $A＋B = $A->add($B);
+            $A＋B = $A->add(B: $B);
 
             // Then
             $this->assertTrue($A->isSymmetric());
@@ -1969,11 +1935,11 @@
         public function testSymmetricMatricesDifferenceIsSymmetric(array $M)
         {
             // Given
-            $A = MatrixFactory::create($M);
-            $B = MatrixFactory::create($M);
+            $A = MatrixFactory::create(A: $M);
+            $B = MatrixFactory::create(A: $M);
 
             // When
-            $A−B = $A->subtract($B);
+            $A−B = $A->subtract(B: $B);
 
             // Then
             $this->assertTrue($A->isSymmetric());
@@ -1993,13 +1959,13 @@
         public function testSymmetricMatricesTimesScalarIsSymmetric(array $M)
         {
             // Given
-            $A = MatrixFactory::create($M);
+            $A = MatrixFactory::create(A: $M);
             $this->assertTrue($A->isSymmetric());
 
-            foreach (range(1, 10) as $k)
+            foreach (range(start: 1, end: 10) as $k)
             {
                 // When
-                $kA = $A->scalarMultiply($k);
+                $kA = $A->scalarMultiply(λ: $k);
 
                 // Then
                 $this->assertTrue($kA->isSymmetric());
@@ -2018,11 +1984,11 @@
         public function testSymmetricMatrixTimesTransposeIsSymmetric(array $M)
         {
             // Given
-            $A = MatrixFactory::create($M);
+            $A = MatrixFactory::create(A: $M);
 
             // When
             $Aᵀ = $A->transpose();
-            $AAᵀ = $A->multiply($Aᵀ);
+            $AAᵀ = $A->multiply(B: $Aᵀ);
 
             // Then
             $this->assertTrue($A->isSymmetric());
@@ -2041,11 +2007,11 @@
         public function testTransposeTimesSymmetricMatrixIsSymmetric(array $M)
         {
             // Given
-            $A = MatrixFactory::create($M);
+            $A = MatrixFactory::create(A: $M);
 
             // When
             $Aᵀ = $A->transpose();
-            $AᵀA = $Aᵀ->multiply($A);
+            $AᵀA = $Aᵀ->multiply(B: $A);
 
             // Then
             $this->assertTrue($A->isSymmetric());
@@ -2065,16 +2031,15 @@
             array $M
         ) {
             // Given
-            $A = MatrixFactory::create($M);
+            $A = MatrixFactory::create(A: $M);
 
             if ($A->isInvertible() && $A->isSymmetric())
             {
                 // When
                 $A⁻¹ = $A->inverse();
                 $A⁻¹ = $A⁻¹->map(
-                    function ($x) {
-                        return round($x, 5); // Floating point adjustment
-                    }
+                    // Floating point adjustment
+                    fn($x) => round($x, 5)
                 );
 
                 // Theb
@@ -2095,7 +2060,7 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isSkewSymmetric());
@@ -2114,10 +2079,10 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $B = $A->add($A);
+            $B = $A->add(B: $A);
 
             // Then
             $this->assertTrue($B->isSkewSymmetric());
@@ -2134,9 +2099,9 @@
         public function testScalarMultipleOfSkewSymmetricMatrixIsSkewSymmetric(
             array $A
         ) {
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
-            $B = $A->scalarMultiply(6);
+            $B = $A->scalarMultiply(λ: 6);
             $this->assertTrue($B->isSkewSymmetric());
         }
 
@@ -2152,13 +2117,11 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             foreach ($A->getDiagonalElements() as $diagonal_element)
-            {
                 $this->assertEquals(0, $diagonal_element);
-            }
 
             // And When
             $trace = $A->trace();
@@ -2179,11 +2142,11 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $I = MatrixFactory::identity($A->getN());
+            $A = MatrixFactory::create(A: $A);
+            $I = MatrixFactory::identity(n: $A->getN());
 
             // When
-            $I＋A = $I->add($A);
+            $I＋A = $I->add(B: $A);
 
             // Then
             $this->assertTrue($I＋A->isInvertible());
@@ -2206,13 +2169,13 @@
             array $C
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $C = MatrixFactory::create($C);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
+            $C = MatrixFactory::create(A: $C);
 
             // When
-            $A⊗⟮B＋C⟯ = $A->kroneckerProduct($B->add($C));
-            $A⊗B＋A⊗C = $A->kroneckerProduct($B)->add($A->kroneckerProduct($C));
+            $A⊗⟮B＋C⟯ = $A->kroneckerProduct(B: $B->add(B: $C));
+            $A⊗B＋A⊗C = $A->kroneckerProduct(B: $B)->add(B: $A->kroneckerProduct(B: $C));
 
             // Then
             $this->assertEquals($A⊗⟮B＋C⟯->getMatrix(), $A⊗B＋A⊗C->getMatrix());
@@ -2235,13 +2198,13 @@
             array $C
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $C = MatrixFactory::create($C);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
+            $C = MatrixFactory::create(A: $C);
 
             // When
-            $⟮A＋B⟯⊗C = $A->add($B)->kroneckerProduct($C);
-            $A⊗C＋B⊗C = $A->kroneckerProduct($C)->add($B->kroneckerProduct($C));
+            $⟮A＋B⟯⊗C = $A->add(B: $B)->kroneckerProduct(B: $C);
+            $A⊗C＋B⊗C = $A->kroneckerProduct(B: $C)->add(B: $B->kroneckerProduct(B: $C));
 
             // Then
             $this->assertEquals($⟮A＋B⟯⊗C->getMatrix(), $A⊗C＋B⊗C->getMatrix());
@@ -2264,13 +2227,13 @@
             array $C
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $C = MatrixFactory::create($C);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
+            $C = MatrixFactory::create(A: $C);
 
             // When
-            $⟮A⊗B⟯⊗C = $A->kroneckerProduct($B)->kroneckerProduct($C);
-            $A⊗⟮B⊗C⟯ = $A->kroneckerProduct($B->kroneckerProduct($C));
+            $⟮A⊗B⟯⊗C = $A->kroneckerProduct(B: $B)->kroneckerProduct(B: $C);
+            $A⊗⟮B⊗C⟯ = $A->kroneckerProduct(B: $B->kroneckerProduct(B: $C));
 
             // Then
             $this->assertEquals($⟮A⊗B⟯⊗C->getMatrix(), $A⊗⟮B⊗C⟯->getMatrix());
@@ -2295,20 +2258,20 @@
             array $D
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $C = MatrixFactory::create($C);
-            $D = MatrixFactory::create($D);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
+            $C = MatrixFactory::create(A: $C);
+            $D = MatrixFactory::create(A: $D);
 
             // When
-            $⟮A⊗B⟯ = $A->kroneckerProduct($B);
-            $⟮C⊗D⟯ = $C->kroneckerProduct($D);
-            $⟮A⊗B⟯⟮C⊗D⟯ = $⟮A⊗B⟯->multiply($⟮C⊗D⟯);
+            $⟮A⊗B⟯ = $A->kroneckerProduct(B: $B);
+            $⟮C⊗D⟯ = $C->kroneckerProduct(B: $D);
+            $⟮A⊗B⟯⟮C⊗D⟯ = $⟮A⊗B⟯->multiply(B: $⟮C⊗D⟯);
 
             // And
-            $AC = $A->multiply($C);
-            $BD = $B->multiply($D);
-            $AC⊗BD = $AC->kroneckerProduct($BD);
+            $AC = $A->multiply(B: $C);
+            $BD = $B->multiply(B: $D);
+            $AC⊗BD = $AC->kroneckerProduct(B: $BD);
 
             // Theb
             $this->assertEquals($⟮A⊗B⟯⟮C⊗D⟯->getMatrix(), $AC⊗BD->getMatrix());
@@ -2329,14 +2292,14 @@
             array $B
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
             $k = 5;
 
             // When
-            $⟮kA⟯⊗B = $A->scalarMultiply($k)->kroneckerProduct($B);
-            $A⊗⟮kB⟯ = $A->kroneckerProduct($B->scalarMultiply($k));
-            $k⟮A⊗B⟯ = $A->kroneckerProduct($B)->scalarMultiply($k);
+            $⟮kA⟯⊗B = $A->scalarMultiply(λ: $k)->kroneckerProduct(B: $B);
+            $A⊗⟮kB⟯ = $A->kroneckerProduct(B: $B->scalarMultiply(λ: $k));
+            $k⟮A⊗B⟯ = $A->kroneckerProduct(B: $B)->scalarMultiply(λ: $k);
 
             // Then
             $this->assertEquals($⟮kA⟯⊗B->getMatrix(), $A⊗⟮kB⟯->getMatrix());
@@ -2357,14 +2320,14 @@
         public function testKroneckerProductInverse(array $A, array $B)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When
             $A⁻¹ = $A->inverse();
             $B⁻¹ = $B->inverse();
-            $A⁻¹⊗B⁻¹ = $A⁻¹->kroneckerProduct($B⁻¹);
-            $⟮A⊗B⟯⁻¹ = $A->kroneckerProduct($B)->inverse();
+            $A⁻¹⊗B⁻¹ = $A⁻¹->kroneckerProduct(B: $B⁻¹);
+            $⟮A⊗B⟯⁻¹ = $A->kroneckerProduct(B: $B)->inverse();
 
             // Then
             $this->assertEqualsWithDelta($A⁻¹⊗B⁻¹->getMatrix(),
@@ -2384,14 +2347,14 @@
         public function testKroneckerProductTranspose(array $A, array $B)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When
             $Aᵀ = $A->transpose();
             $Bᵀ = $B->transpose();
-            $Aᵀ⊗Bᵀ = $Aᵀ->kroneckerProduct($Bᵀ);
-            $⟮A⊗B⟯ᵀ = $A->kroneckerProduct($B)->transpose();
+            $Aᵀ⊗Bᵀ = $Aᵀ->kroneckerProduct(B: $Bᵀ);
+            $⟮A⊗B⟯ᵀ = $A->kroneckerProduct(B: $B)->transpose();
 
             // Then
             $this->assertEquals($Aᵀ⊗Bᵀ->getMatrix(), $⟮A⊗B⟯ᵀ->getMatrix());
@@ -2410,13 +2373,13 @@
         public function testKroneckerProductDeterminant(array $A, array $B)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When
             $det⟮A⟯ᵐ = ($A->det()) ** $B->getM();
             $det⟮B⟯ⁿ = ($B->det()) ** $A->getN();
-            $det⟮A⊗B⟯ = $A->kroneckerProduct($B)->det();
+            $det⟮A⊗B⟯ = $A->kroneckerProduct(B: $B)->det();
 
             // Then
             $this->assertEqualsWithDelta($det⟮A⊗B⟯, $det⟮A⟯ᵐ * $det⟮B⟯ⁿ,
@@ -2436,16 +2399,16 @@
         public function testKroneckerSum(array $A, array $B)
         {
             // Given
-            $A = new NumericSquareMatrix($A);
-            $B = new NumericSquareMatrix($B);
-            $A⊕B = $A->kroneckerSum($B);
+            $A = new NumericSquareMatrix(A: $A);
+            $B = new NumericSquareMatrix(A: $B);
+            $A⊕B = $A->kroneckerSum(B: $B);
 
             // When
-            $In = MatrixFactory::identity($A->getN());
-            $Im = MatrixFactory::identity($B->getM());
-            $A⊗Im = $A->kroneckerProduct($Im);
-            $In⊗B = $In->kroneckerProduct($B);
-            $A⊗Im＋In⊗B = $A⊗Im->add($In⊗B);
+            $In = MatrixFactory::identity(n: $A->getN());
+            $Im = MatrixFactory::identity(n: $B->getM());
+            $A⊗Im = $A->kroneckerProduct(B: $Im);
+            $In⊗B = $In->kroneckerProduct(B: $B);
+            $A⊗Im＋In⊗B = $A⊗Im->add(B: $In⊗B);
 
             // Then
             $this->assertEquals($A⊕B, $A⊗Im＋In⊗B);
@@ -2463,7 +2426,7 @@
         public function testCovarianceMatrixIsSymmetric(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $S = $A->covarianceMatrix();
@@ -2485,10 +2448,10 @@
         public function testPositiveDefiniteNegativeisNegativeDefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $−A = $A->scalarMultiply(-1);
+            $−A = $A->scalarMultiply(λ: -1);
 
             // Then
             $this->assertTrue($A->isPositiveDefinite());
@@ -2508,10 +2471,10 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $−A = $A->scalarMultiply(-1);
+            $−A = $A->scalarMultiply(λ: -1);
 
             // Then
             $this->assertTrue($A->isPositiveSemidefinite());
@@ -2530,7 +2493,7 @@
         public function testPositiveDefiniteIsAlsoPositiveSemidefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isPositiveDefinite());
@@ -2549,7 +2512,7 @@
         public function testNegativeDefiniteIsAlsoNegativeSemidefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isNegativeDefinite());
@@ -2568,15 +2531,13 @@
         public function testPositiveDefiniteInverseIsPositiveDefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $A⁻¹ = $A->inverse();
 
             // Floating point adjustment
-            $A⁻¹ = $A⁻¹->map(function ($x) {
-                return round($x, 7);
-            });
+            $A⁻¹ = $A⁻¹->map(fn($x) => round($x, 7));
 
             // Then
             $this->assertTrue($A->isPositiveDefinite());
@@ -2595,15 +2556,13 @@
         public function testNegativeDefiniteInverseIsNegativeDefinite(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $A⁻¹ = $A->inverse();
 
             // Floating point adjustment
-            $A⁻¹ = $A⁻¹->map(function ($x) {
-                return round($x, 7);
-            });
+            $A⁻¹ = $A⁻¹->map(fn($x) => round($x, 7));
 
             // Then
             $this->assertTrue($A->isNegativeDefinite());
@@ -2623,13 +2582,13 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
             $this->assertTrue($A->isPositiveDefinite());
 
-            foreach (range(1, 10) as $r)
+            foreach (range(start: 1, end: 10) as $r)
             {
                 // When
-                $rA = $A->scalarMultiply($r);
+                $rA = $A->scalarMultiply(λ: $r);
 
                 // Then
                 $this->assertTrue($rA->isPositiveDefinite());
@@ -2648,11 +2607,11 @@
         public function testPositiveDefiniteAPlusAIsPositiveDefinite(array $M)
         {
             // Given
-            $A = MatrixFactory::create($M);
-            $B = MatrixFactory::create($M);
+            $A = MatrixFactory::create(A: $M);
+            $B = MatrixFactory::create(A: $M);
 
             // When
-            $A＋B = $A->add($B);
+            $A＋B = $A->add(B: $B);
 
             // Then
             $this->assertTrue($A->isPositiveDefinite());
@@ -2675,11 +2634,11 @@
             array $B
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When
-            $A＋B = $A->add($B);
+            $A＋B = $A->add(B: $B);
 
             // Then
             $this->assertTrue($A->isPositiveDefinite());
@@ -2699,11 +2658,11 @@
         public function testPositiveDefiniteAAAIsPositiveDefinite(array $M)
         {
             // Given
-            $A = MatrixFactory::create($M);
-            $B = MatrixFactory::create($M);
+            $A = MatrixFactory::create(A: $M);
+            $B = MatrixFactory::create(A: $M);
 
             // When
-            $ABA = $A->multiply($B)->multiply($A);
+            $ABA = $A->multiply(B: $B)->multiply(B: $A);
 
             // Then
             $this->assertTrue($A->isPositiveDefinite());
@@ -2726,11 +2685,11 @@
             array $B
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When
-            $ABA = $A->multiply($B)->multiply($A);
+            $ABA = $A->multiply(B: $B)->multiply(B: $A);
 
             // Then
             $this->assertTrue($A->isPositiveDefinite());
@@ -2753,11 +2712,11 @@
             array $B
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When
-            $BAB = $B->multiply($A)->multiply($B);
+            $BAB = $B->multiply(B: $A)->multiply(B: $B);
 
             // Then
             $this->assertTrue($A->isPositiveDefinite());
@@ -2771,10 +2730,10 @@
          */
         public function testZeroMatrixIsLowerTriangular()
         {
-            foreach (range(1, 20) as $m)
+            foreach (range(start: 1, end: 20) as $m)
             {
                 // Given
-                $L = MatrixFactory::zero($m, $m);
+                $L = MatrixFactory::zero(m: $m, n: $m);
 
                 // Then
                 $this->assertTrue($L->isLowerTriangular());
@@ -2787,10 +2746,10 @@
          */
         public function testZeroMatrixIsUpperTriangular()
         {
-            foreach (range(1, 20) as $m)
+            foreach (range(start: 1, end: 20) as $m)
             {
                 // Given
-                $L = MatrixFactory::zero($m, $m);
+                $L = MatrixFactory::zero(m: $m, n: $m);
 
                 // Then
                 $this->assertTrue($L->isUpperTriangular());
@@ -2803,10 +2762,10 @@
          */
         public function testZeroMatrixIsDiagonal()
         {
-            foreach (range(1, 20) as $m)
+            foreach (range(start: 1, end: 20) as $m)
             {
                 // Given
-                $L = MatrixFactory::zero($m, $m);
+                $L = MatrixFactory::zero(m: $m, n: $m);
 
                 // Then
                 $this->assertTrue($L->isDiagonal());
@@ -2826,7 +2785,7 @@
             array $L
         ) {
             // Given
-            $L = MatrixFactory::create($L);
+            $L = MatrixFactory::create(A: $L);
 
             // When
             $Lᵀ = $L->Transpose();
@@ -2849,7 +2808,7 @@
             array $U
         ) {
             // Given
-            $U = MatrixFactory::create($U);
+            $U = MatrixFactory::create(A: $U);
 
             // When
             $Uᵀ = $U->Transpose();
@@ -2872,10 +2831,10 @@
             array $L
         ) {
             // Given
-            $L = MatrixFactory::create($L);
+            $L = MatrixFactory::create(A: $L);
 
             // When
-            $LL = $L->multiply($L);
+            $LL = $L->multiply(B: $L);
 
             // Then
             $this->assertTrue($L->isLowerTriangular());
@@ -2895,10 +2854,10 @@
             array $U
         ) {
             // Given
-            $U = MatrixFactory::create($U);
+            $U = MatrixFactory::create(A: $U);
 
             // When
-            $UU = $U->multiply($U);
+            $UU = $U->multiply(B: $U);
 
             // Then
             $this->assertTrue($U->isUpperTriangular());
@@ -2918,10 +2877,10 @@
             array $L
         ) {
             // Given
-            $L = MatrixFactory::create($L);
+            $L = MatrixFactory::create(A: $L);
 
             // When
-            $L＋L = $L->add($L);
+            $L＋L = $L->add(B: $L);
 
             // Then
             $this->assertTrue($L->isLowerTriangular());
@@ -2941,10 +2900,10 @@
             array $U
         ) {
             // Given
-            $U = MatrixFactory::create($U);
+            $U = MatrixFactory::create(A: $U);
 
             // When
-            $U＋U = $U->add($U);
+            $U＋U = $U->add(B: $U);
 
             // Then
             $this->assertTrue($U->isUpperTriangular());
@@ -2964,7 +2923,7 @@
             array $L
         ) {
             // Given
-            $L = MatrixFactory::create($L);
+            $L = MatrixFactory::create(A: $L);
             $this->assertTrue($L->isLowerTriangular());
 
             if ($L->isInvertible())
@@ -2990,7 +2949,7 @@
             array $U
         ) {
             // Given
-            $U = MatrixFactory::create($U);
+            $U = MatrixFactory::create(A: $U);
             $this->assertTrue($U->isUpperTriangular());
 
             if ($U->isInvertible())
@@ -3016,13 +2975,13 @@
             array $L
         ) {
             // Given
-            $L = MatrixFactory::create($L);
+            $L = MatrixFactory::create(A: $L);
             $this->assertTrue($L->isLowerTriangular());
 
-            foreach (range(1, 10) as $k)
+            foreach (range(start: 1, end: 10) as $k)
             {
                 // When
-                $kL = $L->scalarMultiply($k);
+                $kL = $L->scalarMultiply(λ: $k);
 
                 // Then
                 $this->assertTrue($kL->isLowerTriangular());
@@ -3042,13 +3001,13 @@
             array $U
         ) {
             // Given
-            $U = MatrixFactory::create($U);
+            $U = MatrixFactory::create(A: $U);
             $this->assertTrue($U->isUpperTriangular());
 
-            foreach (range(1, 10) as $k)
+            foreach (range(start: 1, end: 10) as $k)
             {
                 // When
-                $kU = $U->scalarMultiply($k);
+                $kU = $U->scalarMultiply(λ: $k);
 
                 // Then
                 $this->assertTrue($kU->isUpperTriangular());
@@ -3068,27 +3027,19 @@
             array $L
         ) {
             // Given
-            $L = MatrixFactory::create($L);
+            $L = MatrixFactory::create(A: $L);
             $this->assertTrue($L->isLowerTriangular());
 
-            $array_filter = [];
-            foreach ($L->getDiagonalElements() as $key => $x)
-            {
-                if ($x == 0)
-                {
-                    $array_filter[$key] = $x;
-                }
-            }
+            $array_filter = array_filter($L->getDiagonalElements(),
+                function ($x) {
+                    return $x == 0;
+                });
             $zeros = $array_filter;
 
             // Then
-            if (count($zeros) == 0)
-            {
-                $this->assertTrue($L->isInvertible());
-            } else
-            {
+            if (count(value: $zeros) == 0)
+                $this->assertTrue($L->isInvertible()); else
                 $this->assertFalse($L->isInvertible());
-            }
         }
 
         /**
@@ -3104,27 +3055,19 @@
             array $U
         ) {
             // Given
-            $U = MatrixFactory::create($U);
+            $U = MatrixFactory::create(A: $U);
             $this->assertTrue($U->isUpperTriangular());
 
-            $array_filter = [];
-            foreach ($U->getDiagonalElements() as $key => $x)
-            {
-                if ($x == 0)
-                {
-                    $array_filter[$key] = $x;
-                }
-            }
+            $array_filter = array_filter($U->getDiagonalElements(),
+                function ($x) {
+                    return $x == 0;
+                });
             $zeros = $array_filter;
 
             // Then
-            if (count($zeros) == 0)
-            {
-                $this->assertTrue($U->isInvertible());
-            } else
-            {
+            if (count(value: $zeros) == 0)
+                $this->assertTrue($U->isInvertible()); else
                 $this->assertFalse($U->isInvertible());
-            }
         }
 
         /**
@@ -3139,7 +3082,7 @@
         public function testTransposeOfDiagonalMatrixIsDiagonal(array $D)
         {
             // Given
-            $D = MatrixFactory::create($D);
+            $D = MatrixFactory::create(A: $D);
 
             // When
             $Dᵀ = $D->Transpose();
@@ -3161,10 +3104,10 @@
         public function testProductOfTwoDiagonalMatricesIsDiagonal(array $D)
         {
             // Given
-            $D = MatrixFactory::create($D);
+            $D = MatrixFactory::create(A: $D);
 
             // When
-            $DD = $D->multiply($D);
+            $DD = $D->multiply(B: $D);
 
             // Then
             $this->assertTrue($D->isDiagonal());
@@ -3183,10 +3126,10 @@
         public function testSumOfTwoDiagonalMatricesIsDiagonal(array $D)
         {
             // Given
-            $D = MatrixFactory::create($D);
+            $D = MatrixFactory::create(A: $D);
 
             // When
-            $D＋D = $D->add($D);
+            $D＋D = $D->add(B: $D);
 
             // Then
             $this->assertTrue($D->isDiagonal());
@@ -3205,7 +3148,7 @@
         public function testInverseOfInvertibleDiagonalMatrixIsDiagonal(array $D
         ) {
             // Given
-            $D = MatrixFactory::create($D);
+            $D = MatrixFactory::create(A: $D);
             $this->assertTrue($D->isDiagonal());
 
             if ($D->isInvertible())
@@ -3229,13 +3172,13 @@
         public function testProductOfDiagonalMatrixByConstantIsDiagonal(array $D
         ) {
             // Given
-            $D = MatrixFactory::create($D);
+            $D = MatrixFactory::create(A: $D);
             $this->assertTrue($D->isDiagonal());
 
-            foreach (range(1, 10) as $k)
+            foreach (range(start: 1, end: 10) as $k)
             {
                 // When
-                $kD = $D->scalarMultiply($k);
+                $kD = $D->scalarMultiply(λ: $k);
                 // Then
                 $this->assertTrue($kD->isDiagonal());
             }
@@ -3254,27 +3197,19 @@
             array $D
         ) {
             // Given
-            $D = MatrixFactory::create($D);
+            $D = MatrixFactory::create(A: $D);
             $this->assertTrue($D->isDiagonal());
 
-            $array_filter = [];
-            foreach ($D->getDiagonalElements() as $key => $x)
-            {
-                if ($x == 0)
-                {
-                    $array_filter[$key] = $x;
-                }
-            }
+            $array_filter = array_filter($D->getDiagonalElements(),
+                function ($x) {
+                    return $x == 0;
+                });
             $zeros = $array_filter;
 
             // Then
-            if (count($zeros) == 0)
-            {
-                $this->assertTrue($D->isInvertible());
-            } else
-            {
+            if (count(value: $zeros) == 0)
+                $this->assertTrue($D->isInvertible()); else
                 $this->assertFalse($D->isInvertible());
-            }
         }
 
         /**
@@ -3288,7 +3223,7 @@
         public function testReducedRowEchelonFormIsUpperTriangular(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $rref = $A->rref();
@@ -3304,10 +3239,10 @@
          */
         public function testTransposeOfExchangeMatrix()
         {
-            foreach (range(1, 20) as $n)
+            foreach (range(start: 1, end: 20) as $n)
             {
                 // Given
-                $J = MatrixFactory::exchange($n);
+                $J = MatrixFactory::exchange(n: $n);
                 // When
                 $Jᵀ = $J->transpose();
                 // Then
@@ -3322,10 +3257,10 @@
          */
         public function testInverseOfExchangeMatrix()
         {
-            foreach (range(1, 20) as $n)
+            foreach (range(start: 1, end: 20) as $n)
             {
                 // Given
-                $J = MatrixFactory::exchange($n);
+                $J = MatrixFactory::exchange(n: $n);
                 // When
                 $J⁻¹ = $J->inverse();
                 // Then
@@ -3340,21 +3275,17 @@
          */
         public function testTraceOfExchangeMatrix()
         {
-            foreach (range(1, 20) as $n)
+            foreach (range(start: 1, end: 20) as $n)
             {
                 // Given
-                $J = MatrixFactory::exchange($n);
+                $J = MatrixFactory::exchange(n: $n);
                 // When
                 $tr⟮J⟯ = $J->trace();
 
                 // Then
-                if (Integer::isOdd($n))
-                {
-                    $this->assertEquals(1, $tr⟮J⟯);
-                } else
-                {
+                if (Integer::isOdd(x: $n))
+                    $this->assertEquals(1, $tr⟮J⟯); else
                     $this->assertEquals(0, $tr⟮J⟯);
-                }
             }
         }
 
@@ -3369,7 +3300,7 @@
         public function testSignatureMatrixIsInvolutory(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isSignature());
@@ -3382,10 +3313,10 @@
          */
         public function testHilbertMatrixIsSymmetric()
         {
-            foreach (range(1, 10) as $n)
+            foreach (range(start: 1, end: 10) as $n)
             {
                 // Given
-                $H = MatrixFactory::hilbert($n);
+                $H = MatrixFactory::hilbert(n: $n);
                 // Then
                 $this->assertTrue($H->isSymmetric());
             }
@@ -3397,10 +3328,10 @@
          */
         public function testHilbertMatrixIsPositiveDefinite()
         {
-            foreach (range(1, 10) as $n)
+            foreach (range(start: 1, end: 10) as $n)
             {
                 // Given
-                $H = MatrixFactory::hilbert($n);
+                $H = MatrixFactory::hilbert(n: $n);
                 // Then
                 $this->assertTrue($H->isPositiveDefinite());
             }
@@ -3417,13 +3348,13 @@
         public function testCholeskyDecompositionLTimesLTransposeIsA(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
             $cholesky = $A->choleskyDecomposition();
             $L = $cholesky->L;
             $Lᵀ = $cholesky->LT;
 
             // When
-            $LLᵀ = $L->multiply($Lᵀ);
+            $LLᵀ = $L->multiply(B: $Lᵀ);
 
             // Then
             $this->assertEqualsWithDelta($A->getMatrix(), $LLᵀ->getMatrix(),
@@ -3441,7 +3372,7 @@
         public function testCholeskyDecompositionLIsLowerTriangular(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $cholesky = $A->choleskyDecomposition();
@@ -3462,7 +3393,7 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $cholesky = $A->choleskyDecomposition();
@@ -3483,7 +3414,7 @@
         public function testAdjugateIsTransoseOfCofactorMatrix(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $adj⟮A⟯ = $A->adjugate();
@@ -3506,16 +3437,16 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $adj⟮A⟯ = $A->adjugate();
-            $Aadj⟮A⟯ = $A->multiply($adj⟮A⟯);
+            $Aadj⟮A⟯ = $A->multiply(B: $adj⟮A⟯);
 
             // And
-            $I = MatrixFactory::identity($A->getN());
+            $I = MatrixFactory::identity(n: $A->getN());
             $det⟮A⟯ = $A->det();
-            $det⟮A⟯I = $I->scalarMultiply($det⟮A⟯);
+            $det⟮A⟯I = $I->scalarMultiply(λ: $det⟮A⟯);
 
             // Then
             $this->assertEqualsWithDelta($Aadj⟮A⟯, $det⟮A⟯I, 0.00001);
@@ -3533,13 +3464,13 @@
         public function testAdjugateEqualsInverseOfATimesDeterminant(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $A⁻¹ = $A->inverse();
             $adj⟮A⟯ = $A->adjugate();
             $det⟮A⟯ = $A->det();
-            $det⟮A⟯A⁻¹ = $A⁻¹->scalarMultiply($det⟮A⟯);
+            $det⟮A⟯A⁻¹ = $A⁻¹->scalarMultiply(λ: $det⟮A⟯);
 
             // Then
             $this->assertEqualsWithDelta($adj⟮A⟯, $det⟮A⟯A⁻¹, 0.00001);
@@ -3557,13 +3488,13 @@
         public function testInverseEqualsOneOverDetTimesAdjugate(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $A⁻¹ = $A->inverse();
             $adj⟮A⟯ = $A->adjugate();
             $det⟮A⟯ = $A->det();
-            $⟮1／det⟮A⟯⟯adj⟮A⟯ = $adj⟮A⟯->scalarMultiply(1 / $det⟮A⟯);
+            $⟮1／det⟮A⟯⟯adj⟮A⟯ = $adj⟮A⟯->scalarMultiply(λ: 1 / $det⟮A⟯);
 
             // Then
             $this->assertEqualsWithDelta($A⁻¹, $⟮1／det⟮A⟯⟯adj⟮A⟯, 0.00001);
@@ -3581,7 +3512,7 @@
         public function testAdjugateOfIdenetityMatrixIsIdentity(array $I)
         {
             // Given
-            $I = MatrixFactory::create($I);
+            $I = MatrixFactory::create(A: $I);
 
             // When
             $adj⟮I⟯ = $I->adjugate();
@@ -3605,15 +3536,15 @@
             array $B
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
 
             // When
-            $AB = $A->multiply($B);
+            $AB = $A->multiply(B: $B);
             $adj⟮A⟯ = $A->adjugate();
             $adj⟮B⟯ = $B->adjugate();
             $adj⟮AB⟯ = $AB->adjugate();
-            $adj⟮B⟯adj⟮A⟯ = $adj⟮B⟯->multiply($adj⟮A⟯);
+            $adj⟮B⟯adj⟮A⟯ = $adj⟮B⟯->multiply(B: $adj⟮A⟯);
 
             // Then
             $this->assertEqualsWithDelta($adj⟮AB⟯, $adj⟮B⟯adj⟮A⟯, 0.00001);
@@ -3633,14 +3564,14 @@
         ) {
             // Given
             $c = 4;
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
-            $cA = $A->scalarMultiply($c);
+            $cA = $A->scalarMultiply(λ: $c);
             $adj⟮A⟯ = $A->adjugate();
             $adj⟮cA⟯ = $cA->adjugate();
             $cⁿ⁻¹ = $c ** ($A->getN() - 1);
-            $cⁿ⁻¹adj⟮A⟯ = $adj⟮A⟯->scalarMultiply($cⁿ⁻¹);
+            $cⁿ⁻¹adj⟮A⟯ = $adj⟮A⟯->scalarMultiply(λ: $cⁿ⁻¹);
 
             // Then
             $this->assertEqualsWithDelta($adj⟮cA⟯, $cⁿ⁻¹adj⟮A⟯, 0.00001);
@@ -3662,11 +3593,11 @@
             array $B
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            $A = MatrixFactory::create(A: $A);
+            $B = MatrixFactory::create(A: $B);
             $A⁻¹ = $A->inverse();
             $B⁻¹ = $B->inverse();
-            $AB = $A->multiply($B);
+            $AB = $A->multiply(B: $B);
             $⟮AB⟯⁻¹ = $AB->inverse();
             $adj⟮A⟯ = $A->adjugate();
             $adj⟮B⟯ = $B->adjugate();
@@ -3675,13 +3606,13 @@
             $det⟮AB⟯ = $AB->det();
 
             // When
-            $det⟮A⟯A⁻¹ = $A⁻¹->scalarMultiply($det⟮A⟯);
-            $det⟮B⟯B⁻¹ = $B⁻¹->scalarMultiply($det⟮B⟯);
+            $det⟮A⟯A⁻¹ = $A⁻¹->scalarMultiply(λ: $det⟮A⟯);
+            $det⟮B⟯B⁻¹ = $B⁻¹->scalarMultiply(λ: $det⟮B⟯);
 
             // And
-            $adj⟮B⟯adj⟮A⟯ = $adj⟮B⟯->multiply($adj⟮A⟯);
-            $det⟮B⟯B⁻¹det⟮A⟯A⁻¹ = $det⟮B⟯B⁻¹->multiply($det⟮A⟯A⁻¹);
-            $det⟮AB⟯⟮AB⟯⁻¹ = $⟮AB⟯⁻¹->scalarMultiply($det⟮AB⟯);
+            $adj⟮B⟯adj⟮A⟯ = $adj⟮B⟯->multiply(B: $adj⟮A⟯);
+            $det⟮B⟯B⁻¹det⟮A⟯A⁻¹ = $det⟮B⟯B⁻¹->multiply(B: $det⟮A⟯A⁻¹);
+            $det⟮AB⟯⟮AB⟯⁻¹ = $⟮AB⟯⁻¹->scalarMultiply(λ: $det⟮AB⟯);
 
             // Then
             $this->assertEqualsWithDelta($adj⟮B⟯adj⟮A⟯, $det⟮B⟯B⁻¹det⟮A⟯A⁻¹,
@@ -3704,7 +3635,7 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $Aᵀ = $A->transpose();
@@ -3729,15 +3660,15 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $adj⟮A⟯ = $A->adjugate();
-            $Aadj⟮A⟯ = $A->multiply($adj⟮A⟯);
-            $adj⟮A⟯A = $adj⟮A⟯->multiply($A);
+            $Aadj⟮A⟯ = $A->multiply(B: $adj⟮A⟯);
+            $adj⟮A⟯A = $adj⟮A⟯->multiply(B: $A);
             $det⟮A⟯ = $A->det();
-            $I = MatrixFactory::identity($A->getN());
-            $det⟮A⟯I = $I->scalarMultiply($det⟮A⟯);
+            $I = MatrixFactory::identity(n: $A->getN());
+            $det⟮A⟯I = $I->scalarMultiply(λ: $det⟮A⟯);
 
             // Then
             $this->assertEqualsWithDelta($Aadj⟮A⟯, $adj⟮A⟯A, 0.0001);
@@ -3757,7 +3688,7 @@
         public function testRankLessThanMinDimension(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertLessThanOrEqual(min($A->getM(), $A->getN()),
@@ -3770,8 +3701,7 @@
          */
         public function testZeroMatrixHasRankOfZero()
         {
-            foreach (range(1, 10) as $m)
-            {
+            foreach (range(start: 1, end: 10) as $m)
                 foreach (range(1, 10) as $n)
                 {
                     // Given
@@ -3779,7 +3709,6 @@
                     // Then
                     $this->assertEquals(0, $A->rank());
                 }
-            }
         }
 
         /**
@@ -3793,19 +3722,15 @@
         public function testSquareMatrixInvertibleIfFullRank(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $rank = $A->rank();
 
             // Then
             if ($rank === $A->getM())
-            {
-                $this->assertTrue($A->isInvertible());
-            } else
-            {
+                $this->assertTrue($A->isInvertible()); else
                 $this->assertFalse($A->isInvertible());
-            }
         }
 
         /**
@@ -3819,10 +3744,10 @@
         public function testRankTransposeEqualities(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
             $Aᵀ = $A->transpose();
-            $AᵀA = $Aᵀ->multiply($A);
-            $AAᵀ = $A->multiply($Aᵀ);
+            $AᵀA = $Aᵀ->multiply(B: $A);
+            $AAᵀ = $A->multiply(B: $Aᵀ);
 
             // When
             $rank⟮A⟯ = $A->rank();
@@ -3850,7 +3775,7 @@
         public function testLowerBidiagonalMatrixIsUpperHessenberg(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isLowerBidiagonal());
@@ -3868,7 +3793,7 @@
         public function testUpperBidiagonalMatrixIsLowerHessenberg(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isUpperBidiagonal());
@@ -3886,7 +3811,7 @@
         public function testTridiagonalMatrixIsUpperAndLowerHessenberg(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->assertTrue($A->isTridiagonal());
@@ -3906,12 +3831,12 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
             $Aᵀ = $A->transpose();
-            $I = MatrixFactory::identity($A->getM());
+            $I = MatrixFactory::identity(n: $A->getM());
 
             // When
-            $AAᵀ = $A->multiply($Aᵀ);
+            $AAᵀ = $A->multiply(B: $Aᵀ);
 
             // Then
             $this->assertEqualsWithDelta($I->getMatrix(), $AAᵀ->getMatrix(),
@@ -3930,12 +3855,12 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
             $Aᵀ = $A->transpose();
-            $I = MatrixFactory::identity($A->getM());
+            $I = MatrixFactory::identity(n: $A->getM());
 
             // When
-            $AᵀA = $Aᵀ->multiply($A);
+            $AᵀA = $Aᵀ->multiply(B: $A);
 
             // Then
             $this->assertEqualsWithDelta($I->getMatrix(), $AᵀA->getMatrix(),
@@ -3954,7 +3879,7 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $Aᵀ = $A->transpose();
@@ -3976,13 +3901,13 @@
         public function testOrthogonalMatrixDeterminateIsOne(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $det⟮A⟯ = $A->det();
 
             // Then
-            $this->assertEqualsWithDelta(1, abs($det⟮A⟯), 0.000001);
+            $this->assertEqualsWithDelta(1, abs(num: $det⟮A⟯), 0.000001);
         }
 
         /**
@@ -3997,7 +3922,7 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $H = $A->householder();
@@ -4017,7 +3942,7 @@
         public function testHouseholderTransformMatrixDeterminant(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $H = $A->householder();
@@ -4037,23 +3962,18 @@
         public function testHouseholderTransformMatrixEigenvalues(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $H = $A->householder();
 
             // Then
-            $array_filter = [];
-            foreach ($H->eigenvalues() as $key => $x)
-            {
-                if ( ! \is_nan($x))
-                {
-                    $array_filter[$key] = $x;
-                }
-            }
+            $array_filter = array_filter($H->eigenvalues(), function ($x) {
+                return ! is_nan($x);
+            });
             $eigenvalues = $array_filter;
-            $this->assertEqualsWithDelta(1, max($eigenvalues), 0.00001);
-            $this->assertEqualsWithDelta(-1, min($eigenvalues), 0.00001);
+            $this->assertEqualsWithDelta(1, max(value: $eigenvalues), 0.00001);
+            $this->assertEqualsWithDelta(-1, min(value: $eigenvalues), 0.00001);
         }
 
         /**
@@ -4067,12 +3987,12 @@
         public function testNilpotentTraceIsZero(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
-            foreach (range(1, 5) as $ignored)
+            foreach (range(start: 1, end: 5) as $ignored)
             {
                 // When
-                $A = $A->multiply($A);
+                $A = $A->multiply(B: $A);
                 $trace = $A->trace();
 
                 // Then
@@ -4091,7 +4011,7 @@
         public function testNilpotentDetIsZero(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $det = $A->det();
@@ -4111,7 +4031,7 @@
         public function testNilpotentCannotBeInvertible(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $isInvertible = $A->isInvertible();

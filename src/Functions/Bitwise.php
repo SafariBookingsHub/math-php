@@ -2,6 +2,8 @@
 
     namespace MathPHP\Functions;
 
+    use JetBrains\PhpStorm\ArrayShape;
+
     use function is_int;
 
     use const PHP_INT_MAX;
@@ -48,19 +50,17 @@
          *         'overflow' is true if the result is larger than the bits in an int
          *         'value' is the result of the addition ignoring any overflow.
          */
-        public static function add(int $a, int $b): array
+        #[ArrayShape(['overflow' => "bool", 'value' => "int"])] public static function add(int $a, int $b): array
         {
-            /** @var int|float due to potential overflow */
+            /** @var int|float $a due to potential overflow */
             $sum = $a + $b;
 
             if (is_int($sum))
+                $overflow = ((($a < 0) || ($b < 0)) && ($sum >= 0))
+                    || (($a < 0)
+                        && ($b < 0)); elseif ($a > 0 && $b > 0)
             {
-                $overflow = (($a < 0 || $b < 0) && $sum >= 0)
-                    || ($a < 0
-                        && $b < 0);
-            } elseif (($a > 0) && ($b > 0))
-            {
-                $sum = ($a - PHP_INT_MAX + $b - 1) + PHP_INT_MIN;
+                $sum = ($a - PHP_INT_MAX + $b) - 1 + PHP_INT_MIN;
                 $overflow = FALSE;
             } else
             {
@@ -74,5 +74,9 @@
                 'overflow' => $overflow,
                 'value'    => $sum,
             ];
+        }
+
+        public function bitwiseAdd()
+        {
         }
     }

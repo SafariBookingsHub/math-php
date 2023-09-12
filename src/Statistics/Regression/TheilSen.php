@@ -20,10 +20,10 @@
         use Models\LinearModel;
 
         /** @var float */
-        protected $m;
+        protected float $m;
 
         /** @var float */
-        protected $b;
+        protected float $b;
 
         /**
          * Calculate the regression parameters using the Theil-Sen method
@@ -42,22 +42,18 @@
             $slopes = [];
             $n = count($this->points);
             for ($i = 0; $i < $n; $i++)
-            {
                 for ($j = $i + 1; $j < $n; $j++)
                 {
                     $pointi = $this->points[$i];
                     $pointj = $this->points[$j];
                     if ($pointj[0] != $pointi[0])
-                    {
                         $slopes[] = ($pointj[1] - $pointi[1]) / ($pointj[0]
                                 - $pointi[0]);
-                    }
                 }
-            }
 
             $this->m = Average::median($slopes);
-            $this->b = Average::median($this->ys) - ($this->m
-                    * Average::median($this->xs));
+            $this->b = Average::median($this->ys) - $this->m
+                    * Average::median($this->xs);
 
             $this->parameters = [$this->b, $this->m];
         }
@@ -73,5 +69,33 @@
         public function evaluate(float $x): float
         {
             return $this->evaluateModel($x, $this->parameters);
+        }
+
+        public function getSampleSize()
+        {
+        }
+
+        public function getParameters()
+        {
+        }
+
+        public function getEquation()
+        {
+        }
+
+        public function getYs()
+        {
+        }
+
+        public function getXs()
+        {
+        }
+
+        public function getPoints()
+        {
+        }
+
+        public function constructor()
+        {
         }
     }

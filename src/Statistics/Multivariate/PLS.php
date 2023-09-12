@@ -21,34 +21,34 @@
      */
     class PLS {
         /** @var Vector X Means */
-        private $Xcenter;
+        private Vector $Xcenter;
 
         /** @var Vector Y Means */
-        private $Ycenter;
+        private Vector $Ycenter;
 
         /** @var Vector X Scale */
-        private $Xscale;
+        private Vector $Xscale;
 
         /** @var Vector Y Scale */
-        private $Yscale;
+        private Vector $Yscale;
 
         /** @var NumericMatrix $B Regression Coefficients */
-        private $B;
+        private NumericMatrix $B;
 
         /** @var NumericMatrix $C Y Loadings */
-        private $C;
+        private mixed $C;
 
         /** @var NumericMatrix $P Projection of X to X scores */
-        private $P;
+        private mixed $P;
 
         /** @var NumericMatrix $T X Scores */
-        private $T;
+        private mixed $T;
 
         /** @var NumericMatrix $U Y Scores */
-        private $U;
+        private mixed $U;
 
         /** @var NumericMatrix $W X Weights */
-        private $W;
+        private mixed $W;
 
         /**
          * @param NumericMatrix $X     each row is a sample, each column is a variable
@@ -56,7 +56,9 @@
          * @param int           $ncomp number of components to use in the model
          * @param bool          $scale standardize each column?
          *
-         * @throws Exception\BadDataException if any rows have a different column count
+         * @throws \MathPHP\Exception\BadDataException if any rows have a different column count
+         * @throws \MathPHP\Exception\MatrixException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function __construct(
             NumericMatrix $X,
@@ -66,9 +68,7 @@
         ) {
             // Check that X and Y have the same amount of data.
             if ($X->getM() !== $Y->getM())
-            {
                 throw new Exception\BadDataException('X and Y must have the same number of rows.');
-            }
 
             // Standardize X and Y
             $this->Xcenter = $X->columnMeans();
@@ -87,8 +87,18 @@
                 $this->Yscale = new Vector($yFill);
             }
 
-            $E = $this->standardizeData($X, $this->Xcenter, $this->Xscale);
-            $F = $this->standardizeData($Y, $this->Ycenter, $this->Yscale);
+            try
+            {
+                $E = $this->standardizeData($X, $this->Xcenter, $this->Xscale);
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $F = $this->standardizeData($Y, $this->Ycenter, $this->Yscale);
+            } catch (Exception\MathException $e)
+            {
+            }
 
             $C = NULL;
             $P = NULL;
@@ -103,40 +113,136 @@
                 // Several sources suggest using a random initial u. This can lead to inconsistent
                 // results due to some columns then being multiplyed by -1 some of the time.
                 // $new_u = MatrixFactory::random($X->getM(), 1, -20000, 20000)->scalarDivide(20000);
-                $u = $F->asVectors()[0]->asColumnMatrix();
+                try
+                {
+                    $u = $F->asVectors()[0]->asColumnMatrix();
+                } catch (Exception\MathException $e)
+                {
+                }
                 $end = FALSE;
                 while ( ! $end)
                 {
                     ++$iterations;
 
-                    /** @var NumericMatrix $w is a unit vector */
-                    $w = $E->transpose()->multiply($u);
-                    $w = $w->scalarDivide($w->frobeniusNorm());
-
-                    $t = $E->multiply($w);
-                    $c = $F->transpose()->multiply($t)
-                        ->scalarDivide($t->frobeniusNorm() ** 2);
-                    $new_u = $F->multiply($c);
-                    $diff = $new_u->subtract($u)->frobeniusNorm();
-
-                    if (($diff < $tol) || ($iterations > 50))
+                    try
                     {
-                        $end = TRUE;
+                        $w = $E->transpose()->multiply($u);
+                    } catch (Exception\IncorrectTypeException $e)
+                    {
+                    } catch (Exception\MatrixException $e)
+                    {
+                    } catch (Exception\MathException $e)
+                    {
                     }
+                    try
+                    {
+                        $w = $w->scalarDivide($w->frobeniusNorm());
+                    } catch (Exception\BadParameterException $e)
+                    {
+                    } catch (Exception\IncorrectTypeException $e)
+                    {
+                    }
+
+                    try
+                    {
+                        $t = $E->multiply($w);
+                    } catch (Exception\IncorrectTypeException $e)
+                    {
+                    } catch (Exception\MatrixException $e)
+                    {
+                    } catch (Exception\MathException $e)
+                    {
+                    }
+                    try
+                    {
+                        $c = $F->transpose()->multiply($t)
+                            ->scalarDivide($t->frobeniusNorm() ** 2);
+                    } catch (Exception\BadParameterException $e)
+                    {
+                    } catch (Exception\IncorrectTypeException $e)
+                    {
+                    } catch (Exception\MatrixException $e)
+                    {
+                    } catch (Exception\MathException $e)
+                    {
+                    }
+                    try
+                    {
+                        $new_u = $F->multiply($c);
+                    } catch (Exception\IncorrectTypeException $e)
+                    {
+                    } catch (Exception\MatrixException $e)
+                    {
+                    } catch (Exception\MathException $e)
+                    {
+                    }
+                    try
+                    {
+                        $diff = $new_u->subtract($u)->frobeniusNorm();
+                    } catch (Exception\IncorrectTypeException $e)
+                    {
+                    } catch (Exception\MatrixException $e)
+                    {
+                    }
+
+                    if ($diff < $tol || $iterations > 50)
+                        $end = TRUE;
                     $u = $new_u;
                 }
 
                 // Least squares regression on a slope-only model: 𝜷ᵢ = Σ(xᵢyᵢ) / Σ(xᵢ²)
                 // $q = $F->transpose()->multiply($u)->scalarDivide($u->frobeniusNorm() ** 2);
-                $p = $E->transpose()->multiply($t)
-                    ->scalarDivide($t->frobeniusNorm() ** 2);
-                $d = $u->transpose()->multiply($t)
-                    ->scalarDivide($t->frobeniusNorm() ** 2)->get(0, 0);
+                try
+                {
+                    $p = $E->transpose()->multiply($t)
+                        ->scalarDivide($t->frobeniusNorm() ** 2);
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
+                try
+                {
+                    $d = $u->transpose()->multiply($t)
+                        ->scalarDivide($t->frobeniusNorm() ** 2)->get(0, 0);
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
 
                 // Deflate the data matrices
-                $E = $E->subtract($t->multiply($p->transpose()));
-                $F = $F->subtract($t->multiply($c->transpose())
-                    ->scalarMultiply($d));
+                try
+                {
+                    $E = $E->subtract($t->multiply($p->transpose()));
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
+                try
+                {
+                    $F = $F->subtract($t->multiply($c->transpose())
+                        ->scalarMultiply($d));
+                } catch (Exception\BadParameterException $e)
+                {
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
 
                 // Add each of these columns to the overall matrices
                 $C = is_null($C) ? $c : $C->augment($c);
@@ -158,10 +264,33 @@
             $this->W = $W;
 
             // Calculate R (or W*) @phpstan-ignore-next-line
-            $R = $this->W->multiply($this->P->transpose()->multiply($this->W)
-                ->inverse());
+            try
+            {
+                $R = $this->W->multiply($this->P->transpose()
+                    ->multiply($this->W)
+                    ->inverse());
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
             // @phpstan-ignore-next-line
-            $this->B = $R->multiply($this->C->transpose());
+            try
+            {
+                $this->B = $R->multiply($this->C->transpose());
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**************************************************************************
@@ -181,17 +310,23 @@
          * @param NumericMatrix $M - A Matrix of which to calculate the standard deviations.
          *
          * @return Vector
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\MatrixException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         private static function columnStdevs(Matrix $M): Vector
         {
             $scaleArray = [];
             for ($i = 0; $i < $M->getN(); $i++)
-            {
                 $scaleArray[]
                     = Descriptive::standardDeviation($M->getColumn($i));
-            }
 
-            return new Vector($scaleArray);
+            try
+            {
+                return new Vector($scaleArray);
+            } catch (BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -306,28 +441,74 @@
          *
          * @return NumericMatrix
          *
-         * @throws BadDataException
+         * @throws \MathPHP\Exception\BadDataException
          */
         public function predict(Matrix $X): Matrix
         {
             if ($X->getN() !== $this->Xcenter->getN())
-            {
                 throw new Exception\BadDataException('Data does not have the correct number of columns.');
-            }
 
             // Create a matrix the same dimensions as $X, each element is the average of that column in the original data.
-            $ones_column = MatrixFactory::one($X->getM(), 1);
-            $Ycenter_matrix
-                = $ones_column->multiply(MatrixFactory::createNumeric([$this->Ycenter->getVector()]));
+            try
+            {
+                $ones_column = MatrixFactory::one($X->getM(), 1);
+            } catch (BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $Ycenter_matrix
+                    = $ones_column->multiply(MatrixFactory::createNumeric([$this->Ycenter->getVector()]));
+            } catch (BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Create a diagonal matrix of column standard deviations.
-            $Yscale_matrix
-                = MatrixFactory::diagonal($this->Yscale->getVector());
+            try
+            {
+                $Yscale_matrix
+                    = MatrixFactory::diagonal($this->Yscale->getVector());
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
-            $E = $this->standardizeData($X, $this->Xcenter, $this->Xscale);
-            $F = $E->multiply($this->B);
+            try
+            {
+                $E = $this->standardizeData($X, $this->Xcenter, $this->Xscale);
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $F = $E->multiply($this->B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Y = F ∗ σ + μ
-            return $F->multiply($Yscale_matrix)->add($Ycenter_matrix);
+            try
+            {
+                return $F->multiply($Yscale_matrix)->add($Ycenter_matrix);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
     }

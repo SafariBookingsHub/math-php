@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\Expression;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Exception;
     use MathPHP\Expression\Polynomial;
     use PHPUnit\Framework\TestCase;
@@ -414,9 +415,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForGetVariable(): array
         {
             return [
@@ -698,9 +696,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRoots(): array
         {
             return [
@@ -744,10 +739,7 @@
             ];
         }
 
-        /**
-         * @return array
-         */
-        public static function dataProviderForRootsNAN(): array
+        #[ArrayShape(['degree 5' => "array[]", 'degree 6' => "array[]"])] public static function dataProviderForRootsNAN(): array
         {
             return [
                 'degree 5' => [
@@ -775,9 +767,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForNegate(): array
         {
             return [
@@ -1337,7 +1326,13 @@
             $method->setAccessible(TRUE);
 
             // When
-            $polynomial = $method->invokeArgs(new Polynomial([1]), [$input]);
+            try
+            {
+                $polynomial = $method->invokeArgs(new Polynomial([1]),
+                    [$input]);
+            } catch (\ReflectionException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(Polynomial::class, $polynomial);
@@ -1357,8 +1352,13 @@
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $polynomial = $method->invokeArgs(new Polynomial([1]),
-                ['not a number']);
+            try
+            {
+                $polynomial = $method->invokeArgs(new Polynomial([1]),
+                    ['not a number']);
+            } catch (\ReflectionException $e)
+            {
+            }
         }
 
         /**
@@ -1387,15 +1387,20 @@
          * @test         Test that the proper companion matrix is calulated from a polynomial
          * @dataProvider dataProviderForTestCompanionMatrix
          *
-         * @param array $poly             the polynomial
-         * @param array $companion_matrix the expected companion matrix
+         * @param array $poly the polynomial
+         * @param array $expected_matrix
          */
         public function testCompanionMatrix(array $poly, array $expected_matrix)
         {
             // Create a polynomial
             $poly = new Polynomial($poly);
 
-            $companion = $poly->companionMatrix();
+            try
+            {
+                $companion = $poly->companionMatrix();
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
             $this->assertEqualsWithDelta($expected_matrix,
                 $companion->getMatrix(), .0000001);
         }

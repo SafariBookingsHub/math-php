@@ -116,9 +116,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMedian(): array
         {
             return [
@@ -131,9 +128,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMode(): array
         {
             return [
@@ -146,9 +140,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForVariance(): array
         {
             return [
@@ -167,7 +158,7 @@
          *
          * @param float $x
          * @param int   $k
-         * @param float $pdf
+         * @param float $expectedPdf
          */
         public function testPdf(float $x, int $k, float $expectedPdf)
         {

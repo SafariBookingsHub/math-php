@@ -64,9 +64,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMean(): array
         {
             return [
@@ -79,9 +76,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForVariance(): array
         {
             return [

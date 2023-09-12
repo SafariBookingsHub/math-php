@@ -2,6 +2,10 @@
 
     namespace MathPHP\Tests\Statistics\Multivariate\PCA;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\IncorrectTypeException;
+    use MathPHP\Exception\MathException;
+    use MathPHP\Exception\MatrixException;
     use MathPHP\Functions\Map\Multi;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\Statistics\Multivariate\PCA;
@@ -45,23 +49,37 @@
         public function testBugCenterFalseScaleFalseLoadings()
         {
             // Given
-            $data = MatrixFactory::createNumeric([
-                [0.066073, 96.000000],
-                [5.407780, 1115.857143],
-                [19.440563, 3999.142857],
-                [35.582583, 7315.857143],
-                [71.602260, 14725.428571],
-                [165.725077, 34186.000000],
-                [235.426483, 48657.857143],
-                [256.868816, 53160.316186],
-            ]);
+            try
+            {
+                $data = MatrixFactory::createNumeric([
+                    [0.066073, 96.000000],
+                    [5.407780, 1115.857143],
+                    [19.440563, 3999.142857],
+                    [35.582583, 7315.857143],
+                    [71.602260, 14725.428571],
+                    [165.725077, 34186.000000],
+                    [235.426483, 48657.857143],
+                    [256.868816, 53160.316186],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // And
             $center = TRUE;
             $scale = FALSE;
 
             // When
-            $model = new PCA($data, TRUE, FALSE);
+            try
+            {
+                $model = new PCA($data, TRUE, FALSE);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // Then
             $expected = [
@@ -72,19 +90,37 @@
 
             // And since each column could be multiplied by -1, we will compare the two and adjust.
             // Get an array that's roughly ones and negative ones.
-            $quotient = Multi::divide($expected[1], $loadings->getMatrix()[1]);
+            try
+            {
+                $quotient = Multi::divide($expected[1],
+                    $loadings->getMatrix()[1]);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Convert to exactly one or negative one. Cannot be zero.
-            $array_map = [];
-            foreach ($quotient as $key => $x)
-            {
-                $array_map[$key] = $x <=> 0;
-            }
+            $array_map = array_map(function ($x) {
+                return $x <=> 0;
+            }, $quotient);
             $signum = $array_map;
-            $sign_change = MatrixFactory::diagonal($signum);
+            try
+            {
+                $sign_change = MatrixFactory::diagonal($signum);
+            } catch (MatrixException $e)
+            {
+            }
 
             // Multiplying a sign change matrix on the right changes column signs.
-            $sign_adjusted = $loadings->multiply($sign_change);
+            try
+            {
+                $sign_adjusted = $loadings->multiply($sign_change);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $sign_adjusted->getMatrix(),

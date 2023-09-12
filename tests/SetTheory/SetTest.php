@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\SetTheory;
 
+    use MathPHP\Exception\BadDataException;
     use MathPHP\LinearAlgebra\Vector;
     use MathPHP\SetTheory\Set;
     use PHPUnit\Framework\TestCase;
@@ -141,16 +142,16 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForSingleSet(): array
         {
             $fh = fopen(__FILE__, 'r');
-            $vector = new Vector([1, 2, 3]);
-            $func = function ($x) {
-                return $x * 2;
-            };
+            try
+            {
+                $vector = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            $func = fn($x) => $x * 2;
 
             return [
                 [[]],
@@ -192,16 +193,16 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForSingleSetAtLeastOneMember(): array
         {
             $fh = fopen(__FILE__, 'r');
-            $vector = new Vector([1, 2, 3]);
-            $func = function ($x) {
-                return $x * 2;
-            };
+            try
+            {
+                $vector = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            $func = fn($x) => $x * 2;
 
             return [
                 [[0]],
@@ -244,7 +245,12 @@
 
         public static function dataProviderForToString(): array
         {
-            $vector = new Vector([1, 2, 3]);
+            try
+            {
+                $vector = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
             $vector_hash = spl_object_hash($vector);
 
             return [
@@ -553,12 +559,12 @@
                 // Then
                 if ($i === 1)
                 {
-                    $this->assertEquals(('Set{1, 2}'), $key);
+                    $this->assertEquals('Set{1, 2}', $key);
                     $this->assertEquals(new Set([1, 2]), $value);
                 }
                 if ($i === 2)
                 {
-                    $this->assertEquals(('Set{3, 4}'), $key);
+                    $this->assertEquals('Set{3, 4}', $key);
                     $this->assertEquals(new Set([3, 4]), $value);
                 }
                 $i++;

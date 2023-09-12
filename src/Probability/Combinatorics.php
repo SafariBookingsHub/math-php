@@ -68,24 +68,16 @@
         public static function doubleFactorial(int $n): float
         {
             if ($n < 0)
-            {
                 throw new Exception\OutOfBoundsException('Cannot compute double factorial of a negative number.');
-            }
 
             // Zero base case
             if ($n === 0)
-            {
                 return 1;
-            }
 
             // Even and odd initialization base cases: odd = 1, even = 2
             if ($n % 2 == 0)
-            {
-                $n‼︎ = 2;
-            } else
-            {
+                $n‼︎ = 2; else
                 $n‼︎ = 1;
-            }
 
             while ($n > 2)
             {
@@ -114,14 +106,12 @@
         public static function risingFactorial(float $x, int $n): float
         {
             if ($n < 0)
-            {
                 throw new Exception\OutOfBoundsException('Cannot compute rising factorial of a negative number.');
-            }
 
             $fact = 1;
             while ($n > 0)
             {
-                $fact *= ($x + $n) - 1;
+                $fact *= $x + $n - 1;
                 $n--;
             }
 
@@ -145,19 +135,15 @@
         public static function fallingFactorial(float $x, int $n): float
         {
             if ($n < 0)
-            {
                 throw new Exception\OutOfBoundsException('Cannot compute falling factorial of a negative number.');
-            }
 
             if ($n > $x)
-            {
                 return 0;
-            }
 
             $fact = 1;
             while ($n > 0)
             {
-                $fact *= ($x - $n) + 1;
+                $fact *= $x - $n + 1;
                 $n--;
             }
 
@@ -184,9 +170,7 @@
         public static function subfactorial(int $n): float
         {
             if ($n < 0)
-            {
                 throw new Exception\OutOfBoundsException('Cannot compute subfactorial of a negative number.');
-            }
 
             $n！ = self::factorial($n);
             $∑ = 0;
@@ -194,7 +178,7 @@
             for ($i = 0; $i <= $n; $i++)
             {
                 $i！ = self::factorial($i);
-                $∑ += ((-1) ** $i) / $i！;
+                $∑ += (-1) ** $i / $i！;
             }
 
             return $n！ * $∑;
@@ -214,9 +198,7 @@
         public static function factorial(int $n): float
         {
             if ($n < 0)
-            {
                 throw new Exception\OutOfBoundsException('Cannot compute factorial of a negative number.');
-            }
             $factorial = 1;
             while ($n > 1)
             {
@@ -243,36 +225,28 @@
          * P(n,k) = nPk =  --------
          *                 (n - k)!
          *
-         * @param int $n
-         * @param int $k (Optional) for nPk permutations
+         * @param int      $n
+         * @param int|null $k (Optional) for nPk permutations
          *
          * @return float number of permutations of n
          *
-         * @throws Exception\OutOfBoundsException if n is negative or k is larger than n
+         * @throws \MathPHP\Exception\OutOfBoundsException if n is negative or k is larger than n
          */
         public static function permutations(int $n, int $k = NULL): float
         {
             if ($n < 0)
-            {
                 throw new Exception\OutOfBoundsException('Cannot compute negative permutations.');
-            }
-            if ( ! is_null($k) && ($k > $n))
-            {
+            if ( ! is_null($k) && $k > $n)
                 throw new Exception\OutOfBoundsException('k cannot be larger than n.');
-            }
 
             // nPn: permutations of n things, taken n at a time
             if (is_null($k))
-            {
                 return self::factorial($n);
-            }
 
             // nPk: Permutations of n things taking only k of them
             $falling_factorial = 1;
-            for ($i = ($n - $k) + 1; $i <= $n; $i++)
-            {
+            for ($i = $n - $k + 1; $i <= $n; $i++)
                 $falling_factorial *= $i;
-            }
 
             return $falling_factorial;
         }
@@ -295,11 +269,9 @@
         public static function catalanNumber(int $n): float
         {
             if ($n < 0)
-            {
                 throw new Exception\OutOfBoundsException('Cannot compute negative catalan number.');
-            }
 
-            return (1 / ($n + 1)) * self::centralBinomialCoefficient($n);
+            return 1 / ($n + 1) * self::centralBinomialCoefficient($n);
         }
 
         /**
@@ -320,9 +292,7 @@
         public static function centralBinomialCoefficient(int $n): float
         {
             if ($n < 0)
-            {
                 throw new Exception\OutOfBoundsException('Cannot compute negative central binomial coefficient.');
-            }
 
             $⟮2n⟯！ = self::factorial(2 * $n);
             $⟮n！⟯² = (self::factorial($n)) ** 2;
@@ -352,14 +322,10 @@
          */
         public static function lahNumber(int $n, int $k): float
         {
-            if (($n < 1) || ($k < 1))
-            {
+            if ($n < 1 || $k < 1)
                 throw new Exception\OutOfBoundsException("n and k must be < 1 for Lah Numbers");
-            }
             if ($n < $k)
-            {
                 throw new Exception\OutOfBoundsException("n must be >= k for Lah Numbers");
-            }
 
             $nCk = self::combinations($n - 1, $k - 1);
             $n！ = self::factorial($n);
@@ -412,18 +378,14 @@
             bool $repetition = FALSE
         ): float {
             if ($n < 0)
-            {
                 throw new Exception\OutOfBoundsException('Cannot compute negative combinations.');
-            }
-            if ( ! $repetition && ($k > $n))
-            {
+            if ( ! $repetition && $k > $n)
                 throw new Exception\OutOfBoundsException('k cannot be larger than n.');
-            }
 
             if ($repetition)
             { // nC'k with repetition
                 $denominator = $n - 1;
-                $numerator = ($n + $k) - 1;
+                $numerator = $n + $k - 1;
             } else
             { // nCk without repetition
                 $denominator = $n - $k;
@@ -436,9 +398,7 @@
             $min = min($denominator, $k);
             $falling_factorial = 1;
             for ($i = $max + 1; $i <= $numerator; $i++)
-            {
                 $falling_factorial *= $i;
-            }
 
             return $falling_factorial / self::factorial($min);
         }
@@ -471,5 +431,86 @@
             ], $groups));
 
             return $n！ / $k₁！k₂！⋯km！;
+        }
+
+        public function lahNumberExceptionNLessThanK()
+        {
+        }
+
+        public function lahNumberExceptionNOrKLessThanOne()
+        {
+        }
+
+        public function multinomialTheorem()
+        {
+        }
+
+        public function catalanNumberExceptionNLessThanZero()
+        {
+        }
+
+        public function centralBinomialCoefficientExceptionNLessThanZero()
+        {
+        }
+
+        public function combinationsWithRepetitionWithLargeFloatingPointOverflowResult(
+        )
+        {
+        }
+
+        public function combinationsWithRepetitionBoundsException()
+        {
+        }
+
+        public function combinationsWithRepetition()
+        {
+        }
+
+        public function combinationsExceptionRLargerThanN()
+        {
+        }
+
+        public function combinationsExceptionNLessThanZero()
+        {
+        }
+
+        public function combinationsWithLargeFloatingPointOverflowResult()
+        {
+        }
+
+        public function permutationsChooseKKGreaterThanNException()
+        {
+        }
+
+        public function permutationsChooseKBoundsException()
+        {
+        }
+
+        public function permutationsChooseK()
+        {
+        }
+
+        public function permutationsBoundsException()
+        {
+        }
+
+        public function subactorialExceptionNLessThanZero()
+        {
+        }
+
+        public function fallingFactorialExceptionNLessThanZero()
+        {
+        }
+
+        public function risingFactorialExceptionNLessThanZero()
+        {
+        }
+
+        public function doubleFactorialExceptionNLessThanZero()
+        {
+        }
+
+        public function factorialBoundsException()
+        {
         }
     }

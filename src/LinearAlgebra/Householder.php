@@ -35,7 +35,7 @@
             $x = $A->submatrix(0, 0, $m - 1, 0);
 
             // α is the square root of the sum of squares of x with the correct sign
-            $sign = ($x[0][0] >= 0) ? 1 : -1;
+            $sign = $x[0][0] >= 0 ? 1 : -1;
             $α = $sign * $x->frobeniusNorm();
 
             // e is the first column of I
@@ -47,11 +47,21 @@
             $uᵀu = $uᵀ->multiply($u)->get(0, 0);
             $uuᵀ = $u->multiply($uᵀ);
             if ($uᵀu == 0)
-            {
                 return $I;
-            }
 
             // We scale $uuᵀ and subtract it from the identity matrix
             return $I->subtract($uuᵀ->scalarMultiply(2 / $uᵀu));
+        }
+
+        public function householderTransformMatrixEigenvalues()
+        {
+        }
+
+        public function householderTransformMatrixDeterminant()
+        {
+        }
+
+        public function householderTransformMatrixInvolutoryProperty()
+        {
         }
     }

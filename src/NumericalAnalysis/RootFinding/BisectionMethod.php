@@ -28,16 +28,16 @@
          * Use the Bisection Method to find the x which produces $function(x) = 0.
          *
          * @param callable  $function f(x) callback function
-         * @param int|float $a        The start of the interval which contains a root
-         * @param int|float $b        The end of the interval which contains a root
-         * @param int|float $tol      Tolerance; How close to the actual solution we would like.
+         * @param float|int $a        The start of the interval which contains a root
+         * @param float|int $b        The end of the interval which contains a root
+         * @param float|int $tol      Tolerance; How close to the actual solution we would like.
          *
          * @return int|float
          *
          * @throws Exception\OutOfBoundsException
          * @throws Exception\BadDataException
          */
-        public static function solve(callable $function, $a, $b, $tol)
+        public static function solve(callable $function, float|int $a, float|int $b, float|int $tol): float|int
         {
             // Validate input arguments
             self::validate($function, $a, $b, $tol);
@@ -50,14 +50,10 @@
                 $dif
                     = abs($f⟮p⟯);       // the magnitude of our function at the midpoint
                 if (Special::sgn($f⟮p⟯) !== Special::sgn($f⟮a⟯))
-                {
                     $b
-                        = $p;
-                } else
-                {
+                        = $p; else
                     $a
                         = $p;
-                }
             } while ($dif > $tol);
 
             return $p;
@@ -73,15 +69,15 @@
          * throw an Exception.
          *
          * @param Callable  $function f(x) callback function
-         * @param int|float $a        The start of the interval which contains a root
-         * @param int|float $b        The end of the interval which contains a root
-         * @param int|float $tol      Tolerance; How close to the actual solution we would like.
+         * @param float|int $a        The start of the interval which contains a root
+         * @param float|int $b        The end of the interval which contains a root
+         * @param float|int $tol      Tolerance; How close to the actual solution we would like.
          *
          * @throws Exception\OutOfBoundsException if $tol (the tolerance) is negative
          * @throws Exception\BadDataException if $a = $b
          * @throws Exception\BadDataException if f($a) and f($b) share the same sign
          */
-        private static function validate(callable $function, $a, $b, $tol): void
+        private static function validate(callable $function, float|int $a, float|int $b, float|int $tol): void
         {
             Validation::tolerance($tol);
             Validation::interval($a, $b);
@@ -89,10 +85,40 @@
             $f⟮a⟯ = $function($a);
             $f⟮b⟯ = $function($b);
             if (Special::sgn($f⟮a⟯) === Special::sgn($f⟮b⟯))
-            {
                 throw new Exception\BadDataException(
                     'Input function has the same sign at the start and end of the interval. Choose start and end points such that the function evaluated at those points has a different sign (one positive, one negative).'
                 );
-            }
+        }
+
+        public function bisectionMethodExceptionSameSigns()
+        {
+        }
+
+        public function bisectionMethodExceptionZeroInterval()
+        {
+        }
+
+        public function bisectionMethodExceptionNegativeTolerance()
+        {
+        }
+
+        public function solveEToNegativeXTimesSomeStuff()
+        {
+        }
+
+        public function solveXSquaredSubtractThree()
+        {
+        }
+
+        public function solveXCubedSubtractXSubtractTwo()
+        {
+        }
+
+        public function solvePolynomialWithFourRootsUsingPolynomial()
+        {
+        }
+
+        public function solvePolynomialWithFourRootsUsingClosure()
+        {
         }
     }

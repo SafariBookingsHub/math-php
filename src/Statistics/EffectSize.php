@@ -100,7 +100,7 @@
             float $SST,
             float $MSE
         ): float {
-            return ($SSt - ($dft * $MSE)) / ($SST + $MSE);
+            return ($SSt - $dft * $MSE) / ($SST + $MSE);
         }
 
         /**
@@ -155,15 +155,13 @@
          */
         public static function cohensQ(float $r₁, float $r₂): float
         {
-            if (($r₁ >= 1) || ($r₂ >= 1))
-            {
+            if ($r₁ >= 1 || $r₂ >= 1)
                 throw new Exception\OutOfBoundsException('r must be greater than or equal to 1');
-            }
 
             $½ = 0.5;
 
-            return abs(($½ * log((1 + $r₁) / (1 - $r₁))) - ($½ * log((1
-                            + $r₂) / (1 - $r₂))));
+            return abs($½ * log((1 + $r₁) / (1 - $r₁)) - $½ * log((1
+                            + $r₂) / (1 - $r₂)));
         }
 
         /**
@@ -268,16 +266,16 @@
             $s₂² = $s₂ * $s₂;
 
             // Pooled standard deviation
-            $⟮n₁ − 1⟯s₁² ＋ ⟮n₂ − 1⟯s₂² = (($n₁ - 1) * $s₁²) + (($n₂ - 1)
-                    * $s₂²);
-            $⟮n₁ ＋ n₂ − 2⟯ = ($n₁ + $n₂) - 2;
+            $⟮n₁ − 1⟯s₁² ＋ ⟮n₂ − 1⟯s₂² = ($n₁ - 1) * $s₁² + ($n₂ - 1)
+                    * $s₂²;
+            $⟮n₁ ＋ n₂ − 2⟯ = $n₁ + $n₂ - 2;
             $s＊ = sqrt($⟮n₁ − 1⟯s₁² ＋ ⟮n₂ − 1⟯s₂² / $⟮n₁ ＋ n₂ − 2⟯);
 
             // g
             $g = ($μ₁ - $μ₂) / $s＊;
 
             // Unbiased g
-            return (1 - (3 / ((4 * ($n₁ + $n₂)) - 9))) * $g;
+            return (1 - 3 / (4 * ($n₁ + $n₂) - 9)) * $g;
         }
 
         /**
@@ -308,5 +306,9 @@
             float $s₂
         ): float {
             return ($μ₁ - $μ₂) / $s₂;
+        }
+
+        public function cohensQExceptionROutOfBounds()
+        {
         }
     }

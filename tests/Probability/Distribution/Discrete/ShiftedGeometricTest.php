@@ -6,9 +6,6 @@
     use PHPUnit\Framework\TestCase;
 
     class ShiftedGeometricTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForPMF(): array
         {
             return [
@@ -24,9 +21,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCDF(): array
         {
             return [

@@ -37,10 +37,10 @@
             ];
 
         /** @var int|float Characterizing exponent */
-        protected $s;
+        protected int|float $s;
 
         /** @var int Number of elements */
-        protected $N;
+        protected int $N;
 
         /**
          * Constructor
@@ -60,7 +60,7 @@
          *
          * @return int|float
          */
-        public static function mode()
+        public static function mode(): float|int
         {
             return 1;
         }
@@ -76,21 +76,28 @@
          *
          * @return int|float
          *
-         * @throws Exception\OutOfBoundsException if k is > N
+         * @throws \MathPHP\Exception\OutOfBoundsException if k is > N
          */
-        public function pmf(int $k)
+        public function pmf(int $k): float|int
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-            if ($k > $this->N)
+            try
             {
-                throw new Exception\OutOfBoundsException('Support parameter k cannot be greater than N');
+                Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
             }
+            if ($k > $this->N)
+                throw new Exception\OutOfBoundsException('Support parameter k cannot be greater than N');
             $s = $this->s;
             $N = $this->N;
             $series = NonInteger::generalizedHarmonic($N, $s);
             $denominator = array_pop($series);
 
-            return 1 / ($k ** $s) / $denominator;
+            return 1 / $k ** $s / $denominator;
         }
 
         /**
@@ -105,15 +112,22 @@
          *
          * @return int|float
          *
-         * @throws Exception\OutOfBoundsException if k is > N
+         * @throws \MathPHP\Exception\OutOfBoundsException if k is > N
          */
-        public function cdf(int $k)
+        public function cdf(int $k): float|int
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-            if ($k > $this->N)
+            try
             {
-                throw new Exception\OutOfBoundsException('Support parameter k cannot be greater than N');
+                Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
             }
+            if ($k > $this->N)
+                throw new Exception\OutOfBoundsException('Support parameter k cannot be greater than N');
             $s = $this->s;
             $N = $this->N;
             $num_series = NonInteger::generalizedHarmonic($k, $s);
@@ -133,7 +147,7 @@
          *
          * @return int|float
          */
-        public function mean()
+        public function mean(): float|int
         {
             $s = $this->s;
             $N = $this->N;
@@ -144,5 +158,13 @@
             $denominator = array_pop($den_series);
 
             return $numerator / $denominator;
+        }
+
+        public function badCdfK()
+        {
+        }
+
+        public function badPmfK()
+        {
         }
     }

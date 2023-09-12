@@ -2,14 +2,12 @@
 
     namespace MathPHP\Tests\Finance;
 
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Finance;
     use PHPUnit\Framework\TestCase;
     use ReflectionClass;
 
     class FinanceTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForcheckZero(): array
         {
             return [
@@ -33,9 +31,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPmt(): array
         {
             return [
@@ -110,9 +105,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForIpmt(): array
         {
             return [
@@ -155,9 +147,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForIpmtNan(): array
         {
             return [
@@ -182,9 +171,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPpmt(): array
         {
             return [
@@ -227,9 +213,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPpmtNan(): array
         {
             return [
@@ -254,9 +237,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPeriods(): array
         {
             return [
@@ -303,9 +283,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPeriodsNan(): array
         {
             return [
@@ -313,9 +290,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForAer(): array
         {
             return [
@@ -367,9 +341,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForNominal(): array
         {
             return [
@@ -421,9 +392,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForFv(): array
         {
             return [
@@ -523,9 +491,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPv(): array
         {
             return [
@@ -579,9 +544,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForNpv(): array
         {
             return [
@@ -608,9 +570,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRate(): array
         {
             return [
@@ -644,9 +603,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRateNan(): array
         {
             return [
@@ -665,9 +621,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForIrr(): array
         {
             return [
@@ -958,9 +911,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForIrrNan(): array
         {
             return [
@@ -976,9 +926,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMirr(): array
         {
             return [
@@ -1019,9 +966,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMirrNan(): array
         {
             return [
@@ -1033,9 +977,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPayback(): array
         {
             return [
@@ -1075,9 +1016,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPaybackNan(): array
         {
             return [
@@ -1096,9 +1034,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForProfitabilityIndex(): array
         {
             return [
@@ -1128,9 +1063,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForProfitabilityIndexNan(): array
         {
             return [
@@ -1523,7 +1455,12 @@
             float $expected
         ) {
             // When
-            $irr = Finance::irr($values, $initial_guess);
+            try
+            {
+                $irr = Finance::irr($values, $initial_guess);
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $irr, Finance::EPSILON);
@@ -1539,7 +1476,12 @@
         public function testIrrNan(array $values, float $initial_guess)
         {
             // When
-            $irr = Finance::irr($values, $initial_guess);
+            try
+            {
+                $irr = Finance::irr($values, $initial_guess);
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertNan($irr);

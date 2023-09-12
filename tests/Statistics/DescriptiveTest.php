@@ -979,9 +979,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForFiveNumberSummary(): array
         {
             return [
@@ -1761,8 +1758,7 @@
             $population = FALSE;
 
             // When
-            $stats = Descriptive::describe([13, 18, 13, 14, 13, 16, 14, 21, 13],
-                FALSE);
+            $stats = Descriptive::describe([13, 18, 13, 14, 13, 16, 14, 21, 13]);
 
             // Then
             $this->assertTrue(TRUE);

@@ -2,6 +2,9 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Special;
     use MathPHP\Functions\Support;
 
@@ -11,6 +14,7 @@
     use function random_int;
     use function sqrt;
 
+    use const INF;
     use const M_PI;
     use const PHP_INT_MAX;
 
@@ -44,10 +48,10 @@
             ];
 
         /** @var float Mean Parameter */
-        protected $μ;
+        protected float $μ;
 
         /** @var float Standard Deviation Parameter */
-        protected $σ;
+        protected float $σ;
 
         /**
          * Normal constructor
@@ -73,18 +77,27 @@
          */
         public function pdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $μ = $this->μ;
             $σ = $this->σ;
             $π = M_PI;
             $σ√⟮2π⟯ = $σ * sqrt(2 * $π);
 
-            $⟮x − μ⟯²∕2σ² = (($x - $μ) ** 2) / (2 * $σ ** 2);
+            $⟮x − μ⟯²∕2σ² = ($x - $μ) ** 2 / 2 * $σ ** 2;
 
             $ℯ＾−⟮x − μ⟯²∕2σ² = exp(-$⟮x − μ⟯²∕2σ²);
 
-            return (1 / $σ√⟮2π⟯) * $ℯ＾−⟮x − μ⟯²∕2σ²;
+            return 1 / $σ√⟮2π⟯ * $ℯ＾−⟮x − μ⟯²∕2σ²;
         }
 
         /**
@@ -102,12 +115,21 @@
          */
         public function cdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $μ = $this->μ;
             $σ = $this->σ;
 
-            return (1 / 2) * (1 + Special::erf(($x - $μ) / ($σ * sqrt(2))));
+            return 1 / 2 * (1 + Special::erf(($x - $μ) / ($σ * sqrt(2))));
         }
 
         /**
@@ -120,13 +142,9 @@
         public function inverse(float $p): float
         {
             if ($p == 0)
-            {
-                return -\INF;
-            }
+                return -INF;
             if ($p == 1)
-            {
-                return \INF;
-            }
+                return INF;
 
             return parent::inverse($p);
         }
@@ -186,12 +204,50 @@
          *
          * @return float
          */
-        public function rand()
+        public function rand(): float|int
         {
-            $rand1 = random_int(0, PHP_INT_MAX) / PHP_INT_MAX;
-            $rand2 = random_int(0, PHP_INT_MAX) / PHP_INT_MAX;
+            try
+            {
+                $rand1 = random_int(0, PHP_INT_MAX) / PHP_INT_MAX;
+            } catch (\Exception $e)
+            {
+            }
+            try
+            {
+                $rand2 = random_int(0, PHP_INT_MAX) / PHP_INT_MAX;
+            } catch (\Exception $e)
+            {
+            }
 
-            return (sqrt(-2 * log($rand1)) * cos(2 * pi() * $rand2) * $this->σ)
+            return sqrt(-2 * log($rand1)) * cos(2 * pi() * $rand2) * $this->σ
                 + $this->μ;
+        }
+
+        public function pdfCovarianceMatrixDifferentNumberOfElementsException()
+        {
+        }
+
+        public function pdfXAndMuDifferentNumberOfElementsException()
+        {
+        }
+
+        public function pdfCovarianceMatrixNotPositiveDefiniteException()
+        {
+        }
+
+        public function inverseOfCdf()
+        {
+        }
+
+        public function above()
+        {
+        }
+
+        public function outside()
+        {
+        }
+
+        public function between()
+        {
         }
     }

@@ -2,6 +2,10 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\NanException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Special;
     use MathPHP\Functions\Support;
 
@@ -12,6 +16,7 @@
     use function log1p;
     use function sqrt;
 
+    use const INF;
     use const M_PI;
     use const NAN;
 
@@ -43,7 +48,7 @@
             ];
 
         /** @var float Degrees of Freedom Parameter */
-        protected $ν;
+        protected float $ν;
 
         /**
          * Constructor
@@ -95,24 +100,38 @@
          */
         public function pdf(float $t): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['t' => $t]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['t' => $t]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $ν = $this->ν;
 
             static $π = M_PI;
             static $DBL_EPSILON = 2.220446049250313e-16;
 
-            $tnew = (-1 * self::npD0($ν / 2, ($ν + 1) / 2)
-                    + Special::stirlingError(($ν + 1) / 2))
-                - Special::stirlingError($ν / 2);
-            $x2n = ($t ** 2) / $ν;  // in  [0, Inf]
+            try
+            {
+                $tnew = (-1 * self::npD0($ν / 2, ($ν + 1) / 2))
+                    + Special::stirlingError(($ν + 1) / 2)
+                    - Special::stirlingError($ν / 2);
+            } catch (NanException $e)
+            {
+            }
+            $x2n = $t ** 2 / $ν;  // in  [0, Inf]
             $ax = 0;
-            $lrg_x2n = $x2n > (1 / $DBL_EPSILON);
+            $lrg_x2n = $x2n > 1 / $DBL_EPSILON;
 
             if ($lrg_x2n)
             { // large x**2/n
                 $ax = abs($t);
-                $l_x2n = log($ax) - (log($ν) / 2);
+                $l_x2n = log($ax) - log($ν) / 2;
                 $u = $ν * $l_x2n;
             } elseif ($x2n > 0.2)
             {
@@ -121,15 +140,15 @@
             } else
             {
                 $l_x2n = log1p($x2n) / 2;
-                $u = (-1 * self::npD0($ν / 2, ($ν + ($t ** 2)) / 2)) + (($t
-                            ** 2) / 2);
+                $u = -1 * self::npD0($ν / 2, ($ν + $t ** 2) / 2) + $t
+                            ** 2 / 2;
             }
 
             $I_sqrt = $lrg_x2n
-                ? (sqrt($ν) / $ax)
+                ? sqrt($ν) / $ax
                 : exp(-$l_x2n);
 
-            return (exp($tnew - $u) / sqrt(2 * $π)) * $I_sqrt;
+            return exp($tnew - $u) / sqrt(2 * $π) * $I_sqrt;
         }
 
         /**
@@ -165,24 +184,20 @@
                 $v = ($x - $np) / ($x + $np);
                 $s = ($x - $np) * $v;
                 if (abs($s) < $DBL_MIN)
-                {
                     return $s;
-                }
                 $Σj = 2 * $x * $v;
                 $v² = $v * $v;
                 for ($j = 1; $j < 1000; $j++)
                 {
                     $Σj *= $v²;
                     $stemp = $s;
-                    $s += $Σj / (($j * 2) + 1);
+                    $s += $Σj / ($j * 2 + 1);
                     if ($s == $stemp)
-                    {
                         return $s;
-                    }
                 }
             }
 
-            return (($x * log($x / $np) + $np) - $x);
+            return ($x * log($x / $np)) + $np - $x;
         }
 
         /**
@@ -207,12 +222,19 @@
          */
         public function cdf(float $t): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['t' => $t]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['t' => $t]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
             $ν = $this->ν;
             if (is_infinite($t))
-            {
                 return ($t < 0) ? 0 : 1;
-            }
             if (is_infinite($ν))
             {
                 $norm = new StandardNormal();
@@ -226,30 +248,37 @@
                 $val = 1 / 4 / $ν;
                 $norm = new StandardNormal();
 
-                return $norm->cdf(($t * (1 - $val)) / sqrt(1 + ($t * $t * 2
-                            * $val)));
+                return $norm->cdf($t * (1 - $val) / sqrt(1 + $t * $t * 2
+                            * $val));
             }
 
-            $nx = 1 + (($t / $ν) * $t);
+            $nx = 1 + $t / $ν * $t;
             if ($nx > 1e100)
             {  // <==>  x*x > 1e100 * n
-                $lval = (-0.5 * $ν * ((2 * log(abs($t))) - log($ν)))
-                    - Special::logBeta(0.5 * $ν, 0.5) - log(0.5 * $ν);
+                try
+                {
+                    $lval = -0.5 * $ν * (2 * log(abs($t)) - log($ν))
+                        - Special::logBeta(0.5 * $ν, 0.5) - log(0.5 * $ν);
+                } catch (NanException $e)
+                {
+                } catch (OutOfBoundsException $e)
+                {
+                }
                 $val = exp($lval);
             } else
             {
                 $beta1 = new Beta(.5, $ν / 2);
                 $beta2 = new Beta($ν / 2, 0.5);
-                $val = ($ν > $t * $t) ? ((.5 - $beta1->cdf(($t * $t) / ($ν + ($t
-                                    * $t)))) + .5) : $beta2->cdf(1 / $nx);
+                $val = $ν > $t * $t ? .5 - $beta1->cdf($t * $t / ($ν + $t
+                                    * $t)) + .5 : $beta2->cdf(1 / $nx);
             }
 
             $lowerTail = $t > 0;
             $val /= 2;
 
             return $lowerTail
-                ? ((0.5 - ($val)) + 0.5)
-                : ($val);  // 1 - p
+                ? 0.5 - $val + 0.5
+                : $val;  // 1 - p
         }
 
         /**
@@ -262,9 +291,18 @@
          */
         public function inverse2Tails(float $p): float
         {
-            Support::checkLimits(['p' => '[0,1]'], ['p' => $p]);
+            try
+            {
+                Support::checkLimits(['p' => '[0,1]'], ['p' => $p]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
-            return $this->inverse(1 - ($p / 2));
+            return $this->inverse(1 - $p / 2);
         }
 
         /**
@@ -278,9 +316,7 @@
         public function mean(): float
         {
             if ($this->ν > 1)
-            {
                 return 0;
-            }
 
             return NAN;
         }
@@ -315,15 +351,27 @@
             $ν = $this->ν;
 
             if ($ν > 2)
-            {
                 return $ν / ($ν - 2);
-            }
 
             if ($ν > 1)
-            {
-                return \INF;
-            }
+                return INF;
 
             return NAN;
+        }
+
+        public function inverse()
+        {
+        }
+
+        public function varianceNan()
+        {
+        }
+
+        public function meanNan()
+        {
+        }
+
+        public function bugIssue429StudentTPdf()
+        {
         }
     }

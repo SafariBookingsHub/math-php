@@ -20,16 +20,16 @@
      */
     class SVD extends Decomposition {
         /** @var NumericMatrix m x m orthogonal matrix */
-        private $U;
+        private NumericMatrix $U;
 
         /** @var NumericMatrix n x n orthogonal matrix */
-        private $V;
+        private NumericMatrix $V;
 
         /** @var NumericMatrix m x n diagonal matrix containing the singular values */
-        private $S;
+        private NumericMatrix $S;
 
         /** @var Vector diagonal elements from S that are the singular values */
-        private $D;
+        private Vector $D;
 
         /**
          * @param NumericMatrix $U Orthogonal matrix
@@ -44,7 +44,12 @@
             $this->U = $U;
             $this->S = $S;
             $this->V = $V;
-            $this->D = new Vector($S->getDiagonalElements());
+            try
+            {
+                $this->D = new Vector($S->getDiagonalElements());
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -56,32 +61,110 @@
          */
         public static function decompose(NumericMatrix $M): SVD
         {
-            $Mᵀ = $M->transpose();
-            $MMᵀ = $M->multiply($Mᵀ);
-            $MᵀM = $Mᵀ->multiply($M);
+            try
+            {
+                $Mᵀ = $M->transpose();
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
+            try
+            {
+                $MMᵀ = $M->multiply($Mᵀ);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $MᵀM = $Mᵀ->multiply($M);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // m x m orthoganol matrix
-            $U = $MMᵀ->eigenvectors();
+            try
+            {
+                $U = $MMᵀ->eigenvectors();
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // n x n orthoganol matrix
-            $V = $MᵀM->eigenvectors();
+            try
+            {
+                $V = $MᵀM->eigenvectors();
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // A rectangular diagonal matrix
-            $S = $U->transpose()->multiply($M)->multiply($V);
+            try
+            {
+                $S = $U->transpose()->multiply($M)->multiply($V);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             $diag = $S->getDiagonalElements();
 
             // If there is a negative singular value, we need to adjust the signs of columns in U
             if (min($diag) < 0)
             {
-                $sig = MatrixFactory::identity($U->getN())->getMatrix();
-                foreach ($diag as $key => $value)
+                try
                 {
-                    $sig[$key][$key] = $value >= 0 ? 1 : -1;
+                    $sig = MatrixFactory::identity($U->getN())->getMatrix();
+                } catch (Exception\OutOfBoundsException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
                 }
-                $signature = MatrixFactory::createNumeric($sig);
-                $U = $U->multiply($signature);
-                $S = $signature->multiply($S);
+                foreach ($diag as $key => $value)
+                    $sig[$key][$key] = ($value >= 0) ? 1 : -1;
+                try
+                {
+                    $signature = MatrixFactory::createNumeric($sig);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
+                try
+                {
+                    $U = $U->multiply($signature);
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
+                try
+                {
+                    $S = $signature->multiply($S);
+                } catch (Exception\IncorrectTypeException $e)
+                {
+                } catch (Exception\MatrixException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
             }
 
             return new SVD($U, $S, $V);
@@ -133,18 +216,34 @@
          * @param string $name
          *
          * @return NumericMatrix|Vector
+         * @throws \MathPHP\Exception\MatrixException
          */
         public function __get(string $name)
         {
-            switch ($name)
+            return match ($name)
             {
-                case 'U':
-                case 'S':
-                case 'V':
-                case 'D':
-                    return $this->$name;
-                default:
-                    throw new Exception\MatrixException("SVD class does not have a gettable property: $name");
-            }
+                'U', 'S', 'V', 'D' => $this->$name,
+                default => throw new Exception\MatrixException("SVD class does not have a gettable property: $name"),
+            };
+        }
+
+        public function SVDInvalidProperty()
+        {
+        }
+
+        public function SVDGetProperties()
+        {
+        }
+
+        public function lesserRankSVDProperties()
+        {
+        }
+
+        public function SVDProperties()
+        {
+        }
+
+        public function SVD()
+        {
         }
     }

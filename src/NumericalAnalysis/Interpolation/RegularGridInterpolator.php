@@ -13,6 +13,7 @@
     use function in_array;
     use function is_array;
     use function reset;
+    use function sprintf;
 
     /**
      * Interpolation on a regular grid in arbitrary dimensions
@@ -58,13 +59,13 @@
         public const METHOD_NEAREST = 'nearest';
 
         /** @var string Interpolation method (linear or nearest) */
-        private $method;
+        private string $method;
 
         /** @var array<array<int|float>> Points defining the regular grid in n dimensions */
-        private $grid;
+        private array $grid;
 
         /** @var array Data on the regular grid in n dimensions */
-        private $values;
+        private array $values;
 
         /**
          * @param array<array<int|float>> $points Points defining the regular grid in n dimensions
@@ -81,19 +82,15 @@
             if ( ! in_array($method,
                 [self::METHOD_LINEAR, self::METHOD_NEAREST])
             )
-            {
                 throw new Exception\BadDataException("Method '{$method}' is not defined");
-            }
             $this->method = $method;
             $valuesDimension
                 = RegularGridInterpolator::countDimensions($values);
             $pointsCount = count($points);
 
             if ($pointsCount > $valuesDimension)
-            {
-                throw new Exception\BadDataException(\sprintf('There are %d point arrays, but values has %d dimensions',
+                throw new Exception\BadDataException(sprintf('There are %d point arrays, but values has %d dimensions',
                     $pointsCount, $valuesDimension));
-            }
 
             $this->grid = $points;
             $this->values = $values;
@@ -109,14 +106,10 @@
         private static function countDimensions(array $array): int
         {
             if (is_array(reset($array)))
-            {
                 $return
                     = RegularGridInterpolator::countDimensions(reset($array))
-                    + 1;
-            } else
-            {
+                    + 1; else
                 $return = 1;
-            }
 
             return $return;
         }
@@ -135,15 +128,13 @@
             $gridDimension = count($this->grid);
             $pointDimension = count($xi);
             if (count($xi) != $gridDimension)
-            {
                 throw new Exception\BadDataException('The requested sample points xi have dimension '
                     ."{$pointDimension}, but this RegularGridInterpolator has "
                     ."dimension {$gridDimension}");
-            }
 
             [$indices, $normDistances] = $this->findIndices($xi);
 
-            return ($this->method === self::METHOD_LINEAR)
+            return $this->method === self::METHOD_LINEAR
                 ? $this->evaluateLinear($indices, $normDistances)
                 : $this->evaluateNearest($indices, $normDistances);
         }
@@ -155,7 +146,7 @@
          *
          * @return array{int[], float[]} (indices in grid for search point, normDistances for search point)
          */
-        private function findIndices($xi): array
+        private function findIndices(array $xi): array
         {
             $indices = [];  // Find relevant edges between which xi are situated
             $normDistances
@@ -169,13 +160,9 @@
                 $gridSize = count($grid);                       // Column count
                 $i = Search::sorted($grid, $x) - 1;  // Min match index
                 if ($i < 0)
-                {
                     $i = 0;
-                }
                 if ($i > $gridSize - 2)
-                {
                     $i = $gridSize - 2;
-                }
 
                 $indices[] = $i;
                 $lessValue = $grid[$i];
@@ -193,13 +180,11 @@
          *
          * @return float|int
          */
-        private function evaluateLinear(array $indices, array $normDistances)
+        private function evaluateLinear(array $indices, array $normDistances): float|int
         {
             $edges = [];
             foreach ($indices as $i)
-            {
                 $edges[] = [$i, $i + 1];
-            }
             $edges[] = 1; // pass last argument (repeat)
             $edges = RegularGridInterpolator::product(...
                 $edges); // create many to many links
@@ -212,14 +197,12 @@
                     Iter::zip($edge_indices, $indices, $normDistances) as [$ei,
                     $i, $yi]
                 )
-                {
                     $weight *= ($ei == $i)
-                        ? 1 - $yi
+                        ? (1 - $yi)
                         : $yi;
-                }
-                $values += (RegularGridInterpolator::flatCall($this->values,
+                $values += RegularGridInterpolator::flatCall($this->values,
                         $edge_indices)
-                    * $weight);
+                    * $weight;
             }
 
             return $values;
@@ -239,10 +222,8 @@
             $repeat = array_pop($args);
             /** @var array[] $fill */
             $array_fill = [];
-            for ($i = 0; $i < 0 + $repeat; $i++)
-            {
+            for ($i = 0; $i < $repeat; $i++)
                 $array_fill[$i] = $args;
-            }
             $fill = $array_fill;
             $pools = array_merge(...$fill);
             $result = [[]];
@@ -252,19 +233,13 @@
             {
                 $result_inner = [];
                 foreach ($result as $x)
-                {
                     foreach ($pool as $y)
-                    {
                         $result_inner[] = array_merge($x, [$y]);
-                    }
-                }
                 $result = $result_inner;
             }
 
             foreach ($result as $prod)
-            {
                 yield $prod;
-            }
         }
 
         /**
@@ -275,13 +250,11 @@
          *
          * @return array|mixed
          */
-        private static function flatCall(array $data, array $keys)
+        private static function flatCall(array $data, array $keys): mixed
         {
             $current = $data;
             foreach ($keys as $key)
-            {
                 $current = $current[$key];
-            }
 
             return $current;
         }
@@ -292,17 +265,73 @@
          *
          * @return float|int
          */
-        private function evaluateNearest(array $indices, array $normDistances)
+        private function evaluateNearest(array $indices, array $normDistances): float|int
         {
             $idxRes = [];
             foreach (Iter::zip($indices, $normDistances) as [$i, $yi])
-            {
-                $idxRes[] = $yi <= 0.5
+                $idxRes[] = ($yi <= 0.5)
                     ? $i
-                    : $i + 1;
-            }
+                    : ($i + 1);
 
             /** @var float|int */
             return RegularGridInterpolator::flatCall($this->values, $idxRes);
+        }
+
+        public function invokeBadPointDimensionException()
+        {
+        }
+
+        public function badValuesException()
+        {
+        }
+
+        public function badMethodException()
+        {
+        }
+
+        public function stackOverflowExample()
+        {
+        }
+
+        public function pointsAndValuesNotSorted()
+        {
+        }
+
+        public function similarValues()
+        {
+        }
+
+        public function interpolatedPointValuesOutsideDomainOfInputDataGridAreExtrapolatedNearest(
+        )
+        {
+        }
+
+        public function interpolatedPointValuesOutsideDomainOfInputDataGridAreExtrapolatedLinear(
+        )
+        {
+        }
+
+        public function sciPyExample2()
+        {
+        }
+
+        public function sciPyExample1()
+        {
+        }
+
+        public function issue382ExampleNearest()
+        {
+        }
+
+        public function issue382ExampleLinear()
+        {
+        }
+
+        public function regularGridNearestAgrees()
+        {
+        }
+
+        public function regularGridAgrees()
+        {
         }
     }

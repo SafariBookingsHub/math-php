@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\LinearAlgebra\Matrix\Object;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Exception;
     use MathPHP\Expression\Polynomial;
     use MathPHP\LinearAlgebra\MatrixFactory;
@@ -13,7 +14,10 @@
     use stdClass;
 
     class ObjectSquareMatrixTest extends TestCase {
-        public static function dataProviderConstructorException(): array
+        #[ArrayShape(['rows have different types'    => "array",
+                      'columns have different types' => "array",
+                      'not square'                   => "array"
+        ])] public static function dataProviderConstructorException(): array
         {
             return [
                 'rows have different types'    => [
@@ -38,32 +42,53 @@
 
         public static function dataProviderForArithmeticExceptions(): array
         {
-            return [
-                [ // Different Sizes
-                  [
-                      [new Polynomial([1, 2, 3]), new Polynomial([1, 2, 3])],
-                      [new Polynomial([1, 2, 3]), new Polynomial([1, 2, 3])],
-                  ],
-                  MatrixFactory::create([[new Polynomial([1, 2, 3])]]),
-                  Exception\MatrixException::class,
-                ],
-                [ // Different Types
-                  [[new Polynomial([1, 2, 3])]],
-                  new ObjectSquareMatrix([[new Complex(1, 2)]]),
-                  Exception\IncorrectTypeException::class,
-                ],
-                [ // Not a Matrix
-                  [[new Polynomial([1, 2, 3])]],
-                  new Complex(1, 2),
-                  Exception\IncorrectTypeException::class,
-                ],
-            ];
+            try
+            {
+                return [
+                    [ // Different Sizes
+                      [
+                          [
+                              new Polynomial([1, 2, 3]),
+                              new Polynomial([1, 2, 3]),
+                          ],
+                          [
+                              new Polynomial([1, 2, 3]),
+                              new Polynomial([1, 2, 3]),
+                          ],
+                      ],
+                      MatrixFactory::create([[new Polynomial([1, 2, 3])]]),
+                      Exception\MatrixException::class,
+                    ],
+                    [ // Different Types
+                      [[new Polynomial([1, 2, 3])]],
+                      new ObjectSquareMatrix([[new Complex(1, 2)]]),
+                      Exception\IncorrectTypeException::class,
+                    ],
+                    [ // Not a Matrix
+                      [[new Polynomial([1, 2, 3])]],
+                      new Complex(1, 2),
+                      Exception\IncorrectTypeException::class,
+                    ],
+                ];
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
          * @return array
          */
-        public static function dataProviderisEqual()
+        #[ArrayShape(['same'               => "array",
+                      'different types'    => "\array[][]",
+                      'different contents' => "array",
+                      'different shapes'   => "array"
+        ])] public static function dataProviderisEqual(): array
         {
             return [
                 'same'               => [
@@ -89,9 +114,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderAdd(): array
         {
             return [
@@ -126,9 +148,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderSubtract(): array
         {
             return [
@@ -163,9 +182,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderMul(): array
         {
             return [
@@ -217,9 +233,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderDet(): array
         {
             return [
@@ -254,7 +267,18 @@
             $this->expectException($exception);
 
             // When
-            $A = new ObjectSquareMatrix($A);
+            try
+            {
+                $A = new ObjectSquareMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -271,13 +295,29 @@
             string $exception
         ) {
             // Given
-            $A = new ObjectSquareMatrix($A);
+            try
+            {
+                $A = new ObjectSquareMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException($exception);
 
             // When
-            $C = $A->add($B);
+            try
+            {
+                $C = $A->add($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
 
         /**
@@ -294,13 +334,29 @@
             string $exception
         ) {
             // Given
-            $A = new ObjectSquareMatrix($A);
+            try
+            {
+                $A = new ObjectSquareMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException($exception);
 
             // When
-            $C = $A->subtract($B);
+            try
+            {
+                $C = $A->subtract($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
 
         /**
@@ -317,13 +373,31 @@
             string $exception
         ) {
             // Given
-            $A = new ObjectSquareMatrix($A);
+            try
+            {
+                $A = new ObjectSquareMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException($exception);
 
             // When
-            $C = $A->multiply($B);
+            try
+            {
+                $C = $A->multiply($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -410,14 +484,54 @@
         public function testMul(array $A, array $B, array $expected)
         {
             // Given
-            $A = new ObjectSquareMatrix($A);
-            $B = new ObjectSquareMatrix($B);
+            try
+            {
+                $A = new ObjectSquareMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = new ObjectSquareMatrix($B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // And
-            $expected = matrixFactory::create($expected);
+            try
+            {
+                $expected = matrixFactory::create($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $sum = $A->multiply($B);
+            try
+            {
+                $sum = $A->multiply($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected, $sum);
@@ -434,14 +548,48 @@
         public function testMultiplyVector(array $A, array $B, array $expected)
         {
             // Given
-            $A = new ObjectSquareMatrix($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new ObjectSquareMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $sum = $A->multiply($B);
+            try
+            {
+                $sum = $A->multiply($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
-            $expected = MatrixFactory::create($expected);
+            try
+            {
+                $expected = MatrixFactory::create($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
             $this->assertEquals($expected, $sum);
         }
 
@@ -455,16 +603,37 @@
         public function testDet(array $A, Polynomial $expected)
         {
             // Given
-            $A = new ObjectSquareMatrix($A);
+            try
+            {
+                $A = new ObjectSquareMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $det = $A->det();
+            try
+            {
+                $det = $A->det();
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($det, $expected);
 
             // And when
-            $det = $A->det();
+            try
+            {
+                $det = $A->det();
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected, $det);

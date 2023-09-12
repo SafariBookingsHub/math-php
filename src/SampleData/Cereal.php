@@ -1,4 +1,20 @@
-<?php
+<?php /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
 
     namespace MathPHP\SampleData;
 
@@ -37,155 +53,6 @@
                 'W1',
                 'W2',
                 'W3',
-            ];
-
-        private const X_LABELS
-            = [
-                'X1126.0',
-                'X1134.0',
-                'X1142.0',
-                'X1150.0',
-                'X1158.0',
-                'X1166.0',
-                'X1174.0',
-                'X1182.0',
-                'X1190.0',
-                'X1198.0',
-                'X1206.0',
-                'X1214.0',
-                'X1222.0',
-                'X1230.0',
-                'X1238.0',
-                'X1246.0',
-                'X1254.0',
-                'X1262.0',
-                'X1270.0',
-                'X1278.0',
-                'X1286.0',
-                'X1294.0',
-                'X1302.0',
-                'X1310.0',
-                'X1318.0',
-                'X1326.0',
-                'X1334.0',
-                'X1342.0',
-                'X1350.0',
-                'X1358.0',
-                'X1366.0',
-                'X1374.0',
-                'X1382.0',
-                'X1390.0',
-                'X1398.0',
-                'X1406.0',
-                'X1414.0',
-                'X1422.0',
-                'X1430.0',
-                'X1438.0',
-                'X1446.0',
-                'X1454.0',
-                'X1462.0',
-                'X1470.0',
-                'X1478.0',
-                'X1486.0',
-                'X1494.0',
-                'X1502.0',
-                'X1510.0',
-                'X1518.0',
-                'X1526.0',
-                'X1534.0',
-                'X1542.0',
-                'X1550.0',
-                'X1558.0',
-                'X1566.0',
-                'X1574.0',
-                'X1582.0',
-                'X1590.0',
-                'X1598.0',
-                'X1606.0',
-                'X1614.0',
-                'X1622.0',
-                'X1630.0',
-                'X1638.0',
-                'X1646.0',
-                'X1654.0',
-                'X1662.0',
-                'X1670.0',
-                'X1678.0',
-                'X1686.0',
-                'X1694.0',
-                'X1702.0',
-                'X1710.0',
-                'X1718.0',
-                'X1726.0',
-                'X1734.0',
-                'X1742.0',
-                'X1750.0',
-                'X1758.0',
-                'X1766.0',
-                'X1774.0',
-                'X1782.0',
-                'X1790.0',
-                'X1798.0',
-                'X1806.0',
-                'X1814.0',
-                'X1822.0',
-                'X1830.0',
-                'X1838.0',
-                'X1846.0',
-                'X1854.0',
-                'X1862.0',
-                'X1870.0',
-                'X1878.0',
-                'X1886.0',
-                'X1894.0',
-                'X1902.0',
-                'X1910.0',
-                'X1918.0',
-                'X1926.0',
-                'X1934.0',
-                'X1942.0',
-                'X1950.0',
-                'X1958.0',
-                'X1966.0',
-                'X1974.0',
-                'X1982.0',
-                'X1990.0',
-                'X1998.0',
-                'X2006.0',
-                'X2014.0',
-                'X2022.0',
-                'X2030.0',
-                'X2038.0',
-                'X2046.0',
-                'X2054.0',
-                'X2062.0',
-                'X2070.0',
-                'X2078.0',
-                'X2086.0',
-                'X2094.0',
-                'X2102.0',
-                'X2110.0',
-                'X2118.0',
-                'X2126.0',
-                'X2134.0',
-                'X2142.0',
-                'X2150.0',
-                'X2158.0',
-                'X2166.0',
-                'X2174.0',
-                'X2182.0',
-                'X2190.0',
-                'X2198.0',
-                'X2206.0',
-                'X2214.0',
-                'X2222.0',
-                'X2230.0',
-                'X2238.0',
-                'X2246.0',
-                'X2254.0',
-                'X2262.0',
-                'X2270.0',
-                'X2278.0',
             ];
 
         private const X_DATA
@@ -2397,16 +2264,6 @@
                 ],
             ];
 
-        private const Y_LABELS
-            = [
-                'Heating value',
-                'C',
-                'H',
-                'N',
-                'Starch',
-                'Ash',
-            ];
-
         private const Y_DATA
             = [
                 'B1' => [
@@ -2466,16 +2323,6 @@
                 'W1' => [18594, 41.0800018, 6.8000002, 2.145, 62.6500015, 1.84],
                 'W2' => [18462, 41.4550018, 6.77, 1.84, 68.4199982, 1.52],
                 'W3' => [18406, 40.9300003, 6.6399999, 1.62, 69.9199982, 1.6],
-            ];
-
-        private const YSC_LABELS
-            = [
-                'Heating value',
-                'C',
-                'H',
-                'N',
-                'Starch',
-                'Ash',
             ];
 
         private const YSC_DATA
@@ -2651,9 +2498,12 @@
          */
         public static function getLabeledXData(): array
         {
-            /** @var array<string, array<string, float>> */
+            /** @var array<string, array<string, float>> $array_map */
             $array_map = [];
-            foreach (self::X_DATA as $key => array $data)return $array_map;
+            foreach (self::X_DATA as $ignored => {
+                array $data)}
+
+            return $array_map;
         }
 
         /**
@@ -2675,9 +2525,12 @@
          */
         public static function getLabeledYData(): array
         {
-            /** @var array<string, array<string, float>> */
+            /** @var array<string, array<string, float>> $array_map */
             $array_map = [];
-            foreach (self::Y_DATA as $key => array $data)return $array_map;
+            foreach (self::Y_DATA as $ignored => {
+                array $data)}
+
+            return $array_map;
         }
 
         /**
@@ -2699,9 +2552,12 @@
          */
         public static function getLabeledYscData(): array
         {
-            /** @var array<string, array<string, float>> */
+            /** @var array<string, array<string, float>> $array_map */
             $array_map = [];
-            foreach (self::YSC_DATA as $key => array $data)return $array_map;
+            foreach (self::YSC_DATA as $ignored => {
+                array $data)}
+
+            return $array_map;
         }
 
         /**
@@ -2718,5 +2574,33 @@
         public static function getScaledScale(): array
         {
             return self::SCALED_SCALE;
+        }
+
+        public function labeledYscData()
+        {
+        }
+
+        public function yscDataVariables()
+        {
+        }
+
+        public function labeledYData()
+        {
+        }
+
+        public function YDataVariables()
+        {
+        }
+
+        public function labeledXData()
+        {
+        }
+
+        public function XDataVariables()
+        {
+        }
+
+        public function dataObservations()
+        {
         }
     }

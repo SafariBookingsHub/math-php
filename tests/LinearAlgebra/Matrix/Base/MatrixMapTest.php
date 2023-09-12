@@ -3,6 +3,11 @@
     namespace MathPHP\Tests\LinearAlgebra\Matrix\Base;
 
     use Closure;
+    use JetBrains\PhpStorm\ArrayShape;
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\IncorrectTypeException;
+    use MathPHP\Exception\MathException;
+    use MathPHP\Exception\MatrixException;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\LinearAlgebra\Vector;
     use PHPUnit\Framework\TestCase;
@@ -20,7 +25,10 @@
         /**
          * @return array (input, func, output)
          */
-        public static function dataProviderForMapCallable(): array
+        #[ArrayShape(['abs'   => "array",
+                      'round' => "array",
+                      'sqrt'  => "array"
+        ])] public static function dataProviderForMapCallable(): array
         {
             return [
                 'abs'   => [
@@ -68,7 +76,7 @@
         /**
          * @return array (input, func, output)
          */
-        public static function dataProviderForMapClosure(): array
+        #[ArrayShape(['doubler' => "array", 'add one' => "array"])] public static function dataProviderForMapClosure(): array
         {
             return [
                 'doubler' => [
@@ -77,9 +85,7 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    function ($x) {
-                        return $x * 2;
-                    },
+                    fn($x) => $x * 2,
                     [
                         [2, 4, 6],
                         [8, 10, 12],
@@ -92,9 +98,7 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    function ($x) {
-                        return $x + 1;
-                    },
+                    fn($x) => $x + 1,
                     [
                         [2, 3, 4],
                         [5, 6, 7],
@@ -261,7 +265,14 @@
          * @return array (input, func, output)
          * @throws \Exception
          */
-        public static function dataProviderForApplyRowsClosure(): array
+        #[ArrayShape(['add one'                       => "array",
+                      'sort'                          => "array",
+                      'remove first and last'         => "array",
+                      'something strange with reduce' => "array",
+                      'merge'                         => "array",
+                      'chunk'                         => "array",
+                      'vectors'                       => "array"
+        ])] public static function dataProviderForApplyRowsClosure(): array
         {
             return [
                 'add one'                       => [
@@ -270,9 +281,7 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    function (array $row) {
-                        return array_sum($row) + 1;
-                    },
+                    fn(array $row) => array_sum($row) + 1,
                     [
                         7,
                         16,
@@ -320,15 +329,11 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    function (array $row) {
-                        return array_reduce(
-                            $row,
-                            function ($carry, $item) {
-                                return ($carry * $carry) + $item;
-                            },
-                            1
-                        );
-                    },
+                    fn(array $row) => array_reduce(
+                        $row,
+                        fn($carry, $item) => ($carry * $carry) + $item,
+                        1
+                    ),
                     [
                         39,
                         906,
@@ -341,9 +346,7 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    function (array $row) {
-                        return array_merge($row, [9, 9, 9]);
-                    },
+                    fn(array $row) => array_merge($row, [9, 9, 9]),
                     [
                         [1, 2, 3, 9, 9, 9],
                         [4, 5, 6, 9, 9, 9],
@@ -356,9 +359,7 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    function (array $row) {
-                        return array_chunk($row, 1);
-                    },
+                    fn(array $row) => array_chunk($row, 1),
                     [
                         [[1], [2], [3]],
                         [[4], [5], [6]],
@@ -371,9 +372,7 @@
                         [4, 5, 6],
                         [7, 8, 9],
                     ],
-                    function (array $row) {
-                        return new Vector($row);
-                    },
+                    fn(array $row) => new Vector($row),
                     [
                         new Vector([1, 2, 3]),
                         new Vector([4, 5, 6]),
@@ -524,11 +523,22 @@
         public function testWalk()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [4, 5, 6],
-                [7, 8, 9],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [4, 5, 6],
+                    [7, 8, 9],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // Then
             $func = function ($item) {

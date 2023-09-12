@@ -9,9 +9,6 @@
     use PHPUnit\Framework\TestCase;
 
     class MatrixOperationsTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForTranspose(): array
         {
             return [
@@ -428,9 +425,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForSubMatrix(): array
         {
             return [
@@ -581,11 +575,40 @@
         public function testMinorMatrix(array $A, int $mᵢ, int $nⱼ, array $Mᵢⱼ)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $Mᵢⱼ = MatrixFactory::create($Mᵢⱼ);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $Mᵢⱼ = MatrixFactory::create($Mᵢⱼ);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $minor = $A->minorMatrix($mᵢ, $nⱼ);
+            try
+            {
+                $minor = $A->minorMatrix($mᵢ, $nⱼ);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($Mᵢⱼ, $minor);
@@ -597,17 +620,35 @@
         public function testMinorMatrixExceptionBadRow()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [2, 3, 4],
-                [3, 4, 5],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [2, 3, 4],
+                    [3, 4, 5],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->minorMatrix(4, 1);
+            try
+            {
+                $A->minorMatrix(4, 1);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -616,17 +657,35 @@
         public function testMinorMatrixExceptionBadColumn()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [2, 3, 4],
-                [3, 4, 5],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [2, 3, 4],
+                    [3, 4, 5],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->minorMatrix(1, 4);
+            try
+            {
+                $A->minorMatrix(1, 4);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -635,17 +694,35 @@
         public function testMinorMatrixExceptionNotSquare()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3, 4],
-                [2, 3, 4, 4],
-                [3, 4, 5, 4],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3, 4],
+                    [2, 3, 4, 4],
+                    [3, 4, 5, 4],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->minorMatrix(1, 1);
+            try
+            {
+                $A->minorMatrix(1, 1);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -659,11 +736,42 @@
         public function testLeadingPrincipalMinor(array $A, int $k, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $R = MatrixFactory::create($R);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $R = MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $minor = $A->leadingPrincipalMinor($k);
+            try
+            {
+                $minor = $A->leadingPrincipalMinor($k);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $minor);
@@ -675,17 +783,37 @@
         public function testLeadingPrincipalMinorExceptionKLessThanZero()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [2, 3, 4],
-                [3, 4, 5],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [2, 3, 4],
+                    [3, 4, 5],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            $R = $A->leadingPrincipalMinor(-1);
+            try
+            {
+                $R = $A->leadingPrincipalMinor(-1);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -694,17 +822,37 @@
         public function testLeadingPrincipalMinorExceptionKGreaterThanN()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [2, 3, 4],
-                [3, 4, 5],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [2, 3, 4],
+                    [3, 4, 5],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            $R = $A->leadingPrincipalMinor($A->getN() + 1);
+            try
+            {
+                $R = $A->leadingPrincipalMinor($A->getN() + 1);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -713,18 +861,38 @@
         public function testLeadingPrincipalMinorExceptionMatrixNotSquare()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [2, 3, 4],
-                [3, 4, 5],
-                [4, 5, 6],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [2, 3, 4],
+                    [3, 4, 5],
+                    [4, 5, 6],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $R = $A->leadingPrincipalMinor(2);
+            try
+            {
+                $R = $A->leadingPrincipalMinor(2);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -734,10 +902,30 @@
         public function testMinor(array $A, int $mᵢ, int $nⱼ, $Mᵢⱼ)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $minor = $A->minor($mᵢ, $nⱼ);
+            try
+            {
+                $minor = $A->minor($mᵢ, $nⱼ);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($Mᵢⱼ, $minor);
@@ -749,17 +937,37 @@
         public function testMinorExceptionBadRow()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [2, 3, 4],
-                [3, 4, 5],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [2, 3, 4],
+                    [3, 4, 5],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->minor(4, 1);
+            try
+            {
+                $A->minor(4, 1);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -768,17 +976,37 @@
         public function testMinorExceptionBadColumn()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [2, 3, 4],
-                [3, 4, 5],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [2, 3, 4],
+                    [3, 4, 5],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->minor(1, 4);
+            try
+            {
+                $A->minor(1, 4);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -787,17 +1015,37 @@
         public function testMinorExceptionNotSquare()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3, 4],
-                [2, 3, 4, 4],
-                [3, 4, 5, 4],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3, 4],
+                    [2, 3, 4, 4],
+                    [3, 4, 5, 4],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->minor(1, 1);
+            try
+            {
+                $A->minor(1, 1);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -919,11 +1167,38 @@
             $expected
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = MatrixFactory::create($B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $matrixWithInsertion = $A->insert($B, $m, $n);
+            try
+            {
+                $matrixWithInsertion = $A->insert($B, $m, $n);
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected, $matrixWithInsertion->getMatrix());

@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\Statistics\Regression;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Exception;
     use MathPHP\Statistics\Regression\Linear;
     use PHPUnit\Framework\TestCase;
@@ -10,7 +11,11 @@
         /**
          * @return array [points]
          */
-        public static function dataProviderForLeastSquaresDegreesOfFreedomBadDataException(
+        #[ArrayShape([
+            'zero_points' => "array[]",
+            'one_point'   => "array[]",
+            'two_points'  => "array[]"
+        ])] public static function dataProviderForLeastSquaresDegreesOfFreedomBadDataException(
         ): array
         {
             return [

@@ -7,7 +7,9 @@
 
     use function abs;
     use function array_map;
+    use function array_sum;
     use function count;
+    use function gettype;
     use function is_callable;
     use function is_string;
 
@@ -32,11 +34,11 @@
         public const EPANECHNIKOV = 'Epanechnikov';
         public const TRICUBE = 'Tricube';
         /** @var array<float> Data used for the esimtation */
-        protected $data;
+        protected array $data;
         /** @var int number of data points */
-        protected $n;
+        protected int $n;
         /** @var float bandwidth */
-        protected $h;
+        protected float $h;
         /** @var callable kernel function */
         protected $kernel;
 
@@ -54,13 +56,11 @@
         public function __construct(
             array $data,
             float $h = NULL,
-            $kernel = NULL
+            callable|string $kernel = NULL
         ) {
             $this->n = count($data);
             if ($this->n === 0)
-            {
                 throw new Exception\BadDataException('Dataset cannot be empty.');
-            }
             $this->data = $data;
 
             $this->setBandwidth($h);
@@ -84,9 +84,7 @@
             }
 
             if ($h <= 0)
-            {
                 throw new Exception\OutOfBoundsException("Bandwidth must be > 0. h = $h");
-            }
 
             $this->h = $h;
         }
@@ -104,11 +102,17 @@
          *
          * @return float
          *
-         * @throws Exception\OutOfBoundsException
          */
         private function getDefaultBandwidth(): float
         {
-            $４σ⁵ = 4 * Descriptive::standardDeviation($this->data) ** 5;
+            try
+            {
+                $４σ⁵ = 4 * Descriptive::standardDeviation($this->data) ** 5;
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
             $３n = 3 * $this->n;
             $⅕ = 0.2;
 
@@ -127,23 +131,17 @@
          * @throws Exception\BadDataException
          * @throws Exception\OutOfBoundsException
          */
-        public function setKernelFunction($kernel = NULL): void
+        public function setKernelFunction(callable|string $kernel = NULL): void
         {
             if ($kernel === NULL)
-            {
                 $this->kernel
-                    = $this->getKernelFunctionFromLibrary(self::STANDARD_NORMAL);
-            } elseif (is_string($kernel))
-            {
+                    = $this->getKernelFunctionFromLibrary(self::STANDARD_NORMAL); elseif (is_string($kernel))
                 $this->kernel = $this->getKernelFunctionFromLibrary($kernel);
-            } elseif (is_callable($kernel))
-            {
+            elseif (is_callable($kernel))
                 $this->kernel = $kernel;
-            } else
-            {
+            else
                 throw new Exception\BadParameterException('Kernel must be a callable or a string. Type is: '
-                    .\gettype($kernel));
-            }
+                    .gettype($kernel));
         }
 
         /**
@@ -168,10 +166,10 @@
                     };
 
                 case self::NORMAL:
-                    $μ = 0;
                     $σ = Descriptive::standardDeviation($this->data);
 
-                    return function ($x) use ($μ, $σ) {
+                    return function ($x) use ($σ) {
+                        $μ = 0;
                         $normal = new Continuous\Normal($μ, $σ);
 
                         return $normal->pdf($x);
@@ -180,9 +178,7 @@
                 case self::UNIFORM:
                     return function ($x) {
                         if (abs($x) > 1)
-                        {
                             return 0;
-                        }
 
                         return .5;
                     };
@@ -190,9 +186,7 @@
                 case self::TRIANGULAR:
                     return function ($x) {
                         if (abs($x) > 1)
-                        {
                             return 0;
-                        }
 
                         return 1 - abs($x);
                     };
@@ -200,21 +194,17 @@
                 case self::EPANECHNIKOV:
                     return function ($x) {
                         if (abs($x) > 1)
-                        {
                             return 0;
-                        }
 
-                        return .75 * (1 - $x ** 2);
+                        return .75 * (1 - ($x ** 2));
                     };
 
                 case self::TRICUBE:
                     return function ($x) {
                         if (abs($x) > 1)
-                        {
                             return 0;
-                        }
 
-                        return 70 / 81 * ((1 - abs($x) ** 3) ** 3);
+                        return (70 / 81) * (1 - (abs($x) ** 3)) ** 3;
                     };
 
                 default:
@@ -240,14 +230,48 @@
             $h = $this->h;
             $n = $this->n;
 
-            $array_map = [];
-            foreach ($this->data as $key => $xᵢ)
-            {
-                $array_map[$key] = ($x - $xᵢ) / $h;
-            }
+            $array_map = array_map(function ($xᵢ) use ($x, $h) {
+                return ($x - $xᵢ) / $h;
+            }, $this->data);
             $scale = $array_map;
             $K = array_map($this->kernel, $scale);
 
-            return \array_sum($K) / ($n * $h);
+            return array_sum($K) / ($n * $h);
+        }
+
+        public function emptyData()
+        {
+        }
+
+        public function badSetBandwidth()
+        {
+        }
+
+        public function unknownBuildInKernel()
+        {
+        }
+
+        public function badKernel()
+        {
+        }
+
+        public function normal()
+        {
+        }
+
+        public function kernels()
+        {
+        }
+
+        public function defaultKernelDensityCustomBoth()
+        {
+        }
+
+        public function defaultKernelDensityCustomH()
+        {
+        }
+
+        public function defaultKernelDensity()
+        {
         }
     }

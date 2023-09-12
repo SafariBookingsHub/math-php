@@ -28,7 +28,7 @@
          *
          * @return Set (this set unchanged)
          */
-        public function add($x): Set
+        public function add(mixed $x): Set
         {
             return $this;
         }
@@ -52,7 +52,7 @@
          *
          * @return Set (this set unchanged)
          */
-        public function remove($x): Set
+        public function remove(mixed $x): Set
         {
             return $this;
         }
@@ -77,5 +77,33 @@
         public function clear(): Set
         {
             return $this;
+        }
+
+        public function actsLikeASet()
+        {
+        }
+
+        public function isASet()
+        {
+        }
+
+        public function clearDoesNothing()
+        {
+        }
+
+        public function removeMultiDoesNothing()
+        {
+        }
+
+        public function removeDoesNothing()
+        {
+        }
+
+        public function addMultiDoesNothing()
+        {
+        }
+
+        public function addDoesNothing()
+        {
         }
     }

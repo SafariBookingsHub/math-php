@@ -14,28 +14,28 @@
          *
          * @var array<array{float, float}>
          */
-        protected $points;
+        protected array $points;
 
         /**
          * X values of the original points
          *
          * @var array<float>
          */
-        protected $xs;
+        protected array $xs;
 
         /**
          * Y values of the original points
          *
          * @var array<float>
          */
-        protected $ys;
+        protected array $ys;
 
         /**
          * Number of points
          *
          * @var int
          */
-        protected $n;
+        protected int $n;
 
         /**
          * Constructor - Prepares the data arrays for regression analysis
@@ -50,17 +50,13 @@
             // Get list of x points and y points.
             // This will be fine for linear or polynomial regression, where there is only one x,
             // but if expanding to multiple linear, the format will have to change.
-            $array_map1 = [];
-            foreach ($points as $key => $point)
-            {
-                $array_map1[$key] = $point[0];
-            }
+            $array_map1 = array_map(function ($point) {
+                return $point[0];
+            }, $points);
             $this->xs = $array_map1;
-            $array_map = [];
-            foreach ($points as $key => $point)
-            {
-                $array_map[$key] = $point[1];
-            }
+            $array_map = array_map(function ($point) {
+                return $point[1];
+            }, $points);
             $this->ys = $array_map;
         }
 
@@ -122,5 +118,46 @@
         public function yHat(): array
         {
             return array_map([$this, 'evaluate'], $this->xs);
+        }
+
+        public function bugCenterFalseScaleFalseLoadings()
+        {
+        }
+
+        public function sumOfSquaresEqualsSumOfSQuaresRegressionPlusSumOfSquaresResidual(
+        )
+        {
+        }
+
+        public function sumOfSquareResidual()
+        {
+        }
+
+        public function sumOfSquaresRegression()
+        {
+        }
+
+        public function sumOfSquaresTotal()
+        {
+        }
+
+        public function toString()
+        {
+        }
+
+        public function r2()
+        {
+        }
+
+        public function coefficientOfDetermination()
+        {
+        }
+
+        public function r()
+        {
+        }
+
+        public function correlationCoefficient()
+        {
         }
     }

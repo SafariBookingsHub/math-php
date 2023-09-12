@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class ValidationTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForConstantSpacedPoints(): array
         {
             return [
@@ -34,9 +31,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForNonConstantSpacedPoints(): array
         {
             return [
@@ -52,9 +46,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForSubintervalsMultiple(): array
         {
             return [
@@ -77,9 +68,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForSubintervalsNotMultiple(): array
         {
             return [

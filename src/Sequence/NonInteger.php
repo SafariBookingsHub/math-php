@@ -3,6 +3,7 @@
     namespace MathPHP\Sequence;
 
     use Error;
+    use JetBrains\PhpStorm\Pure;
     use MathPHP\Exception;
     use MathPHP\Number\Rational;
     use TypeError;
@@ -30,7 +31,7 @@
          *
          * @return float[]
          */
-        public static function harmonic(int $n): array
+        #[Pure] public static function harmonic(int $n): array
         {
             return self::generalizedHarmonic($n, 1);
         }
@@ -52,9 +53,7 @@
         public static function generalizedHarmonic(int $n, float $m): array
         {
             if ($n <= 0)
-            {
                 return [];
-            }
 
             $sequence = [];
             $∑ = 0;
@@ -83,39 +82,38 @@
          *
          * @return float[]|Rational[]
          *
-         * @throws Exception\OutOfBoundsException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public static function hyperharmonic(
             int $n,
             int $r,
-            $rational = FALSE
+            bool $rational = FALSE
         ): array {
             if ($r < 0)
-            {
                 throw new Exception\OutOfBoundsException('Recursion depth cannot be less than 0');
-            }
             if ($n <= 0)
-            {
                 return [];
-            }
             $sequence = [];
 
             try
             {
                 if ($r == 0)
-                {
                     for ($k = 1; $k <= $n; $k++)
                     {
                         $sequence[$k] = new Rational(0, 1, $k);
-                    }
-                } else
+                    } else
                 {
                     /** @var Rational[] $array */
                     $array = self::hyperharmonic($n, $r - 1, TRUE);
                     $∑ = Rational::createZeroValue();
                     for ($k = 1; $k <= $n; $k++)
                     {
-                        $∑ = $∑->add($array[$k]);
+                        try
+                        {
+                            $∑ = $∑->add($array[$k]);
+                        } catch (Exception\IncorrectTypeException $e)
+                        {
+                        }
                         $sequence[$k] = $∑;
                     }
                 }
@@ -125,12 +123,31 @@
                     .$e->getMessage(), -1, $e);
             }
 
-            if ($rational == TRUE)
-            {
+            if ($rational)
                 return $sequence;
-            }
 
             $array_map = [];
-            foreach ($sequence as $key => Rationalreturn $array_map;
+            foreach ($sequence as $ignored => {
+                Rationalreturn}
+        }
+
+        public function hyperharmonicSequenceTypeError()
+        {
+        }
+
+        public function hyperharmonicSeriesException()
+        {
+        }
+
+        public function hyperharmonicNumbers()
+        {
+        }
+
+        public function generalizedHarmonicNumbers()
+        {
+        }
+
+        public function harmonicNumbers()
+        {
         }
     }

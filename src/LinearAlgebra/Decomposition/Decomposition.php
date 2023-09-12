@@ -10,5 +10,5 @@
          *
          * @return static
          */
-        abstract public static function decompose(NumericMatrix $M);
+        abstract public static function decompose(NumericMatrix $M): static;
     }

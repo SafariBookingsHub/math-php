@@ -2,6 +2,8 @@
 
     namespace MathPHP\LinearAlgebra;
 
+    use JetBrains\PhpStorm\ArrayShape;
+    use JetBrains\PhpStorm\Pure;
     use MathPHP\Exception;
     use MathPHP\Functions\Map;
     use MathPHP\Functions\Support;
@@ -13,10 +15,13 @@
     use function array_filter;
     use function array_reduce;
     use function array_shift;
+    use function array_slice;
     use function array_sum;
     use function count;
+    use function implode;
     use function in_array;
     use function is_array;
+    use function max;
     use function sqrt;
     use function trim;
     use function usort;
@@ -44,7 +49,7 @@
         public const RREF = 'RREF';
         public const DEFAULT = 'Default';
         /** @var float Error/zero tolerance */
-        protected $ε;
+        protected ?float $ε;
 
         /**
          * Constructor
@@ -57,7 +62,7 @@
         {
             $this->A = $A;
             $this->m = count($A);
-            $this->n = ($this->m > 0) ? count($A[0]) : 0;
+            $this->n = $this->m > 0 ? count($A[0]) : 0;
             $this->ε = self::ε;
             $this->catalog = new MatrixCatalog();
 
@@ -72,13 +77,9 @@
         protected function validateMatrixDimensions(): void
         {
             foreach ($this->A as $i => $row)
-            {
                 if (count($row) !== $this->n)
-                {
                     throw new Exception\BadDataException("Row $i has a different column count: "
                         .count($row)."; was expecting {$this->n}.");
-                }
-            }
         }
 
         /**
@@ -121,9 +122,7 @@
         public function setError(?float $ε): void
         {
             if ($ε === NULL)
-            {
                 return;
-            }
             $this->ε = $ε;
         }
 
@@ -142,36 +141,21 @@
          *
          * @return bool true if skew-symmetric; false otherwise.
          *
-         * @throws Exception\BadParameterException
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\MatrixException
          */
         public function isSkewSymmetric(): bool
         {
             if ( ! $this->isSquare())
-            {
                 return FALSE;
-            }
 
             for ($i = 0; $i < $this->m - 1; $i++)
-            {
                 for ($j = $i + 1; $j < $this->n; $j++)
-                {
                     if (Support::isNotEqual($this->A[$i][$j], -$this->A[$j][$i],
                         $this->ε)
                     )
-                    {
                         return FALSE;
-                    }
-                }
-            }
             foreach ($this->getDiagonalElements() as $diagonalElement)
-            {
                 if (Support::isNotZero($diagonalElement, $this->ε))
-                {
                     return FALSE;
-                }
-            }
 
             return TRUE;
         }
@@ -243,9 +227,7 @@
             $│A│ = $this->det();
 
             if (Support::isNotZero($│A│, $this->ε))
-            {
                 return TRUE;
-            }
 
             return FALSE;
         }
@@ -281,11 +263,9 @@
          *
          * @return int|float
          *
-         * @throws Exception\MatrixException if matrix is not square
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\BadParameterException
+         * @throws \MathPHP\Exception\MatrixException if matrix is not square
          */
-        public function det()
+        public function det(): float|int
         {
             if ($this->catalog->hasDeterminant())
             {
@@ -294,14 +274,23 @@
             }
 
             if ( ! $this->isSquare())
-            {
                 throw new Exception\MatrixException('Not a square matrix (required for determinant)');
-            }
 
             $m = $this->m;
 
             /** @var NumericMatrix $R */
-            $R = MatrixFactory::create($this->A);
+            try
+            {
+                $R = MatrixFactory::create($this->A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             /*
          * 1x1 matrix
@@ -367,8 +356,8 @@
                 $dh = $d * $h;
                 $eg = $e * $g;
 
-                $det = ($a * ($ei - $fh) - $b * ($di - $fg)) + ($c * ($dh
-                            - $eg));
+                $det = ($a * ($ei - $fh)) - ($b * ($di - $fg)) + $c * ($dh
+                            - $eg);
                 $this->catalog->addDeterminant($det);
 
                 return $det;
@@ -380,18 +369,27 @@
          * Then plug into formula with swaps.
          * │A│ = (-1)ⁿ │ref(A)│
          */
-            $ref⟮A⟯ = $this->ref();
+            try
+            {
+                $ref⟮A⟯ = $this->ref();
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
             $ⁿ = $ref⟮A⟯->getRowSwaps();
 
             // Det(ref(A))
             $│ref⟮A⟯│ = 1;
             for ($i = 0; $i < $m; $i++)
-            {
                 $│ref⟮A⟯│ *= $ref⟮A⟯[$i][$i];
-            }
 
             // │A│ = (-1)ⁿ │ref(A)│
-            $det = ((-1) ** $ⁿ) * $│ref⟮A⟯│;
+            $det = (-1) ** $ⁿ * $│ref⟮A⟯│;
             $this->catalog->addDeterminant($det);
 
             return $det;
@@ -410,9 +408,7 @@
         public function ref(): Reduction\RowEchelonForm
         {
             if ( ! $this->catalog->hasRowEchelonForm())
-            {
                 $this->catalog->addRowEchelonForm(Reduction\RowEchelonForm::reduce($this));
-            }
 
             return $this->catalog->getRowEchelonForm();
         }
@@ -441,17 +437,11 @@
         public function isPositiveDefinite(): bool
         {
             if ( ! $this->isSymmetric())
-            {
                 return FALSE;
-            }
 
             for ($i = 1; $i <= $this->n; $i++)
-            {
                 if ($this->leadingPrincipalMinor($i)->det() <= 0)
-                {
                     return FALSE;
-                }
-            }
 
             return TRUE;
         }
@@ -466,28 +456,18 @@
          *
          * @return bool true if symmetric; false otherwise.
          *
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\MatrixException
          */
-        public function isSymmetric(): bool
+        #[Pure] public function isSymmetric(): bool
         {
             if ( ! $this->isSquare())
-            {
                 return FALSE;
-            }
 
             for ($i = 0; $i < $this->m - 1; $i++)
-            {
                 for ($j = $i + 1; $j < $this->n; $j++)
-                {
                     if (Support::isNotEqual($this->A[$i][$j], $this->A[$j][$i],
                         $this->ε)
                     )
-                    {
                         return FALSE;
-                    }
-                }
-            }
 
             return TRUE;
         }
@@ -509,17 +489,11 @@
         public function isPositiveSemidefinite(): bool
         {
             if ( ! $this->isSymmetric())
-            {
                 return FALSE;
-            }
 
             for ($i = 1; $i <= $this->n; $i++)
-            {
                 if ($this->leadingPrincipalMinor($i)->det() < 0)
-                {
                     return FALSE;
-                }
-            }
 
             return TRUE;
         }
@@ -541,11 +515,10 @@
         public function isNegativeDefinite(): bool
         {
             if ( ! $this->isSymmetric())
-            {
                 return FALSE;
-            }
 
             for ($i = 1; $i <= $this->n; $i++)
+            {
                 switch ($i % 2)
                 {
                     case 1:
@@ -561,6 +534,7 @@
                         }
                         break;
                 }
+            }
 
             return TRUE;
         }
@@ -582,11 +556,10 @@
         public function isNegativeSemidefinite(): bool
         {
             if ( ! $this->isSymmetric())
-            {
                 return FALSE;
-            }
 
             for ($i = 1; $i <= $this->n; $i++)
+            {
                 switch ($i % 2)
                 {
                     case 1:
@@ -602,6 +575,7 @@
                         }
                         break;
                 }
+            }
 
             return TRUE;
         }
@@ -618,7 +592,7 @@
          */
         public function isDiagonal(): bool
         {
-            return ($this->isLowerTriangular() && $this->isUpperTriangular());
+            return $this->isLowerTriangular() && $this->isUpperTriangular();
         }
 
         /**
@@ -630,26 +604,18 @@
          *
          * @return boolean true if lower triangular; false otherwise
          */
-        public function isLowerTriangular(): bool
+        #[Pure] public function isLowerTriangular(): bool
         {
             if ( ! $this->isSquare())
-            {
                 return FALSE;
-            }
 
             $m = $this->m;
             $n = $this->n;
 
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = $i + 1; $j < $n; $j++)
-                {
                     if ( ! Support::isZero($this->A[$i][$j]))
-                    {
                         return FALSE;
-                    }
-                }
-            }
 
             return TRUE;
         }
@@ -663,25 +629,17 @@
          *
          * @return boolean true if upper triangular; false otherwise
          */
-        public function isUpperTriangular(): bool
+        #[Pure] public function isUpperTriangular(): bool
         {
             if ( ! $this->isSquare())
-            {
                 return FALSE;
-            }
 
             $m = $this->m;
 
             for ($i = 1; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $i; $j++)
-                {
                     if ( ! Support::isZero($this->A[$i][$j]))
-                    {
                         return FALSE;
-                    }
-                }
-            }
 
             return TRUE;
         }
@@ -694,20 +652,14 @@
          *
          * @return boolean true if rectangular diagonal
          */
-        public function isRectangularDiagonal(): bool
+        #[Pure] public function isRectangularDiagonal(): bool
         {
             $m = $this->m;
             $n = $this->n;
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
-                    if ($i !== $j && ! Support::isZero($this->A[$i][$j]))
-                    {
+                    if (($i !== $j) && ! Support::isZero($this->A[$i][$j]))
                         return FALSE;
-                    }
-                }
-            }
 
             return TRUE;
         }
@@ -728,9 +680,7 @@
         {
             // Row echelon form
             if ( ! $this->isRef())
-            {
                 return FALSE;
-            }
 
             $m = $this->m;
             $n = $this->n;
@@ -738,21 +688,15 @@
 
             // Leading coefficients are 1
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
                 {
                     if ($this->A[$i][$j] == 0)
-                    {
                         continue;
-                    }
                     if ($this->A[$i][$j] != 1)
-                    {
                         return FALSE;
-                    }
                     $lcs[] = $j;
                     continue 2;
                 }
-            }
 
             // Leading coefficients are the only nonzero entry in its column
             foreach ($lcs as $j)
@@ -760,14 +704,10 @@
                 $column = $this->getColumn($j);
                 $entries = array_filter($column);
                 if (count($entries) !== 1)
-                {
                     return FALSE;
-                }
                 $entry = array_shift($entries);
                 if ($entry != 1)
-                {
                     return FALSE;
-                }
             }
 
             return TRUE;
@@ -791,14 +731,9 @@
             // All nonzero rows are above any rows of all zeroes
             for ($i = $m - 1; $i >= 0; $i--)
             {
-                $array_filter = [];
-                foreach ($this->A[$i] as $key => $x)
-                {
-                    if ($x != 0)
-                    {
-                        $array_filter[$key] = $x;
-                    }
-                }
+                $array_filter = array_filter($this->A[$i], function ($x) {
+                    return $x != 0;
+                });
                 $zero_row = count($array_filter) === 0;
 
                 if ( ! $zero_row)
@@ -808,28 +743,20 @@
                 }
 
                 if ( ! $zero_row_ok)
-                {
                     return FALSE;
-                }
             }
 
             // Leading coefficients to the right of rows above it
             $lc = -1;
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     if ($this->A[$i][$j] != 0)
                     {
                         if ($j <= $lc)
-                        {
                             return FALSE;
-                        }
                         $lc = $j;
                         continue 2;
                     }
-                }
-            }
 
             return TRUE;
         }
@@ -841,17 +768,21 @@
          *
          * @return boolean true if matrix is idempotent; false otherwise
          *
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\MatrixException
-         * @throws Exception\VectorException
          */
         public function isIdempotent(): bool
         {
             if ( ! $this->isSquare())
-            {
                 return FALSE;
+            try
+            {
+                $A² = $this->multiply($this);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
             }
-            $A² = $this->multiply($this);
 
             return $this->isEqual($A²);
         }
@@ -913,23 +844,17 @@
          * @throws Exception\MatrixException if matrix dimensions do not match
          * @throws Exception\MathException
          */
-        public function multiply($B): NumericMatrix
+        public function multiply(Vector|NumericMatrix $B): NumericMatrix
         {
-            if (( ! ($B instanceof NumericMatrix))
-                && ( ! ($B instanceof
-                    Vector))
+            if ( ! $B instanceof NumericMatrix
+                && ! $B instanceof
+                    Vector
             )
-            {
                 throw new Exception\IncorrectTypeException('Can only do matrix multiplication with a Matrix or Vector');
-            }
             if ($B instanceof Vector)
-            {
                 $B = $B->asColumnMatrix();
-            }
             if ($B->getM() !== $this->n)
-            {
                 throw new Exception\MatrixException("Matrix dimensions do not match");
-            }
 
             $R = [];
             $Bᵀ = $B->transpose()->getMatrix();
@@ -938,12 +863,8 @@
             {
                 $R[$i] = array_fill(0, $B->n, 0);
                 foreach ($Bᵀ as $j => $Bᶜᵒˡ⟦j⟧)
-                {
                     foreach ($Aʳᵒʷ⟦i⟧ as $k => $A⟦i⟧⟦k⟧)
-                    {
                         $R[$i][$j] += $A⟦i⟧⟦k⟧ * $Bᶜᵒˡ⟦j⟧[$k];
-                    }
-                }
             }
 
             // @phpstan-ignore-next-line (Due to above false from array_fill)
@@ -960,24 +881,16 @@
         public function isEqual(NumericMatrix $B): bool
         {
             if ( ! $this->isEqualSizeAndType($B))
-            {
                 return FALSE;
-            }
 
             $m = $this->m;
             $n = $this->n;
             $ε = $this->ε;
             // All elements are the same
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     if (Support::isNotEqual($this->A[$i][$j], $B[$i][$j], $ε))
-                    {
                         return FALSE;
-                    }
-                }
-            }
 
             return TRUE;
         }
@@ -997,17 +910,13 @@
          */
         public function isNilpotent(): bool
         {
-            if ( ! $this->isSquare() || ($this->trace() !== 0))
-            {
+            if ( ! $this->isSquare() || $this->trace() !== 0)
                 return FALSE;
-            }
 
             $m = $this->getM();
             $zero = MatrixFactory::zero($m, $m);
             if ($this->isEqual($zero))
-            {
                 return TRUE;
-            }
 
             $A = $this;
             $nilpotent = FALSE;
@@ -1021,9 +930,7 @@
                     break;
                 }
                 if ($A->trace() !== 0)
-                {
                     break;
-                }
             }
 
             return $nilpotent;
@@ -1042,20 +949,16 @@
          *
          * @throws Exception\MatrixException if the matrix is not a square matrix
          */
-        public function trace()
+        public function trace(): float|int
         {
             if ( ! $this->isSquare())
-            {
                 throw new Exception\MatrixException('trace only works on a square matrix');
-            }
 
             $m = $this->m;
             $tr⟮A⟯ = 0;
 
             for ($i = 0; $i < $m; $i++)
-            {
                 $tr⟮A⟯ += $this->A[$i][$i];
-            }
 
             return $tr⟮A⟯;
         }
@@ -1092,24 +995,14 @@
         public function isSignature(): bool
         {
             for ($i = 0; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $this->n; $j++)
-                {
                     if ($i == $j)
-                    {
                         if ( ! in_array($this->A[$i][$j], [-1, 1]))
-                        {
-                            return FALSE;
-                        } else
+                            return FALSE; else
                         {
                             if ($this->A[$i][$j] != 0)
-                            {
                                 return FALSE;
-                            }
                         }
-                    }
-                }
-            }
 
             return TRUE;
         }
@@ -1127,7 +1020,7 @@
          */
         public function isBidiagonal(): bool
         {
-            return ($this->isUpperBidiagonal() || $this->isLowerBidiagonal());
+            return $this->isUpperBidiagonal() || $this->isLowerBidiagonal();
         }
 
         /**
@@ -1144,24 +1037,16 @@
         public function isUpperBidiagonal(): bool
         {
             if ( ! $this->isSquare() || ! $this->isUpperTriangular())
-            {
                 return FALSE;
-            }
 
             $m = $this->m;
             $n = $this->n;
 
             // Elements above upper diagonal are zero
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = $i + 2; $j < $n; $j++)
-                {
                     if ($this->A[$i][$j] != 0)
-                    {
                         return FALSE;
-                    }
-                }
-            }
 
             return TRUE;
         }
@@ -1180,21 +1065,13 @@
         public function isLowerBidiagonal(): bool
         {
             if ( ! $this->isSquare() || ! $this->isLowerTriangular())
-            {
                 return FALSE;
-            }
 
             // Elements below lower diagonal are non-zero
             for ($i = 2; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $i - 1; $j++)
-                {
                     if ($this->A[$i][$j] != 0)
-                    {
                         return FALSE;
-                    }
-                }
-            }
 
             return TRUE;
         }
@@ -1219,9 +1096,7 @@
                 || ! $this->isUpperHessenberg()
                 || ! $this->isLowerHessenberg()
             )
-            {
                 return FALSE;
-            }
 
             return TRUE;
         }
@@ -1235,24 +1110,16 @@
          *
          * @return boolean true if upper Hessenberg; false otherwise
          */
-        public function isUpperHessenberg(): bool
+        #[Pure] public function isUpperHessenberg(): bool
         {
             if ( ! $this->isSquare())
-            {
                 return FALSE;
-            }
 
             // Elements below lower diagonal are zero
             for ($i = 2; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $i - 1; $j++)
-                {
                     if ($this->A[$i][$j] != 0)
-                    {
                         return FALSE;
-                    }
-                }
-            }
 
             return TRUE;
         }
@@ -1266,24 +1133,16 @@
          *
          * @return boolean true if lower Hessenberg; false otherwise
          */
-        public function isLowerHessenberg(): bool
+        #[Pure] public function isLowerHessenberg(): bool
         {
             if ( ! $this->isSquare())
-            {
                 return FALSE;
-            }
 
             // Elements above upper diagonal are zero
             for ($i = 0; $i < $this->m; $i++)
-            {
                 for ($j = $i + 2; $j < $this->n; $j++)
-                {
                     if ($this->A[$i][$j] != 0)
-                    {
                         return FALSE;
-                    }
-                }
-            }
 
             return TRUE;
         }
@@ -1300,9 +1159,7 @@
         public function isOrthogonal(): bool
         {
             if ( ! $this->isSquare())
-            {
                 return FALSE;
-            }
 
             // AAᵀ = I
             $I = MatrixFactory::identity($this->m);
@@ -1325,9 +1182,7 @@
         public function isNormal(): bool
         {
             if ( ! $this->isSquare())
-            {
                 return FALSE;
-            }
 
             // AAᴴ = AᴴA
             $Aᴴ = $this->conjugateTranspose();
@@ -1355,9 +1210,7 @@
         public function isUnitary(): bool
         {
             if ( ! $this->isSquare())
-            {
                 return FALSE;
-            }
 
             // AAᴴ = AᴴA = I
             $Aᴴ = $this->conjugateTranspose();
@@ -1390,14 +1243,11 @@
          * https://en.wikipedia.org/wiki/Hermitian_matrix
          * @return bool
          *
-         * @throws Exception\MathException
          */
         public function isHermitian(): bool
         {
             if ( ! $this->isSquare())
-            {
                 return FALSE;
-            }
 
             // A = Aᴴ
             $Aᴴ = $this->conjugateTranspose();
@@ -1415,7 +1265,6 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\IncorrectTypeException
          */
         public function directSum(NumericMatrix $B): NumericMatrix
         {
@@ -1425,31 +1274,26 @@
             $R = [];
 
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     $R[$i][$j] = 0;
-                }
-            }
             for ($i = 0; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $this->n; $j++)
-                {
                     $R[$i][$j] = $this->A[$i][$j];
-                }
-            }
 
             $m = $B->getM();
             $n = $B->getN();
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     $R[$i + $this->m][$j + $this->n] = $B[$i][$j];
-                }
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -1465,29 +1309,49 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if either matrix is not a square matrix
-         * @throws Exception\OutOfBoundsException
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\BadDataException
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException if either matrix is not a square matrix
          */
         public function kroneckerSum(NumericMatrix $B): NumericMatrix
         {
             if ( ! $this->isSquare() || ! $B->isSquare())
-            {
                 throw new Exception\MatrixException('Matrices A and B must both be square for kroneckerSum');
-            }
 
             $A = $this;
             $m = $B->getM();
             $n = $this->n;
 
-            $In = MatrixFactory::identity($n);
-            $Im = MatrixFactory::identity($m);
+            try
+            {
+                $In = MatrixFactory::identity($n);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $Im = MatrixFactory::identity($m);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             $A⊗Im = $A->kroneckerProduct($Im);
             $In⊗B = $In->kroneckerProduct($B);
 
-            return $A⊗Im->add($In⊗B);
+            try
+            {
+                return $A⊗Im->add($In⊗B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -1513,7 +1377,9 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\BadDataException
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException
          */
         public function kroneckerProduct(NumericMatrix $B): NumericMatrix
         {
@@ -1526,12 +1392,8 @@
                 {
                     $R = [];
                     for ($p = 0; $p < $B->getM(); $p++)
-                    {
                         for ($q = 0; $q < $B->getN(); $q++)
-                        {
                             $R[$p][$q] = $this->A[$m][$n] * $B[$p][$q];
-                        }
-                    }
                     $row[] = new NumericMatrix($R);
                 }
                 $arrays[] = $row;
@@ -1545,12 +1407,10 @@
                 $initial_matrix = array_shift($row);
                 $matrices[] = array_reduce(
                     $row,
-                    function (
+                    fn(
                         NumericMatrix $augmented_matrix,
                         NumericMatrix $matrix
-                    ) {
-                        return $augmented_matrix->augment($matrix);
-                    },
+                    ) => $augmented_matrix->augment($matrix),
                     $initial_matrix
                 );
             }
@@ -1561,12 +1421,10 @@
 
             return array_reduce(
                 $matrices,
-                function (
+                fn(
                     NumericMatrix $augmented_matrix,
                     NumericMatrix $matrix
-                ) {
-                    return $augmented_matrix->augmentBelow($matrix);
-                },
+                ) => $augmented_matrix->augmentBelow($matrix),
                 $initial_matrix
             );
         }
@@ -1585,26 +1443,18 @@
          * @throws Exception\IncorrectTypeException
          * @throws Exception\MathException
          */
-        public function add($B): NumericMatrix
+        public function add(NumericMatrix $B): NumericMatrix
         {
             if ($B->getM() !== $this->m)
-            {
                 throw new Exception\MatrixException('Matrices have different number of rows');
-            }
             if ($B->getN() !== $this->n)
-            {
                 throw new Exception\MatrixException('Matrices have different number of columns');
-            }
 
             $R = [];
 
             for ($i = 0; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $this->n; $j++)
-                {
                     $R[$i][$j] = $this->A[$i][$j] + $B[$i][$j];
-                }
-            }
 
             return MatrixFactory::createNumeric($R, $this->ε);
         }
@@ -1631,22 +1481,23 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\BadParameterException if λ is not a number
-         * @throws Exception\IncorrectTypeException
          */
         public function scalarMultiply(float $λ): NumericMatrix
         {
             $R = [];
 
             for ($i = 0; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $this->n; $j++)
-                {
                     $R[$i][$j] = $this->A[$i][$j] * $λ;
-                }
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -1656,28 +1507,27 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\BadParameterException if λ is not a number
-         * @throws Exception\BadParameterException if λ is 0
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\BadParameterException if λ is 0
          */
         public function scalarDivide(float $λ): NumericMatrix
         {
             if ($λ == 0)
-            {
                 throw new Exception\BadParameterException('Parameter λ cannot equal 0');
-            }
 
             $R = [];
 
             for ($i = 0; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $this->n; $j++)
-                {
                     $R[$i][$j] = $this->A[$i][$j] / $λ;
-                }
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -1695,15 +1545,12 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if matrices are not the same dimensions
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException if matrices are not the same dimensions
          */
         public function hadamardProduct(NumericMatrix $B): NumericMatrix
         {
-            if (($B->getM() !== $this->m) || ($B->getN() !== $this->n))
-            {
+            if ($B->getM() !== $this->m || $B->getN() !== $this->n)
                 throw new Exception\MatrixException('Matrices are not the same dimensions');
-            }
 
             $m = $this->m;
             $n = $this->n;
@@ -1712,14 +1559,17 @@
             $A∘B = [];
 
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     $A∘B[$i][$j] = $A[$i][$j] * $B[$i][$j];
-                }
-            }
 
-            return MatrixFactory::createNumeric($A∘B, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($A∘B, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -1729,7 +1579,6 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\IncorrectTypeException
          */
         public function diagonal(): NumericMatrix
         {
@@ -1738,14 +1587,17 @@
             $R = [];
 
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     $R[$i][$j] = ($i == $j) ? $this->A[$i][$j] : 0;
-                }
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**************************************************************************
@@ -1780,18 +1632,21 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\BadParameterException if direction is not rows or columns
+         * @throws \MathPHP\Exception\BadParameterException if direction is not rows or columns
          */
         public function meanDeviation(string $direction = 'rows'): NumericMatrix
         {
             if ( ! in_array($direction, [self::ROWS, self::COLUMNS]))
-            {
                 throw new Exception\BadParameterException("Direction must be rows or columns, got $direction");
-            }
 
-            return ($direction === self::ROWS)
-                ? $this->meanDeviationOfRowVariables()
-                : $this->meanDeviationOfColumnVariables();
+            try
+            {
+                return $direction === self::ROWS
+                    ? $this->meanDeviationOfRowVariables()
+                    : $this->meanDeviationOfColumnVariables();
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
 
         /**
@@ -1814,7 +1669,6 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\IncorrectTypeException
          */
         public function meanDeviationOfRowVariables(): NumericMatrix
         {
@@ -1823,9 +1677,20 @@
 
             /** @var Vector[] $B */
             $array_map = [];
-            foreach ($X as $key => Vector$B = $array_map;
+            foreach ($X as $ignored => {
+                Vector}
+            $B = $array_map;
 
-            return MatrixFactory::createFromVectors($B, $this->ε);
+            try
+            {
+                return MatrixFactory::createFromVectors($B, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -1857,9 +1722,16 @@
             $n = $this->n;
 
             $array_map = [];
-            foreach ($this->A as $key => array $row)$means = $array_map;
+            foreach ($this->A as $ignored => {
+                array $row)}
+            $means = $array_map;
 
-            return new Vector($means);
+            try
+            {
+                return new Vector($means);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -1884,7 +1756,6 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\IncorrectTypeException
          */
         public function meanDeviationOfColumnVariables(): NumericMatrix
         {
@@ -1893,9 +1764,21 @@
 
             /** @var Vector[] $B */
             $array_map = [];
-            foreach ($X as $key => Vector$B = $array_map;
+            foreach ($X as $ignored => {
+                Vector}
+            $B = $array_map;
 
-            return MatrixFactory::createFromVectors($B, $this->ε)->transpose();
+            try
+            {
+                return MatrixFactory::createFromVectors($B, $this->ε)
+                    ->transpose();
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -1930,11 +1813,14 @@
 
             $means = [];
             for ($i = 0; $i < $n; $i++)
-            {
                 $means[] = array_sum(array_column($this->A, $i)) / $m;
-            }
 
-            return new Vector($means);
+            try
+            {
+                return new Vector($means);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -1947,31 +1833,29 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if matrices have a different number of rows or columns
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException if matrices have a different number of rows or columns
          */
-        public function subtract($B): NumericMatrix
+        public function subtract(NumericMatrix $B): NumericMatrix
         {
             if ($B->getM() !== $this->m)
-            {
                 throw new Exception\MatrixException('Matrices have different number of rows');
-            }
             if ($B->getN() !== $this->n)
-            {
                 throw new Exception\MatrixException('Matrices have different number of columns');
-            }
 
             $R = [];
 
             for ($i = 0; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $this->n; $j++)
-                {
                     $R[$i][$j] = $this->A[$i][$j] - $B[$i][$j];
-                }
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -1998,11 +1882,9 @@
         public function covarianceMatrix(string $direction = 'rows'
         ): NumericMatrix {
             if ( ! in_array($direction, [self::ROWS, self::COLUMNS]))
-            {
                 throw new Exception\BadParameterException("Direction must be rows or columns, got $direction");
-            }
 
-            return $direction === self::ROWS
+            return ($direction === self::ROWS)
                 ? $this->covarianceMatrixOfRowVariables()
                 : $this->covarianceMatrixOfColumnVariables();
         }
@@ -2024,10 +1906,8 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\MatrixException
-         * @throws Exception\BadParameterException
-         * @throws Exception\VectorException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException
          */
         protected function covarianceMatrixOfRowVariables(): NumericMatrix
         {
@@ -2035,7 +1915,18 @@
             $B = $this->meanDeviationOfRowVariables();
             $Bᵀ = $B->transpose();
 
-            return $B->multiply($Bᵀ)->scalarMultiply((1 / ($n - 1)));
+            try
+            {
+                return $B->multiply($Bᵀ)->scalarMultiply(1 / ($n - 1));
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -2052,10 +1943,8 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\MatrixException
-         * @throws Exception\BadParameterException
-         * @throws Exception\VectorException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException
          */
         protected function covarianceMatrixOfColumnVariables(): NumericMatrix
         {
@@ -2063,7 +1952,18 @@
             $B = $this->meanDeviationOfColumnVariables();
             $Bᵀ = $B->transpose();
 
-            return $Bᵀ->multiply($B)->scalarMultiply((1 / ($n - 1)));
+            try
+            {
+                return $Bᵀ->multiply($B)->scalarMultiply(1 / ($n - 1));
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -2073,21 +1973,19 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException is matrix is not square
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\BadParameterException
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException is matrix is not square
          */
         public function adjugate(): NumericMatrix
         {
             if ( ! $this->isSquare())
-            {
                 throw new Exception\MatrixException('Matrix is not square; cannot get adjugate Matrix of a non-square matrix');
-            }
 
             if ($this->n === 1)
-            {
                 return MatrixFactory::createNumeric([[1]], $this->ε);
-            }
 
             return $this->cofactorMatrix()->transpose();
         }
@@ -2106,34 +2004,33 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if matrix is not square
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\BadParameterException
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException if matrix is not square
          */
         public function cofactorMatrix(): NumericMatrix
         {
             if ( ! $this->isSquare())
-            {
                 throw new Exception\MatrixException('Matrix is not square; cannot get cofactor Matrix of a non-square matrix');
-            }
             if ($this->n === 1)
-            {
                 throw new Exception\MatrixException('Matrix must be 2x2 or greater to compute cofactorMatrix');
-            }
 
             $m = $this->m;
             $n = $this->n;
             $R = [];
 
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     $R[$i][$j] = $this->cofactor($i, $j);
-                }
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**************************************************************************
@@ -2175,20 +2072,14 @@
          * @throws Exception\IncorrectTypeException
          * @throws Exception\BadParameterException
          */
-        public function cofactor(int $mᵢ, int $nⱼ)
+        public function cofactor(int $mᵢ, int $nⱼ): float|int
         {
             if ( ! $this->isSquare())
-            {
                 throw new Exception\MatrixException('Matrix is not square; cannot get cofactor of a non-square matrix');
-            }
-            if (($mᵢ >= $this->m) || ($mᵢ < 0))
-            {
+            if ($mᵢ >= $this->m || $mᵢ < 0)
                 throw new Exception\MatrixException('Row to exclude for cofactor does not exist');
-            }
-            if (($nⱼ >= $this->n) || ($nⱼ < 0))
-            {
+            if ($nⱼ >= $this->n || $nⱼ < 0)
                 throw new Exception\MatrixException('Column to exclude for cofactor does not exist');
-            }
 
             $Mᵢⱼ = $this->minor($mᵢ, $nⱼ);
             $⟮−1⟯ⁱ⁺ʲ = (-1) ** ($mᵢ + $nⱼ);
@@ -2217,7 +2108,8 @@
          *
          * @return Vector
          *
-         * @throws Exception\MatrixException if dimensions do not match
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\MatrixException if dimensions do not match
          */
         public function vectorMultiply(Vector $B): Vector
         {
@@ -2226,17 +2118,18 @@
             $m = $this->m;
 
             if ($n !== $this->n)
-            {
                 throw new Exception\MatrixException("Matrix and vector dimensions do not match");
-            }
 
             $R = [];
             for ($i = 0; $i < $m; $i++)
-            {
                 $R[$i] = array_sum(Map\Multi::multiply($this->getRow($i), $B));
-            }
 
-            return new Vector($R);
+            try
+            {
+                return new Vector($R);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -2247,9 +2140,16 @@
         public function rowSums(): Vector
         {
             $array_map = [];
-            foreach ($this->A as $key => array $row)$sums = $array_map;
+            foreach ($this->A as $ignored => {
+                array $row)}
+            $sums = $array_map;
 
-            return new Vector($sums);
+            try
+            {
+                return new Vector($sums);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -2261,11 +2161,14 @@
         {
             $sums = [];
             for ($i = 0; $i < $this->n; $i++)
-            {
                 $sums[] = array_sum(array_column($this->A, $i));
-            }
 
-            return new Vector($sums);
+            try
+            {
+                return new Vector($sums);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**************************************************************************
@@ -2286,16 +2189,14 @@
          *
          * @return int|float
          */
-        public function oneNorm()
+        #[Pure] public function oneNorm(): float|int
         {
             $n = $this->n;
             $‖A‖₁ = array_sum(Map\Single::abs(array_column($this->A, 0)));
 
             for ($j = 1; $j < $n; $j++)
-            {
-                $‖A‖₁ = \max($‖A‖₁,
+                $‖A‖₁ = max($‖A‖₁,
                     array_sum(Map\Single::abs(array_column($this->A, $j))));
-            }
 
             return $‖A‖₁;
         }
@@ -2311,21 +2212,17 @@
          * ‖A‖F = √ Σ   Σ  |aᵢⱼ|²
          *         ᵢ₌₁ ᵢ₌₁
          *
-         * @return int|float
+         * @return float
          */
-        public function frobeniusNorm()
+        public function frobeniusNorm(): float|int
         {
             $m = $this->m;
             $n = $this->n;
             $ΣΣaᵢⱼ² = 0;
 
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     $ΣΣaᵢⱼ² += ($this->A[$i][$j]) ** 2;
-                }
-            }
 
             return sqrt($ΣΣaᵢⱼ²);
         }
@@ -2336,15 +2233,13 @@
          *
          * @return int|float
          */
-        public function infinityNorm()
+        #[Pure] public function infinityNorm(): float|int
         {
             $m = $this->m;
             $‖A‖∞ = array_sum(Map\Single::abs($this->A[0]));
 
             for ($i = 1; $i < $m; $i++)
-            {
-                $‖A‖∞ = \max($‖A‖∞, array_sum(Map\Single::abs($this->A[$i])));
-            }
+                $‖A‖∞ = max($‖A‖∞, array_sum(Map\Single::abs($this->A[$i])));
 
             return $‖A‖∞;
         }
@@ -2355,19 +2250,15 @@
          *
          * @return int|float
          */
-        public function maxNorm()
+        public function maxNorm(): float|int
         {
             $m = $this->m;
             $n = $this->n;
             $max = abs($this->A[0][0]);
 
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
-                    $max = \max($max, abs($this->A[$i][$j]));
-                }
-            }
+                    $max = max($max, abs($this->A[$i][$j]));
 
             return $max;
         }
@@ -2379,26 +2270,30 @@
          *
          * @return int
          *
-         * @throws Exception\BadParameterException
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\MatrixException
          */
         public function rank(): int
         {
-            $rref = $this->rref();
+            try
+            {
+                $rref = $this->rref();
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
             $pivots = 0;
 
             for ($i = 0; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $this->n; $j++)
-                {
                     if (Support::isNotZero($rref[$i][$j], $this->ε))
                     {
                         $pivots++;
                         continue 2;
                     }
-                }
-            }
 
             return $pivots;
         }
@@ -2434,25 +2329,27 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if row to multiply does not exist
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException if row to multiply does not exist
          */
         public function rowMultiply(int $mᵢ, float $k): NumericMatrix
         {
             if ($mᵢ >= $this->m)
-            {
                 throw new Exception\MatrixException('Row to multiply does not exist');
-            }
 
             $n = $this->n;
             $R = $this->A;
 
             for ($j = 0; $j < $n; $j++)
-            {
                 $R[$mᵢ][$j] *= $k;
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -2465,30 +2362,30 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if row to multiply does not exist
-         * @throws Exception\BadParameterException if k is 0
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\BadParameterException if k is 0
+         * @throws \MathPHP\Exception\MatrixException if row to multiply does not exist
          */
         public function rowDivide(int $mᵢ, float $k): NumericMatrix
         {
             if ($mᵢ >= $this->m)
-            {
                 throw new Exception\MatrixException('Row to multiply does not exist');
-            }
             if ($k == 0)
-            {
                 throw new Exception\BadParameterException('Divisor k must not be 0');
-            }
 
             $n = $this->n;
             $R = $this->A;
 
             for ($j = 0; $j < $n; $j++)
-            {
                 $R[$mᵢ][$j] /= $k;
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**************************************************************************
@@ -2511,30 +2408,30 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if row to add does not exist
-         * @throws Exception\BadParameterException if k is 0
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\BadParameterException if k is 0
+         * @throws \MathPHP\Exception\MatrixException if row to add does not exist
          */
         public function rowAdd(int $mᵢ, int $mⱼ, float $k): NumericMatrix
         {
-            if (($mᵢ >= $this->m) || ($mⱼ >= $this->m))
-            {
+            if ($mᵢ >= $this->m || $mⱼ >= $this->m)
                 throw new Exception\MatrixException('Row to add does not exist');
-            }
             if ($k == 0)
-            {
                 throw new Exception\BadParameterException('Multiplication factor k must not be 0');
-            }
 
             $n = $this->n;
             $R = $this->A;
 
             for ($j = 0; $j < $n; $j++)
-            {
                 $R[$mⱼ][$j] += $R[$mᵢ][$j] * $k;
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -2547,25 +2444,27 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if row to add does not exist
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException if row to add does not exist
          */
         public function rowAddScalar(int $mᵢ, float $k): NumericMatrix
         {
             if ($mᵢ >= $this->m)
-            {
                 throw new Exception\MatrixException('Row to add does not exist');
-            }
 
             $n = $this->n;
             $R = $this->A;
 
             for ($j = 0; $j < $n; $j++)
-            {
                 $R[$mᵢ][$j] += $k;
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -2576,30 +2475,30 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if row to add does not exist
-         * @throws Exception\BadParameterException if the vector has a different # of components to the # of columns
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\BadParameterException if the vector has a different # of components to the # of columns
+         * @throws \MathPHP\Exception\MatrixException if row to add does not exist
          */
         public function rowAddVector(int $mᵢ, Vector $V): NumericMatrix
         {
-            if (($mᵢ < 0) || ($mᵢ >= $this->m))
-            {
+            if ($mᵢ < 0 || $mᵢ >= $this->m)
                 throw new Exception\MatrixException("Row to add to ($mᵢ) does not exist");
-            }
             if (count($V) !== $this->n)
-            {
                 throw new Exception\BadParameterException('Vector is not the same length as matrix columns');
-            }
 
             $n = $this->n;
             $R = $this->A;
 
             for ($j = 0; $j < $n; $j++)
-            {
                 $R[$mᵢ][$j] += $V[$j];
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -2611,25 +2510,27 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if row to subtract does not exist
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException if row to subtract does not exist
          */
         public function rowSubtract(int $mᵢ, int $mⱼ, float $k): NumericMatrix
         {
-            if (($mᵢ >= $this->m) || ($mⱼ >= $this->m))
-            {
+            if ($mᵢ >= $this->m || $mⱼ >= $this->m)
                 throw new Exception\MatrixException('Row to subtract does not exist');
-            }
 
             $n = $this->n;
             $R = $this->A;
 
             for ($j = 0; $j < $n; $j++)
-            {
                 $R[$mⱼ][$j] -= $R[$mᵢ][$j] * $k;
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -2642,25 +2543,27 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if row to subtract does not exist
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException if row to subtract does not exist
          */
         public function rowSubtractScalar(int $mᵢ, float $k): NumericMatrix
         {
             if ($mᵢ >= $this->m)
-            {
                 throw new Exception\MatrixException('Row to subtract does not exist');
-            }
 
             $n = $this->n;
             $R = $this->A;
 
             for ($j = 0; $j < $n; $j++)
-            {
                 $R[$mᵢ][$j] -= $k;
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -2673,25 +2576,27 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if column to multiply does not exist
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException if column to multiply does not exist
          */
         public function columnMultiply(int $nᵢ, float $k): NumericMatrix
         {
             if ($nᵢ >= $this->n)
-            {
                 throw new Exception\MatrixException('Column to multiply does not exist');
-            }
 
             $m = $this->m;
             $R = $this->A;
 
             for ($i = 0; $i < $m; $i++)
-            {
                 $R[$i][$nᵢ] *= $k;
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -2703,30 +2608,30 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if column to add does not exist
-         * @throws Exception\BadParameterException if k is 0
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\BadParameterException if k is 0
+         * @throws \MathPHP\Exception\MatrixException if column to add does not exist
          */
         public function columnAdd(int $nᵢ, int $nⱼ, float $k): NumericMatrix
         {
-            if (($nᵢ >= $this->n) || ($nⱼ >= $this->n))
-            {
+            if ($nᵢ >= $this->n || $nⱼ >= $this->n)
                 throw new Exception\MatrixException('Column to add does not exist');
-            }
             if ($k == 0)
-            {
                 throw new Exception\BadParameterException('Multiplication factor k must not be 0');
-            }
 
             $m = $this->m;
             $R = $this->A;
 
             for ($i = 0; $i < $m; $i++)
-            {
                 $R[$i][$nⱼ] += $R[$i][$nᵢ] * $k;
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**************************************************************************
@@ -2744,30 +2649,30 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if column to add does not exist
-         * @throws Exception\BadParameterException if the vector has a different # of components to the # of rows
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\BadParameterException if the vector has a different # of components to the # of rows
+         * @throws \MathPHP\Exception\MatrixException if column to add does not exist
          */
         public function columnAddVector(int $nᵢ, Vector $V): NumericMatrix
         {
-            if (($nᵢ < 0) || ($nᵢ >= $this->n))
-            {
+            if ($nᵢ < 0 || $nᵢ >= $this->n)
                 throw new Exception\MatrixException("Column to add to ($nᵢ) does not exist");
-            }
             if (count($V) !== $this->m)
-            {
                 throw new Exception\BadParameterException('Vector is not the same length as matrix rows');
-            }
 
             $m = $this->m;
             $R = $this->A;
 
             for ($i = 0; $i < $m; $i++)
-            {
                 $R[$i][$nᵢ] += $V[$i];
-            }
 
-            return MatrixFactory::createNumeric($R, $this->ε);
+            try
+            {
+                return MatrixFactory::createNumeric($R, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -2782,17 +2687,17 @@
          *
          * @return Decomposition\Cholesky
          *
-         * @throws Exception\MatrixException if the matrix is not positive definite
-         * @throws Exception\OutOfBoundsException
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\BadParameterException
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException if the matrix is not positive definite
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function choleskyDecomposition(): Decomposition\Cholesky
         {
             if ( ! $this->catalog->hasCholeskyDecomposition())
-            {
                 $this->catalog->addCholeskyDecomposition(Decomposition\Cholesky::decompose($this));
-            }
 
             return $this->catalog->getCholeskyDecomposition();
         }
@@ -2810,16 +2715,16 @@
          *
          * @return Decomposition\Crout
          *
-         * @throws Exception\MatrixException if there is division by 0 because of a 0-value determinant
-         * @throws Exception\OutOfBoundsException
-         * @throws Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException if there is division by 0 because of a 0-value determinant
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function croutDecomposition(): Decomposition\Crout
         {
             if ( ! $this->catalog->hasCroutDecomposition())
-            {
                 $this->catalog->addCroutDecomposition(Decomposition\Crout::decompose($this));
-            }
 
             return $this->catalog->getCroutDecomposition();
         }
@@ -2841,14 +2746,11 @@
          *
          * @return Decomposition\SVD
          *
-         * @throws Exception\MathException
          */
         public function svd(): Decomposition\SVD
         {
             if ( ! $this->catalog->hasSVD())
-            {
                 $this->catalog->addSVD(Decomposition\SVD::decompose($this));
-            }
 
             return $this->catalog->getSVD();
         }
@@ -2875,45 +2777,72 @@
          * Otherwise, it is more efficient to decompose and then solve.
          * Use LU Decomposition and solve Ax = b.
          *
-         * @param Vector|array<int|float> $b      solution to Ax = b
+         * @param array<int|float>|Vector $b      solution to Ax = b
          * @param string                  $method (optional) Force a specific solve method - defaults to DEFAULT where various methods are tried
          *
          * @return Vector x
          *
-         * @throws Exception\IncorrectTypeException if b is not a Vector or array
-         * @throws Exception\MatrixException
-         * @throws Exception\VectorException
-         * @throws Exception\OutOfBoundsException
-         * @throws Exception\BadParameterException
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException if b is not a Vector or array
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException
+         * @throws \MathPHP\Exception\OutOfBoundsException
+         * @throws \MathPHP\Exception\VectorException
          */
-        public function solve($b, string $method = self::DEFAULT): Vector
+        public function solve(array|Vector $b, string $method = self::DEFAULT): Vector
         {
             // Input must be a Vector or array.
-            if ( ! (($b instanceof Vector) || is_array($b)))
-            {
+            if ( ! ($b instanceof Vector || is_array($b)))
                 throw new Exception\IncorrectTypeException('b in Ax = b must be a Vector or array');
-            }
             if (is_array($b))
-            {
                 $b = new Vector($b);
-            }
 
             switch ($method)
             {
                 case self::LU:
                     $lu = $this->luDecomposition();
 
-                    return $lu->solve($b);
+                    try
+                    {
+                        return $lu->solve($b);
+                    } catch (Exception\BadDataException $e)
+                    {
+                    } catch (Exception\DivisionByZeroException $e)
+                    {
+                    } catch (Exception\IncorrectTypeException $e)
+                    {
+                    } catch (Exception\MatrixException $e)
+                    {
+                    } catch (Exception\MathException $e)
+                    {
+                    }
 
                 case self::QR:
-                    $qr = $this->qrDecomposition();
+                    try
+                    {
+                        $qr = $this->qrDecomposition();
+                    } catch (Exception\MathException $e)
+                    {
+                    }
 
                     return $qr->solve($b);
 
                 case self::INVERSE:
                     $A⁻¹ = $this->inverse();
 
-                    return new Vector($A⁻¹->multiply($b)->getColumn(0));
+                    try
+                    {
+                        return new Vector($A⁻¹->multiply($b)->getColumn(0));
+                    } catch (Exception\BadDataException $e)
+                    {
+                    } catch (Exception\IncorrectTypeException $e)
+                    {
+                    } catch (Exception\MatrixException $e)
+                    {
+                    } catch (Exception\MathException $e)
+                    {
+                    }
 
                 case self::RREF:
                     return $this->solveRref($b);
@@ -2925,15 +2854,38 @@
                         /** @var NumericMatrix $inverse */
                         $inverse = $this->catalog->getInverse();
 
-                        return new Vector($inverse->multiply($b)->getColumn(0));
+                        try
+                        {
+                            return new Vector($inverse->multiply($b)
+                                ->getColumn(0));
+                        } catch (Exception\BadDataException $e)
+                        {
+                        } catch (Exception\IncorrectTypeException $e)
+                        {
+                        } catch (Exception\MatrixException $e)
+                        {
+                        } catch (Exception\MathException $e)
+                        {
+                        }
                     }
 
                     // If 2x2, just compute the inverse and solve: x = A⁻¹b
-                    if (($this->m === 2) && ($this->n === 2))
+                    if ($this->m === 2 && $this->n === 2)
                     {
                         $A⁻¹ = $this->inverse();
 
-                        return new Vector($A⁻¹->multiply($b)->getColumn(0));
+                        try
+                        {
+                            return new Vector($A⁻¹->multiply($b)->getColumn(0));
+                        } catch (Exception\BadDataException $e)
+                        {
+                        } catch (Exception\IncorrectTypeException $e)
+                        {
+                        } catch (Exception\MatrixException $e)
+                        {
+                        } catch (Exception\MathException $e)
+                        {
+                        }
                     }
 
                     // For 3x3 or higher, check if the RREF is already computed.
@@ -2942,14 +2894,38 @@
                     {
                         $A⁻¹ = $this->inverse();
 
-                        return new Vector($A⁻¹->multiply($b)->getColumn(0));
+                        try
+                        {
+                            return new Vector($A⁻¹->multiply($b)->getColumn(0));
+                        } catch (Exception\BadDataException $e)
+                        {
+                        } catch (Exception\IncorrectTypeException $e)
+                        {
+                        } catch (Exception\MatrixException $e)
+                        {
+                        } catch (Exception\MathException $e)
+                        {
+                        }
                     }
 
                     try
                     {
                         $lu = $this->luDecomposition();
 
-                        return $lu->solve($b);
+                        try
+                        {
+                            return $lu->solve($b);
+                        } catch (Exception\BadDataException $e)
+                        {
+                        } catch (Exception\DivisionByZeroException $e)
+                        {
+                        } catch (Exception\IncorrectTypeException $e)
+                        {
+                        } catch (Exception\MatrixException $e)
+                        {
+                        } catch (Exception\MathException $e)
+                        {
+                        }
                     } catch (Exception\DivisionByZeroException $e)
                     {
                         // Not solvable via LU decomposition
@@ -2958,7 +2934,12 @@
                     // LU failed, use QR Decomposition.
                     try
                     {
-                        $qr = $this->qrDecomposition();
+                        try
+                        {
+                            $qr = $this->qrDecomposition();
+                        } catch (Exception\MathException $e)
+                        {
+                        }
 
                         return $qr->solve($b);
                     } catch (Exception\MatrixException $e)
@@ -2993,17 +2974,17 @@
          *
          * @return Decomposition\LU
          *
-         * @throws Exception\MatrixException if matrix is not square
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\OutOfBoundsException
-         * @throws Exception\VectorException
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException if matrix is not square
+         * @throws \MathPHP\Exception\OutOfBoundsException
+         * @throws \MathPHP\Exception\VectorException
          */
         public function luDecomposition(): Decomposition\LU
         {
             if ( ! $this->catalog->hasLuDecomposition())
-            {
                 $this->catalog->addLuDecomposition(Decomposition\LU::decompose($this));
-            }
 
             return $this->catalog->getLuDecomposition();
         }
@@ -3023,9 +3004,7 @@
         public function qrDecomposition(): Decomposition\QR
         {
             if ( ! $this->catalog->hasQrDecomposition())
-            {
                 $this->catalog->addQrDecomposition(Decomposition\QR::decompose($this));
-            }
 
             return $this->catalog->getQrDecomposition();
         }
@@ -3050,11 +3029,9 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if not a square matrix
-         * @throws Exception\MatrixException if singular matrix
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\BadParameterException
-         * @throws Exception\OutOfBoundsException
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException if singular matrix
          */
         public function inverse(): NumericMatrix
         {
@@ -3065,13 +3042,9 @@
             }
 
             if ( ! $this->isSquare())
-            {
                 throw new Exception\MatrixException('Not a square matrix (required for determinant)');
-            }
             if ($this->isSingular())
-            {
                 throw new Exception\MatrixException('Singular matrix (determinant = 0); not invertible');
-            }
 
             $m = $this->m;
             $n = $this->n;
@@ -3082,7 +3055,14 @@
             if ($m === 1)
             {
                 $a = $A[0][0];
-                $A⁻¹ = MatrixFactory::createNumeric([[1 / $a]], $this->ε);
+                try
+                {
+                    $A⁻¹ = MatrixFactory::createNumeric([[1 / $a]], $this->ε);
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
                 $this->catalog->addInverse($A⁻¹);
 
                 return $A⁻¹;
@@ -3104,13 +3084,20 @@
                 $c = $A[1][0];
                 $d = $A[1][1];
 
-                $R = MatrixFactory::createNumeric(
-                    [
-                        [$d, -$b],
-                        [-$c, $a],
-                    ],
-                    $this->ε
-                );
+                try
+                {
+                    $R = MatrixFactory::createNumeric(
+                        [
+                            [$d, -$b],
+                            [-$c, $a],
+                        ],
+                        $this->ε
+                    );
+                } catch (Exception\BadDataException $e)
+                {
+                } catch (Exception\MathException $e)
+                {
+                }
                 $A⁻¹ = $R->scalarMultiply(1 / $│A│);
 
                 $this->catalog->addInverse($A⁻¹);
@@ -3119,15 +3106,33 @@
             }
 
             // nxn matrix 3x3 or larger
-            $R = $this->augmentIdentity()->rref();
+            try
+            {
+                $R = $this->augmentIdentity()->rref();
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
             $A⁻¹ = [];
 
             for ($i = 0; $i < $n; $i++)
-            {
-                $A⁻¹[$i] = \array_slice($R[$i], $n);
-            }
+                $A⁻¹[$i] = array_slice($R[$i], $n);
 
-            $A⁻¹ = MatrixFactory::createNumeric($A⁻¹, $this->ε);
+            try
+            {
+                $A⁻¹ = MatrixFactory::createNumeric($A⁻¹, $this->ε);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             $this->catalog->addInverse($A⁻¹);
 
@@ -3151,9 +3156,7 @@
             $│A│ = $this->det();
 
             if (Support::isZero($│A│, $this->ε))
-            {
                 return TRUE;
-            }
 
             return FALSE;
         }
@@ -3173,18 +3176,25 @@
          *
          * @return NumericMatrix
          *
-         * @throws Exception\MatrixException if matrix is not square
-         * @throws Exception\IncorrectTypeException
-         * @throws Exception\OutOfBoundsException
+         * @throws \MathPHP\Exception\MatrixException if matrix is not square
          */
         public function augmentIdentity(): NumericMatrix
         {
             if ( ! $this->isSquare())
-            {
                 throw new Exception\MatrixException('Matrix is not square; cannot augment with the identity matrix');
-            }
 
-            return $this->augment(MatrixFactory::identity($this->getM()));
+            try
+            {
+                return $this->augment(MatrixFactory::identity($this->getM()));
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**************************************************************************
@@ -3207,34 +3217,73 @@
          */
         private function solveRref(Vector $b): Vector
         {
-            $Ab = $this->augment($b->asColumnMatrix());
-            $rref = $Ab->rref();
+            try
+            {
+                $Ab = $this->augment($b->asColumnMatrix());
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $rref = $Ab->rref();
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Edge case if singular matrix
-            if ($this->isSingular())
+            try
             {
-                $x = [];
-                $i = 0;
-                $j = 0;
-                while (($i < $this->m) && ($j < $this->n))
+                if ($this->isSingular())
                 {
-                    if ($rref[$i][$j] == 1)
+                    $x = [];
+                    $i = 0;
+                    $j = 0;
+                    while ($i < $this->m && $j < $this->n)
                     {
-                        $x[] = $rref[$i][$this->n];
-                        $i++;
-                    } else
-                    {
-                        $x[] = 0;
+                        if ($rref[$i][$j] == 1)
+                        {
+                            $x[] = $rref[$i][$this->n];
+                            $i++;
+                        } else
+                        {
+                            $x[] = 0;
+                        }
+                        $j++;
                     }
-                    $j++;
-                }
 
-                return new Vector($x);
+                    try
+                    {
+                        return new Vector($x);
+                    } catch (Exception\BadDataException $e)
+                    {
+                    }
+                }
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
             }
 
             // Standard case - rightmost column is the solution
-            return new Vector(array_column($rref->getMatrix(),
-                $rref->getN() - 1));
+            try
+            {
+                return new Vector(array_column($rref->getMatrix(),
+                    $rref->getN() - 1));
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -3243,19 +3292,21 @@
          * Various eigenvalue algorithms (methods) are availbale.
          * Use the $method parameter to control the algorithm used.
          *
-         * @param string $method Algorithm used to compute the eigenvalues
+         * @param string|null $method Algorithm used to compute the eigenvalues
          *
          * @return NumericMatrix of eigenvectors
          *
-         * @throws Exception\MatrixException if method is not a valid eigenvalue method
-         * @throws Exception\MathException
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException if method is not a valid eigenvalue method
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function eigenvectors(string $method = NULL): NumericMatrix
         {
             if ($method === NULL)
-            {
                 return Eigenvector::eigenvectors($this, $this->eigenvalues());
-            }
 
             return Eigenvector::eigenvectors($this,
                 $this->eigenvalues($method));
@@ -3272,43 +3323,35 @@
          * Various eigenvalue algorithms (methods) are available.
          * Use the $method parameter to control the algorithm used.
          *
-         * @param string $method Algorithm used to compute the eigenvalues
+         * @param string|null $method Algorithm used to compute the eigenvalues
          *
          * @return array<int|float> of eigenvalues
          *
-         * @throws Exception\MatrixException if method is not a valid eigenvalue method
-         * @throws Exception\MathException
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException if method is not a valid eigenvalue method
          */
         public function eigenvalues(string $method = NULL): array
         {
             if ( ! $this->isSquare())
-            {
                 throw new Exception\MatrixException('Eigenvalues can only be calculated on square matrices');
-            }
             if ($method === NULL)
             {
                 if ($this->isTriangular())
                 {
                     $diagonal = $this->getDiagonalElements();
-                    usort($diagonal, function ($a, $b) {
-                        return abs($b) <=> abs($a);
-                    });
+                    usort($diagonal, fn($a, $b) => abs($b) <=> abs($a));
 
                     return $diagonal;
                 }
                 if ($this->m < 5)
-                {
                     return Eigenvalue::closedFormPolynomialRootMethod($this);
-                }
                 if ($this->isSymmetric())
-                {
                     return Eigenvalue::jacobiMethod($this);
-                }
                 throw new Exception\MatrixException("Eigenvalue cannot be calculated");
             } elseif (Eigenvalue::isAvailableMethod($method))
-            {
                 return Eigenvalue::$method($this);
-            }
             throw new Exception\MatrixException("$method is not a valid eigenvalue method");
         }
 
@@ -3322,7 +3365,7 @@
          */
         public function isTriangular(): bool
         {
-            return ($this->isLowerTriangular() || $this->isUpperTriangular());
+            return $this->isLowerTriangular() || $this->isUpperTriangular();
         }
 
         /**************************************************************************
@@ -3344,15 +3387,11 @@
         public function __toString(): string
         {
             // @phpstan-ignore-next-line
-            $array_map = [];
-            foreach ($this->A as $key => $mᵢ)
-            {
-                $array_map[$key] = '['.\implode(', ', $mᵢ).']';
-            }
+            $array_map = array_map(function ($mᵢ) {
+                return '['.implode(', ', $mᵢ).']';
+            }, $this->A);
 
-            return trim(array_reduce($array_map, function ($A, $mᵢ) {
-                return $A.PHP_EOL.$mᵢ;
-            }));
+            return trim(array_reduce($array_map, fn($A, $mᵢ) => $A.PHP_EOL.$mᵢ));
         }
 
         /**
@@ -3367,12 +3406,24 @@
          *
          * @return array{matrix: string, data: string, ε: float}
          */
-        public function __debugInfo(): array
+        #[ArrayShape([
+            'matrix' => "string",
+            'data'   => "string",
+            'ε'      => "float"
+        ])] public function __debugInfo(): array
         {
             return [
                 'matrix' => sprintf('%dx%d', $this->m, $this->n),
-                'data'   => PHP_EOL.(string)$this,
+                'data'   => PHP_EOL.$this,
                 'ε'      => $this->ε,
             ];
+        }
+
+        public function debugInfo()
+        {
+        }
+
+        public function getStringRepresentation()
+        {
         }
     }

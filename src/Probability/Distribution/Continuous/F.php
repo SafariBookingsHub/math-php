@@ -2,6 +2,12 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use JetBrains\PhpStorm\Pure;
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\FunctionFailedToConvergeException;
+    use MathPHP\Exception\NanException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Special;
     use MathPHP\Functions\Support;
 
@@ -39,10 +45,10 @@
             ];
 
         /** @var float Degree of Freedom Parameter */
-        protected $d₁;
+        protected float $d₁;
 
         /** @var float Degree of Freedom Parameter */
-        protected $d₂;
+        protected float $d₂;
 
         /**
          * Constructor
@@ -71,22 +77,37 @@
          *
          * @return float probability
          * @todo how to handle x = 0
-         *
          */
         public function pdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $d₁ = $this->d₁;
             $d₂ = $this->d₂;
 
             // Numerator
-            $⟮d₁x⟯ᵈ¹d₂ᵈ² = (($d₁ * $x) ** $d₁) * $d₂ ** $d₂;
-            $⟮d₁x＋d₂⟯ᵈ¹⁺ᵈ² = (($d₁ * $x) + $d₂) ** ($d₁ + $d₂);
+            $⟮d₁x⟯ᵈ¹d₂ᵈ² = ($d₁ * $x) ** $d₁ * $d₂ ** $d₂;
+            $⟮d₁x＋d₂⟯ᵈ¹⁺ᵈ² = ($d₁ * $x + $d₂) ** ($d₁ + $d₂);
             $√⟮d₁x⟯ᵈ¹d₂ᵈ²／⟮d₁x＋d₂⟯ᵈ¹⁺ᵈ² = sqrt($⟮d₁x⟯ᵈ¹d₂ᵈ² / $⟮d₁x＋d₂⟯ᵈ¹⁺ᵈ²);
 
             // Denominator
-            $xB⟮d₁／2、d₂／2⟯ = $x * Special::beta($d₁ / 2, $d₂ / 2);
+            try
+            {
+                $xB⟮d₁／2、d₂／2⟯ = $x * Special::beta($d₁ / 2, $d₂ / 2);
+            } catch (NanException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             return $√⟮d₁x⟯ᵈ¹d₂ᵈ²／⟮d₁x＋d₂⟯ᵈ¹⁺ᵈ² / $xB⟮d₁／2、d₂／2⟯;
         }
@@ -108,15 +129,37 @@
          */
         public function cdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $d₁ = $this->d₁;
             $d₂ = $this->d₂;
 
-            $ᵈ¹ˣ／d₁x＋d₂ = ($d₁ * $x) / (($d₁ * $x) + $d₂);
+            $ᵈ¹ˣ／d₁x＋d₂ = $d₁ * $x / ($d₁ * $x + $d₂);
 
-            return Special::regularizedIncompleteBeta($ᵈ¹ˣ／d₁x＋d₂, $d₁ / 2,
-                $d₂ / 2);
+            try
+            {
+                return Special::regularizedIncompleteBeta($ᵈ¹ˣ／d₁x＋d₂, $d₁ / 2,
+                    $d₂ / 2);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (FunctionFailedToConvergeException $e)
+            {
+            } catch (NanException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -134,11 +177,9 @@
             $d₂ = $this->d₂;
 
             if ($d₁ <= 2)
-            {
                 return NAN;
-            }
 
-            return (($d₁ - 2) / $d₁) * ($d₂ / ($d₂ + 2));
+            return ($d₁ - 2) / $d₁ * ($d₂ / ($d₂ + 2));
         }
 
         /**
@@ -156,12 +197,10 @@
             $d₂ = $this->d₂;
 
             if ($d₂ <= 4)
-            {
                 return NAN;
-            }
 
-            $２d₂²⟮d₁ ＋ d₂ − 2⟯ = (2 * $d₂ ** 2) * (($d₁ + $d₂) - 2);
-            $d₁⟮d₂ − 2⟯²⟮d₂ − 4⟯ = ($d₁ * ($d₂ - 2) ** 2) * ($d₂ - 4);
+            $２d₂²⟮d₁ ＋ d₂ − 2⟯ = 2 * $d₂ ** 2 * ($d₁ + $d₂ - 2);
+            $d₁⟮d₂ − 2⟯²⟮d₂ − 4⟯ = $d₁ * ($d₂ - 2) ** 2 * ($d₂ - 4);
 
             return $２d₂²⟮d₁ ＋ d₂ − 2⟯ / $d₁⟮d₂ − 2⟯²⟮d₂ − 4⟯;
         }
@@ -174,7 +213,7 @@
          * @todo: Replace with actual median calculation.
          *
          */
-        public function median(): float
+        #[Pure] public function median(): float
         {
             return $this->mean();
         }
@@ -193,10 +232,24 @@
             $d₂ = $this->d₂;
 
             if ($d₂ > 2)
-            {
                 return $d₂ / ($d₂ - 2);
-            }
 
             return NAN;
+        }
+
+        public function medianTemporaryVersion()
+        {
+        }
+
+        public function varianceNan()
+        {
+        }
+
+        public function modeNan()
+        {
+        }
+
+        public function meanNAN()
+        {
         }
     }

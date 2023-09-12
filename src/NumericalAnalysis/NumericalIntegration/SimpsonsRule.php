@@ -80,14 +80,14 @@
          * @throws Exception\BadDataException
          * @throws Exception\IncorrectTypeException
          */
-        public static function approximate($source, ...$args): float
+        public static function approximate(callable|array $source, ...$args): float
         {
             // Get an array of points from our $source argument
             $points = self::getPoints($source, $args);
 
             // Validate input and sort points
-            self::validate($points, $degree = 3);
-            Validation::isSubintervalsMultiple($points, $m = 2);
+            self::validate($points, degree: 3);
+            Validation::isSubintervalsMultiple($points, m: 2);
             $sorted = self::sort($points);
             Validation::isSpacingConstant($sorted);
 
@@ -110,13 +110,13 @@
              *   ⁱ⁼¹   3
              *  where h = (xn - x₁) / (n - 1)
              */
-            for ($i = 1; $i < ($subintervals / 2) + 1; $i++)
+            for ($i = 1; $i < $subintervals / 2 + 1; $i++)
             {
-                $x₂ᵢ₋₁ = $sorted[(2 * $i) - 2][$x];
-                $x₂ᵢ = $sorted[(2 * $i) - 1][$x];
+                $x₂ᵢ₋₁ = $sorted[2 * $i - 2][$x];
+                $x₂ᵢ = $sorted[2 * $i - 1][$x];
                 $x₂ᵢ₊₁ = $sorted[(2 * $i)][$x];
-                $f⟮x₂ᵢ₋₁⟯ = $sorted[(2 * $i) - 2][$y];  // y₂ᵢ₋₁
-                $f⟮x₂ᵢ⟯ = $sorted[(2 * $i) - 1][$y];  // y₂ᵢ
+                $f⟮x₂ᵢ₋₁⟯ = $sorted[2 * $i - 2][$y];  // y₂ᵢ₋₁
+                $f⟮x₂ᵢ⟯ = $sorted[2 * $i - 1][$y];  // y₂ᵢ
                 $f⟮x₂ᵢ₊₁⟯ = $sorted[(2 * $i)][$y];    // y₂ᵢ₊₁
                 $lagrange = LagrangePolynomial::interpolate([
                     [
@@ -132,5 +132,29 @@
             }
 
             return $approximation;
+        }
+
+        public function nonConstantSpacingException()
+        {
+        }
+
+        public function approximateErrorSubintervalsNotEven()
+        {
+        }
+
+        public function approximateUsingPolynomial()
+        {
+        }
+
+        public function approximateUsingCallback()
+        {
+        }
+
+        public function approximateWithPointsNotSorted()
+        {
+        }
+
+        public function approximateWithPoints()
+        {
         }
     }

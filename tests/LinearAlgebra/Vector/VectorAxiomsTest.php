@@ -2,6 +2,11 @@
 
     namespace MathPHP\Tests\LinearAlgebra\Vector;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\IncorrectTypeException;
+    use MathPHP\Exception\MathException;
+    use MathPHP\Exception\MatrixException;
+    use MathPHP\Exception\VectorException;
     use MathPHP\LinearAlgebra\NumericMatrix;
     use MathPHP\LinearAlgebra\Vector;
     use PHPUnit\Framework\TestCase;
@@ -332,7 +337,12 @@
         public function testL2NormLessThanL1NormLessThanSqrtNL2Norm(array $V)
         {
             // Given
-            $V = new Vector($V);
+            try
+            {
+                $V = new Vector($V);
+            } catch (BadDataException $e)
+            {
+            }
             $n = $V->getN();
 
             // When
@@ -356,7 +366,12 @@
             array $V
         ) {
             // Given
-            $V = new Vector($V);
+            try
+            {
+                $V = new Vector($V);
+            } catch (BadDataException $e)
+            {
+            }
             $n = $V->getN();
 
             // When
@@ -380,7 +395,12 @@
             array $V
         ) {
             // Given
-            $V = new Vector($V);
+            try
+            {
+                $V = new Vector($V);
+            } catch (BadDataException $e)
+            {
+            }
             $n = $V->getN();
 
             // When
@@ -402,12 +422,32 @@
         public function testDotProductCommutative(array $A, array $B)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $A⋅B = $A->dotProduct($B);
-            $B⋅A = $B->dotProduct($A);
+            try
+            {
+                $A⋅B = $A->dotProduct($B);
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $B⋅A = $B->dotProduct($A);
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($A⋅B, $B⋅A);
@@ -421,12 +461,32 @@
         public function testDotProductZero(array $A, array $zero)
         {
             // Given
-            $A = new Vector($A);
-            $zero = new Vector($zero);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $zero = new Vector($zero);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $A⋅zero = $A->dotProduct($zero);
-            $zero⋅A = $zero->dotProduct($A);
+            try
+            {
+                $A⋅zero = $A->dotProduct($zero);
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $zero⋅A = $zero->dotProduct($A);
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(0, $A⋅zero);
@@ -442,12 +502,32 @@
         public function testReverseCrossProduct(array $A, array $B)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $AxB = $A->crossProduct($B);
-            $BxA = $B->crossProduct($A);
+            try
+            {
+                $AxB = $A->crossProduct($B);
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $BxA = $B->crossProduct($A);
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($AxB[0], -$BxA[0]);
@@ -463,11 +543,26 @@
         public function testCrossProductPropertyOfZero(array $A)
         {
             // Given
-            $A = new Vector($A);
-            $zero = new Vector(array_fill(0, $A->getN(), 0));
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $zero = new Vector(array_fill(0, $A->getN(), 0));
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $Ax0 = $A->crossProduct($zero);
+            try
+            {
+                $Ax0 = $A->crossProduct($zero);
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($zero, $Ax0);
@@ -485,13 +580,42 @@
             array $C
         ) {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $C = new Vector($C);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $C = new Vector($C);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $Ax⟮B＋C⟯ = $A->crossProduct($B->add($C));
-            $⟮AxB⟯＋⟮AxC⟯ = $A->crossProduct($B)->add($A->crossProduct($C));
+            try
+            {
+                $Ax⟮B＋C⟯ = $A->crossProduct($B->add($C));
+            } catch (BadDataException $e)
+            {
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $⟮AxB⟯＋⟮AxC⟯ = $A->crossProduct($B)->add($A->crossProduct($C));
+            } catch (BadDataException $e)
+            {
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($Ax⟮B＋C⟯, $⟮AxB⟯＋⟮AxC⟯);
@@ -510,15 +634,30 @@
             array $B
         ) {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $AxB = $A->crossProduct($B);
+            try
+            {
+                $AxB = $A->crossProduct($B);
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
-            $this->assertEquals(0, $AxB->innerProduct($A));
-            $this->assertEquals(0, $AxB->innerProduct($B));
+            $this->assertEquals(0, $AxB->innerProduct(B: $A));
+            $this->assertEquals(0, $AxB->innerProduct(B: $B));
         }
 
         /**
@@ -532,13 +671,38 @@
             array $C
         ) {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $C = new Vector($C);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $C = new Vector($C);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $A⋅⟮BxC⟯ = $A->dotProduct($B->crossProduct($C));
-            $⟮AxB⟯⋅C = $A->crossProduct($B)->dotProduct($C);
+            try
+            {
+                $A⋅⟮BxC⟯ = $A->dotProduct($B->crossProduct($C));
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $⟮AxB⟯⋅C = $A->crossProduct($B)->dotProduct($C);
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($A⋅⟮BxC⟯, $⟮AxB⟯⋅C);
@@ -555,15 +719,50 @@
             array $C
         ) {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
-            $C = new Vector($C);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $C = new Vector($C);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $Ax⟮BxC⟯ = $A->crossProduct($B->crossProduct($C));
-            $⟮A⋅C⟯B = $B->scalarMultiply($A->dotProduct($C));
-            $⟮A⋅B⟯C = $C->scalarMultiply($A->dotProduct($B));
-            $⟮A⋅C⟯B−⟮A⋅B⟯C = $⟮A⋅C⟯B->subtract($⟮A⋅B⟯C);
+            try
+            {
+                $Ax⟮BxC⟯ = $A->crossProduct($B->crossProduct($C));
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $⟮A⋅C⟯B = $B->scalarMultiply($A->dotProduct($C));
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $⟮A⋅B⟯C = $C->scalarMultiply($A->dotProduct($B));
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $⟮A⋅C⟯B−⟮A⋅B⟯C = $⟮A⋅C⟯B->subtract($⟮A⋅B⟯C);
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($Ax⟮BxC⟯, $⟮A⋅C⟯B−⟮A⋅B⟯C);
@@ -581,16 +780,45 @@
             array $B
         ) {
             // Given Vector A⨂B
-            $Av = new Vector($A);
-            $Bv = new Vector($B);
-            $A⨂B = $Av->outerProduct($Bv);
+            try
+            {
+                $Av = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $Bv = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
+            $A⨂B = $Av->outerProduct(B: $Bv);
 
             // When Matrix multiplication ABᵀ
-            $Am = $Av->asColumnMatrix();
-            $Bᵀ = new NumericMatrix([
-                $Bv->getVector(),
-            ]);
-            $ABᵀ = $Am->multiply($Bᵀ);
+            try
+            {
+                $Am = $Av->asColumnMatrix();
+            } catch (MathException $e)
+            {
+            }
+            try
+            {
+                $Bᵀ = new NumericMatrix([
+                    $Bv->getVector(),
+                ]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $ABᵀ = $Am->multiply($Bᵀ);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($A⨂B, $ABᵀ);
@@ -604,12 +832,22 @@
         public function testOuterProductIsDirectProduct(array $A, array $B)
         {
             // Given Outer product
-            $Av = new Vector($A);
-            $Bv = new Vector($B);
-            $A⨂B = $Av->outerProduct($Bv);
+            try
+            {
+                $Av = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $Bv = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
+            $A⨂B = $Av->outerProduct(B: $Bv);
 
             // When Direct product
-            $AB = $Av->directProduct($Bv);
+            $AB = $Av->directProduct(B: $Bv);
 
             // Then
             $this->assertEquals($A⨂B->getMatrix(), $AB->getMatrix());
@@ -624,13 +862,25 @@
             array $A
         ) {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
             $c = 2;
             $d = 9;
 
             // When
-            $⟮c＋d⟯A = $A->scalarMultiply($c + $d);
-            $⟮cA＋dA⟯ = $A->scalarMultiply($c)->add($A->scalarMultiply($d));
+            $⟮c＋d⟯A = $A->scalarMultiply(k: $c + $d);
+            try
+            {
+                $⟮cA＋dA⟯ = $A->scalarMultiply($c)->add($A->scalarMultiply($d));
+            } catch (BadDataException $e)
+            {
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($⟮c＋d⟯A, $⟮cA＋dA⟯);
@@ -647,13 +897,37 @@
             array $B
         ) {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
             $c = 4;
 
             // When
-            $c⟮A＋B⟯ = $A->add($B)->scalarMultiply($c);
-            $⟮cA＋cB⟯ = $A->scalarMultiply($c)->add($B->scalarMultiply($c));
+            try
+            {
+                $c⟮A＋B⟯ = $A->add($B)->scalarMultiply($c);
+            } catch (BadDataException $e)
+            {
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $⟮cA＋cB⟯ = $A->scalarMultiply($c)->add($B->scalarMultiply($c));
+            } catch (BadDataException $e)
+            {
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($c⟮A＋B⟯, $⟮cA＋cB⟯);
@@ -668,10 +942,15 @@
         public function testScalarMultiplyOneIdentity(array $A)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $１A = $A->scalarMultiply(1);
+            $１A = $A->scalarMultiply(k: 1);
 
             // Then
             $this->assertEquals($A, $１A);
@@ -686,11 +965,21 @@
         public function testScalarMultiplyZeroIdentity(array $A)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $０A = $A->scalarMultiply(0);
-            $zero = new Vector(array_fill(0, $A->getN(), 0));
+            $０A = $A->scalarMultiply(k: 0);
+            try
+            {
+                $zero = new Vector(array_fill(0, $A->getN(), 0));
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($zero, $０A);
@@ -707,11 +996,21 @@
             array $R
         ) {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $ーA = $A->scalarMultiply(-1);
-            $R = new Vector($R);
+            $ーA = $A->scalarMultiply(k: -1);
+            try
+            {
+                $R = new Vector($R);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $ーA);
@@ -726,11 +1025,26 @@
         public function testPerpendicularDotProduct(array $A)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $A⊥ = $A->perpendicular();
-            $A⋅A⊥ = $A->dotProduct($A⊥);
+            try
+            {
+                $A⊥ = $A->perpendicular();
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $A⋅A⊥ = $A->dotProduct($A⊥);
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(0, $A⋅A⊥);
@@ -744,10 +1058,20 @@
         public function testPerpDotProductZero(array $A)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $A⊥⋅A = $A->perpDotProduct($A);
+            try
+            {
+                $A⊥⋅A = $A->perpDotProduct($A);
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(0, $A⊥⋅A);
@@ -761,12 +1085,32 @@
         public function testPerpDotProdcutSwapOperandsChangeSign(array $A)
         {
             // Given
-            $A = new Vector($A);
-            $A⊥ = $A->perpendicular();
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $A⊥ = $A->perpendicular();
+            } catch (VectorException $e)
+            {
+            }
 
             // When
-            $A⋅A⊥ = $A->dotProduct($A⊥);
-            $A⊥⋅A = $A⊥->dotProduct($A);
+            try
+            {
+                $A⋅A⊥ = $A->dotProduct($A⊥);
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $A⊥⋅A = $A⊥->dotProduct($A);
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($A⋅A⊥, -$A⊥⋅A);
@@ -780,14 +1124,31 @@
         public function testProjPerpSumEqualsA(array $A, array $B)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $projᵇA = $A->projection($B);
-            $perpᵇA = $A->perp($B);
+            $projᵇA = $A->projection(B: $B);
+            $perpᵇA = $A->perp(B: $B);
 
-            $projᵇA＋perpᵇA = $projᵇA->add($perpᵇA);
+            try
+            {
+                $projᵇA＋perpᵇA = $projᵇA->add($perpᵇA);
+            } catch (BadDataException $e)
+            {
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($A, $projᵇA＋perpᵇA, 0.00001);
@@ -803,13 +1164,23 @@
         public function testProjPerpSumOfSquares(array $A, array $B)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
             $│A│² = ($A->length()) ** 2;
-            $│projᵇA│² = ($A->projection($B)->length()) ** 2;
-            $│perpᵇA│² = ($A->perp($B)->length()) ** 2;
+            $│projᵇA│² = ($A->projection(B: $B)->length()) ** 2;
+            $│perpᵇA│² = ($A->perp(B: $B)->length()) ** 2;
 
             // Then
             $this->assertEqualsWithDelta($│A│², $│projᵇA│² + $│perpᵇA│²,
@@ -824,14 +1195,29 @@
         public function testProjPerpDotProductEqualsZero(array $A, array $B)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $projᵇA = $A->projection($B);
-            $perpᵇA = $A->perp($B);
+            $projᵇA = $A->projection(B: $B);
+            $perpᵇA = $A->perp(B: $B);
 
-            $projᵇA⋅perpᵇA = $projᵇA->dotProduct($perpᵇA);
+            try
+            {
+                $projᵇA⋅perpᵇA = $projᵇA->dotProduct($perpᵇA);
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta(0, $projᵇA⋅perpᵇA, 0.00001);
@@ -847,15 +1233,35 @@
             array $B
         ) {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $projᵇA = $A->projection($B);
-            $projᵇA⊥ = $A->projection($B)->perpendicular();
-            $perpᵇA = $A->perp($B);
+            $projᵇA = $A->projection(B: $B);
+            try
+            {
+                $projᵇA⊥ = $A->projection($B)->perpendicular();
+            } catch (VectorException $e)
+            {
+            }
+            $perpᵇA = $A->perp(B: $B);
 
-            $projᵇA⊥⋅perpᵇA = abs($projᵇA⊥->dotProduct($perpᵇA));
+            try
+            {
+                $projᵇA⊥⋅perpᵇA = abs($projᵇA⊥->dotProduct($perpᵇA));
+            } catch (VectorException $e)
+            {
+            }
             $│projᵇA│ = $projᵇA->length();
             $│perpᵇA│ = $perpᵇA->length();
 

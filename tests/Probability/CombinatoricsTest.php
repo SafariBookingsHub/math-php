@@ -601,7 +601,7 @@
          * @param int   $n
          * @param int   $r
          * @param float $expected
-         * @param float ε
+         * @param float $ε ε
          *
          * @throws       \Exception
          */
@@ -687,7 +687,7 @@
          * @param int   $n
          * @param int   $r
          * @param float $expected
-         * @param float ε
+         * @param float $ε ε
          *
          * @throws       \Exception
          */

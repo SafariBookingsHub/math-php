@@ -2,6 +2,9 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Special;
     use MathPHP\Functions\Support;
 
@@ -36,7 +39,7 @@
             ];
 
         /** @var float Degrees of Freedom Parameter */
-        protected $k;
+        protected float $k;
 
         /**
          * Constructor
@@ -63,19 +66,33 @@
          */
         public function pdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $k = $this->k;
 
             // Numerator
-            $x⁽ᵏ／²⁾⁻¹ = $x ** (($k / 2) - 1);
+            $x⁽ᵏ／²⁾⁻¹ = $x ** ($k / 2 - 1);
             $ℯ⁻⁽ˣ／²⁾ = exp(-($x / 2));
 
             // Denominator
             $２ᵏ／² = 2 ** ($k / 2);
-            $Γ⟮k／2⟯ = Special::Γ($k / 2);
+            try
+            {
+                $Γ⟮k／2⟯ = Special::Γ($k / 2);
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
-            return ($x⁽ᵏ／²⁾⁻¹ * $ℯ⁻⁽ˣ／²⁾) / ($２ᵏ／² * $Γ⟮k／2⟯);
+            return $x⁽ᵏ／²⁾⁻¹ * $ℯ⁻⁽ˣ／²⁾ / ($２ᵏ／² * $Γ⟮k／2⟯);
         }
 
         /**
@@ -97,15 +114,34 @@
          */
         public function cdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $k = $this->k;
 
             // Numerator
-            $γ⟮k／2、x／2⟯ = Special::γ($k / 2, $x / 2);
+            try
+            {
+                $γ⟮k／2、x／2⟯ = Special::γ($k / 2, $x / 2);
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             // Denominator
-            $Γ⟮k／2⟯ = Special::Γ($k / 2);
+            try
+            {
+                $Γ⟮k／2⟯ = Special::Γ($k / 2);
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             return $γ⟮k／2、x／2⟯ / $Γ⟮k／2⟯;
         }
@@ -134,7 +170,7 @@
         public function median(): float
         {
             $k = $this->k;
-            $⟮1 − 2／9k⟯ = 1 - (2 / (9 * $k));
+            $⟮1 − 2／9k⟯ = 1 - 2 / (9 * $k);
 
             return $k * $⟮1 − 2／9k⟯ ** 3;
         }

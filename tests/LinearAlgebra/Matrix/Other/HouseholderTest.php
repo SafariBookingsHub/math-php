@@ -7,14 +7,12 @@
     use MathPHP\Tests\LinearAlgebra\Fixture\MatrixDataProvider;
     use PHPUnit\Framework\TestCase;
 
+    use function is_nan;
     use function min;
 
     class HouseholderTest extends TestCase {
         use MatrixDataProvider;
 
-        /**
-         * @return array
-         */
         public static function dataProviderForHouseholder(): array
         {
             return [
@@ -223,14 +221,9 @@
             $H = Householder::transform($A);
 
             // Then
-            $array_filter = [];
-            foreach ($H->eigenvalues() as $key => $x)
-            {
-                if ( ! \is_nan($x))
-                {
-                    $array_filter[$key] = $x;
-                }
-            }
+            $array_filter = array_filter($H->eigenvalues(), function ($x) {
+                return ! is_nan($x);
+            });
             $eigenvalues = $array_filter;
             $this->assertEqualsWithDelta(1, max($eigenvalues), 0.00001);
             $this->assertEqualsWithDelta(-1, min($eigenvalues), 0.00001);

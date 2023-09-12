@@ -324,8 +324,13 @@
             array $expected
         ) {
             // When
-            $likelihoodRatio = Experiment::likelihoodRatioSS($sensitivity,
-                $specificity);
+            try
+            {
+                $likelihoodRatio = Experiment::likelihoodRatioSS($sensitivity,
+                    $specificity);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected['LL+'],
@@ -347,6 +352,11 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            Experiment::likelihoodRatioSS($sensitivity, $specificity);
+            try
+            {
+                Experiment::likelihoodRatioSS($sensitivity, $specificity);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
     }

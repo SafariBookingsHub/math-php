@@ -6,9 +6,6 @@
     use PHPUnit\Framework\TestCase;
 
     class IterZipArrayTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForZipTwoArraysSameSize(): array
         {
             return [
@@ -50,9 +47,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForZipTwoArraysDifferentSize(): array
         {
             return [
@@ -99,9 +93,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForZipThreeArraysSameSize(): array
         {
             return [
@@ -148,9 +139,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForZipThreeArraysDifferentSize(
         ): array
         {
@@ -200,9 +188,7 @@
 
             // When
             foreach (Iter::zip($array1, $array2) as [$value1, $value2])
-            {
                 $result[] = [$value1, $value2];
-            }
 
             // Then
             $this->assertEquals($expected, $result);
@@ -225,9 +211,7 @@
             $result = [];
 
             foreach (Iter::zip($array1, $array2) as [$value1, $value2])
-            {
                 $result[] = [$value1, $value2];
-            }
 
             // Then
             $this->assertEquals($expected, $result);
@@ -256,9 +240,7 @@
                 Iter::zip($array1, $array2, $array3) as [$value1, $value2,
                 $value3]
             )
-            {
                 $result[] = [$value1, $value2, $value3];
-            }
 
             // Then
             $this->assertEquals($expected, $result);
@@ -284,12 +266,10 @@
 
             // When
             foreach (
-                Iter::zip(...[$array1, $array2, $array3]) as [$value1, $value2,
+                Iter::zip($array1, $array2, $array3) as [$value1, $value2,
                 $value3]
             )
-            {
                 $result[] = [$value1, $value2, $value3];
-            }
 
             // Then
             $this->assertEquals($expected, $result);
@@ -318,9 +298,7 @@
                 Iter::zip($array1, $array2, $array3) as [$value1, $value2,
                 $value3]
             )
-            {
                 $result[] = [$value1, $value2, $value3];
-            }
 
             // Then
             $this->assertEquals($expected, $result);

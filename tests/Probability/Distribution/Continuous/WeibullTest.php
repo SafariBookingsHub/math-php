@@ -5,6 +5,7 @@
     use MathPHP\Probability\Distribution\Continuous\Weibull;
     use PHPUnit\Framework\TestCase;
 
+    use function is_numeric;
     use function range;
 
     use const INF;
@@ -354,7 +355,6 @@
         public function testRand()
         {
             foreach (range(1, 10) as $k)
-            {
                 foreach (range(1, 10) as $λ)
                 {
                     // Given
@@ -365,9 +365,8 @@
                         $random = $weibull->rand();
 
                         // Then
-                        $this->assertTrue(\is_numeric($random));
+                        $this->assertTrue(is_numeric($random));
                     }
                 }
-            }
         }
     }

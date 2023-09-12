@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class MultinomialTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForPmf(): array
         {
             return [

@@ -78,12 +78,10 @@
          *
          * p(x) agrees with f(x) at x = $_
          */
-        public function testSolve($x)
+        public function testSolve(float $x)
         {
             // f(x) = x⁴ + 8x³ -13x² -92x + 96
-            $f = function ($x) {
-                return ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
-            };
+            $f = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
 
             // And
             $a = 0;
@@ -123,12 +121,10 @@
          *
          * p(x) agrees with f(x) at x = $_
          */
-        public function testSolveNonZeroError($x)
+        public function testSolveNonZeroError(float $x)
         {
             // f(x) = x⁴ + 8x³ -13x² -92x + 96
-            $f = function ($x) {
-                return ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
-            };
+            $f = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
 
             // And
             $a = 0;

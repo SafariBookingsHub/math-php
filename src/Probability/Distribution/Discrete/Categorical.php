@@ -20,7 +20,7 @@
         public const PARAMETER_LIMITS = [];
 
         /** @var int number of categories */
-        private $k;
+        private int $k;
 
         /**
          * @var array<int|string, int|float>
@@ -28,7 +28,7 @@
          * If associative array, category names are keys.
          * Otherwise, category names are array indexes.
          */
-        private $probabilities;
+        private array $probabilities;
 
         /**
          * Distribution constructor
@@ -45,22 +45,16 @@
         {
             // Must have at least one category
             if ($k <= 0)
-            {
                 throw new Exception\BadParameterException("k (number of categories) must be > 0. Given $k");
-            }
 
             // Must have k number of probabilities
             if (count($probabilities) != $k)
-            {
                 throw new Exception\BadDataException("Must have $k probabilities. Given "
                     .count($probabilities));
-            }
 
             // Probabilities must add up to 1
             if (round(array_sum($probabilities), 1) != 1)
-            {
                 throw new Exception\BadDataException('Probabilities do not add up to 1.');
-            }
 
             $this->k = $k;
             $this->probabilities = $probabilities;
@@ -73,18 +67,16 @@
          *
          * pmf = p(x = i) = pᵢ
          *
-         * @param int|float $x category name/number
+         * @param float|int $x category name/number
          *
          * @return float
          *
          * @throws Exception\BadDataException if x is not a valid category
          */
-        public function pmf($x): float
+        public function pmf(float|int $x): float
         {
             if ( ! isset($this->probabilities[$x]))
-            {
                 throw new Exception\BadDataException("$x is not a valid category");
-            }
 
             return $this->probabilities[$x];
         }
@@ -94,21 +86,19 @@
          *
          * i such that pᵢ = \max(p₁, ... pk)
          *
-         * @return mixed Category name/number. Only returns one category in case on multimodal scenario.
+         * @return int|string|null Category name/number. Only returns one category in case on multimodal scenario.
          */
-        public function mode()
+        public function mode(): mixed
         {
             $category = NULL;
             $pmax = 0;
 
             foreach ($this->probabilities as $i => $pᵢ)
-            {
                 if ($pᵢ > $pmax)
                 {
                     $pmax = $pᵢ;
                     $category = $i;
                 }
-            }
 
             return $category;
         }
@@ -124,14 +114,34 @@
          */
         public function __get(string $name)
         {
-            switch ($name)
+            return match ($name)
             {
-                case 'k':
-                case 'probabilities':
-                    return $this->{$name};
+                'k', 'probabilities' => $this->{$name},
+                default => throw new Exception\BadDataException("$name is not a valid gettable parameter"),
+            };
+        }
 
-                default:
-                    throw new Exception\BadDataException("$name is not a valid gettable parameter");
-            }
+        public function getException()
+        {
+        }
+
+        public function get()
+        {
+        }
+
+        public function pmfException()
+        {
+        }
+
+        public function badProbabilities()
+        {
+        }
+
+        public function badCount()
+        {
+        }
+
+        public function badK()
+        {
         }
     }

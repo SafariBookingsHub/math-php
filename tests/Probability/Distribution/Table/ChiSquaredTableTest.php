@@ -54,7 +54,12 @@
             float $χ²
         ) {
             // When
-            $value = ChiSquared::getChiSquareValue($df, $p);
+            try
+            {
+                $value = ChiSquared::getChiSquareValue($df, $p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($χ², $value);

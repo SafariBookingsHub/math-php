@@ -53,4 +53,36 @@
         {
             parent::__construct(self::μ, self::σ);
         }
+
+        public function inverse()
+        {
+        }
+
+        public function variance()
+        {
+        }
+
+        public function mode()
+        {
+        }
+
+        public function mean()
+        {
+        }
+
+        public function cdfEqualsNormalWithMeanZeroAndStandardDeviationOne()
+        {
+        }
+
+        public function cdf()
+        {
+        }
+
+        public function pdfEqualsNormalWithMeanZeroAndStandardDeviationOne()
+        {
+        }
+
+        public function pdf()
+        {
+        }
     }

@@ -21,16 +21,12 @@
             $sum = function ($x, ...$args) {
                 $function = 0;
                 foreach ($args as $arg)
-                {
                     $function += $arg($x);
-                }
 
                 return $function;
             };
 
-            return function ($x) use ($args, $sum) {
-                return $sum(...array_merge([$x], $args));
-            };
+            return fn($x) => $sum(...array_merge([$x], $args));
         }
 
         /**
@@ -46,15 +42,11 @@
             $product = function ($x, ...$args) {
                 $function = 1;
                 foreach ($args as $arg)
-                {
                     $function *= $arg($x);
-                }
 
                 return $function;
             };
 
-            return function ($x) use ($args, $product) {
-                return $product(...array_merge([$x], $args));
-            };
+            return fn($x) => $product(...array_merge([$x], $args));
         }
     }

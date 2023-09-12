@@ -1433,10 +1433,30 @@
         public function testDet(array $A, $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $det = $A->det();
+            try
+            {
+                $det = $A->det();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $det, 0.000001);
@@ -1448,13 +1468,33 @@
         public function testDetExceptionNotSquareMatrix()
         {
             // Given
-            $A = MatrixFactory::create([[1, 2, 3]]);
+            try
+            {
+                $A = MatrixFactory::create([[1, 2, 3]]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->det();
+            try
+            {
+                $A->det();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -1466,10 +1506,30 @@
         public function testDetOfSingularMatrixIsZero(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $det = $A->det();
+            try
+            {
+                $det = $A->det();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta(0, $det, 0.000001);
@@ -1484,10 +1544,30 @@
         public function testDetOfNonSingularMatrixIsNonZero(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $det = $A->det();
+            try
+            {
+                $det = $A->det();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertNotEqualsWithDelta(0, $det, 0.000001, '');

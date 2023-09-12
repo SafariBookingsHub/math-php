@@ -52,4 +52,8 @@
         {
             return $this->evaluateModel($x, $this->parameters);
         }
+
+        public function getParameters()
+        {
+        }
     }

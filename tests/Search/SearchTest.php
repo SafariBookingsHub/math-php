@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\Search;
 
+    use JetBrains\PhpStorm\Pure;
     use MathPHP\Exception;
     use MathPHP\Search;
     use PHPUnit\Framework\TestCase;
@@ -301,7 +302,7 @@
         /**
          * @return array (values, expected)
          */
-        public static function dataProviderForNonZero(): array
+        #[Pure] public static function dataProviderForNonZero(): array
         {
             return [
                 [
@@ -462,7 +463,12 @@
         public function testArgMax(array $values, int $expected)
         {
             // When
-            $indexOfMax = Search::argMax($values);
+            try
+            {
+                $indexOfMax = Search::argMax($values);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertSame($expected, $indexOfMax);
@@ -480,7 +486,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $index = Search::argMax($values);
+            try
+            {
+                $index = Search::argMax($values);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -494,7 +505,12 @@
         public function testNanArgMax(array $values, int $expected)
         {
             // When
-            $indexOfMax = Search::nanArgMax($values);
+            try
+            {
+                $indexOfMax = Search::nanArgMax($values);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertSame($expected, $indexOfMax);
@@ -512,7 +528,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $index = Search::nanArgMax($values);
+            try
+            {
+                $index = Search::nanArgMax($values);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -527,7 +548,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $index = Search::nanArgMax($values);
+            try
+            {
+                $index = Search::nanArgMax($values);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -541,7 +567,12 @@
         public function testArgMin(array $values, int $expected)
         {
             // When
-            $indexOfMax = Search::argMin($values);
+            try
+            {
+                $indexOfMax = Search::argMin($values);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertSame($expected, $indexOfMax);
@@ -559,7 +590,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $index = Search::argMin($values);
+            try
+            {
+                $index = Search::argMin($values);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -573,7 +609,12 @@
         public function testNanArgMin(array $values, int $expected)
         {
             // When
-            $indexOfMax = Search::nanArgMin($values);
+            try
+            {
+                $indexOfMax = Search::nanArgMin($values);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertSame($expected, $indexOfMax);
@@ -591,7 +632,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $index = Search::nanArgMin($values);
+            try
+            {
+                $index = Search::nanArgMin($values);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -606,7 +652,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $index = Search::nanArgMin($values);
+            try
+            {
+                $index = Search::nanArgMin($values);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**

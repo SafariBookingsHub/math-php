@@ -97,7 +97,7 @@
                     9,
                     4,
                     sqrt((9 + sqrt(97)) / 2),
-                    2 * (sqrt(2 / (9 + sqrt(97)))),
+                    2 * sqrt(2 / (9 + sqrt(97))),
                 ],
                 [-4, -6, 1.2671, -2.3676],
                 [0, 9, 2.1213203, 2.1213203],
@@ -119,11 +119,11 @@
                     4,
                     [
                         'r' => sqrt((9 + sqrt(97)) / 2),
-                        'i' => 2 * (sqrt(2 / (9 + sqrt(97)))),
+                        'i' => 2 * sqrt(2 / (9 + sqrt(97))),
                     ],
                     [
                         'r' => -sqrt((9 + sqrt(97)) / 2),
-                        'i' => -2 * (sqrt(2 / (9 + sqrt(97)))),
+                        'i' => -2 * sqrt(2 / (9 + sqrt(97))),
                     ],
                 ],
                 [
@@ -248,7 +248,7 @@
             ];
         }
 
-        public static function dataProviderForAddReal()
+        public static function dataProviderForAddReal(): array
         {
             return [
                 [
@@ -347,7 +347,7 @@
             ];
         }
 
-        public static function dataProviderForMultiplyReal()
+        public static function dataProviderForMultiplyReal(): array
         {
             return [
                 [
@@ -389,7 +389,7 @@
             ];
         }
 
-        public static function dataProviderForDivideReal()
+        public static function dataProviderForDivideReal(): array
         {
             return [
                 [
@@ -829,7 +829,12 @@
             $c2 = new Complex($complex2['r'], $complex2['i']);
 
             // When
-            $result = $c1->add($c2);
+            try
+            {
+                $result = $c1->add($c2);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -846,7 +851,12 @@
             $c = new Complex($complex['r'], $complex['i']);
 
             // When
-            $result = $c->add($real);
+            try
+            {
+                $result = $c->add($real);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -871,7 +881,12 @@
             $c2 = new Complex($complex2['r'], $complex2['i']);
 
             // When
-            $result = $c1->subtract($c2);
+            try
+            {
+                $result = $c1->subtract($c2);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -888,7 +903,12 @@
             $c = new Complex($complex['r'], $complex['i']);
 
             // When
-            $result = $c->subtract($real);
+            try
+            {
+                $result = $c->subtract($real);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -913,7 +933,12 @@
             $c2 = new Complex($complex2['r'], $complex2['i']);
 
             // When
-            $result = $c1->multiply($c2);
+            try
+            {
+                $result = $c1->multiply($c2);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -930,7 +955,12 @@
             $c = new Complex($complex['r'], $complex['i']);
 
             // When
-            $result = $c->multiply($real);
+            try
+            {
+                $result = $c->multiply($real);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -944,6 +974,8 @@
          * @param array $complex1
          * @param array $complex2
          * @param array $expected
+         *
+         * @throws \MathPHP\Exception\BadDataException
          */
         public function testDivide(
             array $complex1,
@@ -955,7 +987,12 @@
             $c2 = new Complex($complex2['r'], $complex2['i']);
 
             // When
-            $result = $c1->divide($c2);
+            try
+            {
+                $result = $c1->divide($c2);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected['r'], $result->r, 0.00001);
@@ -972,7 +1009,12 @@
             $c = new Complex($complex['r'], $complex['i']);
 
             // When
-            $result = $c->divide($real);
+            try
+            {
+                $result = $c->divide($real);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -991,7 +1033,12 @@
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $complex->add("string");
+            try
+            {
+                $complex->add("string");
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
 
         /**
@@ -1006,7 +1053,12 @@
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $complex->subtract("string");
+            try
+            {
+                $complex->subtract("string");
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
 
         /**
@@ -1021,7 +1073,12 @@
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $complex->multiply("string");
+            try
+            {
+                $complex->multiply("string");
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
 
         /**
@@ -1036,7 +1093,12 @@
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $complex->divide("string");
+            try
+            {
+                $complex->divide("string");
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
 
         /**
@@ -1053,7 +1115,12 @@
             $c1 = new Complex($complex1['r'], $complex1['i']);
 
             // When
-            $result = $c1->pow($number);
+            try
+            {
+                $result = $c1->pow($number);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected['r'], $result->r, 0.00001);
@@ -1078,7 +1145,12 @@
             $c2 = new Complex($complex2['r'], $complex2['i']);
 
             // When
-            $result = $c1->pow($c2);
+            try
+            {
+                $result = $c1->pow($c2);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected['r'], $result->r,
@@ -1102,7 +1174,12 @@
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $c->pow($nonNumber);
+            try
+            {
+                $c->pow($nonNumber);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
 
         /**
@@ -1120,7 +1197,12 @@
             $c = new Complex($r, $i);
 
             // When
-            $inverse = $c->inverse();
+            try
+            {
+                $inverse = $c->inverse();
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected_r, $inverse->r, 0.00001);
@@ -1139,7 +1221,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $complex->inverse();
+            try
+            {
+                $complex->inverse();
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**

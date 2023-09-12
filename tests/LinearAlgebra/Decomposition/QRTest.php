@@ -335,13 +335,13 @@
                     'Q' => [
                         [-1.0, 0.0, 0.0],
                         [0.0, -1.0, 0.0],
-                        [0.0, 0.0, -1 / sqrt(17)],
-                        [0.0, 0.0, -4 / sqrt(17)],
+                        [0.0, 0.0, -1 / sqrt(num: 17)],
+                        [0.0, 0.0, -4 / sqrt(num: 17)],
                     ],
                     'R' => [
                         [-2.0, 2.0, 3.0],
                         [0.0, 6.0, 1.0],
-                        [0.0, 0.0, -1 * sqrt(17)],
+                        [0.0, 0.0, -1 * sqrt(num: 17)],
                     ],
                 ],
                 [
@@ -468,13 +468,13 @@
         public function testQrDecompositionPropertyAEqualsQR(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // And
             $qrDecomposition = $A->qrDecomposition();
 
             // When
-            $QR = $qrDecomposition->Q->multiply($qrDecomposition->R);
+            $QR = $qrDecomposition->Q->multiply(B: $qrDecomposition->R);
 
             // Then A = QR
             $this->assertEqualsWithDelta($A->getMatrix(), $QR->getMatrix(),
@@ -494,7 +494,7 @@
         public function testQrDecompositionPropertiesOfQR(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $qr = $A->qrDecomposition();
@@ -522,9 +522,9 @@
             array $R
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $Q = MatrixFactory::create($Q);
-            $R = MatrixFactory::create($R);
+            $A = MatrixFactory::create(A: $A);
+            $Q = MatrixFactory::create(A: $Q);
+            $R = MatrixFactory::create(A: $R);
 
             // When
             $qr = $A->qrDecomposition();
@@ -553,14 +553,14 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $I = MatrixFactory::identity(min($A->getM(), $A->getN()));
+            $A = MatrixFactory::create(A: $A);
+            $I = MatrixFactory::identity(n: min($A->getM(), $A->getN()));
 
             // And
             $qr = $A->qrDecomposition();
 
             // When
-            $QᵀQ = $qr->Q->transpose()->multiply($qr->Q);
+            $QᵀQ = $qr->Q->transpose()->multiply(B: $qr->Q);
 
             // Then QᵀQ = I
             $this->assertEqualsWithDelta($I->getMatrix(), $QᵀQ->getMatrix(),
@@ -581,13 +581,13 @@
         public function testQrDecompositionPropertyREqualsQTransposeA(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // And
             $qrDecomposition = $A->qrDecomposition();
 
             // When
-            $QᵀA = $qrDecomposition->Q->transpose()->multiply($A);
+            $QᵀA = $qrDecomposition->Q->transpose()->multiply(B: $A);
 
             // Then R = QᵀA
             $this->assertEqualsWithDelta($qrDecomposition->R->getMatrix(),
@@ -608,7 +608,7 @@
             array $A
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // And
             $Q = $A->qrDecomposition()->Q;
@@ -635,14 +635,14 @@
         public function testSolve(array $A, array $b, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
             $QR = $A->qrDecomposition();
 
             // And
-            $expected = new Vector($expected);
+            $expected = new Vector(A: $expected);
 
             // When
-            $x = $QR->solve($b);
+            $x = $QR->solve(b: $b);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.00001);
@@ -655,7 +655,7 @@
         public function testQRDecompositionInvalidProperty()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [4, 1, -1],
                 [1, 2, 1],
                 [-1, 1, 2],
@@ -676,7 +676,7 @@
         public function testQRDecompositionSolveIncorrectTypeException()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [4, 1, -1],
                 [1, 2, 1],
                 [-1, 1, 2],
@@ -690,6 +690,6 @@
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $qr->solve($b);
+            $qr->solve(b: $b);
         }
     }

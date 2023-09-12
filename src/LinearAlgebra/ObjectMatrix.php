@@ -6,7 +6,10 @@
     use MathPHP\Number\ArbitraryInteger;
     use MathPHP\Number\ObjectArithmetic;
 
+    use function array_map;
+    use function array_reduce;
     use function count;
+    use function get_class;
 
     /**
      * ObjectMatrix
@@ -23,7 +26,7 @@
          *
          * @var string
          */
-        protected $object_type;
+        protected string $object_type;
 
         /**
          * The constructor follows performs all the same checks as the parent, but also checks that
@@ -40,7 +43,7 @@
         {
             $this->A = $A;
             $this->m = count($A);
-            $this->n = ($this->m > 0) ? count($A[0]) : 0;
+            $this->n = $this->m > 0 ? count($A[0]) : 0;
             $this->catalog = new MatrixCatalog();
 
             $this->validateMatrixData();
@@ -57,30 +60,16 @@
         protected function validateMatrixData(): void
         {
             if ($this->A[0][0] instanceof ObjectArithmetic)
-            {
-                $this->object_type = \get_class($this->A[0][0]);
-            } else
-            {
+                $this->object_type = $this->A[0][0]::class; else
                 throw new Exception\IncorrectTypeException("The object must implement the interface.");
-            }
             foreach ($this->A as $i => $row)
-            {
                 foreach ($row as $object)
-                {
-                    if (\get_class($object) != $this->object_type)
-                    {
+                    if ($object::class != $this->object_type)
                         throw new Exception\IncorrectTypeException("All elements in the matrix must be of the same type.");
-                    }
-                }
-            }
             foreach ($this->A as $i => $row)
-            {
                 if (count($row) !== $this->n)
-                {
                     throw new Exception\BadDataException("Row $i has a different column count: "
                         .count($row)."; was expecting {$this->n}.");
-                }
-            }
         }
 
         /**
@@ -93,49 +82,56 @@
         public function isEqual(Matrix $B): bool
         {
             if ( ! $this->isEqualSizeAndType($B))
-            {
                 return FALSE;
-            }
 
             $m = $this->m;
             $n = $this->n;
             // All elements are the same
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     if ($this->A[$i][$j] != $B[$i][$j])
-                    {
                         return FALSE;
-                    }
-                }
-            }
 
             return TRUE;
         }
 
         /**
          * {@inheritDoc}
+         * @param mixed $object_or_scalar
+         *
          * @return ObjectMatrix
+         * @throws \MathPHP\Exception\IncorrectTypeException
          */
-        public function subtract($B): Matrix
+        public function subtract(mixed $object_or_scalar): Matrix
         {
-            if ( ! ($B instanceof Matrix))
-            {
+            if ( ! $object_or_scalar instanceof Matrix)
                 throw new Exception\IncorrectTypeException('Can only do matrix subtraction with a Matrix');
+            try
+            {
+                $this->checkEqualSizes($object_or_scalar);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
             }
-            $this->checkEqualSizes($B);
             $R = [];
             for ($i = 0; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $this->n; $j++)
-                {
-                    $R[$i][$j] = $this->A[$i][$j]->subtract($B[$i][$j]);
-                }
-            }
+                    $R[$i][$j] = $this->A[$i][$j]->subtract($object_or_scalar[$i][$j]);
 
             /** @var ObjectMatrix */
-            return MatrixFactory::create($R);
+            try
+            {
+                return MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /***************************************************************************
@@ -153,14 +149,10 @@
          */
         private function checkEqualSizes(Matrix $B): void
         {
-            if (($B->getM() !== $this->m) || ($B->getN() !== $this->n))
-            {
+            if ($B->getM() !== $this->m || $B->getN() !== $this->n)
                 throw new Exception\MatrixException('Matrices are different sizes');
-            }
             if ($B->getObjectType() !== $this->object_type)
-            {
                 throw new Exception\IncorrectTypeException('Matrices must contain the same object types');
-            }
         }
 
         /**
@@ -189,123 +181,143 @@
          *
          * @return ObjectMatrix
          *
-         * @throws Exception\BadParameterException if λ is not a number
-         * @throws Exception\IncorrectTypeException
          */
-        public function scalarMultiply($λ): Matrix
+        public function scalarMultiply(float $λ): Matrix
         {
             $R = [];
 
             for ($i = 0; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $this->n; $j++)
-                {
                     $R[$i][$j] = $this->A[$i][$j]->multiply($λ);
-                }
-            }
 
             /** @var ObjectMatrix */
-            return MatrixFactory::create($R);
+            try
+            {
+                return MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
          * {@inheritDoc}
+         * @param mixed $object_or_scalar
+         *
          * @return ObjectMatrix
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException
          */
-        public function multiply($B): Matrix
+        public function multiply(mixed $object_or_scalar): Matrix
         {
-            if (( ! ($B instanceof Matrix)) && ( ! ($B instanceof Vector)))
-            {
+            if ( ! $object_or_scalar instanceof Matrix && ! $object_or_scalar instanceof Vector)
                 throw new Exception\IncorrectTypeException('Can only do matrix multiplication with a Matrix or Vector');
-            }
-            if ($B instanceof Vector)
-            {
-                $B = $B->asColumnMatrix();
-            }
-            if ($B->getM() !== $this->n)
-            {
+            if ($object_or_scalar instanceof Vector)
+                $object_or_scalar = $object_or_scalar->asColumnMatrix();
+            if ($object_or_scalar->getM() !== $this->n)
                 throw new Exception\MatrixException("Matrix dimensions do not match");
-            }
-            $n = $B->getN();
+            $n = $object_or_scalar->getN();
             $m = $this->m;
             $R = [];
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
                 {
                     /** @var array<ObjectArithmetic> $VA */
                     $VA = $this->getRow($i);
                     /** @var array<ObjectArithmetic> $VB */
-                    $VB = $B->getColumn($j);
-                    $R[$i][$j] = \array_reduce(
-                        \array_map(
-                            function (
+                    $VB = $object_or_scalar->getColumn($j);
+                    $R[$i][$j] = array_reduce(
+                        array_map(
+                            fn(
                                 ObjectArithmetic $a,
                                 ObjectArithmetic $b
-                            ) {
-                                return $a->multiply($b);
-                            },
+                            ) => $a->multiply($b),
                             $VA,
                             $VB
                         ),
-                        function ($sum, $item) {
-                            return $sum
-                                ? $sum->add($item)
-                                : $item;
-                        }
+                        fn($sum, $item) => $sum
+                            ? $sum->add($item)
+                            : $item
                     );
                 }
-            }
 
             /** @var ObjectMatrix */
-            return MatrixFactory::create($R);
+            try
+            {
+                return MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
          * {@inheritDoc}
+         * @param mixed $object_or_scalar
+         *
          * @return ObjectMatrix
+         * @throws \MathPHP\Exception\IncorrectTypeException
          */
-        public function add($B): Matrix
+        public function add(mixed $object_or_scalar): Matrix
         {
-            if ( ! ($B instanceof Matrix))
-            {
+            if ( ! $object_or_scalar instanceof Matrix)
                 throw new Exception\IncorrectTypeException('Can only do matrix addition with a Matrix');
+            try
+            {
+                $this->checkEqualSizes($object_or_scalar);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
             }
-            $this->checkEqualSizes($B);
             $R = [];
             for ($i = 0; $i < $this->m; $i++)
-            {
                 for ($j = 0; $j < $this->n; $j++)
-                {
-                    $R[$i][$j] = $this->A[$i][$j]->add($B[$i][$j]);
-                }
-            }
+                    $R[$i][$j] = $this->A[$i][$j]->add($object_or_scalar[$i][$j]);
 
             /** @var ObjectMatrix */
-            return MatrixFactory::create($R);
+            try
+            {
+                return MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
-         * {@inheritDoc}
+         * {}
          *
          * @return int|float
          *
          * @throws Exception\MatrixException if the matrix is not a square matrix
          */
-        public function trace()
+        public function trace(): float|int
         {
             if ( ! $this->isSquare())
-            {
                 throw new Exception\MatrixException('trace only works on a square matrix');
-            }
 
             $m = $this->m;
             $tr⟮A⟯ = $this->getObjectType()::createZeroValue();
 
             for ($i = 0; $i < $m; $i++)
-            {
                 $tr⟮A⟯ = $tr⟮A⟯->add($this->A[$i][$i]);
-            }
 
             return $tr⟮A⟯;
         }
@@ -324,7 +336,18 @@
          */
         public static function createZeroValue(): ObjectArithmetic
         {
-            return new ObjectMatrix([[new ArbitraryInteger(0)]]);
+            try
+            {
+                return new ObjectMatrix([[new ArbitraryInteger(0)]]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -339,8 +362,11 @@
          * a special case may quicken code execution.
          *
          * @return ObjectArithmetic
+         * @throws \MathPHP\Exception\BadParameterException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException
          */
-        public function det()
+        public function det(): ObjectArithmetic
         {
             if ($this->catalog->hasDeterminant())
             {
@@ -349,13 +375,22 @@
             }
 
             if ( ! $this->isSquare())
-            {
                 throw new Exception\MatrixException('Not a square matrix (required for determinant)');
-            }
 
             $m = $this->m;
             /** @var ObjectMatrix $R */
-            $R = MatrixFactory::create($this->A);
+            try
+            {
+                $R = MatrixFactory::create($this->A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             /*
              * 1x1 matrix
@@ -364,32 +399,24 @@
              * |A| = a
              */
             if ($m === 1)
-            {
-                $det = $R[0][0];
-            } else
+                $det = $R[0][0]; else
             {
                 // Calculate the cofactors of the top row of the matrix
                 $row_of_cofactors = [];
                 for ($i = 0; $i < $m; $i++)
-                {
                     $row_of_cofactors[$i] = $R->cofactor(0, $i);
-                }
 
                 // Since we don't know what the data type is, we can't initialze $det
                 // to zero without a special initialize() or zero() method.
                 $initialize = TRUE;
                 $det = $R[0][0]->multiply($row_of_cofactors[0]);
                 foreach ($row_of_cofactors as $key => $value)
-                {
                     if ($initialize)
-                    {
-                        $initialize = FALSE;
-                    } else
+                        $initialize = FALSE; else
                     {
                         // $det += element * cofactor
                         $det = $det->add($R[0][$key]->multiply($value));
                     }
-                }
             }
 
             $this->catalog->addDeterminant($det);
@@ -397,18 +424,61 @@
             return $det;
         }
 
-        /**
-         * @param int $mᵢ
-         * @param int $nⱼ
-         *
-         * @return ObjectArithmetic
-         */
         public function cofactor(int $mᵢ, int $nⱼ): ObjectArithmetic
         {
             /** @var ObjectArithmetic $Mᵢⱼ */
-            $Mᵢⱼ = $this->minor($mᵢ, $nⱼ);
+            try
+            {
+                $Mᵢⱼ = $this->minor($mᵢ, $nⱼ);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
             $⟮−1⟯ⁱ⁺ʲ = (-1) ** ($mᵢ + $nⱼ);
 
             return $Mᵢⱼ->multiply($⟮−1⟯ⁱ⁺ʲ);
+        }
+
+        public function traceNotSquare()
+        {
+        }
+
+        public function scalarMultiplyByObject()
+        {
+        }
+
+        public function transpose()
+        {
+        }
+
+        public function multiplyVector()
+        {
+        }
+
+        public function mul()
+        {
+        }
+
+        public function matrixDetException()
+        {
+        }
+
+        public function matrixMultiplyException()
+        {
+        }
+
+        public function matrixSubtractException()
+        {
+        }
+
+        public function matrixAddException()
+        {
+        }
+
+        public function matrixConstructorException()
+        {
         }
     }

@@ -2,6 +2,8 @@
 
     namespace MathPHP\SampleData;
 
+    use JetBrains\PhpStorm\Pure;
+
     use function array_column;
     use function array_combine;
     use function array_keys;
@@ -473,9 +475,12 @@
          */
         public static function getLabeledData(): array
         {
-            /** @var array<string, array<string, int|float>> */
+            /** @var array<string, array<string, int|float>> $array_map */
             $array_map = [];
-            foreach (self::DATA as $key => array $data)return $array_map;
+            foreach (self::DATA as $ignored => {
+                array $data)}
+
+            return $array_map;
         }
 
         /**
@@ -608,7 +613,7 @@
          *
          * @return array<string, int|float>
          */
-        public function getMpg(): array
+        #[Pure] public static function getMpg(): array
         {
             /** @var array<string, int|float> */
             return array_combine(MtCars::getModels(),
@@ -623,5 +628,69 @@
         public static function getModels(): array
         {
             return array_keys(self::DATA);
+        }
+
+        public function numberOfCarbs()
+        {
+        }
+
+        public function numberOfgears()
+        {
+        }
+
+        public function numberOfAms()
+        {
+        }
+
+        public function numberOfVss()
+        {
+        }
+
+        public function numberOfQsecs()
+        {
+        }
+
+        public function numberOfWts()
+        {
+        }
+
+        public function numberOfDrats()
+        {
+        }
+
+        public function numberOfHps()
+        {
+        }
+
+        public function numberOfDisps()
+        {
+        }
+
+        public function numberOfCyl()
+        {
+        }
+
+        public function numberOfMpgs()
+        {
+        }
+
+        public function labeledData()
+        {
+        }
+
+        public function modelNames()
+        {
+        }
+
+        public function numberOfModels()
+        {
+        }
+
+        public function dataHas11Variables()
+        {
+        }
+
+        public function dataHas32Observations()
+        {
         }
     }

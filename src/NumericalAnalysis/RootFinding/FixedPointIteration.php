@@ -29,17 +29,17 @@
          *
          * @param callable  $function g(x) callback function, obtained by rewriting
          *                            f(x) = 0 as g(x) = x
-         * @param int|float $a        The start of the interval which contains a root
-         * @param int|float $b        The end of the interval which contains a root
-         * @param int|float $p        The initial guess of our root, in [$a, $b]
-         * @param int|float $tol      Tolerance; How close to the actual solution we would like.
+         * @param float|int $a        The start of the interval which contains a root
+         * @param float|int $b        The end of the interval which contains a root
+         * @param float|int $p        The initial guess of our root, in [$a, $b]
+         * @param float|int $tol      Tolerance; How close to the actual solution we would like.
          *
          * @return int|float
          *
          * @throws Exception\OutOfBoundsException
          * @throws Exception\BadDataException
          */
-        public static function solve(callable $function, $a, $b, $p, $tol)
+        public static function solve(callable $function, float|int $a, float|int $b, float|int $p, float|int $tol): float|int
         {
             self::validate($a, $b, $p, $tol);
 
@@ -60,28 +60,44 @@
          * an interval, so we throw an Exception. If $a > $b, we simply reverse them
          * as if the user input $b = $a and $a = $b so the new $a < $b.
          *
-         * @param int|float $a   The start of the interval which contains a root
-         * @param int|float $b   The end of the interval which contains a root
-         * @param int|float $p   The initial guess of our root
-         * @param int|float $tol Tolerance; How close to the actual solution we would like.
+         * @param float|int $a   The start of the interval which contains a root
+         * @param float|int $b   The end of the interval which contains a root
+         * @param float|int $p   The initial guess of our root
+         * @param float|int $tol Tolerance; How close to the actual solution we would like.
          *
          * @throws Exception\OutOfBoundsException if $tol (the tolerance) is negative
          * @throws Exception\BadDataException if $a = $b
          * @throws Exception\OutOfBoundsException if either $p > $a or $p < $b return false
          */
-        private static function validate($a, $b, $p, $tol): void
+        private static function validate(float|int $a, float|int $b, float|int $p, float|int $tol): void
         {
             Validation::tolerance($tol);
             Validation::interval($a, $b);
 
             if ($a > $b)
-            {
                 [$a, $b] = [$b, $a];
-            }
 
-            if (($p < $a) || ($p > $b))
-            {
+            if ($p < $a || $p > $b)
                 throw new Exception\OutOfBoundsException("Initial guess $p must be in [$a, $b].");
-            }
+        }
+
+        public function fixedPointIterationExceptionGuessNotInInterval()
+        {
+        }
+
+        public function fixedPointIterationExceptionZeroInterval()
+        {
+        }
+
+        public function fixedPointIterationExceptionNegativeTolerance()
+        {
+        }
+
+        public function solvePolynomialWithFourRootsUsingPolynomial()
+        {
+        }
+
+        public function solvePolynomialWithFourRootsUsingClosure()
+        {
         }
     }

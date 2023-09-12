@@ -382,10 +382,10 @@
             array $P
         ) {
             // Given
-            $A = MatrixFactory::create($A);
-            $L = MatrixFactory::create($L);
-            $U = MatrixFactory::create($U);
-            $P = MatrixFactory::create($P);
+            $A = MatrixFactory::create(A: $A);
+            $L = MatrixFactory::create(A: $L);
+            $U = MatrixFactory::create(A: $U);
+            $P = MatrixFactory::create(A: $P);
 
             // When
             $LU = $A->luDecomposition();
@@ -407,14 +407,14 @@
         public function testLUDecompositionPaEqualsLu(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $LU = $A->luDecomposition();
 
             // Then PA = LU;
-            $PA = $LU->P->multiply($A);
-            $LU = $LU->L->multiply($LU->U);
+            $PA = $LU->P->multiply(B: $A);
+            $LU = $LU->L->multiply(B: $LU->U);
             $this->assertEqualsWithDelta($PA->getMatrix(), $LU->getMatrix(),
                 0.01);
         }
@@ -430,7 +430,7 @@
         public function testLUDecompositionLAndUProperties(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $LU = $A->luDecomposition();
@@ -453,14 +453,14 @@
         public function testSolve(array $A, array $b, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
             $LU = $A->luDecomposition();
 
             // And
-            $expected = new Vector($expected);
+            $expected = new Vector(A: $expected);
 
             // When
-            $x = $LU->solve($b);
+            $x = $LU->solve(b: $b);
 
             // Then
             $this->assertEqualsWithDelta($expected, $x, 0.00001);
@@ -475,21 +475,21 @@
         public function testLuDecompositionSmallPivots()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [10e-20, 1],
                 [1, 2],
             ]);
 
             // And
-            $L = MatrixFactory::create([
+            $L = MatrixFactory::create(A: [
                 [1, 0],
                 [1e-19, 1],
             ]);
-            $U = MatrixFactory::create([
+            $U = MatrixFactory::create(A: [
                 [1, 2],
                 [0, 1],
             ]);
-            $P = MatrixFactory::create([
+            $P = MatrixFactory::create(A: [
                 [0, 1],
                 [1, 0],
             ]);
@@ -507,8 +507,8 @@
             $this->assertTrue($LU->U->isUpperTriangular());
 
             // And PA = LU;
-            $PA = $LU->P->multiply($A);
-            $LU = $LU->L->multiply($LU->U);
+            $PA = $LU->P->multiply(B: $A);
+            $LU = $LU->L->multiply(B: $LU->U);
             $this->assertEqualsWithDelta($PA->getMatrix(), $LU->getMatrix(),
                 0.01);
         }
@@ -520,7 +520,7 @@
         public function testLUDecompositionExceptionNotSquare()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [1, 2, 3],
                 [2, 3, 4],
             ]);
@@ -539,7 +539,7 @@
         public function testLUDecompositionInvalidProperty()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [5, 3, 4, 1],
                 [5, 6, 4, 3],
                 [7, 6, 5, 3],
@@ -561,7 +561,7 @@
         public function testLUDecompositionSolveIncorrectTypeError()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [5, 3, 4, 1],
                 [5, 6, 4, 3],
                 [7, 6, 5, 3],
@@ -576,6 +576,6 @@
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $LU->solve($b);
+            $LU->solve(b: $b);
         }
     }

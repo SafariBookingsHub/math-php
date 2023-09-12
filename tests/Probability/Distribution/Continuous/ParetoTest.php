@@ -138,9 +138,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForInverseOfCdf(): array
         {
             return [

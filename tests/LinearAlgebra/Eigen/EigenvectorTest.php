@@ -146,16 +146,40 @@
             array $S
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $eigenvectors = Eigenvector::eigenvectors($A);
+            try
+            {
+                $eigenvectors = Eigenvector::eigenvectors($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($S, $eigenvectors->getMatrix(),
                 0.0001);
-            $this->assertEqualsWithDelta($S, $A->eigenvectors()->getMatrix(),
-                0.0001);
+            try
+            {
+                $this->assertEqualsWithDelta($S,
+                    $A->eigenvectors()->getMatrix(),
+                    0.0001);
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -170,10 +194,28 @@
             array $S
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $eigenvectors = $A->eigenvectors();
+            try
+            {
+                $eigenvectors = $A->eigenvectors();
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($S, $eigenvectors->getMatrix(),
@@ -186,13 +228,29 @@
         public function testEigenvectorMatrixNotCorrectSize()
         {
             // Given
-            $A = MatrixFactory::create([[1, 2]]);
+            try
+            {
+                $A = MatrixFactory::create([[1, 2]]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Eigenvector::eigenvectors($A, [0]);
+            try
+            {
+                Eigenvector::eigenvectors($A, [0]);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -205,13 +263,29 @@
         public function testIncorrectNumberOfEigenvectors(array $A, array $B)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Eigenvector::eigenvectors($A, $B);
+            try
+            {
+                Eigenvector::eigenvectors($A, $B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -224,13 +298,29 @@
         public function testEigenvectorNotAnEigenvector(array $A, array $B)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Eigenvector::eigenvectors($A, $B);
+            try
+            {
+                Eigenvector::eigenvectors($A, $B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -239,17 +329,35 @@
         public function testMatrixEigenvectorInvalidMethodException()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [2, 3, 4],
-                [3, 4, 5],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [2, 3, 4],
+                    [3, 4, 5],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
             $invalidMethod = 'SecretMethod';
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->eigenvectors($invalidMethod);
+            try
+            {
+                $A->eigenvectors($invalidMethod);
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
     }

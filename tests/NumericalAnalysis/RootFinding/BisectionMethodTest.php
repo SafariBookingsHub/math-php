@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\NumericalAnalysis\RootFinding;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Exception;
     use MathPHP\Expression\Polynomial;
     use MathPHP\NumericalAnalysis\RootFinding\BisectionMethod;
@@ -15,7 +16,12 @@
         /**
          * @return array (a, b, expected)
          */
-        public static function dataProviderForPolynomial(): array
+        #[ArrayShape(['f(x) = 0 where x is -4'                                                          => "int[]",
+                      'f(x) = 0 where x is -8'                                                          => "int[]",
+                      'f(x) = 0 where x is 3'                                                           => "int[]",
+                      'f(x) = 0 where x is 1'                                                           => "int[]",
+                      'f(x) = 0 where x is 1 (Switch a and b and test that they get reversed properly)' => "int[]"
+        ])] public static function dataProviderForPolynomial(): array
         {
             return [
                 'f(x) = 0 where x is -4'                                                          => [
@@ -65,9 +71,7 @@
         ) {
             // Given f(x) = x⁴ + 8x³ -13x² -92x + 96
             // This polynomial has 4 roots: 3, 1 ,-8 and -4
-            $func = function ($x) {
-                return ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
-            };
+            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
             $tol = 0.00001;
 
             // When
@@ -114,9 +118,7 @@
         public function testSolveXCubedSubtractXSubtractTwo()
         {
             // Given f(x) = x³ - x - 2
-            $func = function ($x) {
-                return ($x ** 3) - $x - 2;
-            };
+            $func = fn($x) => ($x ** 3) - $x - 2;
             $tol = 0.001;
 
             // And solving for f(x) = 0 where x is about 1.521 (Find the root 1.521)
@@ -139,9 +141,7 @@
         public function testSolveXSquaredSubtractThree()
         {
             // Given f(x) = x² - 3
-            $func = function ($x) {
-                return ($x ** 2) - 3;
-            };
+            $func = fn($x) => ($x ** 2) - 3;
             $tol = 0.01;
 
             // And solving for f(x) = 0 where x is about 1.7344 (Find the root 1.7344)
@@ -164,9 +164,7 @@
         public function testSolveEToNegativeXTimesSomeStuff()
         {
             // Given f(x) = e⁻ˣ (3.2 sin(x) - 0.5\cos(x))
-            $func = function ($x) {
-                return exp(-$x) * ((3.2 * sin($x)) - (0.5 * cos($x)));
-            };
+            $func = fn($x) => exp(-$x) * ((3.2 * sin($x)) - (0.5 * cos($x)));
             $tol = 0.0001;
 
             // And solving for f(x) = 0 where x is about 3.2968 (Find the root 3.2968)
@@ -188,9 +186,7 @@
         public function testBisectionMethodExceptionNegativeTolerance()
         {
             // Given
-            $func = function ($x) {
-                return ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - 92 * $x) + 96;
-            };
+            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - 92 * $x) + 96;
 
             // And
             $tol = -0.00001;
@@ -211,9 +207,7 @@
         public function testBisectionMethodExceptionZeroInterval()
         {
             // Given
-            $func = function ($x) {
-                return ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
-            };
+            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
 
             // And
             $tol = 0.00001;
@@ -234,9 +228,7 @@
         public function testBisectionMethodExceptionSameSigns()
         {
             // Given
-            $func = function ($x) {
-                return $x + 96;
-            };
+            $func = fn($x) => $x + 96;
 
             // And
             $tol = 0.00001;

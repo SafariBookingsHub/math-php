@@ -9,15 +9,10 @@
     use PHPUnit\Framework\TestCase;
 
     class MatrixAugmentationTest extends TestCase {
-        /** @var array */
-        private $A;
 
         /** @var NumericMatrix */
-        private $matrix;
+        private \MathPHP\LinearAlgebra\ComplexMatrix|NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|\MathPHP\LinearAlgebra\Matrix $matrix;
 
-        /**
-         * @return array
-         */
         public static function dataProviderForAugment(): array
         {
             return [
@@ -136,9 +131,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForAugmentBelow(): array
         {
             return [
@@ -215,9 +207,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForAugmentAbove(): array
         {
             return [
@@ -294,9 +283,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForAugmentLeft(): array
         {
             return [
@@ -384,12 +370,12 @@
          */
         public function setUp(): void
         {
-            $this->A = [
+            $A = [
                 [1, 2, 3],
                 [2, 3, 4],
                 [4, 5, 6],
             ];
-            $this->matrix = MatrixFactory::create($this->A);
+            $this->matrix = MatrixFactory::create($A);
         }
 
         /**

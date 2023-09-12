@@ -7,7 +7,7 @@
 
     class PlantGrowthTest extends TestCase {
         /** @var SampleData\PlantGrowth */
-        private $plantGrowth;
+        private SampleData\PlantGrowth $plantGrowth;
 
         /**
          * @return array (model, data)
@@ -66,9 +66,7 @@
 
             // Then
             foreach ($data as $observation)
-            {
                 $this->assertCount(2, $observation);
-            }
         }
 
         /**

@@ -2,6 +2,9 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Special;
     use MathPHP\Functions\Support;
 
@@ -9,6 +12,7 @@
     use function log;
     use function sqrt;
 
+    use const INF;
     use const M_PI;
 
     class LogNormal extends Continuous {
@@ -37,10 +41,10 @@
             ];
 
         /** @var float location parameter */
-        protected $μ;
+        protected float $μ;
 
         /** @var float scale parameter > 0 */
-        protected $σ;
+        protected float $σ;
 
         /**
          * Constructor
@@ -69,7 +73,16 @@
          */
         public function pdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $μ = $this->μ;
             $σ = $this->σ;
@@ -79,7 +92,7 @@
             $⟮ln x − μ⟯² = (log($x) - $μ) ** 2;
             $σ² = $σ ** 2;
 
-            return (1 / $xσ√2π) * exp(-($⟮ln x − μ⟯² / (2 * $σ²)));
+            return 1 / $xσ√2π * exp(-($⟮ln x − μ⟯² / (2 * $σ²)));
         }
 
         /**
@@ -97,7 +110,16 @@
          */
         public function cdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $μ = $this->μ;
             $σ = $this->σ;
@@ -105,7 +127,7 @@
             $⟮ln x − μ⟯ = log($x) - $μ;
             $√2σ = sqrt(2) * $σ;
 
-            return (1 / 2) + ((1 / 2) * Special::erf($⟮ln x − μ⟯ / $√2σ));
+            return 1 / 2 + 1 / 2 * Special::erf($⟮ln x − μ⟯ / $√2σ);
         }
 
         /**
@@ -120,19 +142,15 @@
         public function inverse(float $p): float
         {
             if ($p == 0)
-            {
                 return 0;
-            }
             if ($p == 1)
-            {
-                return \INF;
-            }
+                return INF;
 
             $μ = $this->μ;
             $σ = $this->σ;
             $standard_normal = new StandardNormal();
 
-            return exp($μ + ($σ * $standard_normal->inverse($p)));
+            return exp($μ + $σ * $standard_normal->inverse($p));
         }
 
         /**
@@ -147,7 +165,7 @@
             $μ = $this->μ;
             $σ = $this->σ;
 
-            return exp($μ + (($σ ** 2) / 2));
+            return exp($μ + $σ ** 2 / 2);
         }
 
         /**
@@ -171,7 +189,7 @@
          */
         public function mode(): float
         {
-            return exp($this->μ - ($this->σ ** 2));
+            return exp($this->μ - $this->σ ** 2);
         }
 
         /**
@@ -190,5 +208,13 @@
             $２μ = 2 * $μ;
 
             return (exp($σ²) - 1) * exp($２μ + $σ²);
+        }
+
+        public function rand()
+        {
+        }
+
+        public function inverseOfCdf()
+        {
         }
     }

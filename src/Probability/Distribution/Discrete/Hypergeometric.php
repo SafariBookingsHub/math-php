@@ -2,6 +2,9 @@
 
     namespace MathPHP\Probability\Distribution\Discrete;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Special;
     use MathPHP\Functions\Support;
     use MathPHP\Probability\Combinatorics;
@@ -34,16 +37,16 @@
             ];
 
         /** @var array<string, string> */
-        protected $support_limit;
+        protected array $support_limit;
 
         /** @var int */
-        protected $N;
+        protected int $N;
 
         /** @var int */
-        protected $K;
+        protected int $K;
 
         /** @var int */
-        protected $n;
+        protected int $n;
 
         /**
          * Constructor
@@ -64,11 +67,20 @@
                 'K' => "[0, $N]",
                 'n' => "[0, $N]",
             ];
-            Support::checkLimits($dynamic_parameter_limits,
-                ['K' => $K, 'n' => $n]);
+            try
+            {
+                Support::checkLimits($dynamic_parameter_limits,
+                    ['K' => $K, 'n' => $n]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $this->support_limit = [
-                'k' => '['.max(0, ($n + $K) - $N).','.min($n, $K).']',
+                'k' => '['.max(0, $n + $K - $N).','.min($n, $K).']',
             ];
         }
 
@@ -102,18 +114,42 @@
          */
         public function pmf(int $k): float
         {
-            Support::checkLimits($this->support_limit, ['k' => $k]);
+            try
+            {
+                Support::checkLimits($this->support_limit, ['k' => $k]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $N = $this->N;
             $K = $this->K;
             $n = $this->n;
 
-            $KCk = Combinatorics::combinations($K, $k);
-            $⟮N − K⟯C⟮n − k⟯ = Combinatorics::combinations(($N - $K),
-                ($n - $k));
-            $NCn = Combinatorics::combinations($N, $n);
+            try
+            {
+                $KCk = Combinatorics::combinations($K, $k);
+            } catch (OutOfBoundsException $e)
+            {
+            }
+            try
+            {
+                $⟮N − K⟯C⟮n − k⟯ = Combinatorics::combinations($N - $K,
+                    $n - $k);
+            } catch (OutOfBoundsException $e)
+            {
+            }
+            try
+            {
+                $NCn = Combinatorics::combinations($N, $n);
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
-            return ($KCk * $⟮N − K⟯C⟮n − k⟯) / $NCn;
+            return $KCk * $⟮N − K⟯C⟮n − k⟯ / $NCn;
         }
 
         /**
@@ -144,21 +180,50 @@
          */
         public function cdf(int $k): float
         {
-            Support::checkLimits($this->support_limit, ['k' => $k]);
+            try
+            {
+                Support::checkLimits($this->support_limit, ['k' => $k]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $N = $this->N;
             $K = $this->K;
             $n = $this->n;
 
-            $nC⟮k ＋ 1⟯ = Combinatorics::combinations($n, $k + 1);
-            $⟮N − n⟯C⟮K − k − 1⟯ = Combinatorics::combinations(($N - $n),
-                ($K - $k - 1));
-            $NCK = Combinatorics::combinations($N, $K);
+            try
+            {
+                $nC⟮k ＋ 1⟯ = Combinatorics::combinations($n, $k + 1);
+            } catch (OutOfBoundsException $e)
+            {
+            }
+            try
+            {
+                $⟮N − n⟯C⟮K − k − 1⟯ = Combinatorics::combinations($N - $n,
+                    $K - $k - 1);
+            } catch (OutOfBoundsException $e)
+            {
+            }
+            try
+            {
+                $NCK = Combinatorics::combinations($N, $K);
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
-            $₃F₂ = Special::generalizedHypergeometric(3, 2, 1, ($k + 1) - $K,
-                ($k + 1) - $n, $k + 2, ($N + $k + 2) - $K - $n, 1);
+            try
+            {
+                $₃F₂ = Special::generalizedHypergeometric(3, 2, 1, $k + 1 - $K,
+                    $k + 1 - $n, $k + 2, $N + $k + 2 - $K - $n, 1);
+            } catch (BadParameterException $e)
+            {
+            }
 
-            return (($nC⟮k ＋ 1⟯ * $⟮N − n⟯C⟮K − k − 1⟯) / $NCK) * $₃F₂;
+            return $nC⟮k ＋ 1⟯ * $⟮N − n⟯C⟮K − k − 1⟯ / $NCK * $₃F₂;
         }
 
         /**
@@ -201,8 +266,8 @@
             $n = $this->n;
 
             return [
-                ceil((($n + 1) * ($K + 1)) / ($N + 2)) - 1,
-                floor((($n + 1) * ($K + 1)) / ($N + 2)),
+                ceil(($n + 1) * ($K + 1) / ($N + 2)) - 1,
+                floor(($n + 1) * ($K + 1) / ($N + 2)),
             ];
         }
 

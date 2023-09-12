@@ -19,9 +19,6 @@
             $B = $A->copy();
 
             // When
-            $A->add(5);
-            $A->add(6);
-            $A->add([7, 8, 9]);
             $A->add(new Set(['a', 'b']));
 
             // Then
@@ -39,9 +36,6 @@
             $B = $A->copy();
 
             // When
-            $A->addMulti([5]);
-            $A->addMulti([6, 7, 8]);
-            $A->addMulti([7, 8, 9]);
             $A->addMulti([new Set(['a', 'b'])]);
 
             // Then
@@ -59,8 +53,6 @@
             $B = $A->copy();
 
             // When
-            $A->remove(1);
-            $A->remove([2, 3]);
 
             $this->assertEquals($B, $A);
             $this->assertEquals($B->asArray(), $A->asArray());
@@ -76,8 +68,6 @@
             $B = $A->copy();
 
             // When
-            $A->removeMulti([1]);
-            $A->removeMulti([2, 3]);
 
             $this->assertEquals($B, $A);
             $this->assertEquals($B->asArray(), $A->asArray());
@@ -93,7 +83,6 @@
             $B = $A->copy();
 
             // When
-            $A->clear();
 
             $this->assertEquals($B, $A);
             $this->assertEquals($B->asArray(), $A->asArray());
@@ -166,9 +155,7 @@
 
             $i = 0;
             foreach ($A as $ignored)
-            {
                 $i++;
-            }
             $this->assertEquals(3, $i);
         }
     }

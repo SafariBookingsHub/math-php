@@ -9,9 +9,6 @@
     use PHPUnit\Framework\TestCase;
 
     class DiagonalMatrixTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderMulti(): array
         {
             return [

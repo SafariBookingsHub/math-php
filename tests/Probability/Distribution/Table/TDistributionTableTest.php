@@ -106,8 +106,8 @@
          * @throws       \Exception
          */
         public function testGetOneSidedTValueFromConfidenceLevel(
-            $ν,
-            $cl,
+            mixed $ν,
+            mixed $cl,
             float $t
         ) {
             // When
@@ -129,8 +129,8 @@
          * @throws       \Exception
          */
         public function testGetTwoSidedTValueFromConfidenceLevel(
-            $ν,
-            $cl,
+            mixed $ν,
+            mixed $cl,
             float $t
         ) {
             // When
@@ -151,7 +151,7 @@
          *
          * @throws        \Exception
          */
-        public function testGetOneSidedTValueFromAlpha($ν, $α, float $t)
+        public function testGetOneSidedTValueFromAlpha(mixed $ν, mixed $α, float $t)
         {
             // When
             $value = TDistribution::getOneSidedTValueFromAlpha($ν, $α);
@@ -170,7 +170,7 @@
          *
          * @throws       \Exception
          */
-        public function testGetTwoSidedTValueFromAlpha($ν, $α, float $t)
+        public function testGetTwoSidedTValueFromAlpha(mixed $ν, mixed $α, float $t)
         {
             // When
             $value = TDistribution::getTwoSidedTValueFromAlpha($ν, $α);

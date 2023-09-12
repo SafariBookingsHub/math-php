@@ -19,14 +19,6 @@
      * The data were collected by Anderson, Edgar (1935). The irises of the Gaspe Peninsula, Bulletin of the American Iris Society, 59, 2–5.
      */
     class Iris {
-        private const LABELS
-            = [
-                'sepalLength',
-                'sepalWidth',
-                'petalLength',
-                'petalWidth',
-                'species',
-            ];
 
         private const DATA
             = [
@@ -201,9 +193,12 @@
          */
         public static function getLabeledData(): array
         {
-            /** @var array<array<string, float>> */
+            /** @var array<array<string, float>> $array_map */
             $array_map = [];
-            foreach (self::DATA as $key => array $data)return $array_map;
+            foreach (self::DATA as $ignored => {
+                array $data)}
+
+            return $array_map;
         }
 
         /**
@@ -254,5 +249,37 @@
         public static function getSpecies(): array
         {
             return array_column(self::DATA, 4);
+        }
+
+        public function numberOfSpecies()
+        {
+        }
+
+        public function numberOfPetalWidth()
+        {
+        }
+
+        public function numberOfPetalLength()
+        {
+        }
+
+        public function numberOfSepalWidth()
+        {
+        }
+
+        public function numberOfSepalLength()
+        {
+        }
+
+        public function labeledData()
+        {
+        }
+
+        public function dataHas5Variables()
+        {
+        }
+
+        public function dataHas150Observations()
+        {
         }
     }

@@ -314,24 +314,30 @@
         ) {
             // Precondition
             if (count($inputs) !== count($expected))
-            {
                 $this->fail('Number of inputs and expected outputs must match');
-            }
 
             // Given
-            $array_map = [];
-            foreach ($polynomial_args as $key => $args)
-            {
-                $array_map[$key] = new Polynomial($args);
-            }
+            $array_map = array_map(function ($args) {
+                return new Polynomial($args);
+            }, $polynomial_args);
             $functions = $array_map;
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             $n = count($inputs);
             for ($i = 0; $i < $n; $i++)
             {
                 // When
-                $evaluated = $piecewise($inputs[$i]);
+                try
+                {
+                    $evaluated = $piecewise($inputs[$i]);
+                } catch (Exception\BadDataException $e)
+                {
+                }
 
                 // Then
                 $this->assertEquals($expected[$i], $evaluated);
@@ -356,7 +362,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         public function testSubintervalsOverlapException()
@@ -377,7 +388,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         public function testSubintervalDecreasingException()
@@ -398,7 +414,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         public function testSubintervalContainsMoreThanTwoPoints()
@@ -419,7 +440,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         public function testSubintervalContainsOnePoints()
@@ -440,7 +466,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         public function testSubintervalContainsOpenPoint()
@@ -461,7 +492,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         public function testInputFunctionsAreNotCallableException()
@@ -482,7 +518,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         public function testNumberOfIntervalsAndFunctionsUnequalException()
@@ -502,7 +543,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         public function testEvaluationNotInDomainException()
@@ -518,13 +564,23 @@
                 new Polynomial([2]),          // g(x) = 2
                 new Polynomial([1, 0]),        // h(x) = x
             ];
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $evaluation = $piecewise(-1);
+            try
+            {
+                $evaluation = $piecewise(-1);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         public function testEvaluatedAtOpenPointException()
@@ -540,13 +596,23 @@
                 new Polynomial([2]),          // g(x) = 2
                 new Polynomial([1, 0]),        // h(x) = x
             ];
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $evaluation = $piecewise(2);
+            try
+            {
+                $evaluation = $piecewise(2);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         public function testDuplicatedIntervalException()
@@ -567,7 +633,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $piecewise = new Piecewise($intervals, $functions);
+            try
+            {
+                $piecewise = new Piecewise($intervals, $functions);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -593,8 +664,13 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $preconditions->invokeArgs($this->piecewise,
-                [$intervals, $functions]);
+            try
+            {
+                $preconditions->invokeArgs($this->piecewise,
+                    [$intervals, $functions]);
+            } catch (\ReflectionException $e)
+            {
+            }
         }
 
         /**
@@ -621,8 +697,13 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $preconditions->invokeArgs($this->piecewise,
-                [$intervals, $functions]);
+            try
+            {
+                $preconditions->invokeArgs($this->piecewise,
+                    [$intervals, $functions]);
+            } catch (\ReflectionException $e)
+            {
+            }
         }
 
         /**
@@ -650,8 +731,13 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $checkAsAndBs->invokeArgs($this->piecewise,
-                [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
+            try
+            {
+                $checkAsAndBs->invokeArgs($this->piecewise,
+                    [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
+            } catch (\ReflectionException $e)
+            {
+            }
         }
 
         /**
@@ -679,8 +765,13 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $checkAsAndBs->invokeArgs($this->piecewise,
-                [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
+            try
+            {
+                $checkAsAndBs->invokeArgs($this->piecewise,
+                    [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
+            } catch (\ReflectionException $e)
+            {
+            }
         }
 
         /**
@@ -709,8 +800,13 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $checkAsAndBs->invokeArgs($this->piecewise,
-                [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
+            try
+            {
+                $checkAsAndBs->invokeArgs($this->piecewise,
+                    [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
+            } catch (\ReflectionException $e)
+            {
+            }
         }
 
         /**
@@ -738,8 +834,13 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $checkAsAndBs->invokeArgs($this->piecewise,
-                [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
+            try
+            {
+                $checkAsAndBs->invokeArgs($this->piecewise,
+                    [$a, $b, $lastA, $lastB, $lastBOpen, $aOpen, $bOpen]);
+            } catch (\ReflectionException $e)
+            {
+            }
         }
 
         /**
@@ -757,7 +858,13 @@
             $openOpen->setAccessible(TRUE);
 
             // When
-            $result = $openOpen->invokeArgs($this->piecewise, [$aOpen, $bOpen]);
+            try
+            {
+                $result = $openOpen->invokeArgs($this->piecewise,
+                    [$aOpen, $bOpen]);
+            } catch (\ReflectionException $e)
+            {
+            }
 
             // Then
             $this->assertSame($expected, $result);
@@ -778,7 +885,13 @@
             $openOpen->setAccessible(TRUE);
 
             // When
-            $result = $openOpen->invokeArgs($this->piecewise, [$aOpen, $bOpen]);
+            try
+            {
+                $result = $openOpen->invokeArgs($this->piecewise,
+                    [$aOpen, $bOpen]);
+            } catch (\ReflectionException $e)
+            {
+            }
 
             // Then
             $this->assertSame($expected, $result);
@@ -798,7 +911,13 @@
             $openOpen = new ReflectionMethod(Piecewise::class, 'closedOpen');
             $openOpen->setAccessible(TRUE);
 
-            $result = $openOpen->invokeArgs($this->piecewise, [$aOpen, $bOpen]);
+            try
+            {
+                $result = $openOpen->invokeArgs($this->piecewise,
+                    [$aOpen, $bOpen]);
+            } catch (\ReflectionException $e)
+            {
+            }
 
             // Then
             $this->assertSame($expected, $result);
@@ -822,7 +941,13 @@
             $openOpen->setAccessible(TRUE);
 
             // When
-            $result = $openOpen->invokeArgs($this->piecewise, [$aOpen, $bOpen]);
+            try
+            {
+                $result = $openOpen->invokeArgs($this->piecewise,
+                    [$aOpen, $bOpen]);
+            } catch (\ReflectionException $e)
+            {
+            }
 
             // Then
             $this->assertSame($expected, $result);

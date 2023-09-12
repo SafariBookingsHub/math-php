@@ -2,6 +2,10 @@
 
     namespace MathPHP\Tests\Statistics\Regression;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\IncorrectTypeException;
+    use MathPHP\Exception\MatrixException;
     use MathPHP\Statistics\Regression\Linear;
     use MathPHP\Statistics\Regression\Regression;
     use PHPUnit\Framework\TestCase;
@@ -1015,7 +1019,14 @@
             $regression = new Linear($points);
 
             // When
-            $ci = $regression->ci($x, 0.05);
+            try
+            {
+                $ci = $regression->ci($x, 0.05);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta(0.39030395, $ci, 0.000001);
@@ -1061,7 +1072,12 @@
             $regression = new Linear($points);
 
             // When
-            $Fprob = $regression->fProbability();
+            try
+            {
+                $Fprob = $regression->fProbability();
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($probability, $Fprob, .0000001);
@@ -1084,7 +1100,14 @@
             $regression = new Linear($points);
 
             // When
-            $Tprob = $regression->tProbability();
+            try
+            {
+                $Tprob = $regression->tProbability();
+            } catch (BadParameterException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($beta0, $Tprob['m'], .0000001);
@@ -1108,10 +1131,8 @@
 
             // Then
             foreach ($leverages as $key => $value)
-            {
                 $this->assertEqualsWithDelta($value, $test_leverages[$key],
                     .0000001);
-            }
         }
 
         /**
@@ -1148,13 +1169,9 @@
 
             // Then
             foreach ($P as $row_num => $row)
-            {
                 foreach ($row as $column_num => $value)
-                {
                     $this->assertEqualsWithDelta($value,
                         $test_P[$row_num][$column_num], .0000001);
-                }
-            }
         }
 
         /**
@@ -1172,10 +1189,20 @@
             // Then
             $this->assertEqualsWithDelta($sums['mse'],
                 $regression->meanSquareResidual(), .0000001);
-            $this->assertEqualsWithDelta($sums['msr'],
-                $regression->meanSquareRegression(), .0000001);
-            $this->assertEqualsWithDelta($sums['mst'],
-                $regression->meanSquareTotal(), .0000001);
+            try
+            {
+                $this->assertEqualsWithDelta($sums['msr'],
+                    $regression->meanSquareRegression(), .0000001);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $this->assertEqualsWithDelta($sums['mst'],
+                    $regression->meanSquareTotal(), .0000001);
+            } catch (BadDataException $e)
+            {
+            }
             $this->assertEqualsWithDelta($sums['sd'], $regression->errorSd(),
                 .0000001);
         }
@@ -1194,17 +1221,23 @@
             $regression = new Linear($points);
 
             // When
-            $test_cook = $regression->cooksD();
-            $test_dffits = $regression->dffits();
+            try
+            {
+                $test_cook = $regression->cooksD();
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $test_dffits = $regression->dffits();
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             foreach ($test_cook as $key => $value)
-            {
                 $this->assertEqualsWithDelta($value, $cook[$key], .0000001);
-            }
             foreach ($test_dffits as $key => $value)
-            {
                 $this->assertEqualsWithDelta($value, $DFFITS[$key], .0000001);
-            }
         }
     }

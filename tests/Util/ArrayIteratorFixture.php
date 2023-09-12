@@ -7,10 +7,10 @@
 
     class ArrayIteratorFixture implements Iterator {
         /** @var array */
-        private $values;
+        private array $values;
 
         /** @var int */
-        private $i;
+        private int $i;
 
         public function __construct(array $values)
         {
@@ -27,14 +27,11 @@
          * @return mixed
          */
         #[ReturnTypeWillChange]
-        public function current()
+        public function current(): mixed
         {
             return $this->values[$this->i];
         }
 
-        /**
-         * @return int
-         */
         public function key(): int
         {
             return $this->i;
@@ -45,9 +42,6 @@
             ++$this->i;
         }
 
-        /**
-         * @return bool
-         */
         public function valid(): bool
         {
             return isset($this->values[$this->i]);

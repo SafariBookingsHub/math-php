@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class NonIntegerTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForHarmonicNumbers(): array
         {
             return [
@@ -34,9 +31,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForGeneralizedHarmonicNumbers(
         ): array
         {
@@ -49,9 +43,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForHyperharmonicNumbers(): array
         {
             return [
@@ -160,7 +151,12 @@
             array $expectedSequence
         ) {
             // When
-            $hyperharmonicSequence = NonInteger::hyperharmonic($n, $r);
+            try
+            {
+                $hyperharmonicSequence = NonInteger::hyperharmonic($n, $r);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expectedSequence,
@@ -179,7 +175,12 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            NonInteger::hyperharmonic(10, $r);
+            try
+            {
+                NonInteger::hyperharmonic(10, $r);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -196,6 +197,11 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            NonInteger::hyperharmonic($n, $r);
+            try
+            {
+                NonInteger::hyperharmonic($n, $r);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
     }

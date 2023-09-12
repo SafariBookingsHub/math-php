@@ -486,9 +486,9 @@
             $A∩B = $A->intersect($B);
 
             // Then
-            $this->assertEquals((count($A) + count($B)) - count($A∩B),
+            $this->assertEquals(count($A) + count($B) - count($A∩B),
                 count($A∪B));
-            $this->assertEquals((count($A->asArray()) + count($B->asArray()))
+            $this->assertEquals(count($A->asArray()) + count($B->asArray())
                 - count($A∩B->asArray()), count($A∪B->asArray()));
         }
 

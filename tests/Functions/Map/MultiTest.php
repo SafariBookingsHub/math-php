@@ -322,7 +322,12 @@
             array $expected
         ) {
             // When
-            $products = Multi::multiply($xs, $ys);
+            try
+            {
+                $products = Multi::multiply($xs, $ys);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected, $products);
@@ -335,7 +340,12 @@
         public function testMultiplyMulti(array $expected, array ...$arrays)
         {
             // When
-            $products = Multi::multiply(...$arrays);
+            try
+            {
+                $products = Multi::multiply(...$arrays);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected, $products);

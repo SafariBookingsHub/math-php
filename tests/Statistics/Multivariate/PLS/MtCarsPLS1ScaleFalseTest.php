@@ -6,18 +6,19 @@
     use MathPHP\LinearAlgebra\Matrix;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\SampleData;
+    use MathPHP\SampleData\MtCars;
     use MathPHP\Statistics\Multivariate\PLS;
     use PHPUnit\Framework\TestCase;
 
     class MtCarsPLS1ScaleFalseTest extends TestCase {
         /** @var PLS */
-        private static $pls;
+        private static PLS $pls;
 
         /** @var Matrix */
-        private static $X;
+        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $X;
 
         /** @var Matrix */
-        private static $Y;
+        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $Y;
 
         /**
          * R code for expected values:

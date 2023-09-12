@@ -3,6 +3,7 @@
     namespace MathPHP\Tests\LinearAlgebra\Vector;
 
     use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\VectorException;
     use MathPHP\LinearAlgebra\Vector;
     use PHPUnit\Framework\TestCase;
 
@@ -23,7 +24,7 @@
                 [
                     [1, 2, 3],
                     [3, 2, 1],
-                    rad2deg(acos(5 / 7)),
+                    rad2deg(num: acos(num: 5 / 7)),
                 ],
                 [
                     [1, 2, 3],
@@ -33,7 +34,7 @@
                 [
                     [1, 0, 0],
                     [0, 0, 1],
-                    rad2deg(acos(0)),
+                    rad2deg(num: acos(num: 0)),
                 ],
                 [
                     [1, 0, 0],
@@ -43,7 +44,7 @@
                 [
                     [1, 0, 0],
                     [1, 0, 0],
-                    rad2deg(acos(1)),
+                    rad2deg(num: acos(num: 1)),
                 ],
                 [
                     [1, 0, 0],
@@ -53,7 +54,7 @@
                 [
                     [1, 0, 0],
                     [0, 1, 0],
-                    rad2deg(acos(0)),
+                    rad2deg(num: acos(num: 0)),
                 ],
                 [
                     [1, 0, 0],
@@ -63,7 +64,7 @@
                 [
                     [-1, 1, 0],
                     [0, 1, -1],
-                    rad2deg(acos(1 / 2)),
+                    rad2deg(num: acos(num: 1 / 2)),
                 ],
                 [
                     [-1, 1, 0],
@@ -73,7 +74,7 @@
                 [
                     [1, 0, 0],
                     [-1, 0, 0],
-                    rad2deg(acos(-1)),
+                    rad2deg(num: acos(num: -1)),
                 ],
                 [
                     [1, 0, 0],
@@ -83,7 +84,7 @@
                 [
                     [23, 41, 33],
                     [31, 56, 21],
-                    rad2deg(acos(1851 * sqrt(2 / 7485431))),
+                    rad2deg(num: acos(num: 1851 * sqrt(num: 2 / 7485431))),
                 ],
                 [
                     [23, 41, 33],
@@ -104,7 +105,7 @@
                 [
                     [1, 2, 3],
                     [3, 2, 1],
-                    acos(5 / 7),
+                    acos(num: 5 / 7),
                 ],
                 [
                     [1, 2, 3],
@@ -114,7 +115,7 @@
                 [
                     [1, 0, 0],
                     [0, 0, 1],
-                    acos(0),
+                    acos(num: 0),
                 ],
                 [
                     [1, 0, 0],
@@ -124,7 +125,7 @@
                 [
                     [1, 0, 0],
                     [0, 1, 0],
-                    acos(0),
+                    acos(num: 0),
                 ],
                 [
                     [1, 0, 0],
@@ -134,7 +135,7 @@
                 [
                     [1, 0, 0],
                     [1, 0, 0],
-                    acos(1),
+                    acos(num: 1),
                 ],
                 [
                     [1, 0, 0],
@@ -144,7 +145,7 @@
                 [
                     [-1, 1, 0],
                     [0, 1, -1],
-                    acos(1 / 2),
+                    acos(num: 1 / 2),
                 ],
                 [
                     [-1, 1, 0],
@@ -154,7 +155,7 @@
                 [
                     [1, 0, 0],
                     [-1, 0, 0],
-                    acos(-1),
+                    acos(num: -1),
                 ],
                 [
                     [1, 0, 0],
@@ -164,7 +165,7 @@
                 [
                     [23, 41, 33],
                     [31, 56, 21],
-                    acos(1851 * sqrt(2 / 7485431)),
+                    acos(num: 1851 * sqrt(num: 2 / 7485431)),
                 ],
                 [
                     [23, 41, 33],
@@ -174,9 +175,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForExceptionRadAngle(): array
         {
             return [
@@ -209,12 +207,36 @@
             float $expected
         ) {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $angle1 = $A->angleBetween($B, TRUE);
-            $angle2 = $B->angleBetween($A, TRUE);
+            try
+            {
+                $angle1 = $A->angleBetween($B, TRUE);
+            } catch (BadDataException $e)
+            {
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $angle2 = $B->angleBetween($A, TRUE);
+            } catch (BadDataException $e)
+            {
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $angle1, 00000000001);
@@ -235,12 +257,36 @@
             float $expected
         ) {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $angle1 = $A->angleBetween($B);
-            $angle2 = $B->angleBetween($A);
+            try
+            {
+                $angle1 = $A->angleBetween($B);
+            } catch (BadDataException $e)
+            {
+            } catch (VectorException $e)
+            {
+            }
+            try
+            {
+                $angle2 = $B->angleBetween($A);
+            } catch (BadDataException $e)
+            {
+            } catch (VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $angle1, 00000000001);
@@ -257,13 +303,30 @@
         public function testExceptionRadAngle(array $A, array $B)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(BadDataException::class);
 
             // When
-            $A->angleBetween($B);
+            try
+            {
+                $A->angleBetween($B);
+            } catch (BadDataException $e)
+            {
+            } catch (VectorException $e)
+            {
+            }
         }
     }

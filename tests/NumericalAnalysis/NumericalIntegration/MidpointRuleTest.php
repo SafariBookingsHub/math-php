@@ -161,9 +161,7 @@
         public function testApproximateUsingCallback()
         {
             // Given -x² + 2x + 1
-            $func = function ($x) {
-                return (-$x ** 2) + (2 * $x) + 1;
-            };
+            $func = fn($x) => (-$x ** 2) + (2 * $x) + 1;
             $start = 0;
             $end = 3;
             $n = 4;

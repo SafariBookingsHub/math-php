@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\Statistics;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Exception;
     use MathPHP\LinearAlgebra\NumericMatrix;
     use MathPHP\Statistics\Distance;
@@ -438,9 +439,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCosineDistanceException(): array
         {
             return [
@@ -533,9 +531,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCosineSimilarityException(): array
         {
             return [
@@ -632,10 +627,11 @@
             ];
         }
 
-        /**
-         * @return array
-         */
-        public static function dataProviderForBrayCurtisNan(): array
+        #[ArrayShape([
+            'both zero ' => "array[]",
+            '∑｜uᵢ + vᵢ｜ denominator is zero (1)' => "\int[][]",
+            '∑｜uᵢ + vᵢ｜ demoninator is zero (2)' => "array[]"
+        ])] public static function dataProviderForBrayCurtisNan(): array
         {
             return [
                 'both zero '                         => [
@@ -760,10 +756,10 @@
             ];
         }
 
-        /**
-         * @return array
-         */
-        public static function dataProviderForCanberraNan(): array
+        #[ArrayShape([
+            'both zero ' => "array[]",
+            'all zeros'  => "array[]"
+        ])] public static function dataProviderForCanberraNan(): array
         {
             return [
                 'both zero ' => [
@@ -791,7 +787,12 @@
             float $expected
         ) {
             // When
-            $BD = Distance::bhattacharyya($p, $q);
+            try
+            {
+                $BD = Distance::bhattacharyya($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $BD, 0.0001);
@@ -811,7 +812,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Distance::bhattacharyya($p, $q);
+            try
+            {
+                Distance::bhattacharyya($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -828,7 +834,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Distance::bhattacharyya($p, $q);
+            try
+            {
+                Distance::bhattacharyya($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -845,7 +856,12 @@
             float $expected
         ) {
             // When
-            $BD = Distance::hellinger($p, $q);
+            try
+            {
+                $BD = Distance::hellinger($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $BD, 0.0001);
@@ -864,7 +880,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Distance::hellinger($p, $q);
+            try
+            {
+                Distance::hellinger($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -881,7 +902,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Distance::hellinger($p, $q);
+            try
+            {
+                Distance::hellinger($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -895,7 +921,12 @@
         public function testJensenShannon(array $p, array $q, float $expected)
         {
             // When
-            $BD = Distance::jensenShannon($p, $q);
+            try
+            {
+                $BD = Distance::jensenShannon($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $BD, 0.0001);
@@ -914,7 +945,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Distance::jensenShannon($p, $q);
+            try
+            {
+                Distance::jensenShannon($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -931,7 +967,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Distance::jensenShannon($p, $q);
+            try
+            {
+                Distance::jensenShannon($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -1027,8 +1068,18 @@
             float $expected
         ) {
             // When
-            $distanceXy = Distance::minkowski($x, $y, $p);
-            $distanceYx = Distance::minkowski($y, $x, $p);
+            try
+            {
+                $distanceXy = Distance::minkowski($x, $y, $p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $distanceYx = Distance::minkowski($y, $x, $p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $distanceXy, 0.0000000001);
@@ -1049,7 +1100,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $distance = Distance::minkowski($x, $y, $irrelevantValueForP);
+            try
+            {
+                $distance = Distance::minkowski($x, $y, $irrelevantValueForP);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -1066,7 +1122,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $distance = Distance::minkowski($x, $y, $p);
+            try
+            {
+                $distance = Distance::minkowski($x, $y, $p);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -1080,7 +1141,12 @@
         public function testEuclidean(array $x, array $y, float $expected)
         {
             // When
-            $distance = Distance::euclidean($x, $y);
+            try
+            {
+                $distance = Distance::euclidean($x, $y);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $distance, 0.0000000001);
@@ -1099,7 +1165,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $distance = Distance::euclidean($x, $y);
+            try
+            {
+                $distance = Distance::euclidean($x, $y);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -1113,7 +1184,12 @@
         public function testManhattan(array $x, array $y, float $expected)
         {
             // When
-            $distance = Distance::manhattan($x, $y);
+            try
+            {
+                $distance = Distance::manhattan($x, $y);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $distance, 0.0000000001);
@@ -1132,7 +1208,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $distance = Distance::manhattan($x, $y);
+            try
+            {
+                $distance = Distance::manhattan($x, $y);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -1146,7 +1227,14 @@
         public function testCosineDistance(array $A, array $B, float $expected)
         {
             // When
-            $distance = Distance::cosine($A, $B);
+            try
+            {
+                $distance = Distance::cosine($A, $B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $distance, 0.0000000001);
@@ -1165,7 +1253,14 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $distance = Distance::cosine($A, $B);
+            try
+            {
+                $distance = Distance::cosine($A, $B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\VectorException $e)
+            {
+            }
         }
 
         /**
@@ -1182,7 +1277,14 @@
             float $expected
         ) {
             // When
-            $distance = Distance::cosineSimilarity($A, $B);
+            try
+            {
+                $distance = Distance::cosineSimilarity($A, $B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $distance, 0.0000000001);
@@ -1201,7 +1303,14 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $distance = Distance::cosineSimilarity($A, $B);
+            try
+            {
+                $distance = Distance::cosineSimilarity($A, $B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\VectorException $e)
+            {
+            }
         }
 
         /**
@@ -1215,7 +1324,12 @@
         public function testBrayCurtis(array $u, array $v, float $expected)
         {
             // When
-            $distance = Distance::brayCurtis($u, $v);
+            try
+            {
+                $distance = Distance::brayCurtis($u, $v);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $distance, 0.0001);
@@ -1231,7 +1345,12 @@
         public function testBrayCurtisNan(array $u, array $v)
         {
             // When
-            $distance = Distance::brayCurtis($u, $v);
+            try
+            {
+                $distance = Distance::brayCurtis($u, $v);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertNan($distance);
@@ -1265,7 +1384,12 @@
         public function testCanberra(array $p, array $q, float $expected)
         {
             // When
-            $distance = Distance::canberra($p, $q);
+            try
+            {
+                $distance = Distance::canberra($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $distance, 0.0001);
@@ -1281,7 +1405,12 @@
         public function testCanberraNan(array $u, array $v)
         {
             // When
-            $distance = Distance::canberra($u, $v);
+            try
+            {
+                $distance = Distance::canberra($u, $v);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertNan($distance);

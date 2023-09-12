@@ -2,6 +2,8 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use const INF;
+
     /**
      * Dirac Delta Function
      * https://en.wikipedia.org/wiki/Dirac_delta_function
@@ -61,9 +63,7 @@
         public function pdf(float $x): float
         {
             if ($x == 0)
-            {
-                return \INF;
-            }
+                return INF;
 
             return 0;
         }
@@ -85,15 +85,15 @@
         public function cdf(float $x): int
         {
             if ($x >= 0)
-            {
                 return 1;
-            }
 
             return 0;
         }
 
         /**
          * The inverse of the CDF function
+         *
+         * @param float $p
          *
          * @return int
          */
@@ -120,5 +120,9 @@
         public function median(): int
         {
             return 0;
+        }
+
+        public function rand()
+        {
         }
     }

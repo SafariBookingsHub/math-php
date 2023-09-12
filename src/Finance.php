@@ -2,6 +2,7 @@
 
     namespace MathPHP;
 
+    use JetBrains\PhpStorm\Pure;
     use MathPHP\Exception\OutOfBoundsException;
 
     use function abs;
@@ -9,6 +10,8 @@
     use function exp;
     use function is_nan;
     use function log;
+
+    use function max;
 
     use const NAN;
 
@@ -131,14 +134,12 @@
             $when = $beginning ? 1 : 0;
 
             if ($rate == 0)
-            {
                 return -($future_value + $present_value) / $periods;
-            }
 
-            return -($future_value + ($present_value * ((1 + $rate)
-                            ** $periods)))
+            return -($future_value + $present_value * (1 + $rate)
+                            ** $periods)
                 /
-                (((1 + ($rate * $when)) / $rate) * (((1 + $rate) ** $periods)
+                ((1 + $rate * $when) / $rate * ((1 + $rate) ** $periods
                         - 1));
         }
 
@@ -207,32 +208,22 @@
             float $future_value = 0.0,
             bool $beginning = FALSE
         ): float {
-            if (($period < 1) || ($period > $periods))
-            {
+            if ($period < 1 || $period > $periods)
                 return NAN;
-            }
 
             if ($rate == 0)
-            {
                 return 0;
-            }
 
-            if ($beginning && ($period == 1))
-            {
+            if ($beginning && $period == 1)
                 return 0.0;
-            }
 
             $payment = self::pmt($rate, $periods, $present_value, $future_value,
                 $beginning);
             if ($beginning)
-            {
                 $interest = (self::fv($rate, $period - 2, $payment,
-                            $present_value, $beginning) - $payment) * $rate;
-            } else
-            {
+                            $present_value, $beginning) - $payment) * $rate; else
                 $interest = self::fv($rate, $period - 1, $payment,
                         $present_value, $beginning) * $rate;
-            }
 
             return self::checkZero($interest);
         }
@@ -272,7 +263,7 @@
          *
          * @return float
          */
-        public static function fv(
+        #[Pure] public static function fv(
             float $rate,
             int $periods,
             float $payment,
@@ -283,15 +274,15 @@
 
             if ($rate == 0)
             {
-                $fv = -($present_value + ($payment * $periods));
+                $fv = -($present_value + $payment * $periods);
 
                 return self::checkZero($fv);
             }
 
-            $initial = 1 + ($rate * $when);
+            $initial = 1 + $rate * $when;
             $compound = (1 + $rate) ** $periods;
-            $fv = -(($present_value * $compound) + (($payment * $initial
-                        * ($compound - 1)) / $rate));
+            $fv = -($present_value * $compound + $payment * $initial
+                        * ($compound - 1) / $rate);
 
             return self::checkZero($fv);
         }
@@ -302,15 +293,13 @@
          * Also used to convert -0.0 to 0.0.
          *
          * @param float $value
-         * @param float $epsilon
          *
          * @return float
          */
         private static function checkZero(
-            float $value,
-            float $epsilon = self::EPSILON
+            float $value
         ): float {
-            return (abs($value) < $epsilon) ? 0.0 : $value;
+            return abs($value) < self::EPSILON ? 0.0 : $value;
         }
 
         /**
@@ -354,14 +343,12 @@
             $when = $beginning ? 1 : 0;
 
             if ($rate == 0)
-            {
                 return -($present_value + $future_value) / $payment;
-            }
 
-            $initial = $payment * (1.0 + ($rate * $when));
+            $initial = $payment * (1.0 + $rate * $when);
 
-            return log(($initial - ($future_value * $rate)) / ($initial
-                        + ($present_value * $rate))) / log(1.0 + $rate);
+            return log(($initial - $future_value * $rate) / ($initial
+                        + $present_value * $rate)) / log(1.0 + $rate);
         }
 
         /**
@@ -390,11 +377,9 @@
         public static function aer(float $nominal, int $periods): float
         {
             if ($periods == 1)
-            {
                 return $nominal;
-            }
 
-            return ((1 + ($nominal / $periods)) ** $periods) - 1;
+            return (1 + $nominal / $periods) ** $periods - 1;
         }
 
         /**
@@ -423,11 +408,9 @@
         public static function nominal(float $aer, int $periods): float
         {
             if ($periods == 1)
-            {
                 return $aer;
-            }
 
-            return ((($aer + 1) ** (1 / $periods)) - 1) * $periods;
+            return (($aer + 1) ** (1 / $periods) - 1) * $periods;
         }
 
         /**
@@ -468,7 +451,7 @@
          *
          * @return float
          */
-        public static function pv(
+        #[Pure] public static function pv(
             float $rate,
             int $periods,
             float $payment,
@@ -479,15 +462,15 @@
 
             if ($rate == 0)
             {
-                $pv = -$future_value - ($payment * $periods);
+                $pv = -$future_value - $payment * $periods;
 
                 return self::checkZero($pv);
             }
 
-            $initial = 1 + ($rate * $when);
+            $initial = 1 + $rate * $when;
             $compound = (1 + $rate) ** $periods;
-            $pv = (-$future_value - (($payment * $initial * ($compound - 1))
-                        / $rate)) / $compound;
+            $pv = (-$future_value - $payment * $initial * ($compound - 1)
+                        / $rate) / $compound;
 
             return self::checkZero($pv);
         }
@@ -531,29 +514,32 @@
         ): float {
             $when = $beginning ? 1 : 0;
 
-            $func = function (
+            $func = fn(
                 $x,
                 $periods,
                 $payment,
                 $present_value,
                 $future_value,
                 $when
-            ) {
-                return $future_value + ($present_value * (1 + $x) ** $periods)
-                    + (($payment * (1 + ($x * $when)) / $x) * (((1 + $x)
-                                ** $periods)
-                            - 1));
-            };
+            ) => $future_value + ($present_value * (1 + $x) ** $periods)
+                + (($payment * (1 + ($x * $when)) / $x) * (((1 + $x)
+                            ** $periods)
+                        - 1));
 
-            return self::checkZero(NumericalAnalysis\RootFinding\NewtonsMethod::solve($func,
-                [
-                    $initial_guess,
-                    $periods,
-                    $payment,
-                    $present_value,
-                    $future_value,
-                    $when,
-                ], 0, self::EPSILON, 0));
+            try
+            {
+                return self::checkZero(NumericalAnalysis\RootFinding\NewtonsMethod::solve($func,
+                    [
+                        $initial_guess,
+                        $periods,
+                        $payment,
+                        $present_value,
+                        $future_value,
+                        $when,
+                    ], 0, self::EPSILON));
+            } catch (OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -586,21 +572,15 @@
             array $values,
             float $initial_guess = 0.1
         ): float {
-            $func = function ($x, $values) {
-                return Finance::npv($x, $values);
-            };
+            $func = fn($x, $values) => Finance::npv($x, $values);
 
             if (count($values) <= 1)
-            {
                 return NAN;
-            }
 
             $root = NumericalAnalysis\RootFinding\NewtonsMethod::solve($func,
-                [$initial_guess, $values], 0, self::EPSILON, 0);
+                [$initial_guess, $values], 0, self::EPSILON);
             if ( ! is_nan($root))
-            {
                 return self::CheckZero($root);
-            }
 
             return self::checkZero(self::alternateIrr($values));
         }
@@ -638,9 +618,7 @@
             $result = 0.0;
 
             for ($i = 0; $i < count($values); ++$i)
-            {
                 $result += $values[$i] / (1 + $rate) ** $i;
-            }
 
             return $result;
         }
@@ -663,32 +641,20 @@
             {
                 $m = -1000;
                 for ($i = 0; $i < count($values); $i++)
-                {
-                    $m = \max($m, -$rate * $i);
-                }
+                    $m = max($m, -$rate * $i);
                 $f = [];
                 for ($i = 0; $i < count($values); $i++)
-                {
-                    $f[$i] = exp(-$rate * $i - $m);
-                }
+                    $f[$i] = exp((-$rate * $i) - $m);
                 $t = 0;
                 for ($i = 0; $i < count($values); $i++)
-                {
                     $t += $f[$i] * $values[$i];
-                }
-                if (abs($t) < (self::EPSILON * exp($m)))
-                {
+                if (abs($t) < self::EPSILON * exp($m))
                     break;
-                }
                 $u = 0;
                 for ($i = 0; $i < count($values); $i++)
-                {
                     $u += $f[$i] * $i * $values[$i];
-                }
                 if ($u == 0)
-                {
                     return NAN;
-                }
                 $rate += $t / $u;
             }
 
@@ -730,7 +696,6 @@
             $outflows = array();
 
             for ($i = 0; $i < count($values); $i++)
-            {
                 if ($values[$i] >= 0)
                 {
                     $inflows[] = $values[$i];
@@ -740,42 +705,29 @@
                     $inflows[] = 0;
                     $outflows[] = $values[$i];
                 }
-            }
 
-            $nonzero = function ($x) {
-                return $x != 0;
-            };
+            $nonzero = fn($x) => $x != 0;
 
-            $array_filter = [];
-            foreach ($outflows as $key => $item)
-            {
-                if ($nonzero($item))
-                {
-                    $array_filter[$key] = $item;
-                }
-            }
-            $array_filter1 = [];
-            foreach ($inflows as $key => $item)
-            {
-                if ($nonzero($item))
-                {
-                    $array_filter1[$key] = $item;
-                }
-            }
-            if ((count($array_filter1) == 0)
-                || (count($array_filter) == 0)
+            $array_filter = array_filter($outflows,
+                function ($item) use ($nonzero) {
+                    return $nonzero($item);
+                });
+            $array_filter1 = array_filter($inflows,
+                function ($item) use ($nonzero) {
+                    return $nonzero($item);
+                });
+            if (count($array_filter1) == 0
+                || count($array_filter) == 0
             )
-            {
                 return NAN;
-            }
 
             $root = count($values) - 1;
             $pv_inflows = self::npv($reinvestment_rate, $inflows);
             $fv_inflows = self::fv($reinvestment_rate, $root, 0, -$pv_inflows);
             $pv_outflows = self::npv($finance_rate, $outflows);
 
-            return self::checkZero((($fv_inflows / -$pv_outflows) ** (1
-                        / $root))
+            return self::checkZero(($fv_inflows / -$pv_outflows) ** (1
+                        / $root)
                 - 1);
         }
 
@@ -819,17 +771,11 @@
         {
             $last_outflow = -1;
             for ($i = 0; $i < count($values); $i++)
-            {
                 if ($values[$i] < 0)
-                {
                     $last_outflow = $i;
-                }
-            }
 
             if ($last_outflow < 0)
-            {
                 return 0.0;
-            }
 
             $sum = $values[0];
             $payback_period = -1;
@@ -842,23 +788,15 @@
                 if ($sum >= 0)
                 {
                     if ($i > $last_outflow)
-                    {
                         return ($i - 1) + (-$prevsum / $discounted_flow);
-                    }
                     if ($payback_period == -1)
-                    {
                         $payback_period = ($i - 1) + (-$prevsum
                                 / $discounted_flow);
-                    }
                 } else
-                {
                     $payback_period = -1;
-                }
             }
             if ($sum >= 0)
-            {
                 return $payback_period;
-            }
 
             return NAN;
         }
@@ -891,7 +829,7 @@
          *
          * @return float
          */
-        public static function profitabilityIndex(
+        #[Pure] public static function profitabilityIndex(
             array $values,
             float $rate
         ): float {
@@ -899,7 +837,6 @@
             $outflows = array();
 
             for ($i = 0; $i < count($values); $i++)
-            {
                 if ($values[$i] >= 0)
                 {
                     $inflows[] = $values[$i];
@@ -909,28 +846,51 @@
                     $inflows[] = 0;
                     $outflows[] = -$values[$i];
                 }
-            }
 
-            $nonzero = function ($x) {
-                return $x != 0;
-            };
+            $nonzero = fn($x) => $x != 0;
 
-            $array_filter = [];
-            foreach ($outflows as $key => $item)
-            {
-                if ($nonzero($item))
-                {
-                    $array_filter[$key] = $item;
-                }
-            }
+            $array_filter = array_filter($outflows,
+                function ($item) use ($nonzero) {
+                    return $nonzero($item);
+                });
             if (count($array_filter) == 0)
-            {
                 return NAN;
-            }
 
             $pv_inflows = self::npv($rate, $inflows);
             $pv_outflows = self::npv($rate, $outflows);
 
             return $pv_inflows / $pv_outflows;
+        }
+
+        public function profitabilityIndexNan()
+        {
+        }
+
+        public function paybackNan()
+        {
+        }
+
+        public function mirrNan()
+        {
+        }
+
+        public function irrNan()
+        {
+        }
+
+        public function rateNan()
+        {
+        }
+
+        public function periodsNan()
+        {
+        }
+
+        public function ppmtNan()
+        {
+        }
+
+        public function ipmtNan()
+        {
         }
     }

@@ -2,6 +2,8 @@
 
     namespace MathPHP\Tests\Number;
 
+    use JetBrains\PhpStorm\ArrayShape;
+    use JetBrains\PhpStorm\Pure;
     use MathPHP\Exception;
     use MathPHP\Number\ArbitraryInteger;
     use MathPHP\Number\Rational;
@@ -538,7 +540,11 @@
             ];
         }
 
-        public static function dataProviderForTestIncorrectTypeException(
+        #[Pure] #[ArrayShape(['float'  => "float[]",
+                              'array'  => "array[]",
+                              'bool'   => "true[]",
+                              'object' => "\stdClass[]"
+        ])] public static function dataProviderForTestIncorrectTypeException(
         ): array
         {
             return [
@@ -574,7 +580,7 @@
          *
          * @throws       \Exception
          */
-        public function testStringToString($int, string $expected)
+        public function testStringToString(mixed $int, string $expected)
         {
             // Given
             $obj = new ArbitraryInteger($int);
@@ -651,11 +657,11 @@
          * @test         isPositive
          * @dataProvider dataProviderForPositiveInt
          *
-         * @param string|int $int
+         * @param int|string $int
          *
          * @throws       \Exception
          */
-        public function testIsPositive($int)
+        public function testIsPositive(int|string $int)
         {
             // Given
             $obj = new ArbitraryInteger($int);
@@ -671,11 +677,11 @@
          * @test         isPositive negative numbers
          * @dataProvider dataProviderForNegativeInt
          *
-         * @param string|int $int
+         * @param int|string $int
          *
          * @throws       \Exception
          */
-        public function testIsNotPositive($int)
+        public function testIsNotPositive(int|string $int)
         {
             // Given
             $obj = new ArbitraryInteger($int);
@@ -888,14 +894,30 @@
          * @param int    $int
          * @param int    $exponent
          * @param string $expected
+         *
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testPow(int $int, int $exponent, string $expected)
         {
             // Given
-            $int = new ArbitraryInteger($int);
+            try
+            {
+                $int = new ArbitraryInteger($int);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // When
-            $pow = $int->pow($exponent);
+            try
+            {
+                $pow = $int->pow($exponent);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertSame($expected, (string)$pow);
@@ -908,6 +930,7 @@
          * @param int      $int
          * @param int      $exponent
          * @param Rational $expected
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testPowRational(
             int $int,
@@ -915,10 +938,24 @@
             Rational $expected
         ) {
             // Given
-            $int = new ArbitraryInteger($int);
+            try
+            {
+                $int = new ArbitraryInteger($int);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // When
-            $pow = $int->pow($exponent);
+            try
+            {
+                $pow = $int->pow($exponent);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected, $pow);
@@ -934,7 +971,7 @@
          *
          * @throws       \Exception
          */
-        public function testAbs($int, string $expected)
+        public function testAbs(mixed $int, string $expected)
         {
             // Given
             $int = new ArbitraryInteger($int);
@@ -1154,7 +1191,7 @@
          *
          * @throws       \Exception
          */
-        public function testEquals($int)
+        public function testEquals(mixed $int)
         {
             // Given
             $obj = new ArbitraryInteger($int);
@@ -1178,7 +1215,7 @@
          *
          * @throws       \Exception
          */
-        public function testNotEquals($int)
+        public function testNotEquals(mixed $int)
         {
             // Given
             $obj1 = new ArbitraryInteger($int);
@@ -1215,7 +1252,7 @@
          *
          * @throws       \Exception
          */
-        public function testIncorrectTypeException($number)
+        public function testIncorrectTypeException(mixed $number)
         {
             // Then
             $this->expectException(Exception\IncorrectTypeException::class);

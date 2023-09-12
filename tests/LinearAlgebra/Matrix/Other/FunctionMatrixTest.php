@@ -22,7 +22,7 @@
                         $x = $params['x'];
                         $y = $params['y'];
 
-                        return ($x ** 2) * $y;
+                        return $x ** 2 * $y;
                     },
                 ],
                 [
@@ -30,7 +30,7 @@
                         $x = $params['x'];
                         $y = $params['y'];
 
-                        return (5 * $x) + sin($y);
+                        return 5 * $x + sin($y);
                     },
                 ],
             ];
@@ -107,13 +107,13 @@
                         $x = $params['x'];
                         $y = $params['y'];
 
-                        return ($x ** 2) * $y;
+                        return $x ** 2 * $y;
                     },
                     function ($params) {
                         $x = $params['x'];
                         $y = $params['y'];
 
-                        return ($x ** 2) * $y;
+                        return $x ** 2 * $y;
                     },
                 ],
                 [
@@ -121,7 +121,7 @@
                         $x = $params['x'];
                         $y = $params['y'];
 
-                        return (5 * $x) + sin($y);
+                        return 5 * $x + sin($y);
                     },
                 ],
             ];

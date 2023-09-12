@@ -11,9 +11,6 @@
     class RowEchelonFormTest extends TestCase {
         use Tests\LinearAlgebra\Fixture\MatrixDataProvider;
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRowReductionToEchelonForm(): array
         {
             return [
@@ -399,14 +396,17 @@
          * @test         isRef on ref matrix should return true
          * @dataProvider dataProviderForNonsingularMatrix
          *
-         * @param        $A
+         * @param array $A
          *
-         * @throws       \Exception
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException
          */
         public function testRefIsRef(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // When
             $ref = $A->ref();
@@ -422,7 +422,7 @@
         public function testRefAlreadyComputed()
         {
             // Given
-            $A = new NumericMatrix([
+            $A = new NumericMatrix(A: [
                 [4, 1, 2, -3],
                 [-3, 3, -1, 4],
                 [-1, 2, 5, 1],
@@ -449,13 +449,13 @@
         public function testRowReductionToEchelonForm(array $A, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $R = MatrixFactory::create($R);
+            $A = MatrixFactory::create(A: $A);
+            $R = MatrixFactory::create(A: $R);
 
             // When
             [$ref, $swaps]
-                = Reduction\RowEchelonForm::rowReductionToEchelonForm($A);
-            $ref = MatrixFactory::create($ref);
+                = Reduction\RowEchelonForm::rowReductionToEchelonForm(A: $A);
+            $ref = MatrixFactory::create(A: $ref);
 
             // Then
             $this->assertEqualsWithDelta($R->getMatrix(), $ref->getMatrix(),

@@ -98,7 +98,7 @@
          *
          * @throws       \Exception
          */
-        public function testPdf(array $xs, array $αs, $expected)
+        public function testPdf(array $xs, array $αs, float $expected)
         {
             // Given
             $dirichlet = new Dirichlet($αs);

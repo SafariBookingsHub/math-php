@@ -7,15 +7,16 @@
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\LinearAlgebra\NumericMatrix;
     use MathPHP\SampleData;
+    use MathPHP\SampleData\MtCars;
     use MathPHP\Statistics\Multivariate\PCA;
     use PHPUnit\Framework\TestCase;
 
     class CenterTrueScaleTrueTest extends TestCase {
         /** @var PCA */
-        private static $pca;
+        private static PCA $pca;
 
         /** @var NumericMatrix */
-        private static $matrix;
+        private static \MathPHP\LinearAlgebra\ComplexMatrix|NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|\MathPHP\LinearAlgebra\Matrix $matrix;
 
         /**
          * R code for expected values:
@@ -212,11 +213,9 @@
             $quotiant = Multi::divide($expected[1], $load_array[1]);
 
             // Convert to exactly one or negative one. Cannot be zero.
-            $array_map = [];
-            foreach ($quotiant as $key => $x)
-            {
-                $array_map[$key] = $x <=> 0;
-            }
+            $array_map = array_map(function ($x) {
+                return $x <=> 0;
+            }, $quotiant);
             $signum = $array_map;
             $sign_change = MatrixFactory::diagonal($signum);
 
@@ -605,11 +604,9 @@
             $quotiant = Multi::divide($expected[1], $score_array[1]);
 
             // Convert to exactly one or negative one. Cannot be zero.
-            $array_map = [];
-            foreach ($quotiant as $key => $x)
-            {
-                $array_map[$key] = $x <=> 0;
-            }
+            $array_map = array_map(function ($x) {
+                return $x <=> 0;
+            }, $quotiant);
             $signum = $array_map;
             $signature = MatrixFactory::diagonal($signum);
 
@@ -678,7 +675,12 @@
             ];
 
             // When
-            $eigenvalues = self::$pca->getEigenvalues()->getVector();
+            try
+            {
+                $eigenvalues = self::$pca->getEigenvalues()->getVector();
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $eigenvalues, .00001);
@@ -734,7 +736,12 @@
             ];
 
             // When
-            $criticalQ = self::$pca->getCriticalQ();
+            try
+            {
+                $criticalQ = self::$pca->getCriticalQ();
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $criticalQ, .00001);

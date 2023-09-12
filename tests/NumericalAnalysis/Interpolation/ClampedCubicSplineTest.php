@@ -85,7 +85,7 @@
          *
          * p(x) agrees with f(x) at x = $_
          */
-        public function testSolveZeroError($x)
+        public function testSolveZeroError(float $x)
         {
             // Given f(x) = 8x³ -13x² -92x + 96
             $f = new Polynomial([8, -13, -92, 96]);
@@ -99,7 +99,8 @@
             $roundoff = 0.0001; // round off error
 
             // And
-            $p = ClampedCubicSpline::interpolate($f, $f’, $a, $b, $n);
+            $p = ClampedCubicSpline::interpolate($f, (array)$f’, (array)$a,
+                (array)$b, (array)$n);
             $expected = $f($x);
 
             // When
@@ -129,7 +130,7 @@
          *
          * p(x) agrees with f(x) at x = $_
          */
-        public function testSolveNonZeroError($x)
+        public function testSolveNonZeroError(float $x)
         {
             // Given f(x) = x⁴ + 8x³ -13x² -92x + 96
             $f = new Polynomial([1, 8, -13, -92, 96]);
@@ -143,11 +144,12 @@
 
             // And
             $h = ($b - $a) / ($n - 1);
-            $tol = (5 / 384) * ($h ** 4) * $f⁽⁴⁾(0);
+            $tol = 5 / 384 * $h ** 4 * $f⁽⁴⁾(0);
             $roundoff = 0.000001; // round off error
 
             // And
-            $p = ClampedCubicSpline::interpolate($f, $f’, $a, $b, $n);
+            $p = ClampedCubicSpline::interpolate($f, (array)$f’, (array)$a,
+                (array)$b, (array)$n);
             $expected = $f($x);
 
             // When
@@ -166,7 +168,7 @@
         {
             // Given
             $x = 10;
-            $incorrectFunction = ($x ** 2) + (2 * $x) + 1;
+            $incorrectFunction = $x ** 2 + 2 * $x + 1;
 
             // Then
             $this->expectException(Exception\BadDataException::class);

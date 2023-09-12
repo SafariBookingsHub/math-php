@@ -2,14 +2,16 @@
 
     namespace MathPHP\Statistics\Regression\Models;
 
+    use JetBrains\PhpStorm\ArrayShape;
+
     use function sprintf;
 
     trait LinearModel {
         /** @var int b parameter index */
-        protected static $B = 0;
+        protected static int $B = 0;
 
         /** @var int m parameter index */
-        protected static $M = 1;
+        protected static int $M = 1;
 
         /**
          * Evaluate the model given all the model parameters
@@ -25,7 +27,7 @@
             $m = $params[self::$M];
             $b = $params[self::$B];
 
-            return ($m * $x) + $b;
+            return $m * $x + $b;
         }
 
         /**
@@ -37,7 +39,7 @@
          *
          * @return array{m: float, b: float} [ m => number, b => number ]
          */
-        public function getModelParameters(array $params): array
+        #[ArrayShape(['m' => "float", 'b' => "float"])] public function getModelParameters(array $params): array
         {
             return [
                 'm' => $params[self::$M],

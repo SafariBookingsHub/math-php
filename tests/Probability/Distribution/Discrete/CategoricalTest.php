@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class CategoricalTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForBadK(): array
         {
             return [
@@ -19,9 +16,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPmf(): array
         {
             return [
@@ -64,9 +58,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMode(): array
         {
             return [
@@ -158,7 +149,7 @@
         public function testPmf(
             int $k,
             array $probabilities,
-            $x,
+            int $x,
             float $expectedPmf
         ) {
             // Given
@@ -179,13 +170,25 @@
             // Given
             $k = 2;
             $probabilities = [0.4, 0.6];
-            $categorical = new Categorical($k, $probabilities);
+            try
+            {
+                $categorical = new Categorical($k, $probabilities);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $p = $categorical->pmf(99);
+            try
+            {
+                $p = $categorical->pmf(99);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -198,7 +201,7 @@
          *
          * @throws       \Exception
          */
-        public function testMode(int $k, array $probabilities, $expectedMode)
+        public function testMode(int $k, array $probabilities, mixed $expectedMode)
         {
             // Given
             $categorical = new Categorical($k, $probabilities);

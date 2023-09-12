@@ -2,10 +2,15 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Support;
 
     use function abs;
     use function exp;
+
+    use const INF;
 
     class Laplace extends Continuous {
         /**
@@ -33,10 +38,10 @@
             ];
 
         /** @var float location parameter */
-        protected $μ;
+        protected float $μ;
 
         /** @var float scale parameter */
-        protected $b;
+        protected float $b;
 
         /**
          * Constructor
@@ -64,12 +69,21 @@
          */
         public function pdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $μ = $this->μ;
             $b = $this->b;
 
-            return (1 / (2 * $b)) * exp(-(abs($x - $μ) / $b));
+            return 1 / (2 * $b) * exp(-(abs($x - $μ) / $b));
         }
 
         /**
@@ -91,17 +105,24 @@
          */
         public function cdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $μ = $this->μ;
             $b = $this->b;
 
             if ($x < $μ)
-            {
                 return (1 / 2) * exp(($x - $μ) / $b);
-            }
 
-            return 1 - ((1 / 2) * exp(-($x - $μ) / $b));
+            return 1 - 1 / 2 * exp(-($x - $μ) / $b);
         }
 
         /**
@@ -114,13 +135,9 @@
         public function inverse(float $p): float
         {
             if ($p == 0)
-            {
-                return -\INF;
-            }
+                return -INF;
             if ($p == 1)
-            {
-                return \INF;
-            }
+                return INF;
 
             return parent::inverse($p);
         }
@@ -171,5 +188,9 @@
         public function variance(): float
         {
             return 2 * $this->b ** 2;
+        }
+
+        public function rand()
+        {
         }
     }

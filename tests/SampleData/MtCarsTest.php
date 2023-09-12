@@ -5,9 +5,11 @@
     use MathPHP\SampleData;
     use PHPUnit\Framework\TestCase;
 
+    use function in_array;
+
     class MtCarsTest extends TestCase {
         /** @var SampleData\MtCars */
-        private $mtCars;
+        private SampleData\MtCars $mtCars;
 
         /**
          * @return array (model, data)
@@ -93,9 +95,7 @@
 
             // Then
             foreach ($data as $observation)
-            {
                 $this->assertCount(11, $observation);
-            }
         }
 
         /**
@@ -126,9 +126,7 @@
 
             // When
             foreach ($sampleOfModelNames as $model)
-            {
-                $this->assertTrue(\in_array($model, $models));
-            }
+                $this->assertTrue(in_array($model, $models));
         }
 
         /**

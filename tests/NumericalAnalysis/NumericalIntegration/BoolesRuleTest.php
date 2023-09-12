@@ -119,9 +119,7 @@
         public function testApproximatePolynomialCallback()
         {
             // Given x³ + 2x + 1
-            $func = function ($x) {
-                return ($x ** 3) + (2 * $x) + 1;
-            };
+            $func = fn($x) => ($x ** 3) + (2 * $x) + 1;
             $start = 0;
             $end = 4;
             $n = 5;
@@ -179,9 +177,7 @@
         public function testApproximatePolynomialCallback2()
         {
             // Given 2 + \cos(2√x)
-            $func = function ($x) {
-                return 2 + cos(2 * sqrt($x));
-            };
+            $func = fn($x) => 2 + cos(2 * sqrt($x));
             $start = 0;
             $end = 2;
             $n = 5;
@@ -205,9 +201,7 @@
             float $expected
         ) {
             // Given 1 + e^-x  sin(8x^2/3)
-            $func = function ($x) {
-                return 1 + ((M_E ** -$x) * sin(8 * $x ** (2 / 3)));
-            };
+            $func = fn($x) => 1 + ((M_E ** -$x) * sin(8 * $x ** (2 / 3)));
             $start = 0;
             $end = 2;
             $tol = 0.000001;

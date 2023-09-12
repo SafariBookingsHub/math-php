@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class VandermondeSquareMatrixTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForTestConstructor(): array
         {
             return [

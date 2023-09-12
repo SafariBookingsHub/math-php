@@ -9,34 +9,34 @@
      */
     class MatrixCatalog {
         /** @var Matrix<T> transpose */
-        private $Aᵀ;
+        private Matrix $Aᵀ;
 
         /** @var Matrix<T> inverse */
-        private $A⁻¹;
+        private Matrix $A⁻¹;
 
         /** @var Reduction\RowEchelonForm */
-        private $REF;
+        private Reduction\RowEchelonForm $REF;
 
         /** @var Reduction\ReducedRowEchelonForm */
-        private $RREF;
+        private Reduction\ReducedRowEchelonForm $RREF;
 
         /** @var Decomposition\LU */
-        private $LU;
+        private Decomposition\LU $LU;
 
         /** @var Decomposition\QR */
-        private $QR;
+        private Decomposition\QR $QR;
 
         /** @var Decomposition\Cholesky */
-        private $cholesky;
+        private Decomposition\Cholesky $cholesky;
 
         /** @var Decomposition\Crout */
-        private $crout;
+        private Decomposition\Crout $crout;
 
         /** @var Decomposition\SVD */
-        private $SVD;
+        private Decomposition\SVD $SVD;
 
         /** @var int|float|ObjectArithmetic determinant */
-        private $det;
+        private int|float|ObjectArithmetic $det;
 
         /**************************************************************************
          * DERIVED MATRICES
@@ -54,9 +54,6 @@
             $this->Aᵀ = $Aᵀ;
         }
 
-        /**
-         * @return bool
-         */
         public function hasTranspose(): bool
         {
             // @phpstan-ignore-next-line
@@ -81,9 +78,6 @@
             $this->A⁻¹ = $A⁻¹;
         }
 
-        /**
-         * @return bool
-         */
         public function hasInverse(): bool
         {
             // @phpstan-ignore-next-line
@@ -106,26 +100,17 @@
 
         // ROW ECHELON FORM
 
-        /**
-         * @param Reduction\RowEchelonForm $REF
-         */
         public function addRowEchelonForm(Reduction\RowEchelonForm $REF): void
         {
             $this->REF = $REF;
         }
 
-        /**
-         * @return bool
-         */
         public function hasRowEchelonForm(): bool
         {
             // @phpstan-ignore-next-line
             return isset($this->REF);
         }
 
-        /**
-         * @return Reduction\RowEchelonForm
-         */
         public function getRowEchelonForm(): Reduction\RowEchelonForm
         {
             return $this->REF;
@@ -133,27 +118,18 @@
 
         // REDUCED ROW ECHELON FORM
 
-        /**
-         * @param Reduction\ReducedRowEchelonForm $RREF
-         */
         public function addReducedRowEchelonForm(
             Reduction\ReducedRowEchelonForm $RREF
         ): void {
             $this->RREF = $RREF;
         }
 
-        /**
-         * @return bool
-         */
         public function hasReducedRowEchelonForm(): bool
         {
             // @phpstan-ignore-next-line
             return isset($this->RREF);
         }
 
-        /**
-         * @return Reduction\ReducedRowEchelonForm
-         */
         public function getReducedRowEchelonForm(
         ): Reduction\ReducedRowEchelonForm
         {
@@ -171,26 +147,17 @@
 
         // LU DECOMPOSITION
 
-        /**
-         * @param Decomposition\LU $LU
-         */
         public function addLuDecomposition(Decomposition\LU $LU): void
         {
             $this->LU = $LU;
         }
 
-        /**
-         * @return bool
-         */
         public function hasLuDecomposition(): bool
         {
             // @phpstan-ignore-next-line
             return isset($this->LU);
         }
 
-        /**
-         * @return Decomposition\LU
-         */
         public function getLuDecomposition(): Decomposition\LU
         {
             return $this->LU;
@@ -198,26 +165,17 @@
 
         // QR DECOMPOSITION
 
-        /**
-         * @param Decomposition\QR $QR
-         */
         public function addQrDecomposition(Decomposition\QR $QR): void
         {
             $this->QR = $QR;
         }
 
-        /**
-         * @return bool
-         */
         public function hasQrDecomposition(): bool
         {
             // @phpstan-ignore-next-line
             return isset($this->QR);
         }
 
-        /**
-         * @return Decomposition\QR
-         */
         public function getQrDecomposition(): Decomposition\QR
         {
             return $this->QR;
@@ -225,27 +183,18 @@
 
         // CHOLESKY DECOMPOSITION
 
-        /**
-         * @param Decomposition\Cholesky $cholesky
-         */
         public function addCholeskyDecomposition(
             Decomposition\Cholesky $cholesky
         ): void {
             $this->cholesky = $cholesky;
         }
 
-        /**
-         * @return bool
-         */
         public function hasCholeskyDecomposition(): bool
         {
             // @phpstan-ignore-next-line
             return isset($this->cholesky);
         }
 
-        /**
-         * @return Decomposition\Cholesky
-         */
         public function getCholeskyDecomposition(): Decomposition\Cholesky
         {
             return $this->cholesky;
@@ -253,26 +202,17 @@
 
         // CROUT DECOMPOSITION
 
-        /**
-         * @param Decomposition\Crout $crout
-         */
         public function addCroutDecomposition(Decomposition\Crout $crout): void
         {
             $this->crout = $crout;
         }
 
-        /**
-         * @return bool
-         */
         public function hasCroutDecomposition(): bool
         {
             // @phpstan-ignore-next-line
             return isset($this->crout);
         }
 
-        /**
-         * @return Decomposition\Crout
-         */
         public function getCroutDecomposition(): Decomposition\Crout
         {
             return $this->crout;
@@ -280,26 +220,17 @@
 
         // SVD
 
-        /**
-         * @param Decomposition\SVD $SVD
-         */
         public function addSVD(Decomposition\SVD $SVD): void
         {
             $this->SVD = $SVD;
         }
 
-        /**
-         * @return bool
-         */
         public function hasSVD(): bool
         {
             // @phpstan-ignore-next-line
             return isset($this->SVD);
         }
 
-        /**
-         * @return Decomposition\SVD
-         */
         public function getSVD(): Decomposition\SVD
         {
             return $this->SVD;
@@ -312,16 +243,13 @@
         // DETERMINANT
 
         /**
-         * @param int|float|ObjectArithmetic $det
+         * @param float|int|ObjectArithmetic $det
          */
-        public function addDeterminant($det): void
+        public function addDeterminant(ObjectArithmetic|float|int $det): void
         {
             $this->det = $det;
         }
 
-        /**
-         * @return bool
-         */
         public function hasDeterminant(): bool
         {
             // @phpstan-ignore-next-line
@@ -331,7 +259,7 @@
         /**
          * @return int|float|ObjectArithmetic
          */
-        public function getDeterminant()
+        public function getDeterminant(): ObjectArithmetic|float|int
         {
             return $this->det;
         }

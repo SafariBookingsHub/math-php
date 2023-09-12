@@ -8,9 +8,6 @@
     use PHPUnit\Framework\TestCase;
 
     class MatrixColumnOperationsTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForColumnMultiply(): array
         {
             return [
@@ -87,9 +84,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForColumnAdd(): array
         {
             return [
@@ -156,9 +150,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForColumnAddVector(): array
         {
             return [

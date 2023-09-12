@@ -68,7 +68,12 @@
             string $expected
         ) {
             // Given
-            $int = BaseEncoderDecoder::createArbitraryInteger($int, $base);
+            try
+            {
+                $int = BaseEncoderDecoder::createArbitraryInteger($int, $base);
+            } catch (Exception\BadParameterException $e)
+            {
+            }
 
             // When
             $stringRepresentation = (string)$int;

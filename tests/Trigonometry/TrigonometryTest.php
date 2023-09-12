@@ -8,9 +8,6 @@
     use const M_SQRT1_2;
 
     class TrigonometryTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForUnitCircle(): array
         {
             return [

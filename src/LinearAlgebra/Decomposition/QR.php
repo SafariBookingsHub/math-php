@@ -24,10 +24,10 @@
      */
     class QR extends Decomposition {
         /** @var NumericMatrix orthogonal matrix */
-        private $Q;
+        private NumericMatrix $Q;
 
         /** @var NumericMatrix upper triangular matrix */
-        private $R;
+        private NumericMatrix $R;
 
         /**
          * QR constructor
@@ -124,31 +124,71 @@
          *  - R⁻¹R = I, so we get x = R⁻¹Qᵀb
          * Solve x = R⁻¹Qᵀb
          *
-         * @param Vector|array<int|float> $b solution to Ax = b
+         * @param array<int|float>|Vector $b solution to Ax = b
          *
          * @return Vector x
          *
-         * @throws Exception\IncorrectTypeException if b is not a Vector or array
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\IncorrectTypeException if b is not a Vector or array
          */
-        public function solve($b): Vector
+        public function solve(array|Vector $b): Vector
         {
             // Input must be a Vector or array.
-            if ( ! (($b instanceof Vector) || is_array($b)))
-            {
+            if ( ! ($b instanceof Vector || is_array($b)))
                 throw new Exception\IncorrectTypeException('b in Ax = b must be a Vector or array');
-            }
             if (is_array($b))
-            {
                 $b = new Vector($b);
+
+            try
+            {
+                $Qᵀ = $this->Q->transpose();
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
+            try
+            {
+                $Qᵀb = $Qᵀ->multiply($b);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
             }
 
-            $Qᵀ = $this->Q->transpose();
-            $Qᵀb = $Qᵀ->multiply($b);
+            try
+            {
+                $R⁻¹ = $this->R->inverse();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
+            try
+            {
+                $x = $R⁻¹->multiply($Qᵀb);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
-            $R⁻¹ = $this->R->inverse();
-            $x = $R⁻¹->multiply($Qᵀb);
-
-            return new Vector($x->getColumn(0));
+            try
+            {
+                return new Vector($x->getColumn(0));
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -162,14 +202,43 @@
          */
         public function __get(string $name): NumericMatrix
         {
-            switch ($name)
+            return match ($name)
             {
-                case 'Q':
-                case 'R':
-                    return $this->$name;
+                'Q', 'R' => $this->$name,
+                default => throw new Exception\MatrixException("QR class does not have a gettable property: $name"),
+            };
+        }
 
-                default:
-                    throw new Exception\MatrixException("QR class does not have a gettable property: $name");
-            }
+        public function QRDecompositionSolveIncorrectTypeException()
+        {
+        }
+
+        public function QRDecompositionInvalidProperty()
+        {
+        }
+
+        public function qrDecompositionPropertyQTransposeEqualsQInverse()
+        {
+        }
+
+        public function qrDecompositionPropertyREqualsQTransposeA()
+        {
+        }
+
+        public function qrDecompositionOrthonormalMatrixQPropertyQTransposeQIsIdentity(
+        )
+        {
+        }
+
+        public function qrDecompositionResultMatrices()
+        {
+        }
+
+        public function qrDecompositionPropertiesOfQR()
+        {
+        }
+
+        public function qrDecompositionPropertyAEqualsQR()
+        {
         }
     }

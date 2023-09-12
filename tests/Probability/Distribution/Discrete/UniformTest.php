@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class UniformTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForPmf(): array
         {
             return [
@@ -20,9 +17,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCdf(): array
         {
             return [
@@ -35,9 +29,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForAverage(): array
         {
             return [
@@ -47,9 +38,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForVariance(): array
         {
             return [
@@ -95,7 +83,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $uniform = new Uniform($a, $b);
+            try
+            {
+                $uniform = new Uniform($a, $b);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -104,9 +97,10 @@
          *
          * @param int   $a
          * @param int   $b
+         * @param       $k
          * @param float $expectedCdf
          *
-         * @throws       \Exception
+         * @throws \MathPHP\Exception\BadDataException
          */
         public function testCdf(int $a, int $b, $k, float $expectedCdf)
         {

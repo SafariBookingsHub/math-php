@@ -13,7 +13,7 @@
          *
          * @return mixed
          */
-        public function pdf(float $x);
+        public function pdf(float $x): mixed;
 
         /**
          * Cumulative distribution function
@@ -22,12 +22,12 @@
          *
          * @return int|float
          */
-        public function cdf(float $x);
+        public function cdf(float $x): float|int;
 
         /**
          * Mean average
          *
          * @return int|float
          */
-        public function mean();
+        public function mean(): float|int;
     }

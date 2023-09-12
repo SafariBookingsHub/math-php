@@ -5,6 +5,8 @@
     use MathPHP\Exception;
 
     use function count;
+    use function max;
+    use function min;
 
     /**
      * Map against elements of two or more arrays, item by item (by item ...).
@@ -28,19 +30,13 @@
             $number_of_arrays = count($arrays);
             $length_of_arrays = count($arrays[0]);
             $array_fill = [];
-            for ($k = 0; $k < 0 + $length_of_arrays; $k++)
-            {
+            for ($k = 0; $k < $length_of_arrays; $k++)
                 $array_fill[$k] = 0;
-            }
             $sums = $array_fill;
 
             for ($i = 0; $i < $length_of_arrays; $i++)
-            {
                 for ($j = 0; $j < $number_of_arrays; $j++)
-                {
                     $sums[$i] += $arrays[$j][$i];
-                }
-            }
 
             return $sums;
         }
@@ -50,28 +46,20 @@
          *
          * @param array[] $arrays
          *
-         * @return bool
+         * @return void
          *
          * @throws Exception\BadDataException if there are not at least two arrays
          * @throws Exception\BadDataException if arrays are not equal lengths
          */
-        private static function checkArrayLengths(array $arrays): bool
+        private static function checkArrayLengths(array $arrays): void
         {
             if (count($arrays) < 2)
-            {
                 throw new Exception\BadDataException('Need at least two arrays to map over');
-            }
 
             $n = count($arrays[0]);
             foreach ($arrays as $array)
-            {
                 if (count($array) !== $n)
-                {
                     throw new Exception\BadDataException('Lengths of arrays are not equal');
-                }
-            }
-
-            return TRUE;
         }
 
         /**
@@ -91,20 +79,14 @@
 
             $number_of_arrays = count($arrays);
             $length_of_arrays = count($arrays[0]);
-            $array_map = [];
-            foreach ($arrays[0] as $key => $x)
-            {
-                $array_map[$key] = $x;
-            }
+            $array_map = array_map(function ($x) {
+                return $x;
+            }, $arrays[0]);
             $differences = $array_map;
 
             for ($i = 0; $i < $length_of_arrays; $i++)
-            {
                 for ($j = 1; $j < $number_of_arrays; $j++)
-                {
                     $differences[$i] -= $arrays[$j][$i];
-                }
-            }
 
             return $differences;
         }
@@ -127,19 +109,13 @@
             $number_of_arrays = count($arrays);
             $length_of_arrays = count($arrays[0]);
             $array_fill = [];
-            for ($k = 0; $k < 0 + $length_of_arrays; $k++)
-            {
+            for ($k = 0; $k < $length_of_arrays; $k++)
                 $array_fill[$k] = 1;
-            }
             $products = $array_fill;
 
             for ($i = 0; $i < $length_of_arrays; $i++)
-            {
                 for ($j = 0; $j < $number_of_arrays; $j++)
-                {
                     $products[$i] *= $arrays[$j][$i];
-                }
-            }
 
             return $products;
         }
@@ -161,20 +137,14 @@
 
             $number_of_arrays = count($arrays);
             $length_of_arrays = count($arrays[0]);
-            $array_map = [];
-            foreach ($arrays[0] as $key => $x)
-            {
-                $array_map[$key] = $x;
-            }
+            $array_map = array_map(function ($x) {
+                return $x;
+            }, $arrays[0]);
             $quotients = $array_map;
 
             for ($i = 0; $i < $length_of_arrays; $i++)
-            {
                 for ($j = 1; $j < $number_of_arrays; $j++)
-                {
                     $quotients[$i] /= $arrays[$j][$i];
-                }
-            }
 
             return $quotients;
         }
@@ -196,20 +166,14 @@
 
             $number_of_arrays = count($arrays);
             $length_of_arrays = count($arrays[0]);
-            $array_map = [];
-            foreach ($arrays[0] as $key => $x)
-            {
-                $array_map[$key] = $x;
-            }
+            $array_map = array_map(function ($x) {
+                return $x;
+            }, $arrays[0]);
             $maxes = $array_map;
 
             for ($i = 0; $i < $length_of_arrays; $i++)
-            {
                 for ($j = 1; $j < $number_of_arrays; $j++)
-                {
-                    $maxes[$i] = \max($maxes[$i], $arrays[$j][$i]);
-                }
-            }
+                    $maxes[$i] = max($maxes[$i], $arrays[$j][$i]);
 
             return $maxes;
         }
@@ -235,21 +199,67 @@
 
             $number_of_arrays = count($arrays);
             $length_of_arrays = count($arrays[0]);
-            $array_map = [];
-            foreach ($arrays[0] as $key => $x)
-            {
-                $array_map[$key] = $x;
-            }
+            $array_map = array_map(function ($x) {
+                return $x;
+            }, $arrays[0]);
             $mins = $array_map;
 
             for ($i = 0; $i < $length_of_arrays; $i++)
-            {
                 for ($j = 1; $j < $number_of_arrays; $j++)
-                {
-                    $mins[$i] = \min($mins[$i], $arrays[$j][$i]);
-                }
-            }
+                    $mins[$i] = min($mins[$i], $arrays[$j][$i]);
 
             return $mins;
+        }
+
+        public function checkArrayLengthsExceptionOnlyOneArray()
+        {
+        }
+
+        public function checkArrayLengthsException()
+        {
+        }
+
+        public function minMulti()
+        {
+        }
+
+        public function maxMulti()
+        {
+        }
+
+        public function maxTwoArrays()
+        {
+        }
+
+        public function divideMulti()
+        {
+        }
+
+        public function divideTwoArrays()
+        {
+        }
+
+        public function multiplyMulti()
+        {
+        }
+
+        public function multiplyTwoArrays()
+        {
+        }
+
+        public function subtractMulti()
+        {
+        }
+
+        public function subtractTwoArrays()
+        {
+        }
+
+        public function addMulti()
+        {
+        }
+
+        public function addTwoArrays()
+        {
         }
     }

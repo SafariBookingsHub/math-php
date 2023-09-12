@@ -44,13 +44,13 @@
          * @throws Exception\BadDataException
          * @throws Exception\IncorrectTypeException
          */
-        public static function interpolate($source, ...$args): callable
+        public static function interpolate(callable|array $source, ...$args): callable
         {
             // Get an array of points from our $source argument
             $points = self::getPoints($source, $args);
 
             // Validate input and sort points
-            self::validate($points, $degree = 2);
+            self::validate($points, degree: 2);
             $sorted = self::sort($points);
 
             // Descriptive constants
@@ -63,13 +63,10 @@
 
             // Build first column of divided differences table
             for ($i = 0; $i < $n; $i++)
-            {
                 $Q[$i][0] = $sorted[$i][$y];
-            }
 
             // Recursively generate remaining columns of our divided difference table
             for ($i = 1; $i < $n; $i++)
-            {
                 for ($j = 1; $j <= $i; $j++)
                 {
                     $xᵢ₋ⱼ = $sorted[$i - $j][$x];
@@ -78,7 +75,6 @@
                     $Q₍ᵢ₋₁₎₍ⱼ₋₁₎ = $Q[$i - 1][$j - 1];
                     $Q[$i][$j] = ($Q₍ᵢ₎₍ⱼ₋₁₎ - $Q₍ᵢ₋₁₎₍ⱼ₋₁₎) / ($xᵢ - $xᵢ₋ⱼ);
                 }
-            }
 
             // initialize empty polynomial
             $polynomial = new Polynomial([0]);
@@ -100,5 +96,17 @@
             }
 
             return $polynomial;
+        }
+
+        public function solveNonZeroError()
+        {
+        }
+
+        public function solve()
+        {
+        }
+
+        public function polynomialAgrees()
+        {
         }
     }

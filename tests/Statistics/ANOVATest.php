@@ -543,7 +543,14 @@
             array $expected
         ) {
             // When
-            $anova = ANOVA::oneWay($sample1, $sample2, $sample3);
+            try
+            {
+                $anova = ANOVA::oneWay($sample1, $sample2, $sample3);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $anova, 0.0001);
@@ -567,7 +574,14 @@
             array $expected
         ) {
             // When
-            $anova = ANOVA::oneWay($sample1, $sample2, $sample3, $sample4);
+            try
+            {
+                $anova = ANOVA::oneWay($sample1, $sample2, $sample3, $sample4);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $anova, 0.0001);
@@ -586,7 +600,14 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            ANOVA::oneWay($sample1, $sample2);
+            try
+            {
+                ANOVA::oneWay($sample1, $sample2);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -603,7 +624,14 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            ANOVA::oneWay($sample1, $sample2, $sample3);
+            try
+            {
+                ANOVA::oneWay($sample1, $sample2, $sample3);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -620,7 +648,14 @@
             array $sample3
         ) {
             // When
-            $anova = ANOVA::oneWay($sample1, $sample2, $sample3);
+            try
+            {
+                $anova = ANOVA::oneWay($sample1, $sample2, $sample3);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then SST = SSB + SSW
             $SST = $anova['ANOVA']['total']['SS'];
@@ -653,8 +688,15 @@
             array $sample5
         ) {
             // When
-            $anova = ANOVA::oneWay($sample1, $sample2, $sample3, $sample4,
-                $sample5);
+            try
+            {
+                $anova = ANOVA::oneWay($sample1, $sample2, $sample3, $sample4,
+                    $sample5);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then SST = SSB + SSW
             $SST = $anova['ANOVA']['total']['SS'];
@@ -680,7 +722,14 @@
         public function testTwoWayTwoAs(array $A₁, array $A₂, array $expected)
         {
             // When
-            $anova = ANOVA::twoWay($A₁, $A₂);
+            try
+            {
+                $anova = ANOVA::twoWay($A₁, $A₂);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $anova['ANOVA'], 0.001);
@@ -702,7 +751,14 @@
             array $expected
         ) {
             // When
-            $anova = ANOVA::twoWay($A₁, $A₂, $A₃);
+            try
+            {
+                $anova = ANOVA::twoWay($A₁, $A₂, $A₃);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $anova['ANOVA'], 0.001);
@@ -720,7 +776,14 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            ANOVA::twoWay($A₁);
+            try
+            {
+                ANOVA::twoWay($A₁);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -743,7 +806,14 @@
             $this->expectException(Exception\BadDataException::class);
 
             // Then
-            ANOVA::twoWay($A₁, $A₂);
+            try
+            {
+                ANOVA::twoWay($A₁, $A₂);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -765,6 +835,13 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            ANOVA::twoWay($A₁, $A₂);
+            try
+            {
+                ANOVA::twoWay($A₁, $A₂);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
     }

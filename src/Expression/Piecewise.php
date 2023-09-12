@@ -5,6 +5,8 @@
     use MathPHP\Exception;
 
     use function count;
+    use function is_callable;
+    use function is_numeric;
     use function usort;
 
     use const INF;
@@ -16,10 +18,10 @@
      */
     class Piecewise {
         /** @var array<array{0: float, 1: float, 2?: bool, 3?: bool}> */
-        private $intervals;
+        private array $intervals;
 
         /** @var array<callable> */
-        private $functions;
+        private array $functions;
 
         /**
          * Validate that our inputs satisfy the conditions of a piecewise function,
@@ -65,9 +67,7 @@
             $unsortedIntervals = $intervals;
 
             // Sort intervals such that start of intervals is increasing
-            usort($intervals, function ($a, $b) {
-                return $a[0] <=> $b[0];
-            });
+            usort($intervals, fn($a, $b) => $a[0] <=> $b[0]);
 
             foreach ($intervals as $interval)
             {
@@ -76,18 +76,11 @@
                 $lastB = $b ?? -INF;
                 $lastBOpen = $bOpen ?? FALSE;
 
-                $array_filter = [];
-                foreach ($interval as $key => $value)
-                {
-                    if (\is_numeric($value))
-                    {
-                        $array_filter[$key] = $value;
-                    }
-                }
+                $array_filter = array_filter($interval, function ($value) {
+                    return is_numeric($value);
+                });
                 if (count($array_filter) !== 2)
-                {
                     throw new Exception\BadDataException('Each interval must contain two numbers.');
-                }
 
                 // Fetch values from current interval
                 $a = $interval[0];
@@ -119,37 +112,28 @@
         private static function constructorPreconditions(
             array $intervals,
             array $functions
-        ) {
+        ): void {
             if (count($intervals) !== count($functions))
-            {
                 throw new Exception\BadDataException('For a piecewise function you must provide the same number of intervals as functions.');
-            }
 
             // @phpstan-ignore-next-line (Parameter #2 $callback of function array_filter expects callable(callable(): mixed): mixed, '\\is_callable' given.)
-            $array_filter = [];
-            foreach ($functions as $syntax_only => $value)
-            {
-                if (\is_callable($value))
-                {
-                    $array_filter[$syntax_only] = $value;
-                }
-            }
+            $array_filter = array_filter($functions, function ($value) {
+                return is_callable($value);
+            });
             if (count($array_filter)
                 !== count($intervals)
             )
-            {
                 throw new Exception\BadDataException('Not every function provided is valid. Ensure that each function is callable.');
-            }
         }
 
         /**
          * Check the as and bs in the intervals
          * Helper method of constructor.
          *
-         * @param int|float $a
-         * @param int|float $b
-         * @param int|float $lastA
-         * @param int|float $lastB
+         * @param float|int $a
+         * @param float|int $b
+         * @param float|int $lastA
+         * @param float|int $lastB
          * @param bool      $lastBOpen
          * @param bool      $aOpen
          * @param bool      $bOpen
@@ -162,30 +146,22 @@
          * @throws Exception\BadDataException if one interval starts or ends inside another interval
          */
         private static function checkAsAndBs(
-            $a,
-            $b,
-            $lastA,
-            $lastB,
-            $lastBOpen,
+            float|int $a,
+            float|int $b,
+            float|int $lastA,
+            float|int $lastB,
+            bool $lastBOpen,
             bool $aOpen,
             bool $bOpen
-        ) {
-            if (($a === $b) && ($aOpen || $bOpen))
-            {
+        ): void {
+            if ($a === $b && ($aOpen || $bOpen))
                 throw new Exception\BadDataException("Your interval [{$a}, {$b}] is a point and thus needs to be closed at both ends");
-            }
             if ($a > $b)
-            {
                 throw new Exception\BadDataException("Interval must be increasing. Try again using [{$b}, {$a}] instead of [{$a}, {$b}]");
-            }
-            if (($a === $lastB) && ! $aOpen && ! $lastBOpen)
-            {
+            if ($a === $lastB && ! $aOpen && ! $lastBOpen)
                 throw new Exception\BadDataException("The intervals [{$lastA}, {$lastB}] and [{$a}, {$b}] share a point, but both intervals are also closed at that point. For intervals to share a point, one or both sides of that point must be open.");
-            }
             if ($a < $lastB)
-            {
                 throw new Exception\BadDataException("The intervals [{$lastA}, {$lastB}] and [{$a}, {$b}] overlap. The subintervals of a piecewise functions cannot overlap.");
-            }
         }
 
         /**
@@ -228,17 +204,16 @@
                 $bOpen = $interval[3] ?? FALSE;
 
                 // Four permutations: open-open, open-closed, closed-open, closed-closed
-                if (Piecewise::openOpen($aOpen, $bOpen) && $x > $a && $x < $b
-                    || Piecewise::openClosed($aOpen, $bOpen) && $x > $a
-                    && $x <= $b
-                    || Piecewise::closedOpen($aOpen, $bOpen) && $x >= $a
-                    && $x < $b
-                    || (Piecewise::closedClosed($aOpen, $bOpen) && $x >= $a
-                        && $x <= $b)
+                if ((Piecewise::openOpen($aOpen, $bOpen) && $x > $a
+                        && ($x < $b))
+                    || (Piecewise::openClosed($aOpen, $bOpen) && ($x > $a)
+                        && ($x <= $b))
+                    || (Piecewise::closedOpen($aOpen, $bOpen) && ($x >= $a)
+                        && ($x < $b))
+                    || Piecewise::closedClosed($aOpen, $bOpen) && ($x >= $a)
+                        && ($x <= $b)
                 )
-                {
                     return $this->functions[$i];
-                }
             }
 
             throw new Exception\BadDataException("The input {$x} is not in the domain of this piecewise function, thus it is undefined at that point.");
@@ -294,5 +269,78 @@
         private static function closedClosed(bool $aOpen, bool $bOpen): bool
         {
             return ! $aOpen && ! $bOpen;
+        }
+
+        public function checkAsAndBsExceptionOverlappingIntervals()
+        {
+        }
+
+        public function checkAsAndBsExceptionTwoIntervalsSharePointNotClosedAtBothEnds(
+        )
+        {
+        }
+
+        public function checkAsAndBsExceptionIntervalNotIncreasing()
+        {
+        }
+
+        public function checkAsAndBsExceptionPointNotClosed()
+        {
+        }
+
+        public function constructorPreconditionCallableException()
+        {
+        }
+
+        public function constructorPreconditionCountException()
+        {
+        }
+
+        public function duplicatedIntervalException()
+        {
+        }
+
+        public function evaluatedAtOpenPointException()
+        {
+        }
+
+        public function evaluationNotInDomainException()
+        {
+        }
+
+        public function numberOfIntervalsAndFunctionsUnequalException()
+        {
+        }
+
+        public function inputFunctionsAreNotCallableException()
+        {
+        }
+
+        public function subintervalContainsOpenPoint()
+        {
+        }
+
+        public function subintervalContainsOnePoints()
+        {
+        }
+
+        public function subintervalContainsMoreThanTwoPoints()
+        {
+        }
+
+        public function subintervalDecreasingException()
+        {
+        }
+
+        public function subintervalsOverlapException()
+        {
+        }
+
+        public function subintervalsShareClosedPointException()
+        {
+        }
+
+        public function eval()
+        {
         }
     }

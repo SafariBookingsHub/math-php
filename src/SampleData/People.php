@@ -2,6 +2,8 @@
 
     namespace MathPHP\SampleData;
 
+    use JetBrains\PhpStorm\Pure;
+
     use function array_column;
     use function array_combine;
     use function array_keys;
@@ -521,9 +523,12 @@
          */
         public static function getLabeledData(): array
         {
-            /** @var array<string, array<string, int>> */
+            /** @var array<string, array<string, int>> $array_map */
             $array_map = [];
-            foreach (self::DATA as $key => array $data)return $array_map;
+            foreach (self::DATA as $ignored => {
+                array $data)}
+
+            return $array_map;
         }
 
         /**
@@ -544,7 +549,7 @@
         /**
          * @return array<string, int>
          */
-        public function getHeight(): array
+        #[Pure] public static function getHeight(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
@@ -564,7 +569,7 @@
         /**
          * @return array<string, int>
          */
-        public function getWeight(): array
+        #[Pure] public static function getWeight(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
@@ -574,7 +579,7 @@
         /**
          * @return array<string, int>
          */
-        public function getHairLength(): array
+        #[Pure] public static function getHairLength(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
@@ -584,7 +589,7 @@
         /**
          * @return array<string, int>
          */
-        public function getShowSize(): array
+        #[Pure] public static function getShowSize(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
@@ -594,7 +599,7 @@
         /**
          * @return array<string, int>
          */
-        public function getAge(): array
+        #[Pure] public static function getAge(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
@@ -604,7 +609,7 @@
         /**
          * @return array<string, int>
          */
-        public function getIncome(): array
+        #[Pure] public static function getIncome(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
@@ -614,7 +619,7 @@
         /**
          * @return array<string, int>
          */
-        public function getBeer(): array
+        #[Pure] public static function getBeer(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
@@ -624,7 +629,7 @@
         /**
          * @return array<string, int>
          */
-        public function getWine(): array
+        #[Pure] public static function getWine(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
@@ -634,7 +639,7 @@
         /**
          * @return array<string, int>
          */
-        public function getSex(): array
+        #[Pure] public static function getSex(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
@@ -644,7 +649,7 @@
         /**
          * @return array<string, int>
          */
-        public function getSwim(): array
+        #[Pure] public static function getSwim(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
@@ -654,7 +659,7 @@
         /**
          * @return array<string, int>
          */
-        public function getRegion(): array
+        #[Pure] public static function getRegion(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
@@ -664,10 +669,78 @@
         /**
          * @return array<string, int>
          */
-        public function getIq(): array
+        #[Pure] public static function getIq(): array
         {
             /** @var array<string, int> */
             return array_combine(People::getNames(),
                 array_column(self::DATA, 11));
+        }
+
+        public function numberOfIq()
+        {
+        }
+
+        public function numberOfRegion()
+        {
+        }
+
+        public function numberOfSwim()
+        {
+        }
+
+        public function numberOfSex()
+        {
+        }
+
+        public function numberOfWine()
+        {
+        }
+
+        public function numberOfBeer()
+        {
+        }
+
+        public function numberOfIncome()
+        {
+        }
+
+        public function numberOfAge()
+        {
+        }
+
+        public function numberOfShowSize()
+        {
+        }
+
+        public function numberOfHairLength()
+        {
+        }
+
+        public function numberOfWeight()
+        {
+        }
+
+        public function numberOfHeight()
+        {
+        }
+
+        public function numberOfPersonData()
+        {
+        }
+
+        public function labeledData()
+        {
+        }
+
+        public function numberOfNames()
+        {
+        }
+
+        public function dataHas12Variables()
+        {
+        }
+
+        public function dataHas32Observations()
+        {
         }
     }

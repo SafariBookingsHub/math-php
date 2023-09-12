@@ -478,7 +478,12 @@
             $this->expectException(Exception\BadParameterException::class);
 
             // When
-            Basic::geometricProgression(10, 2, $r);
+            try
+            {
+                Basic::geometricProgression(10, 2, $r);
+            } catch (Exception\BadParameterException $e)
+            {
+            }
         }
 
         /**

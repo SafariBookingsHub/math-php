@@ -6,6 +6,7 @@
     use MathPHP\Probability\Distribution\Continuous\Exponential;
     use PHPUnit\Framework\TestCase;
 
+    use function is_numeric;
     use function range;
 
     use const INF;
@@ -387,7 +388,6 @@
         public function testRand()
         {
             foreach (range(1, 4) as $λ)
-            {
                 foreach (range(1, 20) as $ignored)
                 {
                     // Given
@@ -397,8 +397,7 @@
                     $random = $exponential->rand();
 
                     // Then
-                    $this->assertTrue(\is_numeric($random));
+                    $this->assertTrue(is_numeric($random));
                 }
-            }
         }
     }

@@ -9,7 +9,7 @@
 
     class CerealTest extends TestCase {
         /** @var SampleData\Cereal */
-        private $cereal;
+        private SampleData\Cereal $cereal;
 
         public function setUp(): void
         {
@@ -44,9 +44,7 @@
 
             // Then
             foreach ($X as $observation)
-            {
                 $this->assertCount(145, $observation);
-            }
         }
 
         /**
@@ -77,9 +75,7 @@
 
             // Then
             foreach ($Y as $observation)
-            {
                 $this->assertCount(6, $observation);
-            }
         }
 
         /**
@@ -110,9 +106,7 @@
 
             // Then
             foreach ($Ysc as $observation)
-            {
                 $this->assertCount(6, $observation);
-            }
         }
 
         /**

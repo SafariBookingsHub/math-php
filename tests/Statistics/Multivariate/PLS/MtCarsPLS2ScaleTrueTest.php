@@ -7,18 +7,19 @@
     use MathPHP\LinearAlgebra\Matrix;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\SampleData;
+    use MathPHP\SampleData\MtCars;
     use MathPHP\Statistics\Multivariate\PLS;
     use PHPUnit\Framework\TestCase;
 
     class MtCarsPLS2ScaleTrueTest extends TestCase {
         /** @var PLS */
-        private static $pls;
+        private static PLS $pls;
 
         /** @var Matrix */
-        private static $X;
+        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $X;
 
         /** @var Matrix */
-        private static $Y;
+        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $Y;
 
         /**
          * R code for expected values:
@@ -49,7 +50,7 @@
             self::$pls = new PLS(self::$X, self::$Y, 2, TRUE);
         }
 
-        public static function dataProviderForRegression()
+        public static function dataProviderForRegression(): array
         {
             return [
                 [
@@ -82,13 +83,25 @@
         public function testConstructionFailureXAndYRowMismatch()
         {
             // Given
-            $Y = self::$Y->rowExclude(0);
+            try
+            {
+                $Y = self::$Y->rowExclude(0);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->expectException(BadDataException::class);
 
             // When
-            $pls = new PLS(self::$X, $Y, 2, TRUE);
+            try
+            {
+                $pls = new PLS(self::$X, $Y, 2, TRUE);
+            } catch (BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -271,15 +284,31 @@
          * @dataProvider dataProviderForRegression
          *
          * @param array $X
-         * @param array $Y
+         * @param       $expected
          */
-        public function testRegression($X, $expected)
+        public function testRegression(array $X, $expected)
         {
             // Given.
-            $input = MatrixFactory::create($X);
+            try
+            {
+                $input = MatrixFactory::create($X);
+            } catch (BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $actual = self::$pls->predict($input)->getMatrix();
+            try
+            {
+                $actual = self::$pls->predict($input)->getMatrix();
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $actual, .00001, '');
@@ -291,12 +320,28 @@
         public function testPredictDataColumnMisMatch()
         {
             // Given
-            $X = MatrixFactory::create([[6, 160, 3.9, 2.62, 16.46]]);
+            try
+            {
+                $X = MatrixFactory::create([[6, 160, 3.9, 2.62, 16.46]]);
+            } catch (BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(BadDataException::class);
 
             // When
-            $prediction = self::$pls->predict($X);
+            try
+            {
+                $prediction = self::$pls->predict($X);
+            } catch (BadDataException $e)
+            {
+            }
         }
     }

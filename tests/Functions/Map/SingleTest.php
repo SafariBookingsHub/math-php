@@ -141,9 +141,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForReciprocal(): array
         {
             return [
@@ -251,7 +248,7 @@
          * @param mixed $k
          * @param array $expected
          */
-        public function testAdd(array $xs, $k, array $expected)
+        public function testAdd(array $xs, mixed $k, array $expected)
         {
             // When
             $sums = Single::add($xs, $k);
@@ -319,7 +316,7 @@
          * @param mixed $value
          * @param array $expected
          */
-        public function testMax(array $xs, $value, array $expected)
+        public function testMax(array $xs, mixed $value, array $expected)
         {
             // When
             $maxes = Single::max($xs, $value);
@@ -336,7 +333,7 @@
          * @param mixed $value
          * @param array $expected
          */
-        public function testMin(array $xs, $value, array $expected)
+        public function testMin(array $xs, mixed $value, array $expected)
         {
             // When
             $mins = Single::min($xs, $value);

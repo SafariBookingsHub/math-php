@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\SetTheory;
 
+    use MathPHP\Exception\BadDataException;
     use MathPHP\LinearAlgebra\NumericMatrix;
     use MathPHP\LinearAlgebra\Vector;
     use MathPHP\SetTheory\Set;
@@ -9,11 +10,18 @@
     use StdClass;
 
     use function get_class;
+    use function is_array;
+    use function is_resource;
 
     class SetOperationsTest extends TestCase {
         public static function dataProviderForAdd(): array
         {
-            $vector = new Vector([1, 2, 3]);
+            try
+            {
+                $vector = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
 
             return [
                 [
@@ -81,7 +89,12 @@
 
         public static function dataProviderForAddMulti(): array
         {
-            $vector = new Vector([1, 2, 3]);
+            try
+            {
+                $vector = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
 
             return [
                 [
@@ -169,7 +182,12 @@
 
         public static function dataProviderForRemove(): array
         {
-            $vector = new Vector([1, 2, 3]);
+            try
+            {
+                $vector = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
             $fh = fopen(__FILE__, 'r');
 
             return [
@@ -293,7 +311,12 @@
 
         public static function dataProviderForRemoveMulti(): array
         {
-            $vector = new Vector([1, 2, 3]);
+            try
+            {
+                $vector = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
             $fh = fopen(__FILE__, 'r');
 
             return [
@@ -1217,10 +1240,13 @@
         public static function dataProviderForSingleSet(): array
         {
             $fh = fopen(__FILE__, 'r');
-            $vector = new Vector([1, 2, 3]);
-            $func = function ($x) {
-                return $x * 2;
-            };
+            try
+            {
+                $vector = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            $func = fn($x) => $x * 2;
 
             return [
                 [[]],
@@ -1306,8 +1332,18 @@
         {
             // Given
             $set = new Set([1, 2, 3]);
-            $vector = new Vector([1, 2, 3]);
-            $matrix = new NumericMatrix([[1, 2, 3], [2, 3, 4]]);
+            try
+            {
+                $vector = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $matrix = new NumericMatrix([[1, 2, 3], [2, 3, 4]]);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
             $set->add($vector);
@@ -1323,7 +1359,7 @@
                 if ($value instanceof Vector)
                 {
                     $objects++;
-                    $vector_key = get_class($value).'('
+                    $vector_key = $value::class.'('
                         .spl_object_hash($vector).')';
                     $this->assertEquals($vector_key, $key);
                     $this->assertEquals($vector, $value);
@@ -1331,7 +1367,7 @@
                 if ($value instanceof NumericMatrix)
                 {
                     $objects++;
-                    $matrix_key = get_class($value).'('
+                    $matrix_key = $value::class.'('
                         .spl_object_hash($matrix).')';
                     $this->assertEquals($matrix_key, $key);
                     $this->assertEquals($matrix, $value);
@@ -1346,10 +1382,30 @@
         {
             // Given
             $set = new Set([1, 2, 3]);
-            $vector1 = new Vector([1, 2, 3]);
-            $vector2 = new Vector([1, 2, 3]);
-            $vector3 = new Vector([4, 5, 6]);
-            $matrix = new NumericMatrix([[1, 2, 3], [2, 3, 4]]);
+            try
+            {
+                $vector1 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $vector2 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $vector3 = new Vector([4, 5, 6]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $matrix = new NumericMatrix([[1, 2, 3], [2, 3, 4]]);
+            } catch (BadDataException $e)
+            {
+            }
             $std1 = new StdClass();
             $std2 = new StdClass();
             $std3 = $std2; // Same object so this wont get added
@@ -1397,7 +1453,12 @@
         {
             // Given
             $set = new Set([1, 2, 3]);
-            $vector = new Vector([1, 2, 3]);
+            try
+            {
+                $vector = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When adding the same object twice.
             $set->add($vector);
@@ -1409,16 +1470,14 @@
 
             $objects = 0;
             foreach ($set as $key => $value)
-            {
                 if ($value instanceof Vector)
                 {
                     $objects++;
-                    $vector_key = get_class($value).'('
+                    $vector_key = $value::class.'('
                         .spl_object_hash($vector).')';
                     $this->assertEquals($vector_key, $key);
                     $this->assertEquals($vector, $value);
                 }
-            }
 
             // There should have only been one vector object.
             $this->assertEquals(1, $objects);
@@ -1444,8 +1503,7 @@
 
             $arrays = 0;
             foreach ($set as $key => $value)
-            {
-                if (\is_array($value))
+                if (is_array($value))
                 {
                     $arrays++;
                     $this->assertEquals([1, 2, 3], $value);
@@ -1454,7 +1512,6 @@
                     $this->assertEquals(1, $value[0]);
                     $this->assertEquals(1, $value[0]);
                 }
-            }
 
             // There should have only been one array.
             $this->assertEquals(1, $arrays);
@@ -1481,13 +1538,11 @@
 
             $arrays = 0;
             foreach ($set as $key => $value)
-            {
-                if (\is_array($value))
+                if (is_array($value))
                 {
                     $arrays++;
                     $this->assertEquals(3, count($value));
                 }
-            }
 
             // There should have been 2 arrays.
             $this->assertEquals(2, $arrays);
@@ -1513,15 +1568,13 @@
 
             $resources = 0;
             foreach ($set as $key => $value)
-            {
-                if (\is_resource($value))
+                if (is_resource($value))
                 {
                     $resources++;
-                    $vector_key = 'Resource('.\strval($value).')';
+                    $vector_key = 'Resource('.$value.')';
                     $this->assertEquals($vector_key, $key);
                     $this->assertEquals($fh, $value);
                 }
-            }
 
             // There should have been one resource
             $this->assertEquals(1, $resources);
@@ -1697,19 +1750,13 @@
             $this->assertEquals($expected, $union);
             $this->assertEquals(count($A∪B), count($union));
             foreach ($A∪B as $member)
-            {
                 $this->assertArrayHasKey("$member", $union_array);
-            }
             foreach ($A∪B as $_ => $value)
-            {
                 if ($value instanceof Set)
-                {
-                    $this->assertEquals($value, $union_array["$value"]);
-                } else
+                    $this->assertEquals($value, $union_array["$value"]); else
                 {
                     $this->assertArrayHasKey((string)$value, $union_array);
                 }
-            }
         }
 
         /**
@@ -1738,19 +1785,13 @@
             $this->assertEquals($expected, $union);
             $this->assertEquals(count($A∪B∪C), count($union));
             foreach ($A∪B∪C as $member)
-            {
                 $this->assertArrayHasKey("$member", $union_array);
-            }
             foreach ($A∪B∪C as $_ => $value)
-            {
                 if ($value instanceof Set)
-                {
-                    $this->assertEquals($value, $union_array["$value"]);
-                } else
+                    $this->assertEquals($value, $union_array["$value"]); else
                 {
                     $this->assertArrayHasKey((string)$value, $union_array);
                 }
-            }
         }
 
         public function testUnionWithArrays()
@@ -1786,8 +1827,18 @@
         public function testUnionWithObjects()
         {
             // Given
-            $vector1 = new Vector([1, 2, 3]);
-            $vector2 = new Vector([1, 2, 3]);
+            try
+            {
+                $vector1 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $vector2 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
             $A = new Set([1, 2, $vector1]);
             $B = new Set([2, 3, $vector2]);
             $expected = new Set([1, 2, $vector1, 3, $vector2]);
@@ -1803,8 +1854,18 @@
         public function testUnionWithObjects2()
         {
             // Given
-            $vector1 = new Vector([1, 2, 3]);
-            $vector2 = new Vector([1, 2, 3]);
+            try
+            {
+                $vector1 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $vector2 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
             $A = new Set([1, 2, $vector1]);
             $B = new Set([2, 3, $vector2, $vector1]);
             $expected = new Set([1, 2, $vector1, 3, $vector2]);
@@ -1845,15 +1906,11 @@
                 $this->assertContains($member, $B);
             }
             foreach ($A∩B as $_ => $value)
-            {
                 if ($value instanceof Set)
-                {
-                    $this->assertEquals($value, $intersection_array["$value"]);
-                } else
+                    $this->assertEquals($value, $intersection_array["$value"]); else
                 {
                     $this->assertContains($value, $intersection_array);
                 }
-            }
         }
 
         /**
@@ -1892,15 +1949,11 @@
                 $this->assertContains($member, $C);
             }
             foreach ($A∩B∩C as $_ => $value)
-            {
                 if ($value instanceof Set)
-                {
-                    $this->assertEquals($value, $intersection_array["$value"]);
-                } else
+                    $this->assertEquals($value, $intersection_array["$value"]); else
                 {
                     $this->assertContains($value, $intersection_array);
                 }
-            }
         }
 
         public function testIntersectWithArrays()
@@ -1936,8 +1989,18 @@
         public function testIntersectWithObjects()
         {
             // Given
-            $vector1 = new Vector([1, 2, 3]);
-            $vector2 = new Vector([1, 2, 3]);
+            try
+            {
+                $vector1 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $vector2 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
 
             $A = new Set([1, 2, $vector1]);
             $B = new Set([2, 3, $vector2]);
@@ -1954,8 +2017,18 @@
         public function testIntersectWithObjects2()
         {
             // Given
-            $vector1 = new Vector([1, 2, 3]);
-            $vector2 = new Vector([1, 2, 3]);
+            try
+            {
+                $vector1 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $vector2 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
 
             $A = new Set([1, 2, $vector1]);
             $B = new Set([2, 3, $vector2, $vector1]);
@@ -1997,15 +2070,11 @@
                 $this->assertNotContains("$member", $B);
             }
             foreach ($diff as $_ => $value)
-            {
                 if ($value instanceof Set)
-                {
-                    $this->assertEquals($value, $difference_array["$value"]);
-                } else
+                    $this->assertEquals($value, $difference_array["$value"]); else
                 {
                     $this->assertContains($value, $difference_array);
                 }
-            }
         }
 
         /**
@@ -2044,15 +2113,11 @@
                 $this->assertNotContains("$member", $C);
             }
             foreach ($diff as $_ => $value)
-            {
                 if ($value instanceof Set)
-                {
-                    $this->assertEquals($value, $difference_array["$value"]);
-                } else
+                    $this->assertEquals($value, $difference_array["$value"]); else
                 {
                     $this->assertContains($value, $difference_array);
                 }
-            }
         }
 
         public function testDifferenceWithArrays()
@@ -2088,8 +2153,18 @@
         public function testDifferenceWithObjects()
         {
             // Given
-            $vector1 = new Vector([1, 2, 3]);
-            $vector2 = new Vector([1, 2, 3]);
+            try
+            {
+                $vector1 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $vector2 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
 
             $A = new Set([1, 2, $vector1]);
             $B = new Set([2, 3, $vector2]);
@@ -2106,8 +2181,18 @@
         public function testDifferenceWithObjects2()
         {
             // Given
-            $vector1 = new Vector([1, 2, 3]);
-            $vector2 = new Vector([1, 2, 3]);
+            try
+            {
+                $vector1 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $vector2 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
 
             $A = new Set([1, 2, $vector1]);
             $B = new Set([2, 3, $vector2, $vector1]);
@@ -2145,19 +2230,13 @@
             $this->assertEquals($expected, $difference);
             $this->assertEquals(count($diff), count($difference));
             foreach ($diff as $member)
-            {
                 $this->assertArrayHasKey("$member", $difference_array);
-            }
             foreach ($diff as $_ => $value)
-            {
                 if ($value instanceof Set)
-                {
-                    $this->assertEquals($value, $difference_array["$value"]);
-                } else
+                    $this->assertEquals($value, $difference_array["$value"]); else
                 {
                     $this->assertArrayHasKey((string)$value, $difference_array);
                 }
-            }
         }
 
         public function testSymmetricDifferenceWithArrays()
@@ -2193,8 +2272,18 @@
         public function testSymmetricDifferenceWithObjects()
         {
             // Given
-            $vector1 = new Vector([1, 2, 3]);
-            $vector2 = new Vector([1, 2, 3]);
+            try
+            {
+                $vector1 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $vector2 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
 
             $A = new Set([1, 2, $vector1]);
             $B = new Set([2, 3, $vector2]);
@@ -2211,8 +2300,18 @@
         public function testSymmetricDifferenceWithObjects2()
         {
             // Given
-            $vector1 = new Vector([1, 2, 3]);
-            $vector2 = new Vector([1, 2, 3]);
+            try
+            {
+                $vector1 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $vector2 = new Vector([1, 2, 3]);
+            } catch (BadDataException $e)
+            {
+            }
 
             $A = new Set([1, 2, $vector1]);
             $B = new Set([2, 3, $vector2, $vector1]);

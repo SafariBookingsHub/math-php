@@ -7,6 +7,7 @@
     use PHPUnit\Framework\TestCase;
 
     use function abs;
+    use function is_numeric;
     use function range;
 
     class BetaTest extends TestCase {
@@ -262,9 +263,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPdfSupportOutOfBoundsException(
         ): array
         {
@@ -283,7 +281,7 @@
          * @return array [x, α, β, cdf]
          * Generated with http://keisan.casio.com/exec/system/1180573226
          */
-        public static function dataProviderForCdf()
+        public static function dataProviderForCdf(): array
         {
             return [
                 [0, 1, 1, 0],
@@ -942,7 +940,7 @@
          * @param float $β
          * @param float $expected_cdf
          */
-        public function testCdf($x, $α, $β, $expected_cdf)
+        public function testCdf(float $x, float $α, float $β, float $expected_cdf)
         {
             // Given
             $beta = new Beta($α, $β);
@@ -1114,7 +1112,6 @@
         public function testRand()
         {
             foreach (range(1, 10) as $α)
-            {
                 foreach (range(1, 10) as $β)
                 {
                     // Given
@@ -1125,9 +1122,8 @@
                         $random = $beta->rand();
 
                         // Then
-                        $this->assertTrue(\is_numeric($random));
+                        $this->assertTrue(is_numeric($random));
                     }
                 }
-            }
         }
     }

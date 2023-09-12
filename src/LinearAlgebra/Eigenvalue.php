@@ -65,20 +65,14 @@
             self::checkMatrix($A);
 
             $m = $A->getM();
-            if (($m < 2) || ($m > 4))
-            {
+            if ($m < 2 || $m > 4)
                 throw new Exception\BadDataException("Matrix must be 2x2, 3x3, or 4x4. $m x $m given");
-            }
 
             // Convert the numerical matrix into an ObjectMatrix
             $B_array = [];
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $m; $j++)
-                {
                     $B_array[$i][$j] = new Polynomial([$A[$i][$j]], 'λ');
-                }
-            }
 
             /** @var ObjectSquareMatrix $B */
             $B = MatrixFactory::create($B_array);
@@ -88,14 +82,10 @@
             $zero_poly = new Polynomial([0], 'λ');
             $λ_array = [];
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $m; $j++)
-                {
                     $λ_array[$i][$j] = ($i == $j)
                         ? $λ_poly
                         : $zero_poly;
-                }
-            }
 
             /** @var ObjectSquareMatrix $λ */
             $λ = MatrixFactory::create($λ_array);
@@ -128,9 +118,7 @@
         private static function checkMatrix(NumericMatrix $A): void
         {
             if ( ! $A->isSquare())
-            {
                 throw new Exception\BadDataException('Matrix must be square');
-            }
         }
 
         /**
@@ -149,15 +137,11 @@
         public static function jacobiMethod(NumericMatrix $A): array
         {
             if ( ! $A->isSymmetric())
-            {
                 throw new Exception\BadDataException('Matrix must be symmetric');
-            }
 
             $m = $A->getM();
             if ($m < 2)
-            {
                 throw new Exception\BadDataException("Matrix must be 2x2 or larger");
-            }
 
             $D = $A;
             $S = MatrixFactory::identity($m);
@@ -169,23 +153,19 @@
                 // Find the largest off-diagonal element in $D
                 $pivot = ['value' => 0, 'i' => 0, 'j' => 0];
                 for ($i = 0; $i < $m - 1; $i++)
-                {
                     for ($j = $i + 1; $j < $m; $j++)
-                    {
                         if (abs($D[$i][$j]) > abs($pivot['value']))
                         {
                             $pivot['value'] = $D[$i][$j];
                             $pivot['i'] = $i;
                             $pivot['j'] = $j;
                         }
-                    }
-                }
 
                 $i = $pivot['i'];
                 $j = $pivot['j'];
-                $angle = ($D[$i][$i] == $D[$j][$j])
-                    ? (((($D[$i][$i] > 0) ? 1 : -1) * M_PI) / 4)
-                    : (atan((2 * $D[$i][$j]) / ($D[$i][$i] - $D[$j][$j])) / 2);
+                $angle = $D[$i][$i] == $D[$j][$j]
+                    ? ($D[$i][$i] > 0 ? 1 : -1) * M_PI / 4
+                    : atan(2 * $D[$i][$j] / ($D[$i][$i] - $D[$j][$j])) / 2;
 
                 $G = MatrixFactory::givens($i, $j, $angle, $m);
                 $D = $G->transpose()->multiply($D)->multiply($G);
@@ -194,15 +174,11 @@
                 // To prevent infinite looping when zero-like oscillations don't converge
                 $iterations++;
                 if ($iterations > 200)
-                {
                     break;
-                }
             }
 
             $eigenvalues = $D->getDiagonalElements();
-            usort($eigenvalues, function ($a, $b) {
-                return abs($b) <=> abs($a);
-            });
+            usort($eigenvalues, fn($a, $b) => abs($b) <=> abs($a));
 
             return $eigenvalues;
         }
@@ -241,9 +217,7 @@
 
             $initial_iter = $iterations;
             do
-            {
-                $b = MatrixFactory::random($A->getM(), 1);
-            } while ($b->frobeniusNorm() == 0);
+                $b = MatrixFactory::random($A->getM(), 1); while ($b->frobeniusNorm() == 0);
             $b
                 = $b->scalarDivide($b->frobeniusNorm());  // Scale to a unit vector
 
@@ -258,16 +232,12 @@
                 while ( ! Support::isEqual($μ, $newμ))
                 {
                     if ($iterations <= 0)
-                    {
                         throw new Exception\FunctionFailedToConvergeException("Maximum number of iterations exceeded.");
-                    }
 
                     $μ = $newμ;
                     $Ab = $A->multiply($b);
                     while ($Ab->frobeniusNorm() == 0)
-                    {
                         $Ab = MatrixFactory::random($A->getM(), 1);
-                    }
 
                     $b = $Ab->scalarDivide($Ab->frobeniusNorm());
                     $newμ = $b->transpose()->multiply($A)->multiply($b)
@@ -275,14 +245,12 @@
                     $iterations--;
                 }
 
-                $max_ev = (abs($max_ev) > abs($newμ)) ? $max_ev : $newμ;
+                $max_ev = abs($max_ev) > abs($newμ) ? $max_ev : $newμ;
 
                 // Perturb the eigenvector and run again to make sure the same solution is found
                 $newb = $b->getMatrix();
                 for ($i = 0; $i < count($newb); $i++)
-                {
-                    $newb[$i][0] = $newb[1][0] + \rand() / 10;
-                }
+                    $newb[$i][0] = $newb[1][0] + (\rand() / 10);
                 /** @var NumericMatrix $b */
                 $b = MatrixFactory::create($newb);
                 $b
@@ -295,5 +263,46 @@
             }
 
             return [$max_ev];
+        }
+
+        public function jocobiMethodBugIssue414Eigenvalues()
+        {
+        }
+
+        public function smartEigenvalueFailure()
+        {
+        }
+
+        public function smartEigenvalues()
+        {
+        }
+
+        public function powerIterationFail()
+        {
+        }
+
+        public function jacobiExceptionMatrixNotCorrectSize()
+        {
+        }
+
+        public function matrixEigenvalueInvalidMethodException()
+        {
+        }
+
+        public function closedFormPolynomialRootMethodExceptionMatrixNotCorrectSize(
+        )
+        {
+        }
+
+        public function powerIterationViaMatrix()
+        {
+        }
+
+        public function jacobiMethodViaMatrix()
+        {
+        }
+
+        public function closedFormPolynomialRootMethodViaMatrix()
+        {
         }
     }

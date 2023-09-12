@@ -8,9 +8,6 @@
     use PHPUnit\Framework\TestCase;
 
     class MatrixRowOperationsTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForRowMultiply(): array
         {
             return [
@@ -87,9 +84,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRowDivide(): array
         {
             return [
@@ -128,9 +122,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRowAdd(): array
         {
             return [
@@ -197,9 +188,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRowAddScalar(): array
         {
             return [
@@ -234,9 +222,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRowAddVector(): array
         {
             return [
@@ -367,9 +352,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRowSubtract(): array
         {
             return [
@@ -436,9 +418,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForRowSubtractScalar(): array
         {
             return [

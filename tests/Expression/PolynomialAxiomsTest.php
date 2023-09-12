@@ -506,7 +506,7 @@
 
             // When
             $a ＋ ⟮b ＋ c⟯ = $a->add($b->add($c));
-            $⟮a ＋ b⟯ ＋ c = ($a->add($b))->add($c);
+            $⟮a ＋ b⟯ ＋ c = $a->add($b)->add($c);
 
             // Then
             $this->assertEquals($a ＋ ⟮b ＋ c⟯->getDegree(),
@@ -538,7 +538,7 @@
 
             // When
             $a⟮bc⟯ = $a->multiply($b->multiply($c));
-            $⟮ab⟯c = ($a->multiply($b))->multiply($c);
+            $⟮ab⟯c = $a->multiply($b)->multiply($c);
 
             // Then
             $this->assertEquals($a⟮bc⟯->getDegree(), $⟮ab⟯c->getDegree());
@@ -566,7 +566,7 @@
 
             // When
             $a⟮b ＋ c⟯ = $a->multiply($b->add($c));
-            $⟮ab⟯ ＋ ⟮ac⟯ = ($a->multiply($b))->add($a->multiply($c));
+            $⟮ab⟯ ＋ ⟮ac⟯ = $a->multiply($b)->add($a->multiply($c));
 
             // Then
             $this->assertEquals($a⟮b ＋ c⟯->getDegree(),
@@ -594,8 +594,8 @@
             $c = new Polynomial($c);
 
             // When
-            $⟮a ＋ b⟯c = ($a->add($b))->multiply($c);
-            $⟮ac⟯ ＋ ⟮bc⟯ = ($a->multiply($c))->add($b->multiply($c));
+            $⟮a ＋ b⟯c = $a->add($b)->multiply($c);
+            $⟮ac⟯ ＋ ⟮bc⟯ = $a->multiply($c)->add($b->multiply($c));
 
             // Then
             $this->assertEquals($⟮a ＋ b⟯c->getDegree(),

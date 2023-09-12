@@ -2,6 +2,8 @@
 
     namespace MathPHP\Statistics\Regression\Models;
 
+    use JetBrains\PhpStorm\ArrayShape;
+
     use function sprintf;
 
     /**
@@ -15,10 +17,10 @@
      */
     trait MichaelisMenten {
         /** @var int V parameter index */
-        protected static $V = 0;
+        protected static int $V = 0;
 
         /** @var int K parameter index */
-        protected static $K = 1;
+        protected static int $K = 1;
 
         /**
          * Evaluate the equation using the regression parameters
@@ -34,7 +36,7 @@
             $V = $params[self::$V];
             $K = $params[self::$K];
 
-            return ($V * $x) / ($K + $x);
+            return $V * $x / ($K + $x);
         }
 
         /**
@@ -44,7 +46,7 @@
          *
          * @return array{V: float, K: float} [ V => number, K => number ]
          */
-        public function getModelParameters(array $params): array
+        #[ArrayShape(['V' => "float", 'K' => "float"])] public function getModelParameters(array $params): array
         {
             return [
                 'V' => $params[self::$V],

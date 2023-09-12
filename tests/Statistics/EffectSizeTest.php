@@ -258,7 +258,12 @@
         public function testCohensQ(float $r₁, float $r₂, float $expected)
         {
             // When
-            $q = EffectSize::cohensQ($r₁, $r₂);
+            try
+            {
+                $q = EffectSize::cohensQ($r₁, $r₂);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $q, 0.001);
@@ -273,7 +278,12 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            EffectSize::cohensQ(0.1, 2);
+            try
+            {
+                EffectSize::cohensQ(0.1, 2);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**

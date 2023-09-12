@@ -6,9 +6,6 @@
     use PHPUnit\Framework\TestCase;
 
     class GeometricTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForPmf(): array
         {
             return [
@@ -24,9 +21,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCdf(): array
         {
             return [

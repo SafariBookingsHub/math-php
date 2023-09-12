@@ -29,9 +29,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForNonPerfectNumbers(): array
         {
             return [
@@ -156,9 +153,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForNonRefactorableNumbers(): array
         {
             return [
@@ -202,9 +196,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForNonSphenicNumbers(): array
         {
             return [
@@ -348,9 +339,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForTotientOutOfBoundsException(
         ): array
         {
@@ -491,9 +479,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForNonSquarefreeIntegers(): array
         {
             return [
@@ -743,9 +728,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPrimeFactorization(): array
         {
             return [
@@ -791,9 +773,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPrimeFactorizationOutOfBoundsException(
         ): array
         {
@@ -806,9 +785,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForCoprime(): array
         {
             return [
@@ -883,9 +859,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForNotCoprime(): array
         {
             return [
@@ -938,26 +911,16 @@
             ];
         }
 
-        /**
-         * @return \Generator
-         */
         public static function dataProviderForOddNumbers(): Generator
         {
             foreach (range(-11, 101, 2) as $x)
-            {
                 yield [$x];
-            }
         }
 
-        /**
-         * @return \Generator
-         */
         public static function dataProviderForEvenNumbers(): Generator
         {
             foreach (range(-10, 100, 2) as $x)
-            {
                 yield [$x];
-            }
         }
 
         /**

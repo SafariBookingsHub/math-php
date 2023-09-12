@@ -21,7 +21,16 @@
         public function testConstruction(array $A)
         {
             // When
-            $A = new ComplexMatrix($A);
+            try
+            {
+                $A = new ComplexMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(ComplexMatrix::class, $A);
@@ -33,16 +42,32 @@
         public function testConstructorException()
         {
             // Given
-            $A = [
-                [new Complex(2, 1), new Complex(2, 1)],
-                [new Complex(2, 1), new ArbitraryInteger(4)],
-            ];
+            try
+            {
+                $A = [
+                    [new Complex(2, 1), new Complex(2, 1)],
+                    [new Complex(2, 1), new ArbitraryInteger(4)],
+                ];
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $A = new ComplexMatrix($A);
+            try
+            {
+                $A = new ComplexMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -72,7 +97,16 @@
                 [new Complex(1, 0), new Complex(-2, -1), new Complex(5, 0)],
                 [new Complex(1, 1), new Complex(0, 1), new Complex(4, -2)],
             ];
-            $A = new ComplexMatrix($A);
+            try
+            {
+                $A = new ComplexMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // And
             $expected = [

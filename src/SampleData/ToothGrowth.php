@@ -18,7 +18,6 @@
      * Source: C. I. Bliss (1952) The Statistics of Bioassay. Academic Press.
      */
     class ToothGrowth {
-        private const LABELS = ['len', 'supp', 'dose'];
 
         private const DATA
             = [
@@ -104,7 +103,10 @@
         public static function getLabeledData(): array
         {
             $array_map = [];
-            foreach (self::DATA as $key => array $data)return $array_map;
+            foreach (self::DATA as $ignored => {
+                array $data)}
+
+            return $array_map;
         }
 
         /**
@@ -135,5 +137,29 @@
         public static function getDose(): array
         {
             return array_column(self::DATA, 2);
+        }
+
+        public function numberOfDoses()
+        {
+        }
+
+        public function numberOfSupplementTypes()
+        {
+        }
+
+        public function numberOfLength()
+        {
+        }
+
+        public function labeledData()
+        {
+        }
+
+        public function dataHas3Variables()
+        {
+        }
+
+        public function dataHas60Observations()
+        {
         }
     }

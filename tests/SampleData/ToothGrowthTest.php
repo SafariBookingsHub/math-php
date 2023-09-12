@@ -7,7 +7,7 @@
 
     class ToothGrowthTest extends TestCase {
         /** @var SampleData\ToothGrowth */
-        private $toothGrowth;
+        private SampleData\ToothGrowth $toothGrowth;
 
         /**
          * @return array (model, data)
@@ -69,9 +69,7 @@
 
             // Then
             foreach ($data as $observation)
-            {
                 $this->assertCount(3, $observation);
-            }
         }
 
         /**

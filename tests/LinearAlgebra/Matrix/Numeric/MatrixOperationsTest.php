@@ -78,9 +78,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForInverse(): array
         {
             return [
@@ -1262,10 +1259,26 @@
         public function testTrace(array $A, $tr)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $trace = $A->trace();
+            try
+            {
+                $trace = $A->trace();
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($tr, $trace);
@@ -1277,17 +1290,33 @@
         public function testTraceExceptionNotSquareMatrix()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2],
-                [2, 3],
-                [3, 4],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2],
+                    [2, 3],
+                    [3, 4],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->trace();
+            try
+            {
+                $A->trace();
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -1297,11 +1326,38 @@
         public function testDiagonal(array $A, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $R = MatrixFactory::create($R);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $R = MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $diagonal = $A->diagonal();
+            try
+            {
+                $diagonal = $A->diagonal();
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $diagonal);
@@ -1340,13 +1396,35 @@
         public function testInverseExceptionNotSquare(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->inverse();
+            try
+            {
+                $A->inverse();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1356,13 +1434,35 @@
         public function testInverseExceptionDetIsZero(array $A)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->inverse();
+            try
+            {
+                $A->inverse();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1372,10 +1472,30 @@
         public function testCofactor(array $A, int $mᵢ, int $nⱼ, $Cᵢⱼ)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $cofactor = $A->cofactor($mᵢ, $nⱼ);
+            try
+            {
+                $cofactor = $A->cofactor($mᵢ, $nⱼ);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($Cᵢⱼ, $cofactor);
@@ -1387,17 +1507,37 @@
         public function testCofactorExceptionBadRow()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [2, 3, 4],
-                [3, 4, 5],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [2, 3, 4],
+                    [3, 4, 5],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->cofactor(4, 1);
+            try
+            {
+                $A->cofactor(4, 1);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -1405,14 +1545,34 @@
          */
         public function testCofactorExceptionBadColumn()
         {
-            $A = MatrixFactory::create([
-                [1, 2, 3],
-                [2, 3, 4],
-                [3, 4, 5],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3],
+                    [2, 3, 4],
+                    [3, 4, 5],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             $this->expectException(Exception\MatrixException::class);
-            $A->cofactor(1, 4);
+            try
+            {
+                $A->cofactor(1, 4);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -1421,17 +1581,37 @@
         public function testCofactorExceptionNotSquare()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3, 4],
-                [2, 3, 4, 4],
-                [3, 4, 5, 4],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3, 4],
+                    [2, 3, 4, 4],
+                    [3, 4, 5, 4],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->cofactor(1, 1);
+            try
+            {
+                $A->cofactor(1, 1);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -1441,11 +1621,36 @@
         public function testCofactorMatrix(array $A, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $R = new NumericSquareMatrix($R);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $R = new NumericSquareMatrix($R);
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $cofactor = $A->cofactorMatrix();
+            try
+            {
+                $cofactor = $A->cofactorMatrix();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($R, $cofactor, 0.00000001);
@@ -1457,17 +1662,37 @@
         public function testCofactorMatrixExceptionNotSquare()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1, 2, 3, 4],
-                [2, 3, 4, 4],
-                [3, 4, 5, 4],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1, 2, 3, 4],
+                    [2, 3, 4, 4],
+                    [3, 4, 5, 4],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->cofactorMatrix();
+            try
+            {
+                $A->cofactorMatrix();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -1476,15 +1701,35 @@
         public function testCofactorMatrixExceptionTooSmall()
         {
             // Given
-            $A = MatrixFactory::create([
-                [1],
-            ]);
+            try
+            {
+                $A = MatrixFactory::create([
+                    [1],
+                ]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A->cofactorMatrix();
+            try
+            {
+                $A->cofactorMatrix();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -1494,11 +1739,38 @@
         public function testMeanDeviation(array $A, array $B)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = MatrixFactory::create($B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $meanDeviation = $A->meanDeviation();
+            try
+            {
+                $meanDeviation = $A->meanDeviation();
+            } catch (Exception\BadParameterException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($B, $meanDeviation);
@@ -1511,11 +1783,38 @@
         public function testMeanDeviationColumnsAsVariables(array $A, array $B)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = MatrixFactory::create($B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $meanDeviation = $A->meanDeviation('columns');
+            try
+            {
+                $meanDeviation = $A->meanDeviation('columns');
+            } catch (Exception\BadParameterException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($B, $meanDeviation, 0.00001);
@@ -1547,10 +1846,32 @@
         public function testCovarianceMatrix(array $A, array $S)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $covarianceMatrix = $A->covarianceMatrix();
+            try
+            {
+                $covarianceMatrix = $A->covarianceMatrix();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($S, $covarianceMatrix->getMatrix(),
@@ -1566,11 +1887,33 @@
             array $S
         ) {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
             $direction = NumericMatrix::COLUMNS;
 
             // When
-            $covarianceMatrix = $A->covarianceMatrix($direction);
+            try
+            {
+                $covarianceMatrix = $A->covarianceMatrix($direction);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($S, $covarianceMatrix->getMatrix(),
@@ -1602,15 +1945,49 @@
          *
          * @param array $A
          * @param array $expected
+         *
+         * @throws \MathPHP\Exception\BadDataException
+         * @throws \MathPHP\Exception\MathException
          */
         public function testAdjugate(array $A, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $expected = MatrixFactory::create($expected);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $expected = MatrixFactory::create($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $adj⟮A⟯ = $A->adjugate();
+            try
+            {
+                $adj⟮A⟯ = $A->adjugate();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $adj⟮A⟯, 0.00001);
@@ -1628,13 +2005,33 @@
                 [1, 2, 3],
                 [2, 3, 4],
             ];
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $adj⟮A⟯ = $A->adjugate();
+            try
+            {
+                $adj⟮A⟯ = $A->adjugate();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -1644,10 +2041,30 @@
         public function testRank(array $A, $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $rank = $A->rank();
+            try
+            {
+                $rank = $A->rank();
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             $this->assertEquals($expected, $rank);
         }

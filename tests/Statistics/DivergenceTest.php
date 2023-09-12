@@ -88,7 +88,12 @@
         public function testKullbackLeibler(array $p, array $q, float $expected)
         {
             // When
-            $BD = Divergence::kullbackLeibler($p, $q);
+            try
+            {
+                $BD = Divergence::kullbackLeibler($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $BD, 0.0001);
@@ -107,7 +112,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Divergence::kullbackLeibler($p, $q);
+            try
+            {
+                Divergence::kullbackLeibler($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -124,7 +134,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Divergence::kullbackLeibler($p, $q);
+            try
+            {
+                Divergence::kullbackLeibler($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -141,7 +156,12 @@
             float $expected
         ) {
             // When
-            $BD = Divergence::jensenShannon($p, $q);
+            try
+            {
+                $BD = Divergence::jensenShannon($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $BD, 0.0001);
@@ -161,7 +181,12 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Divergence::jensenShannon($p, $q);
+            try
+            {
+                Divergence::jensenShannon($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -178,6 +203,11 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            Divergence::jensenShannon($p, $q);
+            try
+            {
+                Divergence::jensenShannon($p, $q);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
     }

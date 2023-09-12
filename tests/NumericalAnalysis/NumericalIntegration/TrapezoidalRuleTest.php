@@ -175,9 +175,7 @@
         public function testApproximateUsingCallback()
         {
             // Given x² + 2x + 1
-            $func = $func = function ($x) {
-                return ($x ** 2) + (2 * $x) + 1;
-            };
+            $func = $func = fn($x) => ($x ** 2) + (2 * $x) + 1;
             $start = 0;
             $end = 3;
             $n = 4;
@@ -207,9 +205,7 @@
             float $tol
         ) {
             // Given e^x²
-            $func = function ($x) {
-                return M_E ** ($x ** 2);
-            };
+            $func = fn($x) => M_E ** ($x ** 2);
             $start = 0;
             $end = 2;
 

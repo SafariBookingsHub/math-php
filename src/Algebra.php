@@ -1,4 +1,730 @@
-<?php
+<?php /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection NonAsciiCharacters */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
 
     namespace MathPHP;
 
@@ -14,13 +740,16 @@
     use function cos;
     use function count;
     use function intdiv;
+    use function is_float;
     use function next;
     use function reset;
     use function rsort;
     use function sort;
     use function sqrt;
 
+    use const INF;
     use const M_PI;
+    use const NAN;
 
     class Algebra {
         private const ZERO_TOLERANCE = 0.000000000001;
@@ -41,13 +770,9 @@
         {
             // Base cases
             if ($a == 0)
-            {
                 return [$b, 0, 1];
-            }
             if ($b == 0)
-            {
                 return [$a, 1, 0];
-            }
 
             $x₂ = 1;
             $x₁ = 0;
@@ -58,8 +783,8 @@
             {
                 $q = intdiv($a, $b);
                 $r = $a % $b;
-                $x = $x₂ - ($q * $x₁);
-                $y = $y₂ - ($q * $y₁);
+                $x = $x₂ - $q * $x₁;
+                $y = $y₂ - $q * $y₁;
                 $x₂ = $x₁;
                 $x₁ = $x;
                 $y₂ = $y₁;
@@ -90,10 +815,8 @@
         public static function lcm(int $a, int $b): int
         {
             // Special case
-            if (($a === 0) || ($b === 0))
-            {
+            if ($a === 0 || $b === 0)
                 return 0;
-            }
 
             return abs($a * $b) / Algebra::gcd($a, $b);
         }
@@ -116,13 +839,9 @@
         {
             // Base cases
             if ($a == 0)
-            {
                 return $b;
-            }
             if ($b == 0)
-            {
                 return $a;
-            }
 
             // Recursive case
             return Algebra::gcd($b, $a % $b);
@@ -151,9 +870,7 @@
         {
             // 0 has infinite factors
             if ($x === 0)
-            {
-                return [\INF];
-            }
+                return [INF];
 
             $x = abs($x);
             $factors = [1];
@@ -183,12 +900,8 @@
 
                 $limit *= count($sets[$prime]);
                 if ($count === 0)
-                {
-                    $current[] = next($sets[$prime]);
-                } else
-                {
+                    $current[] = next($sets[$prime]); else
                     $current[] = 1;
-                }
                 ++$count;
             }
 
@@ -200,9 +913,7 @@
                 {
                     $current[$i2] = next($sets[$map[$i2]]);
                     if ($current[$i2] !== FALSE)
-                    {
                         break;
-                    }
                     $current[$i2] = reset($sets[$map[$i2]]);
                 }
             }
@@ -234,9 +945,7 @@
         public static function linear(float $a, float $b): ?float
         {
             if ($a == 0)
-            {
                 return NULL;
-            }
 
             return -$b / $a;
         }
@@ -269,26 +978,22 @@
         ): array {
             // Not actually quartic.
             if ($a₄ == 0)
-            {
                 return self::cubic($a₃, $a₂, $a₁, $a₀, $return_complex);
-            }
 
             // Take coefficient a₄ of z⁴ to be 1
-            $a₃ = $a₃ / $a₄;
-            $a₂ = $a₂ / $a₄;
-            $a₁ = $a₁ / $a₄;
-            $a₀ = $a₀ / $a₄;
+            $a₃ /= $a₄;
+            $a₂ /= $a₄;
+            $a₁ /= $a₄;
+            $a₀ /= $a₄;
             $a₄ = 1;
 
             // Has a zero root.
             if ($a₀ == 0)
-            {
                 return array_merge([0.0],
                     self::cubic($a₄, $a₃, $a₂, $a₁, $return_complex));
-            }
 
             // Is Biquadratic
-            if (($a₃ == 0) && ($a₁ == 0))
+            if ($a₃ == 0 && $a₁ == 0)
             {
                 $quadratic_roots = self::quadratic($a₄, $a₂, $a₀,
                     $return_complex);
@@ -299,23 +1004,21 @@
                 $z₊ = $quadratic_roots[0];
                 $z₋ = $quadratic_roots[1];
                 if ( ! $return_complex)
-                {
                     return [
                         sqrt($z₊),
                         -1 * sqrt($z₊),
                         sqrt($z₋),
                         -1 * sqrt($z₋),
                     ];
-                }
 
                 $Cz₊ = new Complex($z₊, 0);
                 $Cz₋ = new Complex($z₋, 0);
-                $z₁ = ($z₊ < 0) ? $Cz₊->sqrt() : sqrt($z₊);
+                $z₁ = $z₊ < 0 ? $Cz₊->sqrt() : sqrt($z₊);
                 // @phpstan-ignore-next-line
-                $z₂ = ($z₊ < 0) ? $z₁->negate() : ($z₁ * -1);
-                $z₃ = ($z₋ < 0) ? $Cz₋->sqrt() : sqrt($z₋);
+                $z₂ = $z₊ < 0 ? $z₁->negate() : $z₁ * -1;
+                $z₃ = $z₋ < 0 ? $Cz₋->sqrt() : sqrt($z₋);
                 // @phpstan-ignore-next-line
-                $z₄ = ($z₋ < 0) ? $z₃->negate() : ($z₃ * -1);
+                $z₄ = $z₋ < 0 ? $z₃->negate() : $z₃ * -1;
 
                 return [$z₁, $z₂, $z₃, $z₄];
             }
@@ -329,35 +1032,35 @@
                 $r = $a₀;
                 // Create the resolvent cubic.
                 // 8m³ + 8pm² + (2p² - 8r)m - q² = 0
-                $cubic_roots = self::cubic(8, 8 * $p, (2 * $p ** 2) - (8 * $r),
+                $cubic_roots = self::cubic(8, 8 * $p, 2 * $p ** 2 - 8 * $r,
                     -1 * $q ** 2, $return_complex);
 
                 // $z₁ will always be a real number, so select it.
                 $m = $cubic_roots[0];
                 // @phpstan-ignore-next-line (because $m is real)
                 $roots1 = self::quadratic(1, sqrt(2 * $m),
-                    ($p / 2 + $m) - ($q / 2 / sqrt(2 * $m)), $return_complex);
+                    ($p / 2) + $m - $q / 2 / sqrt(2 * $m), $return_complex);
                 // @phpstan-ignore-next-line (because $m is real)
                 $roots2 = self::quadratic(1, -1 * sqrt(2 * $m),
-                    ($p / 2) + $m + ($q / 2 / sqrt(2 * $m)), $return_complex);
+                    $p / 2 + $m + $q / 2 / sqrt(2 * $m), $return_complex);
                 // @phpstan-ignore-next-line (because $m is real)
                 $discriminant1 = self::discriminant(1, sqrt(2 * $m),
-                    ($p / 2 + $m) - ($q / 2 / sqrt(2 * $m)));
+                    ($p / 2) + $m - $q / 2 / sqrt(2 * $m));
                 // @phpstan-ignore-next-line (because $m is real)
                 $discriminant2 = self::discriminant(1, -1 * sqrt(2 * $m),
-                    ($p / 2) + $m + ($q / 2 / sqrt(2 * $m)));
+                    $p / 2 + $m + $q / 2 / sqrt(2 * $m));
 
                 // sort the real roots first.
-                return $discriminant1 > $discriminant2
+                return ($discriminant1 > $discriminant2)
                     ? array_merge($roots1, $roots2)
                     : array_merge($roots2, $roots1);
             }
 
             // Create the factors for a depressed quartic.
-            $p = $a₂ - ((3 * $a₃ ** 2) / 8);
-            $q = ($a₁ + ($a₃ ** 3) / 8) - (($a₃ * $a₂) / 2);
-            $r = ($a₀ - (3 * $a₃ ** 4) / 256 + ($a₃ ** 2 * $a₂) / 16) - (($a₃
-                        * $a₁) / 4);
+            $p = $a₂ - 3 * $a₃ ** 2 / 8;
+            $q = $a₁ + (($a₃ ** 3) / 8) - $a₃ * $a₂ / 2;
+            $r = ($a₀ - (3 * $a₃ ** 4) / 256) + ((($a₃ ** 2) * $a₂) / 16) - $a₃
+                        * $a₁ / 4;
 
             $depressed_quartic_roots = self::quartic(1, 0, $p, $q, $r,
                 $return_complex);
@@ -374,15 +1077,11 @@
 
             $quartic_roots = [];
             foreach ($depressed_quartic_roots as $key => $root)
-            {
-                if (\is_float($root))
-                {
-                    $quartic_roots[$key] = $root - $a₃ / 4;
-                } else
+                if (is_float($root))
+                    $quartic_roots[$key] = $root - ($a₃ / 4); else
                 {
                     $quartic_roots[$key] = $root->subtract($a₃ / 4);
                 }
-            }
 
             return $quartic_roots;
         }
@@ -481,21 +1180,19 @@
             bool $return_complex = FALSE
         ): array {
             if ($a₃ == 0)
-            {
                 return self::quadratic($a₂, $a₁, $a₀, $return_complex);
-            }
 
             // Take coefficient a₃ of z³ to be 1
-            $a₂ = $a₂ / $a₃;
-            $a₁ = $a₁ / $a₃;
-            $a₀ = $a₀ / $a₃;
+            $a₂ /= $a₃;
+            $a₁ /= $a₃;
+            $a₀ /= $a₃;
 
             // Intermediate variables
-            $Q = ((3 * $a₁) - ($a₂ ** 2)) / 9;
-            $R = ((9 * $a₂ * $a₁) - (27 * $a₀) - (2 * $a₂ ** 3)) / 54;
+            $Q = (3 * $a₁ - $a₂ ** 2) / 9;
+            $R = (9 * $a₂ * $a₁ - 27 * $a₀ - 2 * $a₂ ** 3) / 54;
 
             // Polynomial discriminant
-            $D = ($Q ** 3) + ($R ** 2);
+            $D = $Q ** 3 + $R ** 2;
 
             // All roots are real and unequal
             if ($D < 0)
@@ -504,9 +1201,9 @@
                 $２√−Q = 2 * sqrt(-$Q);
                 $π = M_PI;
 
-                $z₁ = ($２√−Q * cos($θ / 3)) - ($a₂ / 3);
-                $z₂ = ($２√−Q * cos(($θ + (2 * $π)) / 3)) - ($a₂ / 3);
-                $z₃ = ($２√−Q * cos(($θ + (4 * $π)) / 3)) - ($a₂ / 3);
+                $z₁ = $２√−Q * cos($θ / 3) - $a₂ / 3;
+                $z₂ = $２√−Q * cos(($θ + 2 * $π) / 3) - $a₂ / 3;
+                $z₃ = $２√−Q * cos(($θ + 4 * $π) / 3) - $a₂ / 3;
 
                 return [$z₁, $z₂, $z₃];
             }
@@ -516,29 +1213,27 @@
             $T = Arithmetic::cubeRoot($R - sqrt($D));
 
             // All roots are real, and at least two are equal
-            if (($D == 0)
-                || (($D > -self::ZERO_TOLERANCE)
-                    && ($D < self::ZERO_TOLERANCE))
+            if ($D == 0
+                || $D > -self::ZERO_TOLERANCE
+                    && $D < self::ZERO_TOLERANCE
             )
             {
-                $z₁ = (-$a₂ / 3) - (($S + $T) / 2);
-                $z₂ = ($S + $T) - ($a₂ / 3);
-                $z₃ = (-$a₂ / 3) - (($S + $T) / 2);
+                $z₁ = -$a₂ / 3 - ($S + $T) / 2;
+                $z₂ = $S + $T - $a₂ / 3;
+                $z₃ = -$a₂ / 3 - ($S + $T) / 2;
 
                 return [$z₁, $z₂, $z₃];
             }
 
             // D > 0: One root is real, and two are are complex conjugates
-            $z₁ = ($S + $T) - ($a₂ / 3);
+            $z₁ = $S + $T - $a₂ / 3;
 
             if ( ! $return_complex)
-            {
-                return [$z₁, \NAN, \NAN];
-            }
+                return [$z₁, NAN, NAN];
 
             $quad_a = 1;
             $quad_b = $a₂ + $z₁;
-            $quad_c = $a₁ + ($quad_b * $z₁);
+            $quad_c = $a₁ + $quad_b * $z₁;
             $complex_roots = self::quadratic($quad_a, $quad_b, $quad_c, TRUE);
 
             return array_merge([$z₁], $complex_roots);
@@ -588,18 +1283,14 @@
         ): array {
             // Formula not quadratic (a = 0)
             if ($a == 0)
-            {
                 return [-$c / $b];
-            }
 
             // Discriminant intermediate calculation and imaginary number check
             $⟮b² − 4ac⟯ = self::discriminant($a, $b, $c);
             if ($⟮b² − 4ac⟯ < 0)
             {
                 if ( ! $return_complex)
-                {
-                    return [\NAN, \NAN];
-                }
+                    return [NAN, NAN];
                 $complex = new Number\Complex(0, sqrt(-1 * $⟮b² − 4ac⟯));
                 $x₁ = $complex->multiply(-1)->subtract($b)->divide(2 * $a);
                 $x₂ = $complex->subtract($b)->divide(2 * $a);
@@ -628,6 +1319,54 @@
          */
         public static function discriminant(float $a, float $b, float $c): float
         {
-            return ($b ** 2) - (4 * $a * $c);
+            return $b ** 2 - 4 * $a * $c;
+        }
+
+        public function quarticFourComplex()
+        {
+        }
+
+        public function quarticFourComplexReturnsNansIfNotSetToReturnComplex()
+        {
+        }
+
+        public function quarticTwoComplex()
+        {
+        }
+
+        public function quarticTwoComplexNotSetToReturnComplex()
+        {
+        }
+
+        public function cubicNegativeDiscriminantComplex()
+        {
+        }
+
+        public function cubicCubeCoefficientZeroSameAsQuadratic()
+        {
+        }
+
+        public function cubicOneRealRootWithComplex()
+        {
+        }
+
+        public function cubicOneRealRoot()
+        {
+        }
+
+        public function quadraticNegativeDiscriminantComplex()
+        {
+        }
+
+        public function quadraticNegativeDiscriminant()
+        {
+        }
+
+        public function quadraticAIsZero()
+        {
+        }
+
+        public function linearNoRoot()
+        {
         }
     }

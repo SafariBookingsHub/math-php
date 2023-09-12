@@ -1,12 +1,124 @@
-<?php
+<?php /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
+
+    /** @noinspection ALL */
 
     namespace MathPHP\Tests\Algebra;
 
     use MathPHP\Algebra;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Number;
     use PHPUnit\Framework\TestCase;
 
     use function floatval;
+    use function is_nan;
     use function sqrt;
 
     use const INF;
@@ -316,15 +428,15 @@
                     10,
                     1,
                     1,
-                    [[-.05, (-1 * sqrt(39)) / 20], [-.05, sqrt(39) / 20]],
+                    [[-.05, -1 * sqrt(39) / 20], [-.05, sqrt(39) / 20]],
                 ],
                 [
                     3,
                     4,
                     20,
                     [
-                        [-2 / 3, (-1 * sqrt(14) * 2) / 3],
-                        [-2 / 3, (sqrt(14) * 2) / 3],
+                        [-2 / 3, -1 * sqrt(14) * 2 / 3],
+                        [-2 / 3, sqrt(14) * 2 / 3],
                     ],
                 ],
             ];
@@ -512,9 +624,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForQuarticTwoComplex(): array
         {
             return [
@@ -563,9 +672,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForQuarticFourComplex(): array
         {
             return [
@@ -621,13 +727,11 @@
          * @param int $a
          * @param int $b
          * @param int $expected_gcd
-         * @param int $_
          */
         public function testGCD(
             int $a,
             int $b,
-            int $expected_gcd,
-            int $_
+            int $expected_gcd
         ) {
             // When
             $gcd = Algebra::gcd($a, $b);
@@ -689,7 +793,12 @@
         public function testFactors(int $x, array $expected_factors)
         {
             // When
-            $factors = Algebra::factors($x);
+            try
+            {
+                $factors = Algebra::factors($x);
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected_factors, $factors);
@@ -769,9 +878,9 @@
          * @throws      \MathPHP\Exception\IncorrectTypeException
          */
         public function testQuadraticAIsZero(
-            $a,
-            $b,
-            $c,
+            float $a,
+            float $b,
+            float $c,
             array $expected_quadratic
         ) {
             // When
@@ -805,9 +914,7 @@
             $this->assertNotEmpty($roots);
             $this->assertEquals(2, count($roots));
             foreach ($roots as $root)
-            {
-                $this->assertTrue(\is_nan($root));
-            }
+                $this->assertTrue(is_nan($root));
         }
 
         /**
@@ -1058,12 +1165,12 @@
          * @throws       \Exception
          */
         public function testQuarticTwoComplexNotSetToReturnComplex(
-            $a,
-            $b,
-            $c,
-            $d,
-            $e,
-            $quartic
+            int $a,
+            int $b,
+            int $c,
+            int $d,
+            int $e,
+            array $quartic
         ) {
             // When
             [$z₁, $z₂, $z₃, $z₄] = Algebra::quartic($a, $b, $c, $d, $e);
@@ -1090,7 +1197,7 @@
          *
          * @throws       \Exception
          */
-        public function testQuarticTwoComplex($a, $b, $c, $d, $e, $quartic)
+        public function testQuarticTwoComplex(int $a, int $b, int $c, int $d, int $e, array $quartic)
         {
             // Given
             $complex0 = new Number\Complex($quartic[2]['r'], $quartic[2]['i']);

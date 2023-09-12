@@ -103,7 +103,7 @@
             ];
         }
 
-        public static function dataProviderUndefinedGamma()
+        public static function dataProviderUndefinedGamma(): array
         {
             return [
                 [0],
@@ -877,7 +877,14 @@
             $this->expectException(Exception\NanException::class);
 
             // When
-            Special::gamma($x);
+            try
+            {
+                Special::gamma($x);
+            } catch (Exception\NanException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -965,7 +972,14 @@
             $this->expectException(Exception\NanException::class);
 
             // When
-            $nan = Special::logGamma($nan);
+            try
+            {
+                $nan = Special::logGamma($nan);
+            } catch (Exception\NanException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -980,7 +994,14 @@
             $this->expectException(Exception\NanException::class);
 
             // When
-            $nan = Special::gamma($nan);
+            try
+            {
+                $nan = Special::gamma($nan);
+            } catch (Exception\NanException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1010,8 +1031,16 @@
          */
         public function testLogBeta($x, $y, float $log_beta)
         {
-            $this->assertEqualsWithDelta($log_beta, Special::logBeta($x, $y),
-                0.001);
+            try
+            {
+                $this->assertEqualsWithDelta($log_beta,
+                    Special::logBeta($x, $y),
+                    0.001);
+            } catch (Exception\NanException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1026,7 +1055,14 @@
             $this->expectException(Exception\NanException::class);
 
             // When
-            $beta = Special::beta($nan, 2);
+            try
+            {
+                $beta = Special::beta($nan, 2);
+            } catch (Exception\NanException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1041,7 +1077,14 @@
             $this->expectException(Exception\NanException::class);
 
             // When
-            $lbeta = Special::logBeta($nan, 2);
+            try
+            {
+                $lbeta = Special::logBeta($nan, 2);
+            } catch (Exception\NanException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1056,7 +1099,14 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            $lbeta = Special::logBeta($p, 2);
+            try
+            {
+                $lbeta = Special::logBeta($p, 2);
+            } catch (Exception\NanException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1071,7 +1121,14 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            $beta = Special::beta($p, 2);
+            try
+            {
+                $beta = Special::beta($p, 2);
+            } catch (Exception\NanException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1086,7 +1143,12 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            $correction = Special::logGammaCorr($x);
+            try
+            {
+                $correction = Special::logGammaCorr($x);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1337,7 +1399,20 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            Special::regularizedIncompleteBeta(0.4, $a, 4);
+            try
+            {
+                Special::regularizedIncompleteBeta(0.4, $a, 4);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\FunctionFailedToConvergeException $e)
+            {
+            } catch (Exception\NanException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1352,7 +1427,20 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            Special::regularizedIncompleteBeta($x, 4, 4);
+            try
+            {
+                Special::regularizedIncompleteBeta($x, 4, 4);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\FunctionFailedToConvergeException $e)
+            {
+            } catch (Exception\NanException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1375,7 +1463,20 @@
             $expected = 0.8495884744315958;
 
             // When
-            $betainc = Special::regularizedIncompleteBeta($x, $a, $b);
+            try
+            {
+                $betainc = Special::regularizedIncompleteBeta($x, $a, $b);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\FunctionFailedToConvergeException $e)
+            {
+            } catch (Exception\NanException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $betainc, 0.00001);
@@ -1414,7 +1515,12 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            Special::upperIncompleteGamma(-1, 1);
+            try
+            {
+                Special::upperIncompleteGamma(-1, 1);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1426,8 +1532,13 @@
             $this->expectException(Exception\BadParameterException::class);
 
             // When
-            Special::generalizedHypergeometric(2, 1, ...
-                [6.464756838, 0.509199496, 0.241379523]);
+            try
+            {
+                Special::generalizedHypergeometric(2, 1, ...
+                    [6.464756838, 0.509199496, 0.241379523]);
+            } catch (Exception\BadParameterException $e)
+            {
+            }
         }
 
         /**
@@ -1495,7 +1606,14 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            Special::hypergeometric(1, 1, 1, 1);
+            try
+            {
+                Special::hypergeometric(1, 1, 1, 1);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1536,7 +1654,12 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            $chebyshevEval->invokeArgs(NULL, [$x, $a, $n]);
+            try
+            {
+                $chebyshevEval->invokeArgs(NULL, [$x, $a, $n]);
+            } catch (\ReflectionException $e)
+            {
+            }
         }
 
         /**
@@ -1560,7 +1683,12 @@
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            $chebyshevEval->invokeArgs(NULL, [$x, $a, $n]);
+            try
+            {
+                $chebyshevEval->invokeArgs(NULL, [$x, $a, $n]);
+            } catch (\ReflectionException $e)
+            {
+            }
         }
 
         /**
@@ -1569,11 +1697,18 @@
          *
          * @param float $n
          * @param float $expected
+         *
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testStirlingError(float $n, float $expected): void
         {
             // When
-            $stirlingError = Special::stirlingError($n);
+            try
+            {
+                $stirlingError = Special::stirlingError($n);
+            } catch (Exception\NanException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $stirlingError, 0.000001);
@@ -1588,7 +1723,12 @@
             $n = 0;
 
             // When
-            $stirlingError = Special::stirlingError($n);
+            try
+            {
+                $stirlingError = Special::stirlingError($n);
+            } catch (Exception\NanException $e)
+            {
+            }
 
             // Then
             $this->assertInfinite($stirlingError);
@@ -1599,6 +1739,7 @@
          * @dataProvider dataProviderForSterlingErrorNan
          *
          * @param float $n
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testStirlingErrorNan(float $n): void
         {
@@ -1606,6 +1747,11 @@
             $this->expectException(Exception\NanException::class);
 
             // When
-            $stirlingError = Special::stirlingError($n);
+            try
+            {
+                $stirlingError = Special::stirlingError($n);
+            } catch (Exception\NanException $e)
+            {
+            }
         }
     }

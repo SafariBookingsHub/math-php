@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class ValidationTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForPositiveTolerance(): array
         {
             return [
@@ -22,9 +19,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForValidInterval(): array
         {
             return [

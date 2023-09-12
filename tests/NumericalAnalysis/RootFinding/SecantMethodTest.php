@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\NumericalAnalysis\RootFinding;
 
+    use JetBrains\PhpStorm\ArrayShape;
     use MathPHP\Expression\Polynomial;
     use MathPHP\NumericalAnalysis\RootFinding\SecantMethod;
     use PHPUnit\Framework\TestCase;
@@ -13,7 +14,12 @@
         /**
          * @return array (p₀, p₁, expected)
          */
-        public static function dataProviderForPolynomial(): array
+        #[ArrayShape(['solving for f(x) = 0 where x is -4'                                                         => "int[]",
+                      'solving for f(x) = 0 where x is -8'                                                         => "int[]",
+                      'solving for f(x) = 0 where x is 3'                                                          => "int[]",
+                      'solving for f(x) = 0 where x is 1'                                                          => "int[]",
+                      'Solve for f(x) = 0 where x is 1: Switch p₀ and p₁ and test that they get reversed properly' => "int[]"
+        ])] public static function dataProviderForPolynomial(): array
         {
             return [
                 'solving for f(x) = 0 where x is -4'                                                         => [
@@ -62,9 +68,7 @@
             int $expected
         ) {
             // Given
-            $func = function ($x) {
-                return ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
-            };
+            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
             $tol = 0.00001;
 
             // When solving for f(x) = 0 where x $expected
@@ -110,9 +114,7 @@
         public function testXCubedSubtractXPlusOne()
         {
             // Given
-            $func = function ($x) {
-                return ($x ** 3 - $x) + 1;
-            };
+            $func = fn($x) => ($x ** 3 - $x) + 1;
 
             // And
             $expected = -1.324717;
@@ -135,9 +137,7 @@
         public function testXSquaredSubtractFive()
         {
             // Given
-            $func = function ($x) {
-                return ($x ** 2) - 5;
-            };
+            $func = fn($x) => ($x ** 2) - 5;
 
             // And
             $expected = sqrt(5);
@@ -160,9 +160,7 @@
         public function testCosXSubtractTwoX()
         {
             // Given
-            $func = function ($x) {
-                return cos($x) - (2 * $x);
-            };
+            $func = fn($x) => cos($x) - (2 * $x);
 
             // And
             $expected = 0.450183;
@@ -184,9 +182,7 @@
         public function testExceptionNegativeTolerance()
         {
             // Given
-            $func = function ($x) {
-                return ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - 92 * $x) + 96;
-            };
+            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - 92 * $x) + 96;
 
             // And
             $tol = -0.00001;
@@ -207,9 +203,7 @@
         public function testExceptionZeroInterval()
         {
             // Given
-            $func = function ($x) {
-                return ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
-            };
+            $func = fn($x) => ($x ** 4 + 8 * $x ** 3 - 13 * $x ** 2 - (92 * $x)) + 96;
 
             // And
             $tol = 0.00001;

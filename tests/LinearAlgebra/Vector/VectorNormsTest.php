@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\LinearAlgebra\Vector;
 
+    use MathPHP\Exception\BadDataException;
     use MathPHP\LinearAlgebra\Vector;
     use PHPUnit\Framework\TestCase;
 
@@ -55,7 +56,12 @@
         public function testL1Norm(array $A, $expected)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
             $l₁norm = $A->l1Norm();
@@ -71,7 +77,12 @@
         public function testL2Norm(array $A, $expected)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
             $l²norm = $A->l2Norm();
@@ -87,10 +98,15 @@
         public function testPNorm(array $A, $p, $expected)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $pnorm = $A->pNorm($p);
+            $pnorm = $A->pNorm(p: $p);
 
             // Then
             $this->assertEqualsWithDelta($expected, $pnorm, 0.0001);
@@ -103,7 +119,12 @@
         public function testMaxNorm(array $A, $expected)
         {
             // Given
-            $A = new Vector($A);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
             $maxnorm = $A->maxNorm();

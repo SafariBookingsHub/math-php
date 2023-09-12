@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class CholeskyTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForCholeskyDecomposition(): array
         {
             return [
@@ -164,8 +161,8 @@
         public function testCholeskyDecomposition(array $A, array $expected_L)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $expected_L = MatrixFactory::create($expected_L);
+            $A = MatrixFactory::create(A: $A);
+            $expected_L = MatrixFactory::create(A: $expected_L);
             $expected_Lᵀ = $expected_L->transpose();
 
             // When
@@ -180,7 +177,7 @@
                 $Lᵀ->getMatrix(), 0.00001);
 
             // And LLᵀ = A
-            $LLᵀ = $L->multiply($Lᵀ);
+            $LLᵀ = $L->multiply(B: $Lᵀ);
             $this->assertEqualsWithDelta($A->getMatrix(), $LLᵀ->getMatrix(),
                 0.00001);
         }
@@ -197,7 +194,7 @@
                 [2, 3, 4],
                 [3, 4, 5],
             ];
-            $A = MatrixFactory::create($A);
+            $A = MatrixFactory::create(A: $A);
 
             // Then
             $this->expectException(Exception\MatrixException::class);
@@ -213,7 +210,7 @@
         public function testCholeskyDecompositionInvalidProperty()
         {
             // Given
-            $A = MatrixFactory::create([
+            $A = MatrixFactory::create(A: [
                 [4, 1, -1],
                 [1, 2, 1],
                 [-1, 1, 2],

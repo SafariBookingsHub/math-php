@@ -21,13 +21,11 @@
          *  (a,b]
          *  [a,b]
          */
-        private function limitTest(array $limits)
+        private function limitTest(array $limits): void
         {
             foreach ($limits as $parameter => $limit)
-            {
                 $this->assertRegExp('/^ ([[(]) (.+) , (.+?) ([])]) $/x',
                     $limit);
-            }
         }
 
         /**

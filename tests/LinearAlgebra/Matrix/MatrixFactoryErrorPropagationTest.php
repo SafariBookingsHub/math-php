@@ -2,6 +2,12 @@
 
     namespace MathPHP\Tests\LinearAlgebra\Matrix;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\IncorrectTypeException;
+    use MathPHP\Exception\MathException;
+    use MathPHP\Exception\MatrixException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\LinearAlgebra\NumericMatrix;
     use PHPUnit\Framework\TestCase;
@@ -10,14 +16,21 @@
         extends TestCase {
         private const ε = 0.01;
         /** @var NumericMatrix */
-        private $A;
+        private NumericMatrix $A;
 
         public function setUp(): void
         {
-            $this->A = MatrixFactory::createNumeric([
-                [1, 2],
-                [3, 4],
-            ]);
+            try
+            {
+                $this->A = MatrixFactory::createNumeric([
+                    [1, 2],
+                    [3, 4],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
             $this->A->setError(self::ε);
         }
 
@@ -31,13 +44,29 @@
         public function testAdd()
         {
             // Given
-            $B = MatrixFactory::createNumeric([
-                [3, 4],
-                [5, 6],
-            ]);
+            try
+            {
+                $B = MatrixFactory::createNumeric([
+                    [3, 4],
+                    [5, 6],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $R = $this->A->add($B);
+            try
+            {
+                $R = $this->A->add($B);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -49,13 +78,25 @@
         public function testDirectSum()
         {
             // Given
-            $B = MatrixFactory::createNumeric([
-                [3, 4],
-                [5, 6],
-            ]);
+            try
+            {
+                $B = MatrixFactory::createNumeric([
+                    [3, 4],
+                    [5, 6],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $R = $this->A->directSum($B);
+            try
+            {
+                $R = $this->A->directSum($B);
+            } catch (IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -67,13 +108,27 @@
         public function testSubtract()
         {
             // Given
-            $B = MatrixFactory::createNumeric([
-                [3, 4],
-                [5, 6],
-            ]);
+            try
+            {
+                $B = MatrixFactory::createNumeric([
+                    [3, 4],
+                    [5, 6],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $R = $this->A->subtract($B);
+            try
+            {
+                $R = $this->A->subtract($B);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -85,13 +140,29 @@
         public function testMultiply()
         {
             // Given
-            $B = MatrixFactory::createNumeric([
-                [3, 4],
-                [5, 6],
-            ]);
+            try
+            {
+                $B = MatrixFactory::createNumeric([
+                    [3, 4],
+                    [5, 6],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $R = $this->A->multiply($B);
+            try
+            {
+                $R = $this->A->multiply($B);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -106,7 +177,14 @@
             $x = 4;
 
             // When
-            $R = $this->A->scalarMultiply($x);
+            try
+            {
+                $R = $this->A->scalarMultiply($x);
+            } catch (BadParameterException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -121,7 +199,14 @@
             $x = 4;
 
             // When
-            $R = $this->A->scalarDivide($x);
+            try
+            {
+                $R = $this->A->scalarDivide($x);
+            } catch (BadParameterException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -133,13 +218,27 @@
         public function testHadamardProduct()
         {
             // Given
-            $B = MatrixFactory::createNumeric([
-                [3, 4],
-                [5, 6],
-            ]);
+            try
+            {
+                $B = MatrixFactory::createNumeric([
+                    [3, 4],
+                    [5, 6],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $R = $this->A->hadamardProduct($B);
+            try
+            {
+                $R = $this->A->hadamardProduct($B);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -151,7 +250,12 @@
         public function testDiagonal()
         {
             // When
-            $R = $this->A->diagonal();
+            try
+            {
+                $R = $this->A->diagonal();
+            } catch (IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -163,7 +267,18 @@
         public function testInverse()
         {
             // When
-            $R = $this->A->inverse();
+            try
+            {
+                $R = $this->A->inverse();
+            } catch (BadParameterException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -175,7 +290,16 @@
         public function testCofactorMatrix()
         {
             // When
-            $R = $this->A->cofactorMatrix();
+            try
+            {
+                $R = $this->A->cofactorMatrix();
+            } catch (BadParameterException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -191,7 +315,14 @@
             $k = 2;
 
             // When
-            $R = $this->A->rowMultiply($m, $k);
+            try
+            {
+                $R = $this->A->rowMultiply($m, $k);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -207,7 +338,16 @@
             $k = 2;
 
             // When
-            $R = $this->A->rowDivide($m, $k);
+            try
+            {
+                $R = $this->A->rowDivide($m, $k);
+            } catch (BadParameterException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -224,7 +364,16 @@
             $k = 2;
 
             // When
-            $R = $this->A->rowAdd($i, $j, $k);
+            try
+            {
+                $R = $this->A->rowAdd($i, $j, $k);
+            } catch (BadParameterException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -240,7 +389,14 @@
             $k = 2;
 
             // When
-            $R = $this->A->rowAddScalar($m, $k);
+            try
+            {
+                $R = $this->A->rowAddScalar($m, $k);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -257,7 +413,14 @@
             $k = 2;
 
             // When
-            $R = $this->A->rowSubtract($i, $j, $k);
+            try
+            {
+                $R = $this->A->rowSubtract($i, $j, $k);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -273,7 +436,14 @@
             $k = 2;
 
             // When
-            $R = $this->A->rowSubtractScalar($m, $k);
+            try
+            {
+                $R = $this->A->rowSubtractScalar($m, $k);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -290,7 +460,16 @@
             $k = 2;
 
             // When
-            $R = $this->A->columnAdd($i, $j, $k);
+            try
+            {
+                $R = $this->A->columnAdd($i, $j, $k);
+            } catch (BadParameterException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -306,7 +485,14 @@
             $k = 2;
 
             // When
-            $R = $this->A->columnMultiply($n, $k);
+            try
+            {
+                $R = $this->A->columnMultiply($n, $k);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -318,7 +504,16 @@
         public function testAdjugate()
         {
             // When
-            $R = $this->A->adjugate();
+            try
+            {
+                $R = $this->A->adjugate();
+            } catch (BadParameterException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -334,13 +529,27 @@
         public function testAugment()
         {
             // Given
-            $B = MatrixFactory::createNumeric([
-                [3, 4],
-                [5, 6],
-            ]);
+            try
+            {
+                $B = MatrixFactory::createNumeric([
+                    [3, 4],
+                    [5, 6],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $R = $this->A->augment($B);
+            try
+            {
+                $R = $this->A->augment($B);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -352,13 +561,27 @@
         public function testAugmentLeft()
         {
             // Given
-            $B = MatrixFactory::createNumeric([
-                [3, 4],
-                [5, 6],
-            ]);
+            try
+            {
+                $B = MatrixFactory::createNumeric([
+                    [3, 4],
+                    [5, 6],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $R = $this->A->augmentLeft($B);
+            try
+            {
+                $R = $this->A->augmentLeft($B);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -370,13 +593,27 @@
         public function testAugmentBelow()
         {
             // Given
-            $B = MatrixFactory::createNumeric([
-                [3, 4],
-                [5, 6],
-            ]);
+            try
+            {
+                $B = MatrixFactory::createNumeric([
+                    [3, 4],
+                    [5, 6],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $R = $this->A->augmentBelow($B);
+            try
+            {
+                $R = $this->A->augmentBelow($B);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -388,13 +625,31 @@
         public function testAugmentAbove()
         {
             // Given
-            $B = MatrixFactory::createNumeric([
-                [3, 4],
-                [5, 6],
-            ]);
+            try
+            {
+                $B = MatrixFactory::createNumeric([
+                    [3, 4],
+                    [5, 6],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $R = $this->A->augmentAbove($B);
+            try
+            {
+                $R = $this->A->augmentAbove($B);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -406,7 +661,14 @@
         public function testTranspose()
         {
             // When
-            $R = $this->A->transpose();
+            try
+            {
+                $R = $this->A->transpose();
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -418,14 +680,26 @@
         public function testSubmatrix()
         {
             // Given
-            $B = MatrixFactory::createNumeric([
-                [3],
-            ]);
+            try
+            {
+                $B = MatrixFactory::createNumeric([
+                    [3],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
             $m = 1;
             $n = 1;
 
             // When
-            $R = $this->A->insert($B, $m, $n);
+            try
+            {
+                $R = $this->A->insert($B, $m, $n);
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -437,12 +711,15 @@
         public function testMap()
         {
             // Given
-            $f = function ($x) {
-                return $x + 1;
-            };
+            $f = fn($x) => $x + 1;
 
             // When
-            $R = $this->A->map($f);
+            try
+            {
+                $R = $this->A->map($f);
+            } catch (IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -458,7 +735,14 @@
             $j = 1;
 
             // When
-            $R = $this->A->rowInterchange($i, $j);
+            try
+            {
+                $R = $this->A->rowInterchange($i, $j);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -473,7 +757,14 @@
             $i = 0;
 
             // When
-            $R = $this->A->rowExclude($i);
+            try
+            {
+                $R = $this->A->rowExclude($i);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -489,7 +780,14 @@
             $j = 1;
 
             // When
-            $R = $this->A->columnInterchange($i, $j);
+            try
+            {
+                $R = $this->A->columnInterchange($i, $j);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -504,7 +802,14 @@
             $i = 0;
 
             // When
-            $R = $this->A->columnExclude($i);
+            try
+            {
+                $R = $this->A->columnExclude($i);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -519,7 +824,16 @@
             $k = 1;
 
             // When
-            $R = $this->A->leadingPrincipalMinor($k);
+            try
+            {
+                $R = $this->A->leadingPrincipalMinor($k);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -535,7 +849,12 @@
         public function testMeanDeviationOfRowVariables()
         {
             // When
-            $R = $this->A->meanDeviationOfRowVariables();
+            try
+            {
+                $R = $this->A->meanDeviationOfRowVariables();
+            } catch (IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());
@@ -547,7 +866,12 @@
         public function testMeanDeviationOfColumnVariables()
         {
             // When
-            $R = $this->A->meanDeviationOfColumnVariables();
+            try
+            {
+                $R = $this->A->meanDeviationOfColumnVariables();
+            } catch (IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals(self::ε, $R->getError());

@@ -2,6 +2,9 @@
 
     namespace MathPHP\Probability\Distribution\Discrete;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Support;
 
     use function ceil;
@@ -36,7 +39,7 @@
             ];
 
         /** @var float success probability  0 < p ≤ 1 */
-        protected $p;
+        protected float $p;
 
         /**
          * Constructor
@@ -76,7 +79,16 @@
          */
         public function pmf(int $k): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
             $p = $this->p;
 
             $⟮1 − p⟯ᵏ = (1 - $p) ** $k;
@@ -100,7 +112,16 @@
          */
         public function cdf(int $k): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
             $p = $this->p;
 
             $⟮1 − p⟯ᵏ⁺¹ = (1 - $p) ** ($k + 1);

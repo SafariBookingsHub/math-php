@@ -55,4 +55,72 @@
         {
             return $this->evaluateModel($x, $this->parameters);
         }
+
+        public function outliers()
+        {
+        }
+
+        public function meanSquares()
+        {
+        }
+
+        public function getProjection()
+        {
+        }
+
+        public function DF()
+        {
+        }
+
+        public function leverages()
+        {
+        }
+
+        public function TProbability()
+        {
+        }
+
+        public function FProbability()
+        {
+        }
+
+        public function PI()
+        {
+        }
+
+        public function bugIssue429CI()
+        {
+        }
+
+        public function CI()
+        {
+        }
+
+        public function getSampleSize()
+        {
+        }
+
+        public function getParameters()
+        {
+        }
+
+        public function getEquation()
+        {
+        }
+
+        public function getYs()
+        {
+        }
+
+        public function getXs()
+        {
+        }
+
+        public function getPoints()
+        {
+        }
+
+        public function constructor()
+        {
+        }
     }

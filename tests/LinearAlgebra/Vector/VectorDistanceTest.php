@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class VectorDistanceTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForDifferentVectors(): array
         {
             return [
@@ -21,9 +18,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForL1Distance(): array
         {
             return [
@@ -60,9 +54,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForL2Distance(): array
         {
             return [
@@ -99,9 +90,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMinkowskiDistance(): array
         {
             return [
@@ -228,14 +216,29 @@
             array $B
         ) {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(BadDataException::class);
 
             //When
-            $A->minkowskiDistance($B, 2);
+            try
+            {
+                $A->minkowskiDistance($B, 2);
+            } catch (BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -249,12 +252,32 @@
         public function testL1Distance(array $A, array $B, float $expected)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $distance1 = $A->l1Distance($B);
-            $distance2 = $B->l1Distance($A);
+            try
+            {
+                $distance1 = $A->l1Distance($B);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $distance2 = $B->l1Distance($A);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $distance1, 0.0000000001);
@@ -272,12 +295,32 @@
         public function testL2Distance(array $A, array $B, float $expected)
         {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $distance1 = $A->l2Distance($B);
-            $distance2 = $B->l2Distance($A);
+            try
+            {
+                $distance1 = $A->l2Distance($B);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $distance2 = $B->l2Distance($A);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $distance1, 0.0000000001);
@@ -300,12 +343,32 @@
             float $expected
         ) {
             // Given
-            $A = new Vector($A);
-            $B = new Vector($B);
+            try
+            {
+                $A = new Vector($A);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (BadDataException $e)
+            {
+            }
 
             // When
-            $distance1 = $A->minkowskiDistance($B, $p);
-            $distance2 = $B->minkowskiDistance($A, $p);
+            try
+            {
+                $distance1 = $A->minkowskiDistance($B, $p);
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $distance2 = $B->minkowskiDistance($A, $p);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $distance1, 0.0000000001);

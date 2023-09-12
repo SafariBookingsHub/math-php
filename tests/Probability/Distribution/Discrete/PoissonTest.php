@@ -34,9 +34,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMean(): array
         {
             return [
@@ -48,9 +45,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMedian(): array
         {
             return [
@@ -62,9 +56,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMode(): array
         {
             return [
@@ -76,9 +67,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForVariance(): array
         {
             return [

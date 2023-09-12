@@ -75,9 +75,9 @@
          * @test         evaluate
          * @dataProvider dataProviderForEvaluate
          *
-         * @param array  $points
-         * @param        $x
-         * @param        $expected_y
+         * @param array $points
+         * @param float $x
+         * @param float $expected_y
          */
         public function testEvaluate(array $points, float $x, float $expected_y)
         {

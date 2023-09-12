@@ -34,7 +34,7 @@
         /**
          * @return array [points, n]
          */
-        public static function dataProviderForSampleSize()
+        public static function dataProviderForSampleSize(): array
         {
             return [
                 [

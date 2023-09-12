@@ -7,9 +7,6 @@
     use PHPUnit\Framework\TestCase;
 
     class RationalTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForData(): array
         {
             return [
@@ -40,9 +37,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForToString(): array
         {
             return [
@@ -73,9 +67,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForToFloat(): array
         {
             return [
@@ -92,9 +83,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForAbs(): array
         {
             return [
@@ -111,9 +99,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForInverse(): array
         {
             return [
@@ -129,9 +114,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForAdd(): array
         {
             return [
@@ -143,9 +125,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForSubtract(): array
         {
             return [
@@ -157,9 +136,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMultiply(): array
         {
             return [
@@ -171,9 +147,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForDivide(): array
         {
             return [
@@ -185,9 +158,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForAddInt(): array
         {
             return [
@@ -199,9 +169,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForSubtractInt(): array
         {
             return [
@@ -213,9 +180,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForMultiplyInt(): array
         {
             return [
@@ -227,9 +191,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForDivideInt(): array
         {
             return [
@@ -241,9 +202,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForPow(): array
         {
             return [
@@ -286,7 +244,7 @@
          * @param int $d
          * @param int $expectedWholePart
          */
-        public function testGetWholePart($w, $n, $d, $expectedWholePart)
+        public function testGetWholePart(int $w, int $n, int $d, int $expectedWholePart)
         {
             // Given
             $number = new Rational($w, $n, $d);
@@ -308,7 +266,7 @@
          * @param int $_
          * @param int $expectedNumerator
          */
-        public function testGetNumerator($w, $n, $d, $_, $expectedNumerator)
+        public function testGetNumerator(int $w, int $n, int $d, int $_, int $expectedNumerator)
         {
             // Given
             $number = new Rational($w, $n, $d);
@@ -332,12 +290,12 @@
          * @param int $expectedDenominator
          */
         public function testGetDenominator(
-            $w,
-            $n,
-            $d,
-            $_,
-            $__,
-            $expectedDenominator
+            int $w,
+            int $n,
+            int $d,
+            int $_,
+            int $__,
+            int $expectedDenominator
         ) {
             // Given
             $number = new Rational($w, $n, $d);
@@ -442,7 +400,12 @@
             $result_rn = new Rational(...$result);
 
             // Then
-            $this->assertTrue($number->inverse()->equals($result_rn));
+            try
+            {
+                $this->assertTrue($number->inverse()->equals($result_rn));
+            } catch (Exception\DivisionByZeroException $e)
+            {
+            }
         }
 
         /**

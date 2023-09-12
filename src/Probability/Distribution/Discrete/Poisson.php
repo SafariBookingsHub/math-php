@@ -2,6 +2,9 @@
 
     namespace MathPHP\Probability\Distribution\Discrete;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Support;
     use MathPHP\Probability\Combinatorics;
 
@@ -9,6 +12,7 @@
     use function ceil;
     use function exp;
     use function floor;
+    use function range;
 
     /**
      * Poisson distribution
@@ -42,7 +46,7 @@
             ];
 
         /** @var float average number of successful events per interval */
-        protected $λ;
+        protected float $λ;
 
         /**
          * Constructor
@@ -69,13 +73,20 @@
          */
         public function cdf(int $k): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
-
-            $array_map = [];
-            foreach (\range(0, $k) as $key => $k)
+            try
             {
-                $array_map[$key] = $this->pmf($k);
+                Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
             }
+
+            $array_map = array_map(function ($k) {
+                return $this->pmf($k);
+            }, range(0, $k));
 
             return array_sum($array_map);
         }
@@ -93,12 +104,26 @@
          */
         public function pmf(int $k): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['k' => $k]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $λ = $this->λ;
 
-            $λᵏℯ＾−λ = ($λ ** $k) * exp(-$λ);
-            $k！ = Combinatorics::factorial($k);
+            $λᵏℯ＾−λ = $λ ** $k * exp(-$λ);
+            try
+            {
+                $k！ = Combinatorics::factorial($k);
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             return $λᵏℯ＾−λ / $k！;
         }
@@ -124,7 +149,7 @@
          */
         public function median(): float
         {
-            return floor(($this->λ + 1 / 3) - (0.02 / $this->λ));
+            return floor($this->λ + (1 / 3) - 0.02 / $this->λ);
         }
 
         /**

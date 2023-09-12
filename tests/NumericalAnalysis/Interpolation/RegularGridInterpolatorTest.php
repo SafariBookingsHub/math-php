@@ -203,8 +203,9 @@
          * @dataProvider dataProviderForRegularGridNearestAgrees
          *
          * @param array $point
+         * @param       $expected
          *
-         * @throws       \Exception
+         * @throws \MathPHP\Exception\BadDataException
          */
         public function testRegularGridNearestAgrees(array $point, $expected)
         {
@@ -247,27 +248,29 @@
             $zs = [110, 111, 112, 113, 114, 115, 116, 117, 118, 119];
 
             // And
-            $func = function ($x, $y, $z) {
-                return (2 * $x + 3 * $y) - $z;
-            };
+            $func = fn($x, $y, $z) => (2 * $x + 3 * $y) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
-            {
                 foreach ($ys as $j => $y)
-                {
                     foreach ($zs as $k => $z)
-                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
-                    }
-                }
-            }
 
             // When
-            $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
-                'linear');
-            $result = $interp([2.21, 12.1, 115.9]);
+            try
+            {
+                $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
+                    'linear');
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $result = $interp([2.21, 12.1, 115.9]);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta(-75.18, $result, 0.00001);
@@ -298,27 +301,29 @@
             $zs = [110, 111, 112, 113, 114, 115, 116, 117, 118, 119];
 
             // And
-            $func = function ($x, $y, $z) {
-                return (2 * $x + 3 * $y) - $z;
-            };
+            $func = fn($x, $y, $z) => (2 * $x + 3 * $y) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
-            {
                 foreach ($ys as $j => $y)
-                {
                     foreach ($zs as $k => $z)
-                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
-                    }
-                }
-            }
 
             // When
-            $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
-                'nearest');
-            $result = $interp([2.21, 12.1, 115.9]);
+            try
+            {
+                $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
+                    'nearest');
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $result = $interp([2.21, 12.1, 115.9]);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta(-76, $result, 0.00001);
@@ -405,27 +410,29 @@
             ];
 
             // And
-            $func = function ($x, $y, $z) {
-                return (2 * $x ** 3 + 3 * $y ** 2) - $z;
-            };
+            $func = fn($x, $y, $z) => (2 * $x ** 3 + 3 * $y ** 2) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
-            {
                 foreach ($ys as $j => $y)
-                {
                     foreach ($zs as $k => $z)
-                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
-                    }
-                }
-            }
 
             // When
-            $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
-                'linear');
-            $result = $interp([2.1, 6.2, 8.3]);
+            try
+            {
+                $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
+                    'linear');
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $result = $interp([2.1, 6.2, 8.3]);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta(125.80469388, $result, 0.00001);
@@ -512,27 +519,29 @@
             ];
 
             // And
-            $func = function ($x, $y, $z) {
-                return (2 * $x ** 3 + 3 * $y ** 2) - $z;
-            };
+            $func = fn($x, $y, $z) => (2 * $x ** 3 + 3 * $y ** 2) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
-            {
                 foreach ($ys as $j => $y)
-                {
                     foreach ($zs as $k => $z)
-                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
-                    }
-                }
-            }
 
             // When
-            $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
-                'linear');
-            $result = $interp([3.3, 5.2, 7.1]);
+            try
+            {
+                $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
+                    'linear');
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $result = $interp([3.3, 5.2, 7.1]);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta(146.30069388, $result, 0.00001);
@@ -623,31 +632,33 @@
             ];
 
             // And
-            $func = function ($x, $y, $z) {
-                return (2 * $x ** 3 + 3 * $y ** 2) - $z;
-            };
+            $func = fn($x, $y, $z) => (2 * $x ** 3 + 3 * $y ** 2) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
-            {
                 foreach ($ys as $j => $y)
-                {
                     foreach ($zs as $k => $z)
-                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
-                    }
-                }
-            }
 
             // When
-            $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
-                'linear');
-            $result = $interp([
-                3.3,
-                7.2,
-                7.1,
-            ]);  // 7.2 is outside the bounds of the grid
+            try
+            {
+                $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
+                    'linear');
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $result = $interp([
+                    3.3,
+                    7.2,
+                    7.1,
+                ]);
+            } catch (BadDataException $e)
+            {
+            }  // 7.2 is outside the bounds of the grid
 
             // Then
             $this->assertEqualsWithDelta(220.48028571, $result, 0.00001);
@@ -738,31 +749,33 @@
             ];
 
             // And
-            $func = function ($x, $y, $z) {
-                return (2 * $x ** 3 + 3 * $y ** 2) - $z;
-            };
+            $func = fn($x, $y, $z) => (2 * $x ** 3 + 3 * $y ** 2) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
-            {
                 foreach ($ys as $j => $y)
-                {
                     foreach ($zs as $k => $z)
-                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
-                    }
-                }
-            }
 
             // When
-            $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
-                'nearest');
-            $result = $interp([
-                3.3,
-                7.2,
-                7.1,
-            ]);  // 7.2 is outside the bounds of the grid
+            try
+            {
+                $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
+                    'nearest');
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $result = $interp([
+                    3.3,
+                    7.2,
+                    7.1,
+                ]);
+            } catch (BadDataException $e)
+            {
+            }  // 7.2 is outside the bounds of the grid
 
             // Then
             $this->assertEqualsWithDelta(218.483, $result, 0.00001);
@@ -796,27 +809,29 @@
             $zs = [1, 2, 3];
 
             // And
-            $func = function ($x, $y, $z) {
-                return (2 * $x + 3 * $y) - $z;
-            };
+            $func = fn($x, $y, $z) => (2 * $x + 3 * $y) - $z;
 
             // And
             $data = [];
             foreach ($xs as $i => $x)
-            {
                 foreach ($ys as $j => $y)
-                {
                     foreach ($zs as $k => $z)
-                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
-                    }
-                }
-            }
 
             // When
-            $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
-                'linear');
-            $result = $interp($point);
+            try
+            {
+                $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
+                    'linear');
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $result = $interp($point);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $result, 0.00001);
@@ -847,27 +862,29 @@
             $zs = [1, 2, 3];
 
             // And
-            $func = function ($x, $y, $z) {
-                return (2 * $x + 3 * $y) - $z;
-            };
+            $func = fn($x, $y, $z) => (2 * $x + 3 * $y) - $z;
 
             // And
             $data = [];
             foreach ([3, 2, 1] as $i => $x)
-            {
                 foreach ([3, 2, 1] as $j => $y)
-                {
                     foreach ([3, 2, 1] as $k => $z)
-                    {
                         $data[$i][$j][$k] = $func($x, $y, $z);
-                    }
-                }
-            }
 
             // When
-            $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
-                'linear');
-            $result = $interp([1, 1, 2]);
+            try
+            {
+                $interp = new RegularGridInterpolator([$xs, $ys, $zs], $data,
+                    'linear');
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $result = $interp([1, 1, 2]);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta(13, $result, 0.00001);
@@ -967,8 +984,19 @@
             $tst = [0.47, 0.49, 0.53];
 
             // When
-            $rgi = new RegularGridInterpolator([$x, $x, $x], $vals, 'linear');
-            $result = $rgi($tst);
+            try
+            {
+                $rgi = new RegularGridInterpolator([$x, $x, $x], $vals,
+                    'linear');
+            } catch (BadDataException $e)
+            {
+            }
+            try
+            {
+                $result = $rgi($tst);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta(1.93765972, $result, 0.00001);

@@ -76,7 +76,7 @@
          *
          * @throws \Exception
          */
-        public function rand()
+        public function rand(): float|int
         {
             return $this->inverse(random_int(0, PHP_INT_MAX) / PHP_INT_MAX);
         }
@@ -92,13 +92,11 @@
          * @return int|float
          * @todo check the parameter ranges.
          */
-        public function inverse(float $target)
+        public function inverse(float $target): float|int
         {
             $initial = $this->mean();
             if (is_nan($initial))
-            {
                 $initial = $this->median();
-            }
 
             $tolerance = .0000000001;
             $dif = $tolerance + 1;
@@ -112,22 +110,18 @@
                 // Since the CDF is the integral of the PDF, the PDF is the derivative of the CDF
                 $slope = $this->pdf($guess);
                 $del_y = $target - $y;
-                $guess = ($del_y / $slope) + $guess;
+                $guess += $del_y / $slope;
 
                 // Handle edge case of guesses flipping between two or more small numbers
                 $guess_history["$guess"] = isset($guess_history["$guess"])
-                    ? ($guess_history["$guess"] + 1)
+                    ? $guess_history["$guess"] + 1
                     : 0;
                 if ($guess_history["$guess"] > self::GUESS_THRESHOLD)
                 {
-                    $array_filter = [];
-                    foreach ($guess_history as $key => $repeated_guess)
-                    {
-                        if ($repeated_guess > self::GUESS_ALLOWANCE)
-                        {
-                            $array_filter[$key] = $repeated_guess;
-                        }
-                    }
+                    $array_filter = array_filter($guess_history,
+                        function ($repeated_guess) {
+                            return $repeated_guess > self::GUESS_ALLOWANCE;
+                        });
                     $repeated_guesses = $array_filter;
 
                     return array_sum(array_keys($repeated_guesses))
@@ -143,5 +137,5 @@
         /**
          * @return int|float
          */
-        abstract public function median();
+        abstract public function median(): float|int;
     }

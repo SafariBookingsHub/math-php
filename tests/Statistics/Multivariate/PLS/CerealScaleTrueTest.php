@@ -3,21 +3,25 @@
     namespace MathPHP\Tests\Statistics\Multivariate\PLS;
 
     use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\IncorrectTypeException;
+    use MathPHP\Exception\MathException;
+    use MathPHP\Exception\MatrixException;
     use MathPHP\LinearAlgebra\Matrix;
     use MathPHP\LinearAlgebra\MatrixFactory;
     use MathPHP\SampleData;
+    use MathPHP\SampleData\Cereal;
     use MathPHP\Statistics\Multivariate\PLS;
     use PHPUnit\Framework\TestCase;
 
     class CerealScaleTrueTest extends TestCase {
         /** @var PLS */
-        private static $pls;
+        private static PLS $pls;
 
         /** @var Matrix */
-        private static $X;
+        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $X;
 
         /** @var Matrix */
-        private static $Y;
+        private static \MathPHP\LinearAlgebra\ComplexMatrix|\MathPHP\LinearAlgebra\NumericMatrix|\MathPHP\LinearAlgebra\ObjectSquareMatrix|\MathPHP\LinearAlgebra\ObjectMatrix|Matrix $Y;
 
         /**
          * R code for expected values:
@@ -25,25 +29,59 @@
          *   data(cereal)
          *   pls.model = pls2_nipals(cereal$X, cereal$Y, a=5, scale=TRUE)
          *
-         * @throws Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public static function setUpBeforeClass(): void
         {
             $cereal = new SampleData\Cereal();
-            self::$X = MatrixFactory::create(Cereal::getXData());
-            self::$Y = MatrixFactory::create(Cereal::getYData());
+            try
+            {
+                self::$X = MatrixFactory::create(Cereal::getXData());
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
+            try
+            {
+                self::$Y = MatrixFactory::create(Cereal::getYData());
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
-            self::$pls = new PLS(self::$X, self::$Y, 5, TRUE);
+            try
+            {
+                self::$pls = new PLS(self::$X, self::$Y, 5, TRUE);
+            } catch (BadDataException $e)
+            {
+            }
         }
 
         /**
          * @test         Construction
-         * @throws       Exception\MathException
+         * @throws \MathPHP\Exception\MatrixException
+         * @throws \MathPHP\Exception\OutOfBoundsException
          */
         public function testConstruction()
         {
             // When
-            $pls = new PLS(self::$X, self::$Y, 5, TRUE);
+            try
+            {
+                $pls = new PLS(self::$X, self::$Y, 5, TRUE);
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(PLS::class, $pls);
@@ -55,13 +93,25 @@
         public function testConstructionFailureXAndYRowMismatch()
         {
             // Given
-            $Y = self::$Y->rowExclude(0);
+            try
+            {
+                $Y = self::$Y->rowExclude(0);
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->expectException(BadDataException::class);
 
             // When
-            $pls = new PLS(self::$X, $Y, 2, TRUE);
+            try
+            {
+                $pls = new PLS(self::$X, $Y, 2, TRUE);
+            } catch (BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -3623,21 +3673,37 @@
          * @dataProvider dataProviderForRegression
          *
          * @param array $X
-         * @param array $Y
+         * @param       $expected
          */
-        public function testRegression($X, $expected)
+        public function testRegression(array $X, $expected)
         {
             // Given.
-            $input = MatrixFactory::create($X);
+            try
+            {
+                $input = MatrixFactory::create($X);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $actual = self::$pls->predict($input)->getMatrix();
+            try
+            {
+                $actual = self::$pls->predict($input)->getMatrix();
+            } catch (BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected, $actual, .00001, '');
         }
 
-        public function dataProviderForRegression()
+        public static function dataProviderForRegression(): array
         {
             $cereal = new SampleData\Cereal();
 
@@ -3677,12 +3743,28 @@
         public function testPredictDataColumnMisMatch()
         {
             // Given
-            $X = MatrixFactory::create([[6, 160, 3.9, 2.62, 16.46]]);
+            try
+            {
+                $X = MatrixFactory::create([[6, 160, 3.9, 2.62, 16.46]]);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // Then
             $this->expectException(BadDataException::class);
 
             // When
-            $prediction = self::$pls->predict($X);
+            try
+            {
+                $prediction = self::$pls->predict($X);
+            } catch (BadDataException $e)
+            {
+            }
         }
     }

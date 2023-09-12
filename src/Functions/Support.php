@@ -7,6 +7,7 @@
     use function abs;
     use function array_diff_key;
     use function explode;
+    use function print_r;
     use function substr;
 
     class Support {
@@ -39,10 +40,8 @@
             // All parameters should have limit bounds defined
             $undefined_limits = array_diff_key($params, $limits);
             if ( ! empty($undefined_limits))
-            {
                 throw new Exception\BadParameterException('Parameter without bounds limit defined: '
-                    .\print_r($undefined_limits, TRUE));
-            }
+                    .print_r($undefined_limits, TRUE));
 
             foreach ($params as $variable => $value)
             {
@@ -58,6 +57,7 @@
 
                 // If the lower limit is -∞, we are always in bounds.
                 if ($lower_limit != "-∞")
+                {
                     switch ($lower_endpoint)
                     {
                         case '(':
@@ -75,9 +75,11 @@
                         default:
                             throw new Exception\BadDataException("Unknown lower endpoint character: {$lower_limit}");
                     }
+                }
 
                 // If the upper limit is ∞, we are always in bounds.
                 if ($upper_limit != "∞")
+                {
                     switch ($upper_endpoint)
                     {
                         case ')':
@@ -95,6 +97,7 @@
                         default:
                             throw new Exception\BadDataException("Unknown upper endpoint character: {$upper_endpoint}");
                     }
+                }
             }
 
             return TRUE;
@@ -105,12 +108,13 @@
          * Due to floating-point arithmetic, zero might be represented as an infinitesimal quantity.
          *
          * @param float $x
+         * @param float $ε
          *
          * @return boolean true if equivalent to zero; false otherwise
          */
         public static function isZero(float $x, float $ε = self::ε): bool
         {
-            return (($x == 0) || (abs($x) <= $ε));
+            return $x == 0 || abs($x) <= $ε;
         }
 
         /**
@@ -118,12 +122,12 @@
          * Due to floating-point arithmetic, zero might be represented as an infinitesimal quantity.
          *
          * @param float $x
-         *
+         * @param float $ε
          * @return boolean true if equivalent to a non-zero value; false otherwise
          */
         public static function isNotZero(float $x, float $ε = self::ε): bool
         {
-            return (($x != 0) && (abs($x) > $ε));
+            return $x != 0 && abs($x) > $ε;
         }
 
         /**
@@ -131,7 +135,7 @@
          *
          * @param float $x
          * @param float $y
-         *
+         * @param float $ε
          * @return bool
          */
         public static function isEqual(
@@ -139,7 +143,7 @@
             float $y,
             float $ε = self::ε
         ): bool {
-            return ($x == $y) || (abs($x - $y) < $ε);
+            return $x == $y || abs($x - $y) < $ε;
         }
 
         /**
@@ -147,7 +151,7 @@
          *
          * @param float $x
          * @param float $y
-         *
+         * @param float $ε
          * @return bool
          */
         public static function isNotEqual(
@@ -155,6 +159,90 @@
             float $y,
             float $ε = self::ε
         ): bool {
-            return ($x != $y) && (abs($x - $y) >= $ε);
+            return $x != $y && abs($x - $y) >= $ε;
+        }
+
+        public function isNotEqualOutsideOfTolerance()
+        {
+        }
+
+        public function isNotEqualWithinTolerance()
+        {
+        }
+
+        public function isEqualOutsideOfTolerance()
+        {
+        }
+
+        public function isEqualWithinTolerance()
+        {
+        }
+
+        public function isNotEqualWhenEqual()
+        {
+        }
+
+        public function isEqualWhenNotEqual()
+        {
+        }
+
+        public function isNotZeroOutsideOfTolerance()
+        {
+        }
+
+        public function isNotZeroWithinTolerance()
+        {
+        }
+
+        public function isZeroOutsideOfTolerance()
+        {
+        }
+
+        public function isZeroWithinTolerance()
+        {
+        }
+
+        public function isNotZeroFalse()
+        {
+        }
+
+        public function isNotZeroTrue()
+        {
+        }
+
+        public function isZeroFalse()
+        {
+        }
+
+        public function isZeroTrue()
+        {
+        }
+
+        public function checkLimitsUndefinedParameterException()
+        {
+        }
+
+        public function checkLimitsUpperLimitEndpointException()
+        {
+        }
+
+        public function checkLimitsLowerLimitEndpointException()
+        {
+        }
+
+        public function checkLimitsUpperLimitException()
+        {
+        }
+
+        public function checkLimitsUpperLimit()
+        {
+        }
+
+        public function checkLimitsLowerLimitException()
+        {
+        }
+
+        public function checkLimitsLowerLimit()
+        {
         }
     }

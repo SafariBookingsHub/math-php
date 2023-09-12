@@ -3496,9 +3496,7 @@
         public static function getChiSquareValue(int $df, float $p): float
         {
             if (isset(self::CHI_SQUARED_SCORES[$df][sprintf('%1.3f', $p)]))
-            {
                 return self::CHI_SQUARED_SCORES[$df][sprintf('%1.3f', $p)];
-            }
 
             throw new Exception\BadDataException("No chi-squared value for degrees of freedom $df and p value "
                 .sprintf('%1.3f', $p));

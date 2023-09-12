@@ -280,9 +280,7 @@
             {
                 $x[$i] = $ref[$i][$m];
                 for ($j = $i + 1; $j < $m; $j++)
-                {
                     $x[$i] -= $ref[$i][$j] * $x[$j];
-                }
                 $x[$i] /= $ref[$i][$i];
             }
 
@@ -358,11 +356,35 @@
             ];
 
             // And
-            $A = MatrixFactory::create($data);
+            try
+            {
+                $A = MatrixFactory::create($data);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
             $b = [1.457, -1.457, -5.664, 0, 1620.7, -416.8];
 
             // When
-            $x = $A->solve($b, NumericMatrix::RREF);
+            try
+            {
+                $x = $A->solve($b, NumericMatrix::RREF);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then x has expected values
             $expected = [
@@ -376,10 +398,24 @@
             $this->assertEqualsWithDelta($expected, $x->getVector(), 0.001);
 
             // And when Ax
-            $Ax = $A->multiply($x);
+            try
+            {
+                $Ax = $A->multiply($x);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then Ax =  b
-            $this->assertEqualsWithDelta($b, $Ax->getColumn(0), 0.00001);
+            try
+            {
+                $this->assertEqualsWithDelta($b, $Ax->getColumn(0), 0.00001);
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -422,11 +458,35 @@
             ];
 
             // And
-            $A = MatrixFactory::create($data);
+            try
+            {
+                $A = MatrixFactory::create($data);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
             $b = [1.457, -1.457, -5.664, 0, 1620.7, -416.8];
 
             // When
-            $x = $A->solve($b);
+            try
+            {
+                $x = $A->solve($b);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             // Then x has expected values
             $expected = [
@@ -440,9 +500,23 @@
             $this->assertEqualsWithDelta($expected, $x->getVector(), 0.001);
 
             // And when Ax
-            $Ax = $A->multiply($x);
+            try
+            {
+                $Ax = $A->multiply($x);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then Ax =  b
-            $this->assertEqualsWithDelta($b, $Ax->getColumn(0), 0.00001);
+            try
+            {
+                $this->assertEqualsWithDelta($b, $Ax->getColumn(0), 0.00001);
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
     }

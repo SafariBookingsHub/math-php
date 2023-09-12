@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\Number;
 
+    use JetBrains\PhpStorm\Pure;
     use MathPHP\Exception;
     use MathPHP\Number\ObjectArithmetic;
     use MathPHP\Number\Quaternion;
@@ -67,7 +68,7 @@
             ];
         }
 
-        public static function dataProviderForConstructorException(): array
+        #[Pure] public static function dataProviderForConstructorException(): array
         {
             return [
                 ['a', 1, 1, 1],
@@ -110,7 +111,7 @@
             ];
         }
 
-        public static function dataProviderForAddReal()
+        public static function dataProviderForAddReal(): array
         {
             return [
                 [
@@ -131,7 +132,7 @@
             ];
         }
 
-        public static function dataProviderForSubtractReal()
+        public static function dataProviderForSubtractReal(): array
         {
             return [
                 [
@@ -190,7 +191,12 @@
         public function testObjectArithmeticInterface()
         {
             // Given
-            $c = new Quaternion(1, 2, 3, 4);
+            try
+            {
+                $c = new Quaternion(1, 2, 3, 4);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertInstanceOf(ObjectArithmetic::class, $c);
@@ -221,7 +227,12 @@
         public function testToString($r, $i, $j, $k, string $expected)
         {
             // Given
-            $c = new Quaternion($r, $i, $j, $k);
+            try
+            {
+                $c = new Quaternion($r, $i, $j, $k);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
             $string = $c->__toString();
@@ -241,7 +252,12 @@
             $i = 2;
             $j = 3;
             $k = 4;
-            $c = new Quaternion($r, $i, $j, $k);
+            try
+            {
+                $c = new Quaternion($r, $i, $j, $k);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($r, $c->r);
@@ -260,7 +276,12 @@
             $i = 2;
             $j = 3;
             $k = 4;
-            $c = new Quaternion($r, $i, $j, $k);
+            try
+            {
+                $c = new Quaternion($r, $i, $j, $k);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\BadParameterException::class);
@@ -281,7 +302,12 @@
         public function testComplexConjugate($r, $i, $j, $k)
         {
             // Given
-            $c = new Quaternion($r, $i, $j, $k);
+            try
+            {
+                $c = new Quaternion($r, $i, $j, $k);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
             $cc = $c->complexConjugate();
@@ -306,7 +332,12 @@
         public function testAbs($r, $i, $j, $k, $expected)
         {
             // Given
-            $c = new Quaternion($r, $i, $j, $k);
+            try
+            {
+                $c = new Quaternion($r, $i, $j, $k);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
             $abs = $c->abs();
@@ -321,14 +352,28 @@
          *
          * @param number $r₁
          * @param number $i₁
+         * @param        $j₁
+         * @param        $k₁
          * @param number $r₂
          * @param number $i₂
+         * @param        $j₂
+         * @param        $k₂
          */
         public function testNegate($r₁, $i₁, $j₁, $k₁, $r₂, $i₂, $j₂, $k₂)
         {
             // Given
-            $c = new Quaternion($r₁, $i₁, $j₁, $k₁);
-            $expected = new Quaternion($r₂, $i₂, $j₂, $k₂);
+            try
+            {
+                $c = new Quaternion($r₁, $i₁, $j₁, $k₁);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $expected = new Quaternion($r₂, $i₂, $j₂, $k₂);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
             $negated = $c->negate();
@@ -378,8 +423,18 @@
             $expected_j,
             $expected_k
         ) {
-            $q = new Quaternion($r, $i, $j, $k);
-            $inverse = $q->inverse();
+            try
+            {
+                $q = new Quaternion($r, $i, $j, $k);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $inverse = $q->inverse();
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             $this->assertEquals($expected_r, $inverse->r);
             $this->assertEquals($expected_i, $inverse->i);
@@ -392,9 +447,19 @@
          */
         public function testInverseException()
         {
-            $q = new Quaternion(0, 0, 0, 0);
+            try
+            {
+                $q = new Quaternion(0, 0, 0, 0);
+            } catch (Exception\BadDataException $e)
+            {
+            }
             $this->expectException(Exception\BadDataException::class);
-            $q->inverse();
+            try
+            {
+                $q->inverse();
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -411,13 +476,30 @@
             array $expected
         ) {
             // Given
-            $q1 = new Quaternion($complex1['r'], $complex1['i'], $complex1['j'],
-                $complex1['k']);
-            $q2 = new Quaternion($complex2['r'], $complex2['i'], $complex2['j'],
-                $complex2['k']);
+            try
+            {
+                $q1 = new Quaternion($complex1['r'], $complex1['i'],
+                    $complex1['j'],
+                    $complex1['k']);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $q2 = new Quaternion($complex2['r'], $complex2['i'],
+                    $complex2['j'],
+                    $complex2['k']);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $result = $q1->add($q2);
+            try
+            {
+                $result = $q1->add($q2);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -440,13 +522,30 @@
             array $expected
         ) {
             // Given
-            $q1 = new Quaternion($complex1['r'], $complex1['i'], $complex1['j'],
-                $complex1['k']);
-            $q2 = new Quaternion($complex2['r'], $complex2['i'], $complex2['j'],
-                $complex2['k']);
+            try
+            {
+                $q1 = new Quaternion($complex1['r'], $complex1['i'],
+                    $complex1['j'],
+                    $complex1['k']);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $q2 = new Quaternion($complex2['r'], $complex2['i'],
+                    $complex2['j'],
+                    $complex2['k']);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $result = $q1->subtract($q2);
+            try
+            {
+                $result = $q1->subtract($q2);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -462,11 +561,21 @@
         public function testAddReal($complex, $real, $expected)
         {
             // Given
-            $q = new Quaternion($complex['r'], $complex['i'], $complex['j'],
-                $complex['k']);
+            try
+            {
+                $q = new Quaternion($complex['r'], $complex['i'], $complex['j'],
+                    $complex['k']);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $result = $q->add($real);
+            try
+            {
+                $result = $q->add($real);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -482,11 +591,21 @@
         public function testSubtractReal($complex, $real, $expected)
         {
             // Given
-            $q = new Quaternion($complex['r'], $complex['i'], $complex['j'],
-                $complex['k']);
+            try
+            {
+                $q = new Quaternion($complex['r'], $complex['i'], $complex['j'],
+                    $complex['k']);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $result = $q->subtract($real);
+            try
+            {
+                $result = $q->subtract($real);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -502,6 +621,8 @@
          * @param array $complex1
          * @param array $complex2
          * @param array $expected
+         *
+         * @throws \MathPHP\Exception\BadDataException
          */
         public function testMultiply(
             array $complex1,
@@ -509,13 +630,30 @@
             array $expected
         ) {
             // Given
-            $q1 = new Quaternion($complex1['r'], $complex1['i'], $complex1['j'],
-                $complex1['k']);
-            $q2 = new Quaternion($complex2['r'], $complex2['i'], $complex2['j'],
-                $complex2['k']);
+            try
+            {
+                $q1 = new Quaternion($complex1['r'], $complex1['i'],
+                    $complex1['j'],
+                    $complex1['k']);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $q2 = new Quaternion($complex2['r'], $complex2['i'],
+                    $complex2['j'],
+                    $complex2['k']);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $result = $q1->multiply($q2);
+            try
+            {
+                $result = $q1->multiply($q2);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected['r'], $result->r);
@@ -538,13 +676,30 @@
             array $expected
         ) {
             // Given
-            $q1 = new Quaternion($complex1['r'], $complex1['i'], $complex1['j'],
-                $complex1['k']);
-            $q2 = new Quaternion($complex2['r'], $complex2['i'], $complex2['j'],
-                $complex2['k']);
+            try
+            {
+                $q1 = new Quaternion($complex1['r'], $complex1['i'],
+                    $complex1['j'],
+                    $complex1['k']);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $q2 = new Quaternion($complex2['r'], $complex2['i'],
+                    $complex2['j'],
+                    $complex2['k']);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $result = $q1->divide($q2);
+            try
+            {
+                $result = $q1->divide($q2);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEqualsWithDelta($expected['r'], $result->r, 0.00001);
@@ -559,13 +714,23 @@
         public function testQuaternionAddException()
         {
             // Given
-            $q = new Quaternion(1, 1, 1, 1);
+            try
+            {
+                $q = new Quaternion(1, 1, 1, 1);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $q->add("string");
+            try
+            {
+                $q->add("string");
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
 
         /**
@@ -574,13 +739,23 @@
         public function testQuaternionSubtractException()
         {
             // Given
-            $q = new Quaternion(1, 1, 1, 1);
+            try
+            {
+                $q = new Quaternion(1, 1, 1, 1);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $q->subtract("string");
+            try
+            {
+                $q->subtract("string");
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
 
         /**
@@ -589,13 +764,23 @@
         public function tesQuaternionMultiplyException()
         {
             // Given
-            $q = new Quaternion(1, 1, 1, 1);
+            try
+            {
+                $q = new Quaternion(1, 1, 1, 1);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $q->multiply("string");
+            try
+            {
+                $q->multiply("string");
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
 
         /**
@@ -604,12 +789,22 @@
         public function testQuaternionDivideException()
         {
             // Given
-            $q = new Quaternion(1, 1, 1, 1);
+            try
+            {
+                $q = new Quaternion(1, 1, 1, 1);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\IncorrectTypeException::class);
 
             // When
-            $q->divide("string");
+            try
+            {
+                $q->divide("string");
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
         }
     }

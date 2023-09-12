@@ -10,9 +10,6 @@
     use const M_SQRT1_2;
 
     class GivensMatrixTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderForTestGivensMatrix(): array
         {
             return [

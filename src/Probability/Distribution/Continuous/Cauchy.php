@@ -2,6 +2,9 @@
 
     namespace MathPHP\Probability\Distribution\Continuous;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\OutOfBoundsException;
     use MathPHP\Functions\Support;
 
     use function atan;
@@ -40,10 +43,10 @@
             ];
 
         /** @var int|float Location Parameter */
-        protected $x₀;
+        protected int|float $x₀;
 
         /** @var int|float Scale Parameter */
-        protected $γ;
+        protected int|float $γ;
 
         /**
          * Constructor
@@ -81,13 +84,22 @@
          */
         public function pdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $x₀ = $this->x₀;
             $γ = $this->γ;
             $π = M_PI;
 
-            return 1 / ($π * $γ * (1 + ((($x - $x₀) / $γ) ** 2)));
+            return 1 / ($π * $γ * (1 + (($x - $x₀) / $γ) ** 2));
         }
 
         /**
@@ -100,13 +112,22 @@
          */
         public function cdf(float $x): float
         {
-            Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            try
+            {
+                Support::checkLimits(self::SUPPORT_LIMITS, ['x' => $x]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $x₀ = $this->x₀;
             $γ = $this->γ;
             $π = M_PI;
 
-            return (1 / $π * atan(($x - $x₀) / $γ)) + .5;
+            return (1 / $π) * atan(($x - $x₀) / $γ) + .5;
         }
 
         /**
@@ -120,14 +141,23 @@
          */
         public function inverse(float $p): float
         {
-            Support::checkLimits(['p' => '[0,1]'], ['p' => $p]);
+            try
+            {
+                Support::checkLimits(['p' => '[0,1]'], ['p' => $p]);
+            } catch (BadDataException $e)
+            {
+            } catch (BadParameterException $e)
+            {
+            } catch (OutOfBoundsException $e)
+            {
+            }
 
             $x₀ = $this->x₀;
             $γ = $this->γ;
 
             $π = M_PI;
 
-            return $x₀ + ($γ * tan($π * ($p - .5)));
+            return $x₀ + $γ * tan($π * ($p - .5));
         }
 
         /**
@@ -160,5 +190,13 @@
         public function mode(): float
         {
             return $this->x₀;
+        }
+
+        public function rand()
+        {
+        }
+
+        public function inverseOfCdf()
+        {
         }
     }

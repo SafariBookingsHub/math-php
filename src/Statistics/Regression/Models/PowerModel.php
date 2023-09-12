@@ -2,14 +2,16 @@
 
     namespace MathPHP\Statistics\Regression\Models;
 
+    use JetBrains\PhpStorm\ArrayShape;
+
     use function sprintf;
 
     trait PowerModel {
         /** @var int b parameter index */
-        protected static $B = 1;
+        protected static int $B = 1;
 
         /** @var int a parameter index */
-        protected static $A = 0;
+        protected static int $A = 0;
 
         /**
          * Evaluate the power curve equation from power law regression parameters for a value of x
@@ -38,7 +40,7 @@
          *     b: float,
          * }
          */
-        public function getModelParameters(array $params): array
+        #[ArrayShape(['a' => "float", 'b' => "float"])] public function getModelParameters(array $params): array
         {
             return [
                 'a' => $params[self::$A],

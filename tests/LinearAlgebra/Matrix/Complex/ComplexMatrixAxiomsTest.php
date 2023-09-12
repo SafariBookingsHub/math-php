@@ -2,6 +2,11 @@
 
     namespace MathPHP\Tests\LinearAlgebra\Matrix\Complex;
 
+    use MathPHP\Exception\BadDataException;
+    use MathPHP\Exception\BadParameterException;
+    use MathPHP\Exception\IncorrectTypeException;
+    use MathPHP\Exception\MathException;
+    use MathPHP\Exception\MatrixException;
     use MathPHP\LinearAlgebra\ComplexMatrix;
     use MathPHP\Number\Complex;
     use MathPHP\Tests\LinearAlgebra\Fixture\MatrixDataProvider;
@@ -26,18 +31,47 @@
         public function testConjugateTransposeAddition()
         {
             // Given
-            $A = new ComplexMatrix([
-                [new Complex(1, 0), new Complex(-2, -1)],
-                [new Complex(1, 1), new Complex(0, 1)],
-            ]);
-            $B = new ComplexMatrix([
-                [new Complex(2, 2), new Complex(2, -1)],
-                [new Complex(1, 4), new Complex(3, -2)],
-            ]);
+            try
+            {
+                $A = new ComplexMatrix([
+                    [new Complex(1, 0), new Complex(-2, -1)],
+                    [new Complex(1, 1), new Complex(0, 1)],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
+            try
+            {
+                $B = new ComplexMatrix([
+                    [new Complex(2, 2), new Complex(2, -1)],
+                    [new Complex(1, 4), new Complex(3, -2)],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $Aᴴ ＋ Bᴴ = $A->conjugateTranspose()->add($B->conjugateTranspose());
-            $⟮A ＋ B⟯ᴴ = $A->add($B)->conjugateTranspose();
+            try
+            {
+                $Aᴴ ＋ Bᴴ = $A->conjugateTranspose()
+                    ->add($B->conjugateTranspose());
+            } catch (IncorrectTypeException $e)
+            {
+            }
+            try
+            {
+                $⟮A ＋ B⟯ᴴ = $A->add($B)->conjugateTranspose();
+            } catch (IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($⟮A ＋ B⟯ᴴ->getMatrix(), $Aᴴ ＋ Bᴴ->getMatrix());
@@ -50,16 +84,39 @@
         public function testConjugateTransposeScalarMultiplication()
         {
             // Given
-            $A = new ComplexMatrix([
-                [new Complex(1, 0), new Complex(-2, -1)],
-                [new Complex(1, 1), new Complex(0, 1)],
-            ]);
+            try
+            {
+                $A = new ComplexMatrix([
+                    [new Complex(1, 0), new Complex(-2, -1)],
+                    [new Complex(1, 1), new Complex(0, 1)],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
             $z = new Complex(3, -2);
 
             // When
-            $⟮zA⟯ᴴ = $A->scalarMultiply($z)->conjugateTranspose();
-            $z‾Aᴴ = $A->conjugateTranspose()
-                ->scalarMultiply($z->complexConjugate());
+            try
+            {
+                $⟮zA⟯ᴴ = $A->scalarMultiply($z)->conjugateTranspose();
+            } catch (BadParameterException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            }
+            try
+            {
+                $z‾Aᴴ = $A->conjugateTranspose()
+                    ->scalarMultiply($z->complexConjugate());
+            } catch (BadParameterException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($⟮zA⟯ᴴ->getMatrix(), $z‾Aᴴ->getMatrix());
@@ -71,19 +128,51 @@
         public function testConjugateTransposeMultiplication()
         {
             // Given
-            $A = new ComplexMatrix([
-                [new Complex(1, 0), new Complex(-2, -1)],
-                [new Complex(1, 1), new Complex(0, 1)],
-            ]);
-            $B = new ComplexMatrix([
-                [new Complex(2, 2), new Complex(2, -1)],
-                [new Complex(1, 4), new Complex(3, -2)],
-            ]);
+            try
+            {
+                $A = new ComplexMatrix([
+                    [new Complex(1, 0), new Complex(-2, -1)],
+                    [new Complex(1, 1), new Complex(0, 1)],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
+            try
+            {
+                $B = new ComplexMatrix([
+                    [new Complex(2, 2), new Complex(2, -1)],
+                    [new Complex(1, 4), new Complex(3, -2)],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $⟮AB⟯ᴴ = $A->multiply($B)->conjugateTranspose();
-            $BᴴAᴴ = $B->conjugateTranspose()
-                ->multiply($A->conjugateTranspose());
+            try
+            {
+                $⟮AB⟯ᴴ = $A->multiply($B)->conjugateTranspose();
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
+            try
+            {
+                $BᴴAᴴ = $B->conjugateTranspose()
+                    ->multiply($A->conjugateTranspose());
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($⟮AB⟯ᴴ->getMatrix(), $BᴴAᴴ->getMatrix());
@@ -97,10 +186,19 @@
         )
         {
             // Given
-            $A = new ComplexMatrix([
-                [new Complex(1, 0), new Complex(-2, -1)],
-                [new Complex(1, 1), new Complex(0, 1)],
-            ]);
+            try
+            {
+                $A = new ComplexMatrix([
+                    [new Complex(1, 0), new Complex(-2, -1)],
+                    [new Complex(1, 1), new Complex(0, 1)],
+                ]);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
             $⟮Aᴴ⟯ᴴ = $A->conjugateTranspose()->conjugateTranspose();
@@ -119,11 +217,30 @@
         public function testConjugateTransposeDeterminant(array $A)
         {
             // Given
-            $A = new ComplexMatrix($A);
+            try
+            {
+                $A = new ComplexMatrix($A);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $det⟮Aᴴ⟯ = $A->conjugateTranspose()->det();
-            $‾det⟮A⟯‾ = $A->det()->complexConjugate();
+            try
+            {
+                $det⟮Aᴴ⟯ = $A->conjugateTranspose()->det();
+            } catch (MatrixException $e)
+            {
+            }
+            try
+            {
+                $‾det⟮A⟯‾ = $A->det()->complexConjugate();
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($‾det⟮A⟯‾, $det⟮Aᴴ⟯);
@@ -139,11 +256,30 @@
         public function testConjugateTransposeTrace(array $A)
         {
             // Given
-            $A = new ComplexMatrix($A);
+            try
+            {
+                $A = new ComplexMatrix($A);
+            } catch (BadDataException $e)
+            {
+            } catch (IncorrectTypeException $e)
+            {
+            } catch (MathException $e)
+            {
+            }
 
             // When
-            $tr⟮Aᴴ⟯ = $A->conjugateTranspose()->trace();
-            $‾tr⟮A⟯‾ = $A->trace()->complexConjugate();
+            try
+            {
+                $tr⟮Aᴴ⟯ = $A->conjugateTranspose()->trace();
+            } catch (MatrixException $e)
+            {
+            }
+            try
+            {
+                $‾tr⟮A⟯‾ = $A->trace()->complexConjugate();
+            } catch (MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($‾tr⟮A⟯‾, $tr⟮Aᴴ⟯);

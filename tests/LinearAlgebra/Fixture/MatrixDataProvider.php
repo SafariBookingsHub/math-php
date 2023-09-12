@@ -3,6 +3,7 @@
     namespace MathPHP\Tests\LinearAlgebra\Fixture;
 
     use Generator;
+    use JetBrains\PhpStorm\Pure;
     use MathPHP\Expression\Polynomial;
     use MathPHP\Number\Complex;
 
@@ -2691,9 +2692,7 @@
         public function dataProviderForNotRrefMatrix(): Generator
         {
             foreach ($this->dataProviderForRefMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
 
             foreach (
                 [
@@ -2781,9 +2780,7 @@
                     ],
                 ] as $matrix
             )
-            {
                 yield $matrix;
-            }
         }
 
         /**
@@ -5440,8 +5437,8 @@
                 ],
                 [
                     [
-                        [1 / sqrt(2), 1 / sqrt(2)],
-                        [1 / sqrt(2), -1 / sqrt(2)],
+                        [1 / sqrt(num: 2), 1 / sqrt(num: 2)],
+                        [1 / sqrt(num: 2), -1 / sqrt(num: 2)],
                     ],
                 ],
                 [
@@ -5510,85 +5507,47 @@
         public function dataProviderForSingleMatrix(): Generator
         {
             foreach ($this->dataProviderForSquareMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForNotSquareMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForSymmetricMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForNonsingularMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForPositiveDefiniteMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach (
                 $this->dataProviderForPositiveSemidefiniteMatrix() as $matrix
             )
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForNegativeDefiniteMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach (
                 $this->dataProviderForNegativeSemidefiniteMatrix() as $matrix
             )
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForUpperTriangularMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForLowerTriangularMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForDiagonalMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForRefMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForRrefMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForInvolutoryMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForUpperBidiagonalMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForLowerBidiagonalMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForBidiagonalMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForIdentityMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForMatrixWithWeirdNumbers() as $matrix)
-            {
                 yield $matrix;
-            }
         }
 
         /**************************************************************************
@@ -7436,13 +7395,9 @@
         public function dataProviderForBidiagonalMatrix(): Generator
         {
             foreach ($this->dataProviderForUpperBidiagonalMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
             foreach ($this->dataProviderForLowerBidiagonalMatrix() as $matrix)
-            {
                 yield $matrix;
-            }
         }
 
         public function dataProviderForIdentityMatrix(): array
@@ -7542,10 +7497,10 @@
                 ],
                 [
                     [
-                        [cos(1), cos(0), cos(1.4)],
-                        [sin(1), sin(0), sin(1.4)],
-                        [tan(1), tan(0), tan(1.4)],
-                        [sin(M_PI), cos(M_PI), tan(M_PI)],
+                        [cos(num: 1), cos(num: 0), cos(num: 1.4)],
+                        [sin(num: 1), sin(num: 0), sin(num: 1.4)],
+                        [tan(num: 1), tan(num: 0), tan(num: 1.4)],
+                        [sin(num: M_PI), cos(num: M_PI), tan(num: M_PI)],
                     ],
                 ],
                 [
@@ -7569,18 +7524,18 @@
             return [
                 [
                     [
-                        [new Polynomial([1, 0])],
+                        [new Polynomial(coefficients: [1, 0])],
                     ],
                 ],
                 [
                     [
-                        [new Polynomial([1, 0]), new Polynomial([1, 0])],
+                        [new Polynomial(coefficients: [1, 0]), new Polynomial(coefficients: [1, 0])],
                     ],
                 ],
                 [
                     [
-                        [new Polynomial([1, 0]), new Polynomial([0, 0])],
-                        [new Polynomial([0, 0]), new Polynomial([1, 0])],
+                        [new Polynomial(coefficients: [1, 0]), new Polynomial(coefficients: [0, 0])],
+                        [new Polynomial(coefficients: [0, 0]), new Polynomial(coefficients: [1, 0])],
                     ],
                 ],
             ];
@@ -7591,131 +7546,131 @@
             return [
                 [
                     [
-                        [new Polynomial([1, 0])],
+                        [new Polynomial(coefficients: [1, 0])],
                     ],
                 ],
                 [
                     [
-                        [new Polynomial([1, 0]), new Polynomial([0, 0])],
-                        [new Polynomial([0, 0]), new Polynomial([1, 0])],
-                    ],
-                ],
-                [
-                    [
-                        [
-                            new Polynomial([1, 0]),
-                            new Polynomial([0, 0]),
-                            new Polynomial([1, 1]),
-                        ],
-                        [
-                            new Polynomial([0, 0]),
-                            new Polynomial([1, 0]),
-                            new Polynomial([1, 1]),
-                        ],
-                        [
-                            new Polynomial([0, 0]),
-                            new Polynomial([1, 0]),
-                            new Polynomial([1, 1]),
-                        ],
-                    ],
-                ],
-            ];
-        }
-
-        public function dataProviderForComplexObjectMatrix(): array
-        {
-            return [
-                [
-                    [
-                        [new Complex(1, 1)],
-                    ],
-                ],
-                [
-                    [
-                        [new Complex(1, 0), new Complex(0, 0)],
-                        [new Complex(1, 1), new Complex(2, -3)],
+                        [new Polynomial(coefficients: [1, 0]), new Polynomial(coefficients: [0, 0])],
+                        [new Polynomial(coefficients: [0, 0]), new Polynomial(coefficients: [1, 0])],
                     ],
                 ],
                 [
                     [
                         [
-                            new Complex(1, 0),
-                            new Complex(0, 0),
-                            new Complex(1, 1),
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [0, 0]),
+                            new Polynomial(coefficients: [1, 1]),
                         ],
                         [
-                            new Complex(0, 0),
-                            new Complex(1, 0),
-                            new Complex(1, 1),
+                            new Polynomial(coefficients: [0, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 1]),
                         ],
                         [
-                            new Complex(0, 0),
-                            new Complex(1, 0),
-                            new Complex(1, 1),
+                            new Polynomial(coefficients: [0, 0]),
+                            new Polynomial(coefficients: [1, 0]),
+                            new Polynomial(coefficients: [1, 1]),
                         ],
                     ],
                 ],
             ];
         }
 
-        public function dataProviderForComplexSquareObjectMatrix(): array
+        #[Pure] public function dataProviderForComplexObjectMatrix(): array
         {
             return [
                 [
                     [
-                        [new Complex(1, 1)],
+                        [new Complex(r: 1, i: 1)],
                     ],
                 ],
                 [
                     [
-                        [new Complex(1, 0), new Complex(0, 0)],
-                        [new Complex(1, 1), new Complex(2, -3)],
-                    ],
-                ],
-                [
-                    [
-                        [
-                            new Complex(1, 0),
-                            new Complex(0, 0),
-                            new Complex(1, 1),
-                        ],
-                        [
-                            new Complex(0, 0),
-                            new Complex(1, 0),
-                            new Complex(1, 1),
-                        ],
-                        [
-                            new Complex(0, 0),
-                            new Complex(1, 0),
-                            new Complex(1, 1),
-                        ],
+                        [new Complex(r: 1, i: 0), new Complex(r: 0, i: 0)],
+                        [new Complex(r: 1, i: 1), new Complex(r: 2, i: -3)],
                     ],
                 ],
                 [
                     [
                         [
-                            new Complex(1, 0),
-                            new Complex(0, 0),
-                            new Complex(1, 1),
-                            new Complex(-3, 2),
+                            new Complex(r: 1, i: 0),
+                            new Complex(r: 0, i: 0),
+                            new Complex(r: 1, i: 1),
                         ],
                         [
-                            new Complex(0, 3),
-                            new Complex(1, 0),
-                            new Complex(4, 5),
-                            new Complex(7, -2),
+                            new Complex(r: 0, i: 0),
+                            new Complex(r: 1, i: 0),
+                            new Complex(r: 1, i: 1),
                         ],
                         [
-                            new Complex(3, 0),
-                            new Complex(1, 0),
-                            new Complex(1, -6),
-                            new Complex(4, -8),
+                            new Complex(r: 0, i: 0),
+                            new Complex(r: 1, i: 0),
+                            new Complex(r: 1, i: 1),
+                        ],
+                    ],
+                ],
+            ];
+        }
+
+        #[Pure] public function dataProviderForComplexSquareObjectMatrix(): array
+        {
+            return [
+                [
+                    [
+                        [new Complex(r: 1, i: 1)],
+                    ],
+                ],
+                [
+                    [
+                        [new Complex(r: 1, i: 0), new Complex(r: 0, i: 0)],
+                        [new Complex(r: 1, i: 1), new Complex(r: 2, i: -3)],
+                    ],
+                ],
+                [
+                    [
+                        [
+                            new Complex(r: 1, i: 0),
+                            new Complex(r: 0, i: 0),
+                            new Complex(r: 1, i: 1),
                         ],
                         [
-                            new Complex(5, -1),
-                            new Complex(4, 4),
-                            new Complex(2, 1),
-                            new Complex(-3, 2),
+                            new Complex(r: 0, i: 0),
+                            new Complex(r: 1, i: 0),
+                            new Complex(r: 1, i: 1),
+                        ],
+                        [
+                            new Complex(r: 0, i: 0),
+                            new Complex(r: 1, i: 0),
+                            new Complex(r: 1, i: 1),
+                        ],
+                    ],
+                ],
+                [
+                    [
+                        [
+                            new Complex(r: 1, i: 0),
+                            new Complex(r: 0, i: 0),
+                            new Complex(r: 1, i: 1),
+                            new Complex(r: -3, i: 2),
+                        ],
+                        [
+                            new Complex(r: 0, i: 3),
+                            new Complex(r: 1, i: 0),
+                            new Complex(r: 4, i: 5),
+                            new Complex(r: 7, i: -2),
+                        ],
+                        [
+                            new Complex(r: 3, i: 0),
+                            new Complex(r: 1, i: 0),
+                            new Complex(r: 1, i: -6),
+                            new Complex(r: 4, i: -8),
+                        ],
+                        [
+                            new Complex(r: 5, i: -1),
+                            new Complex(r: 4, i: 4),
+                            new Complex(r: 2, i: 1),
+                            new Complex(r: -3, i: 2),
                         ],
                     ],
                 ],

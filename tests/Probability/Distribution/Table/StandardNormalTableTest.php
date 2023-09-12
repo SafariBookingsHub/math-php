@@ -83,7 +83,7 @@
          *
          * @throws       \Exception
          */
-        public function testGetZScoreForConfidenceInterval($cl, float $Z)
+        public function testGetZScoreForConfidenceInterval(mixed $cl, float $Z)
         {
             // When
             $score = StandardNormal::getZScoreForConfidenceInterval($cl);

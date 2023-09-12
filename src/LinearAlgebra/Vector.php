@@ -5,6 +5,7 @@
     use ArrayAccess;
     use Countable;
     use Iterator;
+    use JetBrains\PhpStorm\Pure;
     use JsonSerializable;
     use MathPHP\Exception;
     use MathPHP\Functions\Map;
@@ -30,13 +31,13 @@
     class Vector
         implements Countable, Iterator, ArrayAccess, JsonSerializable {
         /** @var int Number of elements */
-        private $n;
+        private int $n;
 
         /** @var array<int|float> of numbers */
-        private $A;
+        private array $A;
 
         /** @var int Iterator position */
-        private $i;
+        private int $i;
 
         /**
          * Constructor
@@ -52,9 +53,7 @@
             $this->i = 0;
 
             if ($this->n === 0)
-            {
                 throw new Exception\BadDataException('Vector cannot be empty');
-            }
         }
 
         /**************************************************************************
@@ -75,12 +74,10 @@
          *
          * @throws Exception\VectorException
          */
-        public function get(int $i)
+        public function get(int $i): float|int
         {
             if ($i >= $this->n)
-            {
                 throw new Exception\VectorException("Element $i does not exist");
-            }
 
             return $this->A[$i];
         }
@@ -90,7 +87,7 @@
          *
          * @return float|int
          */
-        public function sum()
+        public function sum(): float|int
         {
             return array_sum($this->A);
         }
@@ -99,9 +96,9 @@
          * Vector length (magnitude)
          * Same as l2-norm
          *
-         * @return int|float
+         * @return float
          */
-        public function length()
+        public function length(): float|int
         {
             return $this->l2Norm();
         }
@@ -118,7 +115,7 @@
          *
          * @return float
          */
-        public function l2Norm()
+        #[Pure] public function l2Norm(): float
         {
             return sqrt(array_sum(Map\Single::square($this->A)));
         }
@@ -130,7 +127,7 @@
          *
          * Note: Remove false from return value after PHP 8.0
          */
-        public function max()
+        public function max(): float|bool|int
         {
             return max($this->A);
         }
@@ -156,7 +153,7 @@
          *
          * Note: Remove false from return value after PHP 8.0
          */
-        public function min()
+        public function min(): float|bool|int
         {
             return min($this->A);
         }
@@ -168,9 +165,14 @@
          *
          * @return float|int
          */
-        public function innerProduct(Vector $B)
+        public function innerProduct(Vector $B): float|int
         {
-            return $this->dotProduct($B);
+            try
+            {
+                return $this->dotProduct($B);
+            } catch (Exception\VectorException $e)
+            {
+            }
         }
 
         /**
@@ -183,17 +185,13 @@
          *
          * @throws Exception\VectorException
          */
-        public function dotProduct(Vector $B)
+        public function dotProduct(Vector $B): float|int
         {
             if ($B->getN() !== $this->n)
-            {
                 throw new Exception\VectorException('Vectors have different number of items');
-            }
 
             return array_sum(array_map(
-                function ($a, $b) {
-                    return $a * $b;
-                },
+                fn($a, $b) => $a * $b,
                 $this->A,
                 $B->getVector()
             ));
@@ -234,7 +232,7 @@
          * @throws Exception\BadDataException
          * @throws Exception\VectorException
          */
-        public function angleBetween(Vector $B, bool $inDegrees = FALSE)
+        public function angleBetween(Vector $B, bool $inDegrees = FALSE): float
         {
             $cos⟮α⟯ = Distance::cosineSimilarity($this->getVector(),
                 $B->getVector());
@@ -312,9 +310,7 @@
         public function add(Vector $B): Vector
         {
             if ($B->getN() !== $this->n)
-            {
                 throw new Exception\VectorException('Vectors must be the same length for addition');
-            }
 
             $R = Map\Multi::add($this->A, $B->getVector());
 
@@ -332,18 +328,26 @@
          *
          * @return Vector
          *
-         * @throws Exception\VectorException
+         * @throws \MathPHP\Exception\VectorException
          */
         public function subtract(Vector $B): Vector
         {
             if ($B->getN() !== $this->n)
-            {
                 throw new Exception\VectorException('Vectors must be the same length for subtraction');
+
+            try
+            {
+                $R = Map\Multi::subtract($this->A, $B->getVector());
+            } catch (Exception\BadDataException $e)
+            {
             }
 
-            $R = Map\Multi::subtract($this->A, $B->getVector());
-
-            return new Vector($R);
+            try
+            {
+                return new Vector($R);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**************************************************************************
@@ -371,15 +375,22 @@
             $R = [];
 
             for ($i = 0; $i < $m; $i++)
-            {
                 for ($j = 0; $j < $n; $j++)
-                {
                     $R[$i][$j] = $this->A[$i] * $B[$j];
-                }
-            }
 
             /** @var NumericMatrix */
-            return MatrixFactory::create($R);
+            try
+            {
+                return MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
         }
 
         /**
@@ -396,13 +407,30 @@
          * @param Vector $B
          *
          * @return NumericMatrix
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException
          */
         public function directProduct(Vector $B): NumericMatrix
         {
-            $A = $this->asColumnMatrix();
-            $Bᵀ = $B->asRowMatrix();
+            try
+            {
+                $A = $this->asColumnMatrix();
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $Bᵀ = $B->asRowMatrix();
+            } catch (Exception\MathException $e)
+            {
+            }
 
-            return $A->kroneckerProduct($Bᵀ);
+            try
+            {
+                return $A->kroneckerProduct($Bᵀ);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -421,11 +449,9 @@
          */
         public function asColumnMatrix(): NumericMatrix
         {
-            $array_map = [];
-            foreach ($this->A as $key => $element)
-            {
-                $array_map[$key] = [$element];
-            }
+            $array_map = array_map(function ($element) {
+                return [$element];
+            }, $this->A);
             $matrix = $array_map;
 
             return new NumericMatrix($matrix);
@@ -461,15 +487,39 @@
          * @param Vector $B
          *
          * @return Vector
+         * @throws \MathPHP\Exception\IncorrectTypeException
+         * @throws \MathPHP\Exception\MatrixException
          */
         public function kroneckerProduct(Vector $B): Vector
         {
-            $A = $this->asColumnMatrix();
-            $B = $B->asColumnMatrix();
+            try
+            {
+                $A = $this->asColumnMatrix();
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = $B->asColumnMatrix();
+            } catch (Exception\MathException $e)
+            {
+            }
 
-            $A⨂B = $A->kroneckerProduct($B);
+            try
+            {
+                $A⨂B = $A->kroneckerProduct($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
-            return new Vector($A⨂B->getColumn(0));
+            try
+            {
+                return new Vector($A⨂B->getColumn(0));
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
         }
 
         /**
@@ -486,20 +536,23 @@
          *
          * @return Vector
          *
-         * @throws Exception\VectorException
+         * @throws \MathPHP\Exception\VectorException
          */
         public function crossProduct(Vector $B): Vector
         {
-            if (($B->getN() !== 3) || ($this->n !== 3))
-            {
+            if ($B->getN() !== 3 || $this->n !== 3)
                 throw new Exception\VectorException('Vectors must have 3 items');
+
+            $s1 = $this->A[1] * $B[2] - $this->A[2] * $B[1];
+            $s2 = -($this->A[0] * $B[2] - $this->A[2] * $B[0]);
+            $s3 = $this->A[0] * $B[1] - $this->A[1] * $B[0];
+
+            try
+            {
+                return new Vector([$s1, $s2, $s3]);
+            } catch (Exception\BadDataException $e)
+            {
             }
-
-            $s1 = ($this->A[1] * $B[2]) - ($this->A[2] * $B[1]);
-            $s2 = -(($this->A[0] * $B[2]) - ($this->A[2] * $B[0]));
-            $s3 = ($this->A[0] * $B[1]) - ($this->A[1] * $B[0]);
-
-            return new Vector([$s1, $s2, $s3]);
         }
 
         /**************************************************************************
@@ -538,13 +591,18 @@
          * Scalar divide
          * kA = [k / a₁, k / a₂, k / a₃ ...]
          *
-         * @param int|float $k Scale factor
+         * @param float|int $k Scale factor
          *
          * @return Vector
          */
-        public function scalarDivide($k): Vector
+        public function scalarDivide(float|int $k): Vector
         {
-            return new Vector(Map\Single::divide($this->A, $k));
+            try
+            {
+                return new Vector(Map\Single::divide($this->A, $k));
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -564,9 +622,7 @@
         public function divide(Vector $B): Vector
         {
             if ($B->getN() !== $this->n)
-            {
                 throw new Exception\VectorException('Vectors must be the same length for division');
-            }
 
             $R = Map\Multi::divide($this->A, $B->getVector());
 
@@ -587,7 +643,12 @@
          */
         public function projection(Vector $B): Vector
         {
-            $A⋅B = $this->dotProduct($B);
+            try
+            {
+                $A⋅B = $this->dotProduct($B);
+            } catch (Exception\VectorException $e)
+            {
+            }
             $│B│² = ($B->l2Norm()) ** 2;
 
             return $B->scalarMultiply($A⋅B / $│B│²);
@@ -597,13 +658,18 @@
          * Scalar multiplication (scale)
          * kA = [k * a₁, k * a₂, k * a₃ ...]
          *
-         * @param int|float $k Scale factor
+         * @param float|int $k Scale factor
          *
          * @return Vector
          */
-        public function scalarMultiply($k): Vector
+        public function scalarMultiply(float|int $k): Vector
         {
-            return new Vector(Map\Single::multiply($this->A, $k));
+            try
+            {
+                return new Vector(Map\Single::multiply($this->A, $k));
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -623,9 +689,7 @@
         public function multiply(Vector $B): Vector
         {
             if ($B->getN() !== $this->n)
-            {
                 throw new Exception\VectorException('Vectors must be the same length for multiplication');
-            }
 
             $R = Map\Multi::multiply($this->A, $B->getVector());
 
@@ -646,9 +710,19 @@
          */
         public function perp(Vector $B): Vector
         {
-            $A⋅B⊥ = $B->perpDotProduct($this);
+            try
+            {
+                $A⋅B⊥ = $B->perpDotProduct($this);
+            } catch (Exception\VectorException $e)
+            {
+            }
             $│B│² = ($B->l2Norm()) ** 2;
-            $B⊥ = $B->perpendicular();
+            try
+            {
+                $B⊥ = $B->perpendicular();
+            } catch (Exception\VectorException $e)
+            {
+            }
 
             return $B⊥->scalarMultiply($A⋅B⊥ / $│B│²);
         }
@@ -665,12 +739,10 @@
          *
          * @throws Exception\VectorException
          */
-        public function perpDotProduct(Vector $B)
+        public function perpDotProduct(Vector $B): float|int
         {
-            if (($this->n !== 2) || ($B->getN() !== 2))
-            {
+            if ($this->n !== 2 || $B->getN() !== 2)
                 throw new Exception\VectorException('Cannot do perp dot product unless both vectors are two-dimensional');
-            }
 
             $A⊥ = $this->perpendicular();
 
@@ -695,18 +767,21 @@
          *
          * @return Vector
          *
-         * @throws Exception\VectorException
+         * @throws \MathPHP\Exception\VectorException
          */
         public function perpendicular(): Vector
         {
             if ($this->n !== 2)
-            {
                 throw new Exception\VectorException('Perpendicular operation only makes sense for 2D vector. 3D and higher vectors have infinite perpendular vectors.');
-            }
 
             $A⊥ = [-$this->A[1], $this->A[0]];
 
-            return new Vector($A⊥);
+            try
+            {
+                return new Vector($A⊥);
+            } catch (Exception\BadDataException $e)
+            {
+            }
         }
 
         /**
@@ -719,7 +794,7 @@
          *
          * @return float|int
          */
-        public function l1Norm()
+        #[Pure] public function l1Norm(): float|int
         {
             return array_sum(Map\Single::abs($this->A));
         }
@@ -732,11 +807,11 @@
          *
          * |x|p = (∑|xᵢ|ᵖ)¹/ᵖ
          *
-         * @param int|float $p
+         * @param float|int $p
          *
          * @return int|float
          */
-        public function pNorm($p)
+        #[Pure] public function pNorm(float|int $p): float|int
         {
             return array_sum(Map\Single::pow(Map\Single::abs($this->A), $p))
                 ** (1 / $p);
@@ -751,7 +826,7 @@
          *
          * Note: Remove false from return value after PHP 8.0
          */
-        public function maxNorm()
+        #[Pure] public function maxNorm(): float|bool|int
         {
             return max(Map\Single::abs($this->A));
         }
@@ -777,9 +852,6 @@
          * Countable INTERFACE
          **************************************************************************/
 
-        /**
-         * @return int
-         */
         public function count(): int
         {
             return count($this->A);
@@ -794,7 +866,7 @@
          *
          * @return bool
          */
-        public function offsetExists($i): bool
+        public function offsetExists(mixed $i): bool
         {
             return isset($this->A[$i]);
         }
@@ -805,7 +877,7 @@
          * @return int|float
          */
         #[ReturnTypeWillChange]
-        public function offsetGet($i)
+        public function offsetGet(mixed $i): float|int
         {
             return $this->A[$i];
         }
@@ -856,7 +928,7 @@
          * @return int|float
          */
         #[ReturnTypeWillChange]
-        public function current()
+        public function current(): float|int
         {
             return $this->A[$this->i];
         }
@@ -865,24 +937,30 @@
          * @return int
          */
         #[ReturnTypeWillChange]
-        public function key()
+        public function key(): int
         {
             return $this->i;
         }
 
-        /**
-         * @return void
-         */
         public function next(): void
         {
             ++$this->i;
         }
 
-        /**
-         * @return bool
-         */
         public function valid(): bool
         {
             return isset($this->A[$this->i]);
+        }
+
+        public function emptyVectorException()
+        {
+        }
+
+        public function toString()
+        {
+        }
+
+        public function getException()
+        {
         }
     }

@@ -30,9 +30,6 @@
      *    - Distributive: c(x mod y) = (cx) mod (cy)
      */
     class ArithmeticAxiomsTest extends TestCase {
-        /**
-         * @return array
-         */
         public static function dataProviderDigitalRootArithmetic(): array
         {
             return [
@@ -155,7 +152,6 @@
         {
             // Given
             foreach (range(-20, 20) as $a)
-            {
                 foreach (range(-20, 20) as $n)
                 {
                     // When
@@ -166,7 +162,6 @@
                     // Then
                     $this->assertEquals($⟮a mod n⟯ mod n, $a mod n);
                 }
-            }
         }
 
         /**
@@ -176,7 +171,6 @@
         public function testModuloIdentityOfPowers()
         {
             foreach (range(-20, 20) as $n)
-            {
                 foreach (range(1, 5) as $ˣ)
                 {
                     // Given
@@ -188,7 +182,6 @@
                     // Then
                     $this->assertEquals(0, $nˣ mod n);
                 }
-            }
         }
 
         /**
@@ -199,7 +192,6 @@
         {
             // Given
             foreach (range(-20, 20) as $a)
-            {
                 foreach (range(-20, 20) as $n)
                 {
                     // When
@@ -212,7 +204,6 @@
                     // Then
                     $this->assertEquals(0, $⟦⟮−a mod n⟯ ＋ ⟮a mod n⟯⟧ mod n);
                 }
-            }
         }
 
         /**
@@ -223,9 +214,7 @@
         {
             // Given
             foreach (range(-5, 5) as $a)
-            {
                 foreach (range(-5, 5) as $b)
-                {
                     foreach (range(-6, 6) as $n)
                     {
                         // When
@@ -240,8 +229,6 @@
                         $this->assertEquals($⟮a ＋ b⟯ mod n,
                             $⟦⟮a mod n⟯ ＋ ⟮b mod n⟧⟯ mod n);
                     }
-                }
-            }
         }
 
         /**
@@ -252,9 +239,7 @@
         {
             // Given
             foreach (range(-5, 5) as $a)
-            {
                 foreach (range(-5, 5) as $b)
-                {
                     foreach (range(-6, 6) as $n)
                     {
                         // When
@@ -269,8 +254,6 @@
                         $this->assertEquals($ab mod n,
                             $⟦⟮a mod n⟯⟮b mod n⟧⟯ mod n);
                     }
-                }
-            }
         }
 
         /**
@@ -281,9 +264,7 @@
         {
             // Given
             foreach (range(-5, 5) as $x)
-            {
                 foreach (range(-5, 5) as $y)
-                {
                     foreach (range(-6, 6) as $c)
                     {
                         // When
@@ -293,7 +274,5 @@
                         // Then
                         $this->assertEquals($c⟮x mod y⟯, $⟮cx⟯ mod ⟮cy⟯);
                     }
-                }
-            }
         }
     }

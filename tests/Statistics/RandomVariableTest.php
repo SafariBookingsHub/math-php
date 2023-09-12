@@ -1358,9 +1358,6 @@
             ];
         }
 
-        /**
-         * @return array
-         */
         public static function dataProviderForSumOfSquares(): array
         {
             return [

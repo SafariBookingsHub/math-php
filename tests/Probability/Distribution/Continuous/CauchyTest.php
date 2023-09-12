@@ -5,6 +5,7 @@
     use MathPHP\Probability\Distribution\Continuous\Cauchy;
     use PHPUnit\Framework\TestCase;
 
+    use function is_numeric;
     use function range;
 
     class CauchyTest extends TestCase {
@@ -302,7 +303,6 @@
         public function testRand()
         {
             foreach (range(-5, 5) as $x₀)
-            {
                 foreach (range(1, 10) as $γ)
                 {
                     // Given
@@ -313,9 +313,8 @@
                         $random = $cauchy->rand();
 
                         // Then
-                        $this->assertTrue(\is_numeric($random));
+                        $this->assertTrue(is_numeric($random));
                     }
                 }
-            }
         }
     }

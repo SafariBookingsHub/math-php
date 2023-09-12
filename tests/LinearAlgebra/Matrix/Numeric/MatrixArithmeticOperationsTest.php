@@ -1002,12 +1002,54 @@
         public function testAdd(array $A, array $B, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $R = MatrixFactory::create($R);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = MatrixFactory::create($B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $R = MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $R2 = $A->add($B);
+            try
+            {
+                $R2 = $A->add($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $R2);
@@ -1065,12 +1107,50 @@
         public function testDirectSum(array $A, array $B, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $R = MatrixFactory::create($R);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = MatrixFactory::create($B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $R = MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $R2 = $A->directSum($B);
+            try
+            {
+                $R2 = $A->directSum($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $R2);
@@ -1080,19 +1160,45 @@
          * @test         kroneckerSum returns the expected SquareMatrix
          * @dataProvider dataProviderKroneckerSum
          *
-         * @param array A
-         * @param array B
+         * @param array $A
+         * @param array $B
          * @param array $expected
          */
         public function testKroneckerSum(array $A, array $B, array $expected)
         {
             // Given
-            $A = new NumericSquareMatrix($A);
-            $B = new NumericSquareMatrix($B);
-            $R = new NumericSquareMatrix($expected);
+            try
+            {
+                $A = new NumericSquareMatrix($A);
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = new NumericSquareMatrix($B);
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $R = new NumericSquareMatrix($expected);
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $A⊕B = $A->kroneckerSum($B);
+            try
+            {
+                $A⊕B = $A->kroneckerSum($B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $A⊕B);
@@ -1104,20 +1210,41 @@
          * @test         kronecerSum throws a MatrixException if one of the matrices is not square
          * @dataProvider dataProviderForKroneckerSumSquareMatrixException
          *
-         * @param array A
-         * @param array B
+         * @param $A
+         * @param $B
          */
         public function testKroneckerSumSquareMatrixException($A, $B)
         {
             // Given
-            $A = new NumericMatrix($A);
-            $B = new NumericMatrix($B);
+            try
+            {
+                $A = new NumericMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new NumericMatrix($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\MatrixException::class);
 
             // When
-            $A⊕B = $A->kroneckerSum($B);
+            try
+            {
+                $A⊕B = $A->kroneckerSum($B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -1127,12 +1254,52 @@
         public function testSubtract(array $A, array $B, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $R = MatrixFactory::create($R);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = MatrixFactory::create($B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $R = MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $R2 = $A->subtract($B);
+            try
+            {
+                $R2 = $A->subtract($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $R2);
@@ -1215,12 +1382,48 @@
         public function testMultiplyVector(array $A, array $B, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = new Vector($B);
-            $R = MatrixFactory::create($R);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = new Vector($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $R = MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $R2 = $A->multiply($B);
+            try
+            {
+                $R2 = $A->multiply($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $R2);
@@ -1281,11 +1484,40 @@
         public function testScalarMultiply(array $A, $k, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $R = MatrixFactory::create($R);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $R = MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $kA = $A->scalarMultiply($k);
+            try
+            {
+                $kA = $A->scalarMultiply($k);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $kA);
@@ -1320,11 +1552,40 @@
         public function testScalarDivide(array $A, $k, array $R)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $R = MatrixFactory::create($R);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $R = MatrixFactory::create($R);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $divided = $A->scalarDivide($k);
+            try
+            {
+                $divided = $A->scalarDivide($k);
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($R, $divided);
@@ -1356,12 +1617,52 @@
         public function testHadamardProduct(array $A, array $B, array $expected)
         {
             // Given
-            $A = MatrixFactory::create($A);
-            $B = MatrixFactory::create($B);
-            $expected = MatrixFactory::create($expected);
+            try
+            {
+                $A = MatrixFactory::create($A);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $B = MatrixFactory::create($B);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
+            try
+            {
+                $expected = MatrixFactory::create($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            } catch (Exception\MathException $e)
+            {
+            }
 
             // When
-            $A∘B = $A->hadamardProduct($B);
+            try
+            {
+                $A∘B = $A->hadamardProduct($B);
+            } catch (Exception\IncorrectTypeException $e)
+            {
+            } catch (Exception\MatrixException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected, $A∘B);
@@ -1400,12 +1701,32 @@
             array $expected
         ) {
             // Given
-            $A = new NumericMatrix($A);
-            $B = new NumericMatrix($B);
-            $expected = new NumericMatrix($expected);
+            try
+            {
+                $A = new NumericMatrix($A);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $B = new NumericMatrix($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
+            try
+            {
+                $expected = new NumericMatrix($expected);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // When
-            $A⊗B = $A->kroneckerProduct($B);
+            try
+            {
+                $A⊗B = $A->kroneckerProduct($B);
+            } catch (Exception\BadDataException $e)
+            {
+            }
 
             // Then
             $this->assertEquals($expected->getMatrix(), $A⊗B->getMatrix());

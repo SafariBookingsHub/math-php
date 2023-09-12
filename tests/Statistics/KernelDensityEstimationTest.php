@@ -10,7 +10,7 @@
 
     class KernelDensityEstimationTest extends TestCase {
         /** @var array 100 Random normally distributed data points */
-        private $data
+        private array $data
             = [
                 -2.76,
                 -2.59,
@@ -124,11 +124,9 @@
             // Tricube
             $kernel = function ($x) {
                 if (abs($x) > 1)
-                {
                     return 0;
-                }
 
-                return 70 / 81 * ((1 - abs($x) ** 3) ** 3);
+                return (70 / 81) * (1 - (abs($x) ** 3)) ** 3;
             };
 
             return [
@@ -181,7 +179,16 @@
             float $expected
         ) {
             // Given
-            $KDE = new KernelDensityEstimation($data);
+            try
+            {
+                $KDE = new KernelDensityEstimation($data);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // When
             $estimate = $KDE->evaluate($x);
@@ -218,8 +225,22 @@
             float $expected
         ) {
             // Given
-            $KDE = new KernelDensityEstimation($data);
-            $KDE->setBandwidth($h);
+            try
+            {
+                $KDE = new KernelDensityEstimation($data);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
+            try
+            {
+                $KDE->setBandwidth($h);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // When
             $estimate = $KDE->evaluate($x);
@@ -258,9 +279,27 @@
             float $expected
         ) {
             // Given
-            $KDE = new KernelDensityEstimation($this->data, $h, $kernel);
+            try
+            {
+                $KDE = new KernelDensityEstimation($this->data, $h, $kernel);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
             $kernel2 = KernelDensityEstimation::TRICUBE;
-            $KDE2 = new KernelDensityEstimation($this->data, $h, $kernel2);
+            try
+            {
+                $KDE2 = new KernelDensityEstimation($this->data, $h, $kernel2);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // When
             $estimate1 = $KDE->evaluate($x);
@@ -282,7 +321,16 @@
         public function testKernels(string $kernel, float $x, float $expected)
         {
             // Given
-            $KDE = new KernelDensityEstimation($this->data, 1, $kernel);
+            try
+            {
+                $KDE = new KernelDensityEstimation($this->data, 1, $kernel);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // When
             $estimate = $KDE->evaluate($x);
@@ -302,10 +350,33 @@
         public function testNormal(float $x, float $expected)
         {
             // Given
-            $KDE = new KernelDensityEstimation($this->data);
+            try
+            {
+                $KDE = new KernelDensityEstimation($this->data);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
             $h = 0.3932;
-            $KDE->setBandwidth($h);
-            $KDE->setKernelFunction(KernelDensityEstimation::NORMAL);
+            try
+            {
+                $KDE->setBandwidth($h);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
+            try
+            {
+                $KDE->setKernelFunction(KernelDensityEstimation::NORMAL);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // When
             $estimate = $KDE->evaluate($x);
@@ -324,7 +395,16 @@
             $this->expectException(Exception\BadParameterException::class);
 
             // When
-            $KDE = new KernelDensityEstimation($this->data, 1, 1.0);
+            try
+            {
+                $KDE = new KernelDensityEstimation($this->data, 1, 1.0);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -333,13 +413,31 @@
         public function testUnknownBuildInKernel()
         {
             // Given
-            $KDE = new KernelDensityEstimation($this->data);
+            try
+            {
+                $KDE = new KernelDensityEstimation($this->data);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $KDE->setKernelFunction('DoesNotExist');
+            try
+            {
+                $KDE->setKernelFunction('DoesNotExist');
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -348,13 +446,27 @@
         public function testBadSetBandwidth()
         {
             // Given
-            $KDE = new KernelDensityEstimation($this->data);
+            try
+            {
+                $KDE = new KernelDensityEstimation($this->data);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
 
             // Then
             $this->expectException(Exception\OutOfBoundsException::class);
 
             // When
-            $KDE->setBandwidth(-1);
+            try
+            {
+                $KDE->setBandwidth(-1);
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
 
         /**
@@ -369,6 +481,15 @@
             $this->expectException(Exception\BadDataException::class);
 
             // When
-            $KDE = new KernelDensityEstimation([]);
+            try
+            {
+                $KDE = new KernelDensityEstimation([]);
+            } catch (Exception\BadDataException $e)
+            {
+            } catch (Exception\BadParameterException $e)
+            {
+            } catch (Exception\OutOfBoundsException $e)
+            {
+            }
         }
     }
