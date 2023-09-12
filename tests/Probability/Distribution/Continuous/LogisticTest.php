@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\Probability\Distribution\Continuous;
 
+    use Exception;
     use MathPHP\Probability\Distribution\Continuous\Logistic;
     use PHPUnit\Framework\TestCase;
 
@@ -163,7 +164,7 @@
             float $expected_pdf
         ) {
             // Given
-            $logistic = new Logistic(μ: $μ, :$s);
+            $logistic = new Logistic(μ: $μ, :$s)
 
             // When
             $pdf = $logistic->pdf(x: $x);
@@ -342,7 +343,7 @@
                     try
                     {
                         $rand = $logistic->rand();
-                    } catch (\Exception $e)
+                    } catch (Exception $e)
                     {
                     }
 

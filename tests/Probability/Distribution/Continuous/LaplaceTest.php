@@ -2,6 +2,7 @@
 
     namespace MathPHP\Tests\Probability\Distribution\Continuous;
 
+    use Exception;
     use MathPHP\Probability\Distribution\Continuous\Laplace;
     use PHPUnit\Framework\TestCase;
 
@@ -282,7 +283,7 @@
                     try
                     {
                         $random = $laplace->rand();
-                    } catch (\Exception $e)
+                    } catch (Exception $e)
                     {
                     }
 

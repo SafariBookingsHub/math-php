@@ -5,13 +5,14 @@
     use MathPHP\Exception;
     use MathPHP\Expression\Piecewise;
     use MathPHP\Expression\Polynomial;
+    use PHPUnit\Framework\MockObject\MockObject;
     use PHPUnit\Framework\TestCase;
     use ReflectionException;
     use ReflectionMethod;
 
     class PiecewiseTest extends TestCase {
         /** @var Piecewise|Mock */
-        private Mock|Piecewise|\PHPUnit\Framework\MockObject\MockObject $piecewise;
+        private Mock|Piecewise|MockObject $piecewise;
 
         public static function dataProviderForEval(): array
         {
