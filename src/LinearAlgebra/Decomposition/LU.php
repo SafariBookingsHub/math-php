@@ -12,7 +12,6 @@
     use MathPHP\LinearAlgebra\NumericMatrix;
     use MathPHP\LinearAlgebra\Vector;
 
-    use function array_reverse;
     use function is_array;
 
     use const NAN;
@@ -274,7 +273,7 @@
          */
         public function solve($b): Vector
         {
-            if (!($b instanceof Vector) && !is_array($b)) 
+            if ( ! ($b instanceof Vector) && ! is_array($b))
             {
                 throw new Exception\IncorrectTypeException('b in Ax = b must be a Vector or array');
             }
@@ -301,15 +300,18 @@
         {
             $y = [];
             $y[0] = $Pb[0][0] / $L[0][0];
-            
-            for ($i = 1; $i < $m; $i++) 
+
+            for ($i = 1; $i < $m; $i++)
             {
-                $y[$i] = ($Pb[$i][0] - array_sum(array_map(function ($j) use ($L, $y) 
-                {
-                    return $L[$i][$j] * $y[$j];
-                }, 
-                range(0, $i - 1)))) / $L[$i][$i];
+                $y[$i] = ($Pb[$i][0] - array_sum(array_map(function ($j) use (
+                            $L,
+                            $y
+                        ) {
+                            return $L[$i][$j] * $y[$j];
+                        },
+                            range(0, $i - 1)))) / $L[$i][$i];
             }
+
             return $y;
         }
 
@@ -317,19 +319,22 @@
         {
             $x = [];
             $x[$m - 1] = $y[$m - 1] / $U[$m - 1][$m - 1];
-            
-            for ($i = $m - 2; $i >= 0; $i--) 
+
+            for ($i = $m - 2; $i >= 0; $i--)
             {
-                if ($U[$i][$i] == 0) 
+                if ($U[$i][$i] == 0)
                 {
                     throw new Exception\DivisionByZeroException("Uᵢᵢ (U[$i][$i]) is 0 during back substitution");
                 }
-                $x[$i] = ($y[$i] - array_sum(array_map(function ($j) use ($U, $x) 
-                {
-                    return $U[$i][$j] * $x[$j];
-                }, 
-                range($i + 1, $m - 1)))) / $U[$i][$i];
+                $x[$i] = ($y[$i] - array_sum(array_map(function ($j) use (
+                            $U,
+                            $x
+                        ) {
+                            return $U[$i][$j] * $x[$j];
+                        },
+                            range($i + 1, $m - 1)))) / $U[$i][$i];
             }
+
             return $x;
         }
 

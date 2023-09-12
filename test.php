@@ -4,6 +4,7 @@
 
     use MathPHP\Algebra;
 
+    // TEST
 // Greatest common divisor (GCD)
     $gcd = Algebra::gcd(8, 12);
 
